@@ -1,8 +1,6 @@
 # .github/workflows/main.yml
 name: helloGithubAction
-
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,3 +10,4 @@ jobs:
         run : echo Hello, World!
       - name: print directory structure
         run : ls -al
+#Github Actions 안씁니다.
