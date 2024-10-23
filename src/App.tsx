@@ -1,14 +1,8 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-
-import './App.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 
 function App() {
-	return (
-		<>
-			<div> Home Page</div>
-		</>
-	);
+	return <RouterProvider router={router} />;
 }
 
 export default App;
