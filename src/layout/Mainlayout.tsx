@@ -14,7 +14,7 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 	const [searchedData, setSearchedData] = useState<string[]>(JSON.parse(localStorage.getItem('searchedList') ?? ''));
 
 	useEffect(() => {
-		// searchedData 값이 변경될 때만 localStorage에 저장
+		// searchedData 값이 변경될 때 localStorage에 저장
 		localStorage.setItem('searchedList', JSON.stringify(searchedData));
 	}, [searchedData]);
 
@@ -35,7 +35,9 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 	const addRecentSearch = (stockName: string) => {
 		// 최근 검색 기록 추가
 		const nextData = Array.from(new Set([...searchedData, stockName]));
-		setSearchedData(nextData);
+		if (JSON.stringify(nextData) !== JSON.stringify(searchedData)) {
+			setSearchedData(nextData);
+		}
 	};
 
 	const deleteRecentSearch = (stockName: string) => {
@@ -50,10 +52,10 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 			<div>
 				<SearchBar stockName={stockName} onChange={handleStockNameChange}></SearchBar>
 				<button onClick={() => handleSearch(stockName)}>검색</button>
-				{searchedData.map((stockName: string, index: any) => (
+				{searchedData.map((curStockName: string, index: number) => (
 					<span key={index}>
-						<span>{stockName}</span>
-						<button onClick={() => deleteRecentSearch(stockName)} aria-label="delete">
+						<span>{curStockName}</span>
+						<button onClick={() => deleteRecentSearch(curStockName)} aria-label="delete">
 							{'X'}
 						</button>
 					</span>
