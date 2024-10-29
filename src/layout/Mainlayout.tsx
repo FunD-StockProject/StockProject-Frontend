@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import {
+	JSXElementConstructor,
+	ReactElement,
+	ReactNode,
+	ReactPortal,
+	useState,
+} from 'react';
 import SearchBar from './SearchBar';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import { webPath } from '../router';
 
 type MainLayoutProps = {
@@ -9,16 +15,32 @@ type MainLayoutProps = {
 
 const Mainlayout = ({ children }: MainLayoutProps) => {
 	const [stockName, setStockName] = useState('');
+	const [searchedData, setSearchedData] = useState(
+		JSON.parse(localStorage.getItem('searchedList') + '') ?? []
+	);
 	const navigate = useNavigate();
 
 	useState('');
 	const onChange = (e: any) => {
-		setStockName(e?.target.value);
+		setStockName(e.target.value);
 	};
 
 	const onClick = (stockName: string) => {
-		const stockId = stockName.length;
-		navigate(webPath.search(), { state: { stockId } });
+		// 최근 검색 기록 추가
+		let curDataSet = new Set(searchedData);
+		curDataSet.add(stockName);
+		const nextData = [...curDataSet];
+		localStorage.setItem('searchedList', JSON.stringify(nextData));
+		setSearchedData(nextData);
+
+		setStockName('');
+		navigate(webPath.search(), { state: { stockName } });
+	};
+	const onDelete = (stockName: string) => {
+		let curData = searchedData;
+		const nextData = curData.filter((el: string) => el !== stockName);
+		localStorage.setItem('searchedList', JSON.stringify(nextData));
+		setSearchedData(nextData);
 	};
 
 	return (
@@ -28,6 +50,14 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 			<div>
 				<SearchBar stockName={stockName} onChange={onChange}></SearchBar>
 				<button onClick={() => onClick(stockName)}>검색</button>
+				{searchedData.map((stockName: string) => (
+					<span>
+						<span>{stockName}</span>
+						<button onClick={() => onDelete(stockName)} aria-label="delete">
+							{'delete'}
+						</button>
+					</span>
+				))}
 			</div>
 			{children}
 		</>
