@@ -1,46 +1,46 @@
-import {
-	JSXElementConstructor,
-	ReactElement,
-	ReactNode,
-	ReactPortal,
-	useState,
-} from 'react';
-import SearchBar from './SearchBar';
-import { json, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { webPath } from '../router';
+import SearchBar from './SearchBar';
 
 type MainLayoutProps = {
 	children: React.ReactNode;
 };
 
 const Mainlayout = ({ children }: MainLayoutProps) => {
-	const [stockName, setStockName] = useState('');
-	const [searchedData, setSearchedData] = useState(
-		JSON.parse(localStorage.getItem('searchedList') + '') ?? []
-	);
 	const navigate = useNavigate();
 
-	useState('');
-	const onChange = (e: any) => {
+	const [stockName, setStockName] = useState<string>('');
+	const [searchedData, setSearchedData] = useState<string[]>(JSON.parse(localStorage.getItem('searchedList') ?? ''));
+
+	useEffect(() => {
+		// searchedData 값이 변경될 때만 localStorage에 저장
+		localStorage.setItem('searchedList', JSON.stringify(searchedData));
+	}, [searchedData]);
+
+	const handleStockNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setStockName(e.target.value);
 	};
 
-	const onClick = (stockName: string) => {
-		// 최근 검색 기록 추가
-		let curDataSet = new Set(searchedData);
-		curDataSet.add(stockName);
-		const nextData = [...curDataSet];
-		localStorage.setItem('searchedList', JSON.stringify(nextData));
-		setSearchedData(nextData);
+	const handleSearch = (stockName: string) => {
+		if (!stockName) {
+			return;
+		}
 
-		setStockName('');
+		addRecentSearch(stockName);
 		navigate(webPath.search(), { state: { stockName } });
+		setStockName('');
 	};
-	const onDelete = (stockName: string) => {
-		let curData = searchedData;
-		const nextData = curData.filter((el: string) => el !== stockName);
-		localStorage.setItem('searchedList', JSON.stringify(nextData));
+
+	const addRecentSearch = (stockName: string) => {
+		// 최근 검색 기록 추가
+		const nextData = Array.from(new Set([...searchedData, stockName]));
 		setSearchedData(nextData);
+	};
+
+	const deleteRecentSearch = (stockName: string) => {
+		// 최근 검색 기록 삭제
+		setSearchedData((prevData) => prevData.filter((item) => item !== stockName));
 	};
 
 	return (
@@ -48,13 +48,13 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 			<div>Mainlayout 입니당 CSS 나중에 반영할게용</div>
 			<button onClick={() => navigate('/')}>로고 : 누르면 홈으로 이동</button>
 			<div>
-				<SearchBar stockName={stockName} onChange={onChange}></SearchBar>
-				<button onClick={() => onClick(stockName)}>검색</button>
-				{searchedData.map((stockName: string) => (
-					<span>
+				<SearchBar stockName={stockName} onChange={handleStockNameChange}></SearchBar>
+				<button onClick={() => handleSearch(stockName)}>검색</button>
+				{searchedData.map((stockName: string, index: any) => (
+					<span key={index}>
 						<span>{stockName}</span>
-						<button onClick={() => onDelete(stockName)} aria-label="delete">
-							{'delete'}
+						<button onClick={() => deleteRecentSearch(stockName)} aria-label="delete">
+							{'X'}
 						</button>
 					</span>
 				))}
