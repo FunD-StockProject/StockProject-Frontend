@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../router';
 import SearchBar from './SearchBar';
+import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../utils/LocalStorage';
 
 type MainLayoutProps = {
 	children: React.ReactNode;
@@ -11,11 +12,13 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 	const navigate = useNavigate();
 
 	const [stockName, setStockName] = useState<string>('');
-	const [searchedData, setSearchedData] = useState<string[]>(JSON.parse(localStorage.getItem('searchedList') ?? ''));
+	const [searchedData, setSearchedData] = useState<string[]>(
+		isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : []
+	);
 
 	useEffect(() => {
 		// searchedData 값이 변경될 때 localStorage에 저장
-		localStorage.setItem('searchedList', JSON.stringify(searchedData));
+		setItemLocalStorage('searchedList', searchedData);
 	}, [searchedData]);
 
 	const handleStockNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +37,7 @@ const Mainlayout = ({ children }: MainLayoutProps) => {
 
 	const addRecentSearch = (stockName: string) => {
 		// 최근 검색 기록 추가
-		const nextData = Array.from(new Set([...searchedData, stockName]));
+		const nextData = Array.from(new Set([stockName, ...searchedData]));
 		if (JSON.stringify(nextData) !== JSON.stringify(searchedData)) {
 			setSearchedData(nextData);
 		}
