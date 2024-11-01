@@ -22,6 +22,12 @@ const Header = () => {
     setStockName(e.target.value);
   };
 
+  const handleStockNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter') {
+      handleSearch(stockName);
+    }
+  }
+
   const handleSearch = (stockName: string) => {
     if (!stockName) {
       return;
@@ -50,7 +56,7 @@ const Header = () => {
       <div>Mainlayout 입니당 CSS 나중에 반영할게용</div>
       <button onClick={() => navigate('/')}>로고 : 누르면 홈으로 이동</button>
       <div>
-        <SearchBar stockName={stockName} onChange={handleStockNameChange}></SearchBar>
+        <SearchBar stockName={stockName} onChange={handleStockNameChange} onKeyDown={handleStockNameKeyDown}></SearchBar>
         <button onClick={() => handleSearch(stockName)}>검색</button>
         {searchedData.map((curStockName: string, index: number) => (
           <span key={index}>
