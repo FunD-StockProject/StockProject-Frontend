@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 
 const Result = () => {
 	const { state } = useLocation();
-	const { stockName } = state;
+	const stockName = state?.stockName;
 
 	return (
 		<>
