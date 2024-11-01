@@ -54,7 +54,7 @@ const Header = () => {
         <button onClick={() => handleSearch(stockName)}>검색</button>
         {searchedData.map((curStockName: string, index: number) => (
           <span key={index}>
-            <span>{curStockName}</span>
+            <span onClick={() => (handleSearch(curStockName))}>{curStockName}</span>
             <button onClick={() => deleteRecentSearch(curStockName)} aria-label="delete">
               {'X'}
             </button>
