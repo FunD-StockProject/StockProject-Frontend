@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <>
       <div>
-        푸터입니다.
+        푸터입니당.
       </div>
     </>
   );
