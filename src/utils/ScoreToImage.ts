@@ -1,17 +1,20 @@
+import defaultImageLink from '../assets/default.svg';
+import soarImageLink from '../assets/soar.svg';
+import dropImageLink from '../assets/drop.svg';
+
 const scoreToImage = (score: number): string => {
-  const defaultString = '';
-  let resultLink: string = defaultString;
+  let resultLink: string = defaultImageLink;
 
   if (score >= 80) {
-    resultLink = '80 ~ 100 일때 표시할 이미지의 링크';
+    resultLink = soarImageLink;
   } else if (score >= 60) {
-    resultLink = '60 ~ 80 일떄표시할 이미지의 링크';
+    resultLink = soarImageLink;
   } else if (score >= 40) {
-    resultLink = '40 ~ 60 일떄표시할 이미지의 링크';
+    resultLink = defaultImageLink;
   } else if (score >= 20) {
-    resultLink = '20 ~ 40 일떄표시할 이미지의 링크';
+    resultLink = dropImageLink;
   } else {
-    resultLink = '0 ~ 20 일떄표시할 이미지의 링크';
+    resultLink = dropImageLink;
   }
 
   return resultLink;

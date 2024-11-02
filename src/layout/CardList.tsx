@@ -1,9 +1,5 @@
+import { CardInterface } from '../ts/interfaces';
 import Card from './Card';
-
-interface CardInterface {
-  id: number;
-  score: number;
-}
 
 const CardList = ({ list }: { list: CardInterface[] }) => {
   return (
