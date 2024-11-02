@@ -47,8 +47,10 @@ const Header = () => {
     <>
       <img src={logo} onClick={() => navigate('/')} />
       <div>
-        <SearchBar stockName={stockName} onChange={handleStockNameChange}></SearchBar>
-        <button onClick={() => handleSearch(stockName)}>검색</button>
+        <div>
+          <SearchBar stockName={stockName} onChange={handleStockNameChange}></SearchBar>
+          <button onClick={() => handleSearch(stockName)}>검색</button>
+        </div>
         {searchedData.map((curStockName: string, index: number) => (
           <span key={index}>
             <span onClick={() => handleSearch(curStockName)}>{curStockName}</span>

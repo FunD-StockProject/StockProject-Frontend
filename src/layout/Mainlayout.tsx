@@ -1,5 +1,5 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -7,11 +7,11 @@ type MainLayoutProps = {
 
 const Mainlayout = ({ children }: MainLayoutProps) => {
   return (
-    <>
-			<Header />
+    <div style={{ textAlign: 'center' }}>
+      <Header />
       {children}
-			<Footer />
-    </>
+      <Footer />
+    </div>
   );
 };
 
