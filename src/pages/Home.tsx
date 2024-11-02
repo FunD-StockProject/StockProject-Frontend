@@ -1,14 +1,22 @@
 import CardList from '../layout/CardList';
-
-interface CardInterface {
-  id: number;
-  score: number;
-}
+import { CardInterface } from '../ts/interfaces';
 
 const Home = () => {
-  const popular: CardInterface[] = [{ id: 1, score: 90 }];
-  const soar: CardInterface[] = [{ id: 2, score: 80 }];
-  const drop: CardInterface[] = [{ id: 3, score: 70 }];
+  const popular: CardInterface[] = [
+    { id: 1, score: 90 },
+    { id: 2, score: 50 },
+    { id: 3, score: 20 },
+  ];
+  const soar: CardInterface[] = [
+    { id: 1, score: 90 },
+    { id: 2, score: 50 },
+    { id: 3, score: 20 },
+  ];
+  const drop: CardInterface[] = [
+    { id: 1, score: 90 },
+    { id: 2, score: 50 },
+    { id: 3, score: 20 },
+  ];
 
   return (
     <>
