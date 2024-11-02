@@ -6,7 +6,7 @@ const CardList = ({ list }: { list: CardInterface[] }) => {
     <div>
       <div style={{ display: 'flex', padding: '10px' }}>
         {list.map((item: CardInterface) => (
-          <Card key={item.id} score={item.score} />
+          <Card key={item.id} score={item.score} stockName={item.stockName} />
         ))}
       </div>
     </div>
