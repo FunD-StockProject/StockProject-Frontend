@@ -1,4 +1,4 @@
-import { CardInterface } from '../ts/interfaces';
+import { CardInterface } from '../ts/Interfaces';
 import Card from './Card';
 
 const CardList = ({ list }: { list: CardInterface[] }) => {
