@@ -1,6 +1,6 @@
 import { scoreToImage } from '../utils/ScoreToImage';
 
-const Card = ({ key, score }: { key: number; score: number }) => {
+const Card = ({ score }: { score: number }) => {
   const imgLink = scoreToImage(score);
 
   return (
