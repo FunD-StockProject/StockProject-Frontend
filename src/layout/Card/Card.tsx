@@ -1,10 +1,10 @@
-import { scoreToImage } from '../utils/ScoreToImage';
+import { scoreToImage } from '../../utils/ScoreToImage';
 
 const Card = ({ score }: { score: number }) => {
   const imgLink = scoreToImage(score);
 
   return (
-    <div>
+    <div style={{ padding: '10px' }}>
       <img src={imgLink}></img>
     </div>
   );

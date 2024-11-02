@@ -1,4 +1,4 @@
-import CardList from '../layout/CardList';
+import CardList from '../layout/CardList/CardList';
 import { CardInterface } from '../ts/Interfaces';
 
 const Home = () => {
