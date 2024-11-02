@@ -1,5 +1,5 @@
 import CardList from '../layout/CardList';
-import { CardInterface } from '../ts/interfaces';
+import { CardInterface } from '../ts/Interfaces';
 
 const Home = () => {
   const popular: CardInterface[] = [

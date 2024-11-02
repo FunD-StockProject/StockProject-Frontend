@@ -1,4 +1,4 @@
-import defaultImageLink from '../assets/default.svg';
+import defaultImageLink from '../assets/efault.svg';
 import soarImageLink from '../assets/soar.svg';
 import dropImageLink from '../assets/drop.svg';
 
