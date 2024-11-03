@@ -1,6 +1,6 @@
 import CardList from '../../layout/CardList/CardList';
 import { CardInterface } from '../../ts/Interfaces';
-import { StyledHeader, Styledtext, StyledTitle, StyleTabMenu } from './Home.Style';
+import { StyledHeader, Styledtext, StyleTabMenu } from './Home.Style';
 import popularText from '../../assets/popularText.svg';
 import soarText from '../../assets/soarText.svg';
 import dropText from '../../assets/dropText.svg';
