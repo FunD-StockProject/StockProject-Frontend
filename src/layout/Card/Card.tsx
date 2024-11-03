@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
 import { scoreToImage } from '../../utils/ScoreToImage';
+import { StyledCard } from './Card.Style';
 
 const Card = ({ score, stockName }: { score: number; stockName: string }) => {
   const navigate = useNavigate();
@@ -11,10 +12,10 @@ const Card = ({ score, stockName }: { score: number; stockName: string }) => {
   };
 
   return (
-    <div onClick={() => handleClick(stockName)} style={{ padding: '10px' }}>
+    <StyledCard onClick={() => handleClick(stockName)} style={{ padding: '10px', display: 'inline-block' }}>
       <div> {stockName}</div>
       <img src={imgLink}></img>
-    </div>
+    </StyledCard>
   );
 };
 
