@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <>
+    <div>
       <img src={logo} onClick={() => navigate('/')} />
       <div>
         <div>
@@ -60,7 +60,7 @@ const Header = () => {
           </span>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

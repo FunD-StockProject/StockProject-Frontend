@@ -12,8 +12,8 @@ const Card = ({ score, stockName }: { score: number; stockName: string }) => {
   };
 
   return (
-    <StyledCard onClick={() => handleClick(stockName)} style={{ padding: '10px', display: 'inline-block' }}>
-      <div> {stockName}</div>
+    <StyledCard tabIndex={0} onClick={() => handleClick(stockName)} style={{ padding: '10px', display: 'inline-block' }}>
+      <div>{stockName}</div>
       <img src={imgLink}></img>
     </StyledCard>
   );

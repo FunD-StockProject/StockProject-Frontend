@@ -6,8 +6,7 @@ const StyledCard = styled('div')`
   border: 1px solid black;
   border-radius: 12%;
   overflow: hidden;
-  // width: 25%;
-  heigth: auto;
+  display: inline-block;
 `;
 
 export { StyledCard };

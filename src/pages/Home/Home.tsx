@@ -1,5 +1,6 @@
-import CardList from '../layout/CardList/CardList';
-import { CardInterface } from '../ts/Interfaces';
+import CardList from '../../layout/CardList/CardList';
+import { CardInterface } from '../../ts/Interfaces';
+import { StyledHeader, Styledtext, StyledTitle } from './Home.Style';
 
 const Home = () => {
   const popular: CardInterface[] = [
@@ -31,24 +32,26 @@ const Home = () => {
   ];
 
   return (
-    <>
-      <div>
+    <div>
+      <StyledHeader>
         <h2>가장 주목받고 있는 인간 지표</h2>
         <CardList list={popular} />
-      </div>
+      </StyledHeader>
 
-      <div>
-        <h2>민심 떡상 지표</h2>
-        <CardList list={soar} />
-      </div>
+      <StyledHeader>
+        <StyledTitle>민심 떡상 지표</StyledTitle>
+        <Styledtext>1일마다 업데이트됩니다</Styledtext>
+      </StyledHeader>
+      <CardList list={soar} />
 
-      <div>
-        <h2>민심 떡락 지표</h2>
-        <CardList list={drop} />
-      </div>
+      <StyledHeader>
+        <StyledTitle>민심 떡락 지표</StyledTitle>
+        <Styledtext>1일마다 업데이트됩니다</Styledtext>
+      </StyledHeader>
+      <CardList list={drop} />
 
       <button onClick={() => alert('사용 설명서 팝업')}>{'인간 지표 사용 설명서'}</button>
-    </>
+    </div>
   );
 };
 
