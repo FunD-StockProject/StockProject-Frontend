@@ -68,7 +68,7 @@ const Home = () => {
     ],
   ];
 
-  const [tabIndex, setTabIndex] = useState(0); // 0  : 국내 / 1 : 해외
+  const [tabIndex, setTabIndex] = useState(0);
   const tabMenu = ['국내', '해외'];
 
   const handleTab = (index: number) => {
