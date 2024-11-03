@@ -30,7 +30,6 @@ const StyleTabMenu = styled('ul')`
     display: flex;
     justify-content: center;
     flex: 1;
-    // width: calc(100% / 1);
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
