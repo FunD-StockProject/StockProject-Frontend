@@ -22,7 +22,7 @@ const SearchBarContainer = styled.div<SearchBarContainerProps>(
     background: '#222222',
     // height: 100,
   },
-  (props) =>
+  (props: SearchBarContainerProps) =>
     props.active
       ? {
           borderRadius: '20px',
@@ -55,14 +55,14 @@ interface ExpandSearchBarProps {
   active: boolean;
 }
 
-const ExpandSearchBar = styled(({ children, className, active }: ExpandSearchBarProps) => {
+const ExpandSearchBar = styled(({ children, className }: ExpandSearchBarProps) => {
   return (
     <div className={className}>
       <hr />
       {children}
     </div>
   );
-})({ padding: '0 12px 24px' }, (props) => (props.active ? {} : { display: 'none' }));
+})({ padding: '0 12px 24px' }, (props: ExpandSearchBarProps) => (props.active ? {} : { display: 'none' }));
 
 interface RecentSearchListProps {
   className?: string;
@@ -169,7 +169,12 @@ const SearchBar = () => {
   return (
     <>
       <SearchBarDiv>
-        <SearchBarContainer ref={callbackRef} tabIndex={-1} onBlur={(e) => !e.relatedTarget && setActiveSearchBar(false)} active={activeSearchBar}>
+        <SearchBarContainer
+          ref={callbackRef}
+          tabIndex={-1}
+          onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => !e.relatedTarget && setActiveSearchBar(false)}
+          active={activeSearchBar}
+        >
           <SearchBarInputContainer>
             <SearchBarInput
               value={stockName}
