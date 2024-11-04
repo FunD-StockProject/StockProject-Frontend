@@ -9,6 +9,8 @@ import {
 import styled from '@emotion/styled';
 import noResultSVG from '../assets/noResult.svg';
 import { LayoutProps } from '../ts/Types';
+import { ReactComponent as SearchSVG } from '../assets/icons/search.svg';
+import { ReactComponent as CancelSVG } from '../assets/icons/cancel.svg';
 
 const SearchBarDiv = styled.div({
   position: 'relative',
@@ -28,6 +30,7 @@ const SearchBarInputContainer = styled.div({
   position: 'relative',
   padding: '12px 32px',
   display: 'flex',
+  alignItems: 'center',
 });
 
 const SearchBarInput = styled.input({
@@ -118,12 +121,13 @@ const RecentSearchItem = styled(
         <span>
           <p onClick={searchItem}>{name}</p>
         </span>
-        <button onClick={deleteItem}>X</button>
+        <CancelSVG fill="white" width={32} height={32} onClick={deleteItem} />
       </div>
     );
   },
 )({
   display: 'flex',
+  alignItems: 'center',
   margin: 0,
   padding: '0 20px',
   fontSize: '24px',
@@ -135,7 +139,8 @@ const RecentSearchItem = styled(
     margin: 0,
     cursor: 'pointer',
   },
-  ['button']: {
+  ['svg']: {
+    cursor: 'pointer',
     padding: 0,
   },
 });
@@ -258,12 +263,11 @@ const SearchBar = () => {
               onFocus={() => setActiveSearchBar(true)}
               placeholder={'입력'}
             />
-            <div
+            <SearchSVG
+              stroke="white"
               style={{ cursor: 'pointer' }}
               onClick={() => handleSearch(stockName)}
-            >
-              Search
-            </div>
+            />
           </SearchBarInputContainer>
           <ExpandSearchBar active={activeSearchBar}>
             {stockName == '' ? (
