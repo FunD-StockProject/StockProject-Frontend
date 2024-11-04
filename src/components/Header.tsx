@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import styled from '@emotion/styled';
+import logo from '../assets/logo.svg';
 
 const HeaderLogo = styled(({ src, onClick, className }: { src: string; onClick?: (e: any) => void; className?: string }) => {
   return (
@@ -32,7 +33,7 @@ const Header = () => {
   return (
     <>
       <HeaderContainer>
-        <HeaderLogo src="/src/assets/logo.svg" onClick={() => navigate('/')} />
+        <HeaderLogo src={logo} onClick={() => navigate('/')} />
         <SearchBar />
       </HeaderContainer>
     </>

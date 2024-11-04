@@ -1,0 +1,3 @@
+const CURVIEWSTOCKCNT = 3;
+
+export { CURVIEWSTOCKCNT };

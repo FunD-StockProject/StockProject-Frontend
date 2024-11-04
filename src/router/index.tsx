@@ -1,7 +1,8 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
-import Mainlayout from '../layout/Mainlayout';
+import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Result from '../pages/Result';
+import Home from '../pages/Home/Home';
 
 export const webPath = {
   search: () => '/search',
@@ -26,7 +27,7 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <>"초기 홈 화면입니다"</>,
+        element: <Home />,
       },
       {
         path: webPath.search(),

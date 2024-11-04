@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 const SearchBarDiv = styled.div({
   position: 'relative',
   width: '100%',
-  marginBottom: '57px',
+  marginBottom: '72px',
 });
 
 interface SearchBarContainerProps {
@@ -18,9 +18,9 @@ const SearchBarContainer = styled.div<SearchBarContainerProps>(
   {
     position: 'absolute',
     width: '100%',
-    border: '1px solid white',
     background: '#222222',
-    // height: 100,
+    border: '1px solid white',
+    borderRadius: '20px',
   },
   (props: SearchBarContainerProps) =>
     props.active
@@ -62,7 +62,15 @@ const ExpandSearchBar = styled(({ children, className }: ExpandSearchBarProps) =
       {children}
     </div>
   );
-})({ padding: '0 12px 24px' }, (props: ExpandSearchBarProps) => (props.active ? {} : { display: 'none' }));
+})(
+  {
+    padding: '0 12px 12px',
+    ['hr']: {
+      margin: 0,
+    },
+  },
+  (props: ExpandSearchBarProps) => (props.active ? {} : { display: 'none' }),
+);
 
 interface RecentSearchListProps {
   className?: string;
@@ -79,7 +87,7 @@ const RecentSearchList = styled(({ className, searchedData, handleSearch, delete
       ))}
     </div>
   );
-})({ display: 'flex', flexDirection: 'column', gap: '8px' });
+})({ display: 'flex', flexDirection: 'column', gap: '8px', padding: '12px 0' });
 
 interface RecentSearchItemProps {
   className?: string;
@@ -103,6 +111,7 @@ const RecentSearchItem = styled(({ className, name, key, searchItem, deleteItem 
   margin: 0,
   padding: '0 20px',
   fontSize: '24px',
+  textAlign: 'left',
   ['>span:first-of-type']: {
     width: '100%',
   },
