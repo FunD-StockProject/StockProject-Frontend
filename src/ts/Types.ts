@@ -1,5 +1,6 @@
-type MainLayoutProps = {
-  children: React.ReactNode;
+type LayoutProps = {
+  children?: React.ReactNode;
+  className?: string;
 };
 
-export type { MainLayoutProps };
+export type { LayoutProps };

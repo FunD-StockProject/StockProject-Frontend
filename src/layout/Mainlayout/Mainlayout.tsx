@@ -1,13 +1,18 @@
+import styled from '@emotion/styled';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import { MainLayoutProps } from '../../ts/Types';
+import { LayoutProps } from '../../ts/Types';
 import { StyledMainlayout } from './Mainlayout.Style';
 
-const Mainlayout = ({ children }: MainLayoutProps) => {
+const Main = styled.div({
+  padding: '0 30px',
+});
+
+const Mainlayout = ({ children }: LayoutProps) => {
   return (
     <StyledMainlayout>
       <Header />
-      {children}
+      <Main>{children}</Main>
       <Footer />
     </StyledMainlayout>
   );
