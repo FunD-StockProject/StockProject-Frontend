@@ -248,7 +248,6 @@ const SearchBar = () => {
           onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) =>
             !e.relatedTarget && setActiveSearchBar(false)
           }
-          active={activeSearchBar}
         >
           <SearchBarInputContainer>
             <SearchBarInput
