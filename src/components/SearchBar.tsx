@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../router';
-import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../utils/LocalStorage';
+import {
+  isExistItemLocalStorage,
+  getItemLocalStorage,
+  setItemLocalStorage,
+} from '../utils/LocalStorage';
 import styled from '@emotion/styled';
+import noResultSVG from '../assets/noResult.svg';
+import { LayoutProps } from '../ts/Types';
 
 const SearchBarDiv = styled.div({
   position: 'relative',
@@ -10,27 +16,13 @@ const SearchBarDiv = styled.div({
   marginBottom: '72px',
 });
 
-interface SearchBarContainerProps {
-  active: boolean;
-}
-
-const SearchBarContainer = styled.div<SearchBarContainerProps>(
-  {
-    position: 'absolute',
-    width: '100%',
-    background: '#222222',
-    border: '1px solid white',
-    borderRadius: '20px',
-  },
-  (props: SearchBarContainerProps) =>
-    props.active
-      ? {
-          borderRadius: '20px',
-        }
-      : {
-          borderRadius: '20px',
-        },
-);
+const SearchBarContainer = styled.div({
+  position: 'absolute',
+  width: '100%',
+  background: '#222222',
+  border: '1px solid white',
+  borderRadius: '20px',
+});
 
 const SearchBarInputContainer = styled.div({
   position: 'relative',
@@ -55,16 +47,21 @@ interface ExpandSearchBarProps {
   active: boolean;
 }
 
-const ExpandSearchBar = styled(({ children, className }: ExpandSearchBarProps) => {
-  return (
-    <div className={className}>
-      <hr />
-      {children}
-    </div>
-  );
-})(
+const ExpandSearchBar = styled(
+  ({ children, className }: ExpandSearchBarProps) => {
+    return (
+      <div className={className}>
+        <hr />
+        {children}
+      </div>
+    );
+  },
+)(
   {
     padding: '0 12px 12px',
+    height: '320px',
+    overflow: 'hidden',
+
     ['hr']: {
       margin: 0,
     },
@@ -79,15 +76,32 @@ interface RecentSearchListProps {
   deleteRecentSearch: (name: string) => void;
 }
 
-const RecentSearchList = styled(({ className, searchedData, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
-  return (
-    <div key={'asd'} className={className}>
-      {searchedData.map((name: string, idx: number) => (
-        <RecentSearchItem name={name} key={idx} searchItem={() => handleSearch(name)} deleteItem={() => deleteRecentSearch(name)} />
-      ))}
-    </div>
-  );
-})({ display: 'flex', flexDirection: 'column', gap: '8px', padding: '12px 0' });
+const RecentSearchList = styled(
+  ({
+    className,
+    searchedData,
+    handleSearch,
+    deleteRecentSearch,
+  }: RecentSearchListProps) => {
+    return (
+      <div key={'asd'} className={className}>
+        {searchedData.map((name: string, idx: number) => (
+          <RecentSearchItem
+            name={name}
+            key={idx}
+            searchItem={() => handleSearch(name)}
+            deleteItem={() => deleteRecentSearch(name)}
+          />
+        ))}
+      </div>
+    );
+  },
+)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  padding: '12px 0',
+});
 
 interface RecentSearchItemProps {
   className?: string;
@@ -97,16 +111,18 @@ interface RecentSearchItemProps {
   deleteItem: (e: any) => void;
 }
 
-const RecentSearchItem = styled(({ className, name, key, searchItem, deleteItem }: RecentSearchItemProps) => {
-  return (
-    <div key={key} className={className}>
-      <span>
-        <p onClick={searchItem}>{name}</p>
-      </span>
-      <button onClick={deleteItem}>X</button>
-    </div>
-  );
-})({
+const RecentSearchItem = styled(
+  ({ className, name, key, searchItem, deleteItem }: RecentSearchItemProps) => {
+    return (
+      <div key={key} className={className}>
+        <span>
+          <p onClick={searchItem}>{name}</p>
+        </span>
+        <button onClick={deleteItem}>X</button>
+      </div>
+    );
+  },
+)({
   display: 'flex',
   margin: 0,
   padding: '0 20px',
@@ -124,11 +140,55 @@ const RecentSearchItem = styled(({ className, name, key, searchItem, deleteItem 
   },
 });
 
+const NoAutoCompleteListView = styled(({ className }: LayoutProps) => {
+  return (
+    <div className={className}>
+      <img src={noResultSVG} />
+      <p>
+        검색 결과가 없습니다
+        <br />
+        오타가 있는지 확인해보세요!
+      </p>
+    </div>
+  );
+})({
+  padding: '48px 0',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+  ['img']: {
+    height: '128px',
+  },
+  ['p']: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+  },
+});
+
+const AutoCompleteList = styled(() => {
+  const apiResult = [];
+
+  return apiResult.length ? <></> : <NoAutoCompleteListView />;
+})(
+  {
+    padding: '0 12px 12px',
+    ['hr']: {
+      margin: 0,
+    },
+  },
+  {},
+);
+
 const SearchBar = () => {
   const navigate = useNavigate();
 
   const [stockName, setStockName] = useState<string>('');
-  const [searchedData, setSearchedData] = useState<string[]>(isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : []);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchedData, setSearchedData] = useState<string[]>(
+    isExistItemLocalStorage('searchedList')
+      ? getItemLocalStorage('searchedList')
+      : [],
+  );
   const [activeSearchBar, setActiveSearchBar] = useState<boolean>(false);
 
   const callbackRef = useCallback((current: HTMLDivElement) => {
@@ -140,8 +200,9 @@ const SearchBar = () => {
     setItemLocalStorage('searchedList', searchedData);
   }, [searchedData]);
 
-  const handleStockNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStockName(e.target.value);
+  const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    setStockName(e.target.value.trim());
   };
 
   const searchBarInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -158,6 +219,7 @@ const SearchBar = () => {
     addRecentSearch(stockName);
     navigate(webPath.search(), { state: { stockName } });
     setStockName('');
+    setSearchValue('');
     (document.activeElement as HTMLElement).blur();
     setActiveSearchBar(false);
   };
@@ -172,7 +234,9 @@ const SearchBar = () => {
 
   const deleteRecentSearch = (stockName: string) => {
     // 최근 검색 기록 삭제
-    setSearchedData((prevData) => prevData.filter((item) => item !== stockName));
+    setSearchedData((prevData) =>
+      prevData.filter((item) => item !== stockName),
+    );
   };
 
   return (
@@ -181,24 +245,37 @@ const SearchBar = () => {
         <SearchBarContainer
           ref={callbackRef}
           tabIndex={-1}
-          onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => !e.relatedTarget && setActiveSearchBar(false)}
+          onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) =>
+            !e.relatedTarget && setActiveSearchBar(false)
+          }
           active={activeSearchBar}
         >
           <SearchBarInputContainer>
             <SearchBarInput
-              value={stockName}
+              value={searchValue}
               type="text"
-              onChange={handleStockNameChange}
+              onChange={handleSearchValueChange}
               onKeyDown={searchBarInputKeyDown}
               onFocus={() => setActiveSearchBar(true)}
               placeholder={'입력'}
             />
-            <div style={{ cursor: 'pointer' }} onClick={() => handleSearch(stockName)}>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSearch(stockName)}
+            >
               Search
             </div>
           </SearchBarInputContainer>
           <ExpandSearchBar active={activeSearchBar}>
-            <RecentSearchList searchedData={searchedData} handleSearch={handleSearch} deleteRecentSearch={deleteRecentSearch} />
+            {stockName == '' ? (
+              <RecentSearchList
+                searchedData={searchedData}
+                handleSearch={handleSearch}
+                deleteRecentSearch={deleteRecentSearch}
+              />
+            ) : (
+              <AutoCompleteList />
+            )}
           </ExpandSearchBar>
         </SearchBarContainer>
       </SearchBarDiv>

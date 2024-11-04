@@ -6,6 +6,7 @@ import { StyledMainlayout } from './Mainlayout.Style';
 
 const Main = styled.div({
   padding: '0 30px',
+  flexGrow: 1,
 });
 
 const Mainlayout = ({ children }: LayoutProps) => {
