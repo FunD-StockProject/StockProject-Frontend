@@ -24,7 +24,7 @@ const SearchBarContainer = styled.div({
   background: '#222222',
   border: '1px solid white',
   borderRadius: '20px',
-  zIndex: 10,
+  zIndex: 5,
 });
 
 const SearchBarInputContainer = styled.div({
