@@ -14,19 +14,19 @@ const StyledCard = styled('div')`
   border-radius: 8px;
   margin: 0px 5px 10px 5px;
   width: ${width - 120}px;
+`;
 
-  /* 이미지 스타일 */
-  img {
-    display: block;
-    height: ${width / 6}px;
-  }
+const StyledImage = styled('img')`
+  display: block;
+  height: ${width / 6}px;
+  flex: 1;
+`;
 
-  /* 텍스트 정렬 */
-  .text {
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-  }
+const StyledText = styled('div')`
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
 `;
 
 const StyledDivider = styled('div')`
@@ -36,4 +36,4 @@ const StyledDivider = styled('div')`
   margin: 0 10px; /* 좌우 여백 */
 `;
 
-export { StyledCard, StyledDivider };
+export { StyledCard, StyledImage, StyledText, StyledDivider };
