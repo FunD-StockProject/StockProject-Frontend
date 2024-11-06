@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
-import { scoreToImage } from '../../utils/ScoreToImage';
+import { scoreToImage } from '../../utils/ScoreConvert';
 import { StyledCard } from './Card.Style';
 
 const Card = ({ score, stockName }: { score: number; stockName: string }) => {

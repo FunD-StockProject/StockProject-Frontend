@@ -7,6 +7,14 @@ const StyledCard = styled('div')`
   border-radius: 12%;
   overflow: hidden;
   display: inline-block;
+  /* 이미지 스타일 */
+  img {
+    display: block;
+    // width: 60px; /* 이미지 너비 */
+    height: 100px;
+    width: 100px;
+    // margin-right: 20px; /* 텍스트와의 간격 */
+  }
 `;
 
 export { StyledCard };

@@ -1,6 +1,6 @@
 import CardList from '../../layout/CardList/CardList';
 import { CardInterface } from '../../ts/Interfaces';
-import { StyledHeader, Styledtext, StyleTabMenu } from './Home.Style';
+import { StyledHeader, StyleTabMenu } from './Home.Style';
 import popularText from '../../assets/popularText.svg';
 import soarText from '../../assets/soarText.svg';
 import dropText from '../../assets/dropText.svg';
@@ -78,7 +78,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'white' }}>
       <StyleTabMenu>
         {tabMenu.map((el, index) => (
           <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
@@ -88,18 +88,19 @@ const Home = () => {
       </StyleTabMenu>
       <StyledHeader>
         <img src={popularText} />
-        <CardList list={popular[tabIndex]} />
+        {/* <img style={{ width: window.innerWidth }} src={test} /> */}
+        {/* <img src={test} />
+        <img src={test} /> */}
+        <CardList list={popular[tabIndex]} isHot={true} />
       </StyledHeader>
 
       <StyledHeader>
         <img src={soarText} />
-        <Styledtext>1일마다 업데이트됩니다</Styledtext>
       </StyledHeader>
       <CardList list={soar[tabIndex]} />
 
       <StyledHeader>
         <img src={dropText} />
-        <Styledtext>1일마다 업데이트됩니다</Styledtext>
       </StyledHeader>
       <CardList list={drop[tabIndex]} />
 

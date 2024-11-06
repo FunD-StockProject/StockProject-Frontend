@@ -6,8 +6,10 @@ const NoScrollbar = styled('div')`
   }
   & .react-horizontal-scrolling-menu--scroll-container {
     scrollbar-width: none;
+
     -ms-overflow-style: none;
-    height: initial;
+    width: 100%;
+    height: auto;
     overflow-x: auto;
     display: flex;
     flex-direction: row;
