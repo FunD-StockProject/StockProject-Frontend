@@ -78,7 +78,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'white' }}>
+    <div>
       <StyleTabMenu>
         {tabMenu.map((el, index) => (
           <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
