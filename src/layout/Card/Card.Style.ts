@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledCard = styled('div')`
-  background-color: white;
+  background-color: #333; /* 배경색 검정 */
   margin: 0px 5px 10px 5px;
   border: 1px solid black;
   border-radius: 12%;

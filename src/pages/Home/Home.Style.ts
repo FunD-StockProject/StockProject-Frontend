@@ -11,10 +11,6 @@ const StyledTitle = styled('span')`
   font-weight: bold;
 `;
 
-const Styledtext = styled('span')`
-  float: right;
-`;
-
 const StyleTabMenu = styled('ul')`
   background-color: lightgrey;
   color: white;
@@ -42,4 +38,4 @@ const StyleTabMenu = styled('ul')`
   }
 `;
 
-export { StyledHeader, StyledTitle, Styledtext, StyleTabMenu };
+export { StyledHeader, StyledTitle, StyleTabMenu };
