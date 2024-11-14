@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const width = Math.min(600, window.outerWidth);
+const width = Math.min(600, window.innerWidth);
 
 const StyledHome = styled('div')`
   width: ${window.innerWidth}px;
@@ -11,7 +11,7 @@ const StyledHome = styled('div')`
 `;
 
 const StyledContainer = styled('div')`
-  width: ${width - 40}px;
+  width: ${width}px;
 `;
 
 const StyledHeader = styled('div')`
@@ -25,7 +25,7 @@ const StyledTitle = styled('span')`
 `;
 
 const StyledImage = styled('img')`
-  padding: 30px 0px 15px 0px;
+  padding: 10px 15px;
 `;
 
 const StyleTabMenu = styled('ul')`
@@ -44,8 +44,8 @@ const StyleTabMenu = styled('ul')`
     display: flex;
     justify-content: center;
     flex: 1;
-    padding: 10px;
-    font-size: 20px;
+    padding: 10px 0px;
+    font-size: 15px;
     font-weight: bold;
   }
 
