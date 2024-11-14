@@ -1,10 +1,15 @@
 import CardList from '../../layout/CardList/CardList';
 import { CardInterface } from '../../ts/Interfaces';
-import { StyledHeader, Styledtext, StyleTabMenu } from './Home.Style';
-import popularText from '../../assets/popularText.svg';
-import soarText from '../../assets/soarText.svg';
-import dropText from '../../assets/dropText.svg';
+import { StyledContainer, StyledHeader, StyledHome, StyledImage, StyleTabMenu } from './Home.Style';
+import popularTextLight from '../../assets/popularTextLight.svg';
+import popularTextDark from '../../assets/popularTextDark.svg';
+import soarTextLight from '../../assets/soarTextLight.svg';
+import soarTextDark from '../../assets/soarTextDark.svg';
+import dropTextLight from '../../assets/dropTextLight.svg';
+import dropTextDark from '../../assets/dropTextDark.svg';
+
 import { useState } from 'react';
+import { useSystemTheme } from '../../hooks/useSystemHook';
 
 const Home = () => {
   const popular: CardInterface[][] = [
@@ -69,7 +74,8 @@ const Home = () => {
   ];
 
   const [tabIndex, setTabIndex] = useState(0);
-  const tabMenu = ['국내', '해외'];
+  const isDarkMode = useSystemTheme();
+  const tabMenu = ['국내주식', '해외주식'];
 
   const handleTab = (index: number) => {
     if (tabIndex !== index) {
@@ -78,33 +84,33 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <StyleTabMenu>
-        {tabMenu.map((el, index) => (
-          <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
-            {el}
-          </li>
-        ))}
-      </StyleTabMenu>
-      <StyledHeader>
-        <img src={popularText} />
-        <CardList list={popular[tabIndex]} />
-      </StyledHeader>
+    <StyledHome style={{ backgroundColor: `${isDarkMode ? 'black' : 'white'}` }}>
+      <StyledContainer>
+        <StyleTabMenu>
+          {tabMenu.map((el, index) => (
+            <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
+              {el}
+            </li>
+          ))}
+        </StyleTabMenu>
+        <StyledHeader>
+          <StyledImage width={'40%'} src={isDarkMode ? popularTextDark : popularTextLight} />
+          <CardList list={popular[tabIndex]} isHot={true} />
+        </StyledHeader>
 
-      <StyledHeader>
-        <img src={soarText} />
-        <Styledtext>1일마다 업데이트됩니다</Styledtext>
-      </StyledHeader>
-      <CardList list={soar[tabIndex]} />
+        <StyledHeader>
+          <StyledImage width={'40%'} src={isDarkMode ? soarTextDark : soarTextLight} />
+        </StyledHeader>
+        <CardList list={soar[tabIndex]} />
 
-      <StyledHeader>
-        <img src={dropText} />
-        <Styledtext>1일마다 업데이트됩니다</Styledtext>
-      </StyledHeader>
-      <CardList list={drop[tabIndex]} />
+        <StyledHeader>
+          <StyledImage width={'40%'} src={isDarkMode ? dropTextDark : dropTextLight} />
+        </StyledHeader>
+        <CardList list={drop[tabIndex]} />
 
-      <button onClick={() => alert('사용 설명서 팝업')}>{'인간 지표 사용 설명서'}</button>
-    </div>
+        <button onClick={() => alert('사용 설명서 팝업')}>{'인간 지표 사용 설명서'}</button>
+      </StyledContainer>
+    </StyledHome>
   );
 };
 

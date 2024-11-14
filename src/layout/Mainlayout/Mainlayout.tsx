@@ -5,7 +5,7 @@ import { LayoutProps } from '../../ts/Types';
 import { StyledMainlayout } from './Mainlayout.Style';
 
 const Main = styled.div({
-  padding: '0px 30px',
+  padding: '0px 0px',
   flexGrow: 1,
 });
 
