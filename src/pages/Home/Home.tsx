@@ -78,7 +78,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'white' }}>
       <StyleTabMenu>
         {tabMenu.map((el, index) => (
           <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
@@ -87,20 +87,17 @@ const Home = () => {
         ))}
       </StyleTabMenu>
       <StyledHeader>
-        <img src={popularText} />
-        {/* <img style={{ width: window.innerWidth }} src={test} /> */}
-        {/* <img src={test} />
-        <img src={test} /> */}
+        <img width={'40%'} src={popularText} />
         <CardList list={popular[tabIndex]} isHot={true} />
       </StyledHeader>
 
       <StyledHeader>
-        <img src={soarText} />
+        <img width={'40%'} src={soarText} />
       </StyledHeader>
       <CardList list={soar[tabIndex]} />
 
       <StyledHeader>
-        <img src={dropText} />
+        <img width={'40%'} src={dropText} />
       </StyledHeader>
       <CardList list={drop[tabIndex]} />
 
