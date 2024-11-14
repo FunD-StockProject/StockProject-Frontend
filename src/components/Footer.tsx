@@ -1,8 +1,13 @@
 import styled from '@emotion/styled';
 
 const FooterContainer = styled.div({
-  padding: '30px 0',
-  background: '#111111',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '0 30px',
+  width: '100%',
+  height: '700px',
+  background: '#3457FD',
 });
 
 const FooterList = styled.div({
