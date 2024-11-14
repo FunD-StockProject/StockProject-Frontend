@@ -8,7 +8,7 @@ import soarTextDark from '../../assets/soarTextDark.svg';
 import dropTextLight from '../../assets/dropTextLight.svg';
 import dropTextDark from '../../assets/dropTextDark.svg';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
 
 const Home = () => {
