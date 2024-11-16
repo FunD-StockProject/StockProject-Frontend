@@ -32,7 +32,7 @@ const StyledCard = styled('div')`
 
 const StyledImage = styled('img')`
   height: 100%;
-  // display: flex;
+  object-fit: cover;
 `;
 
 const StyledText = styled('div')`
