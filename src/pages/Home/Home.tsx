@@ -106,9 +106,7 @@ const Home = () => {
         <StyledHeader>
           <StyledImage width={'40%'} src={isDarkMode ? dropTextDark : dropTextLight} />
         </StyledHeader>
-        <CardList list={drop[tabIndex]} />
-
-        <button onClick={() => alert('사용 설명서 팝업')}>{'인간 지표 사용 설명서'}</button>
+        <CardList list={drop[tabIndex]} backgroundColor="#2D92FF" />
       </StyledContainer>
     </StyledHome>
   );

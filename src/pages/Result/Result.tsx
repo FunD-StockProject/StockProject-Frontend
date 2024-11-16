@@ -23,9 +23,7 @@ const StockHeader = styled(({ name, type, className }: StockHeaderProps) => {
           <div id="stock_type">{type}</div>
           <div id="stock_name">{name}</div>
         </div>
-        <div id="stock_desc">
-          인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
-        </div>
+        <div id="stock_desc">인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요</div>
       </div>
       <div id="stock_chart">차트보기</div>
     </div>
