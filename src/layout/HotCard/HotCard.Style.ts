@@ -6,14 +6,14 @@ const width = Math.min(600, window.innerWidth);
 const StyledContainer = styled(`div`)`
   height: 200px;
   width: ${width - 60}px;
-  margin: 0px 5px;
+  margin: 0px 10px 0px 0px;
   border-radius: 10px;
   // background-color: white;
   background-color: #1d1e1f;
 `;
 const StyledTitle = styled('h2')`
   padding: 10px 0px 0px 10px;
-  margin: 5px;
+  margin: 0px;
 `;
 // 카드 컴포넌트 스타일
 const StyledCard = styled('div')`
