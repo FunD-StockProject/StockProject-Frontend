@@ -5,21 +5,18 @@ import commentSVG from '../assets/footer_comment.svg';
 import developerSVG from '../assets/footer_developer.svg';
 
 const FooterContainer = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '120px 0px',
-  width: '100%',
   background: '#3457FD',
+  width: '100%',
 });
 
-const FooterList = styled.div({
+const FooterContents = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
   width: '100%',
   maxWidth: '1280px',
-  margin: '0 60px',
+  boxSizing: 'border-box',
+  margin: '0 auto',
+  padding: '120px 60px',
   height: '100%',
   gap: '32px',
 });
@@ -65,10 +62,29 @@ const FooterButton = styled(({ str, src, onClick, className }: { str: string; sr
 });
 
 const Footer = () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application.json' },
+  };
+
+  const fetchTestSync = async () => {
+    await fetch('http://43.200.51.20:8080/stock/search/삼성전자', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(1, res);
+      });
+  };
+  fetchTestSync();
+
   return (
     <>
       <FooterContainer>
-        <FooterList>
+        <FooterContents>
           <FooterTitle>
             <p>About</p>
             <img src={logo} />
@@ -83,7 +99,7 @@ const Footer = () => {
             <FooterButton src={commentSVG} str="서비스 의견 남기기" />
             <FooterButton src={developerSVG} str="만든이들" />
           </FooterButtonContainer>
-        </FooterList>
+        </FooterContents>
       </FooterContainer>
     </>
   );
