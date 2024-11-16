@@ -7,7 +7,7 @@ const HeaderContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '0 30px',
+  // padding: '0 30px',
   background: '#3457FD',
   width: '100%',
   gap: '120px',

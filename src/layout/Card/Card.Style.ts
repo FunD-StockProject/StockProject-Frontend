@@ -1,18 +1,18 @@
 import styled from '@emotion/styled';
 
+const width = Math.min(600, window.innerWidth);
+
 const StyledCard = styled('div')`
-  // background-color: #333; /* 배경색 검정 */
   margin: 0px 5px;
-  // border: 1px solid black;
   border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column; /* 세로 방향으로 배치 */
-  height: 200px;
-  width: 150px; /* 카드의 너비 설정 (필요 시 조정 가능) */
+  width: ${(width - 60) / 3}px;
+  height: 240px;
 
   img {
-    flex: 3; /* 3:2 비율에서 3 */
+    flex: 3;
     width: 100%; /* 가로 너비를 부모에 맞춤 */
     object-fit: cover; /* 이미지의 크기 비율을 유지하며 영역을 채움 */
   }
