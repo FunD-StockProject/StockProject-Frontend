@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
 import { scoreToImage } from '../../utils/ScoreConvert';
-import { StyledCard } from './Card.Style';
+import { StyledCard, StyledScore } from './Card.Style';
 
-const Card = ({ score, stockName }: { score: number; stockName: string }) => {
+const Card = ({ score, stockName, backgroundColor }: { score: number; stockName: string; backgroundColor: string }) => {
   const navigate = useNavigate();
   const imgLink = scoreToImage(score);
 
@@ -12,9 +12,12 @@ const Card = ({ score, stockName }: { score: number; stockName: string }) => {
   };
 
   return (
-    <StyledCard tabIndex={0} onClick={() => handleClick(stockName)} style={{ padding: '10px', display: 'inline-block' }}>
-      <div style={{ color: 'white' }}>{stockName}</div>
+    <StyledCard tabIndex={0} onClick={() => handleClick(stockName)}>
       <img src={imgLink}></img>
+      <div>
+        <StyledScore backgroundColor={backgroundColor}>{score}</StyledScore>
+        {stockName}
+      </div>
     </StyledCard>
   );
 };

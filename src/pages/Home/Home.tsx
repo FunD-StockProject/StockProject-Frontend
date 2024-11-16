@@ -1,81 +1,185 @@
 import CardList from '../../layout/CardList/CardList';
 import { CardInterface } from '../../ts/Interfaces';
-import { StyledContainer, StyledHeader, StyledHome, StyledImage, StyleTabMenu } from './Home.Style';
-import popularTextLight from '../../assets/popularTextLight.svg';
-import popularTextDark from '../../assets/popularTextDark.svg';
-import soarTextLight from '../../assets/soarTextLight.svg';
-import soarTextDark from '../../assets/soarTextDark.svg';
-import dropTextLight from '../../assets/dropTextLight.svg';
-import dropTextDark from '../../assets/dropTextDark.svg';
+import { StyledContainer, StyledHome, StyledImage, StyleTabMenu } from './Home.Style';
+import hotTextLight from '../../assets/hotTextLight.svg';
+import hotTextDark from '../../assets/hotTextDark.svg';
+import risingTextLight from '../../assets/risingTextLight.svg';
+import risingTextDark from '../../assets/risingTextDark.svg';
+import descentTextLight from '../../assets/descentTextLight.svg';
+import descentTextDark from '../../assets/descentTextDark.svg';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
 
 const Home = () => {
-  const popular: CardInterface[][] = [
-    [
-      { id: 1, score: 90, stockName: '삼성전자' },
-      { id: 2, score: 50, stockName: '카카오' },
-      { id: 3, score: 20, stockName: 'SK하이닉스' },
-    ],
-    [
-      { id: 1, score: 90, stockName: '애플' },
-      { id: 2, score: 50, stockName: '테슬라' },
-      { id: 3, score: 20, stockName: '엔비디아' },
-    ],
-  ];
-  const soar: CardInterface[][] = [
-    [
-      { id: 1, score: 90, stockName: '삼성전자' },
-      { id: 2, score: 50, stockName: '카카오' },
-      { id: 3, score: 20, stockName: 'SK하이닉스' },
-      { id: 4, score: 90, stockName: '삼성전자' },
-      { id: 5, score: 50, stockName: '카카오' },
-      { id: 6, score: 20, stockName: 'SK하이닉스' },
-      { id: 7, score: 90, stockName: '삼성전자' },
-      { id: 8, score: 50, stockName: '카카오' },
-      { id: 9, score: 20, stockName: 'SK하이닉스' },
-    ],
-    [
-      { id: 1, score: 90, stockName: '애플' },
-      { id: 2, score: 50, stockName: '테슬라' },
-      { id: 3, score: 20, stockName: '엔비디아' },
-      { id: 4, score: 50, stockName: '테슬라' },
-      { id: 5, score: 90, stockName: '애플' },
-      { id: 6, score: 20, stockName: '엔비디아' },
-      { id: 7, score: 90, stockName: '애플' },
-      { id: 8, score: 50, stockName: '테슬라' },
-      { id: 9, score: 20, stockName: '엔비디아' },
-    ],
-  ];
-  const drop: CardInterface[][] = [
-    [
-      { id: 1, score: 90, stockName: '삼성전자' },
-      { id: 2, score: 50, stockName: '카카오' },
-      { id: 3, score: 20, stockName: 'SK하이닉스' },
-      { id: 4, score: 90, stockName: '삼성전자' },
-      { id: 5, score: 50, stockName: '카카오' },
-      { id: 6, score: 20, stockName: 'SK하이닉스' },
-      { id: 7, score: 90, stockName: '삼성전자' },
-      { id: 8, score: 50, stockName: '카카오' },
-      { id: 9, score: 20, stockName: 'SK하이닉스' },
-    ],
-    [
-      { id: 1, score: 90, stockName: '애플' },
-      { id: 2, score: 50, stockName: '테슬라' },
-      { id: 3, score: 20, stockName: '엔비디아' },
-      { id: 4, score: 50, stockName: '테슬라' },
-      { id: 5, score: 90, stockName: '애플' },
-      { id: 6, score: 20, stockName: '엔비디아' },
-      { id: 7, score: 90, stockName: '애플' },
-      { id: 8, score: 50, stockName: '테슬라' },
-      { id: 9, score: 20, stockName: '엔비디아' },
-    ],
-  ];
-
+  const [hotStocks, setHotStocks] = useState<CardInterface[][]>([]);
+  const [risingStocks, setRisingStocks] = useState<CardInterface[][]>([]);
+  const [descentStocks, setDescentStocks] = useState<CardInterface[][]>([]);
   const [tabIndex, setTabIndex] = useState(0);
+
   const isDarkMode = useSystemTheme();
   const tabMenu = ['국내주식', '해외주식'];
+
+  useEffect(() => {
+    setHotStocks([
+      [
+        {
+          stockId: 1,
+          symbolName: '마이크로컨텍솔',
+          score: 51,
+        },
+        {
+          stockId: 3,
+          symbolName: 'AJ네트웍스',
+          score: 51,
+        },
+        {
+          stockId: 67,
+          symbolName: 'LF',
+          score: 51,
+        },
+      ],
+      [
+        {
+          stockId: 1,
+          symbolName: 'AAPL',
+          score: 90,
+        },
+        {
+          stockId: 2,
+          symbolName: 'TSLA',
+          score: 40,
+        },
+        {
+          stockId: 3,
+          symbolName: 'NVA',
+          score: 10,
+        },
+      ],
+    ]);
+
+    setRisingStocks([
+      [
+        {
+          stockId: 1,
+          symbolName: '마이크로컨텍솔',
+          score: 51,
+        },
+        {
+          stockId: 3,
+          symbolName: 'AJ네트웍스',
+          score: 51,
+        },
+        {
+          stockId: 16,
+          symbolName: 'CS홀딩스',
+          score: 51,
+        },
+        {
+          stockId: 17,
+          symbolName: 'DB',
+          score: 51,
+        },
+        {
+          stockId: 20,
+          symbolName: 'DB하이텍',
+          score: 51,
+        },
+        {
+          stockId: 54,
+          symbolName: 'KB금융',
+          score: 51,
+        },
+        {
+          stockId: 67,
+          symbolName: 'LF',
+          score: 51,
+        },
+        {
+          stockId: 5,
+          symbolName: 'BGF리테일',
+          score: 51,
+        },
+        {
+          stockId: 77,
+          symbolName: 'LG전자',
+          score: 51,
+        },
+      ],
+      [
+        { stockId: 1, score: 90, symbolName: '애플' },
+        { stockId: 2, score: 50, symbolName: '테슬라' },
+        { stockId: 3, score: 20, symbolName: '엔비디아' },
+        { stockId: 4, score: 50, symbolName: '테슬라' },
+        { stockId: 5, score: 90, symbolName: '애플' },
+        { stockId: 6, score: 20, symbolName: '엔비디아' },
+        { stockId: 7, score: 90, symbolName: '애플' },
+        { stockId: 8, score: 50, symbolName: '테슬라' },
+        { stockId: 9, score: 20, symbolName: '엔비디아' },
+      ],
+    ]);
+
+    setDescentStocks([
+      [
+        {
+          stockId: 1,
+          symbolName: '마이크로컨텍솔',
+          score: 51,
+        },
+        {
+          stockId: 3,
+          symbolName: 'AJ네트웍스',
+          score: 51,
+        },
+        {
+          stockId: 16,
+          symbolName: 'CS홀딩스',
+          score: 51,
+        },
+        {
+          stockId: 17,
+          symbolName: 'DB',
+          score: 51,
+        },
+        {
+          stockId: 20,
+          symbolName: 'DB하이텍',
+          score: 51,
+        },
+        {
+          stockId: 54,
+          symbolName: 'KB금융',
+          score: 51,
+        },
+        {
+          stockId: 67,
+          symbolName: 'LF',
+          score: 51,
+        },
+        {
+          stockId: 5,
+          symbolName: 'BGF리테일',
+          score: 51,
+        },
+        {
+          stockId: 77,
+          symbolName: 'LG전자',
+          score: 51,
+        },
+      ],
+      [
+        { stockId: 1, score: 90, symbolName: '애플' },
+        { stockId: 2, score: 50, symbolName: '테슬라' },
+        { stockId: 3, score: 20, symbolName: '엔비디아' },
+        { stockId: 4, score: 50, symbolName: '테슬라' },
+        { stockId: 5, score: 90, symbolName: '애플' },
+        { stockId: 6, score: 20, symbolName: '엔비디아' },
+        { stockId: 7, score: 90, symbolName: '애플' },
+        { stockId: 8, score: 50, symbolName: '테슬라' },
+        { stockId: 9, score: 20, symbolName: '엔비디아' },
+      ],
+    ]);
+  }, []);
 
   const handleTab = (index: number) => {
     if (tabIndex !== index) {
@@ -93,22 +197,14 @@ const Home = () => {
             </li>
           ))}
         </StyleTabMenu>
-        <StyledHeader>
-          <StyledImage width={'40%'} src={isDarkMode ? popularTextDark : popularTextLight} />
-          <CardList list={popular[tabIndex]} isHot={true} />
-        </StyledHeader>
+        <StyledImage src={isDarkMode ? hotTextDark : hotTextLight} />
+        <CardList list={hotStocks[tabIndex] ?? []} isHot={true} />
 
-        <StyledHeader>
-          <StyledImage width={'40%'} src={isDarkMode ? soarTextDark : soarTextLight} />
-        </StyledHeader>
-        <CardList list={soar[tabIndex]} />
+        <StyledImage src={isDarkMode ? risingTextDark : risingTextLight} />
+        <CardList list={risingStocks[tabIndex] ?? []} />
 
-        <StyledHeader>
-          <StyledImage width={'40%'} src={isDarkMode ? dropTextDark : dropTextLight} />
-        </StyledHeader>
-        <CardList list={drop[tabIndex]} />
-
-        <button onClick={() => alert('사용 설명서 팝업')}>{'인간 지표 사용 설명서'}</button>
+        <StyledImage src={isDarkMode ? descentTextDark : descentTextLight} />
+        <CardList list={descentStocks[tabIndex] ?? []} backgroundColor="#2D92FF" />
       </StyledContainer>
     </StyledHome>
   );

@@ -8,24 +8,16 @@ const StyledHome = styled('div')`
   flex-direction: column; /* 세로 방향으로 정렬 */
   justify-content: center; /* 세로 방향 중앙 정렬 */
   align-items: center; /* 가로 방향 중앙 정렬 */
+  padding-bottom: 100px;
 `;
 
 const StyledContainer = styled('div')`
   width: ${width}px;
 `;
 
-const StyledHeader = styled('div')`
-  text-align: left;
-`;
-
-const StyledTitle = styled('span')`
-  padding: 16px 16px 16px 10px;
-  // text-align: left;
-  font-weight: bold;
-`;
-
 const StyledImage = styled('img')`
-  padding: 10px 15px;
+  padding: 10px 10px;
+  width: 40%;
 `;
 
 const StyleTabMenu = styled('ul')`
@@ -35,7 +27,6 @@ const StyleTabMenu = styled('ul')`
   flex-direction: row;
   align-items: center;
   list-style: none;
-  // margin-top: 10px;
   margin: 0px;
   padding-inline-start: 0px;
 
@@ -56,4 +47,4 @@ const StyleTabMenu = styled('ul')`
   }
 `;
 
-export { StyledHome, StyledContainer, StyledHeader, StyledTitle, StyledImage, StyleTabMenu };
+export { StyledHome, StyledContainer, StyledImage, StyleTabMenu };
