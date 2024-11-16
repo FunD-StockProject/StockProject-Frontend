@@ -26,15 +26,15 @@ const scoreToText = (score: number): string => {
   let resultText: string = '';
 
   if (score >= 80) {
-    resultText = '대호항';
+    resultText = '"대호항"';
   } else if (score >= 60) {
-    resultText = '호항';
+    resultText = '"호항"';
   } else if (score >= 40) {
-    resultText = '어?';
+    resultText = '"어?"';
   } else if (score >= 20) {
-    resultText = '곰탕';
+    resultText = '"곰탕"';
   } else {
-    resultText = '대곰탕';
+    resultText = '"대곰탕"';
   }
 
   return resultText;
