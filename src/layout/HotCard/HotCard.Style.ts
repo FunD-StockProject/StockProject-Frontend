@@ -3,26 +3,34 @@ import styled from '@emotion/styled';
 // 추후 분리
 const width = Math.min(600, window.innerWidth);
 
-const StyledTitle = styled('h3')`
-  padding: 0px 20px;
+const StyledContainer = styled(`div`)`
+  height: 200px;
+  width: ${width - 60}px;
+  margin: 0px 5px;
+  border-radius: 10px;
+  // background-color: white;
+  background-color: #1d1e1f;
+`;
+const StyledTitle = styled('h2')`
+  padding: 10px 0px 0px 10px;
+  margin: 5px;
 `;
 // 카드 컴포넌트 스타일
 const StyledCard = styled('div')`
   display: flex;
-  align-items: center;
+  // align-items: center;
+  align-items: stretch;
   justify-content: space-around;
-  background-color: #333; /* 배경색 검정 */
+  // background-color: #333; /* 배경색 검정 */
   color: white; /* 텍스트 색상 흰색 */
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 8px;
-  margin: 0px 5px 10px 5px;
-  height: 50%;
-  width: ${width - 120}px;
+  height: 60%;
   gap: 10px;
 
   & > * {
-    width: ${width / 6}px;
-    height: 80%;
+    width: 30%;
+    height: 100%;
     flex: 1;
     border: 1px solid white;
     border-radius: 12px;
@@ -31,7 +39,6 @@ const StyledCard = styled('div')`
 `;
 
 const StyledImage = styled('img')`
-  height: 100%;
   object-fit: cover;
 `;
 
@@ -43,7 +50,7 @@ const StyledText = styled('div')`
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center; /* 가로 중앙 정렬 */
   width: 100%; /* 부모 요소의 높이를 모두 차지 */
-  padding: 10px 0; /* 상하 간격 조정 */
+  // padding: 10px 0; /* 상하 간격 조정 */
 `;
 
-export { StyledTitle, StyledCard, StyledImage, StyledText };
+export { StyledContainer, StyledTitle, StyledCard, StyledImage, StyledText };
