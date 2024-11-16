@@ -1,30 +1,25 @@
-const getScore = async (id: Number) => {
-  const res = await fetch(`http://43.200.51.20:8080/${id}/score`, { method: 'GET', headers: { 'content-type': 'application/json' } }).then((res) => res.json());
-  console.log(res);
+const Headers = { 'content-type': 'application/json' };
 
-  // return res;
+const getScore = async (id: Number) => {
+  const res = await fetch(`http://43.200.51.20:8080/${id}/score`, { method: 'GET', headers: Headers }).then((res) => res.json());
+
+  return res;
 };
 
 const getHotStocks = async (country: string) => {
-  const res = await fetch(`http://43.200.51.20:8080/stock/hot?country=${country}`, { method: 'GET', headers: { 'content-type': 'application/json' } }).then(
-    (res) => res.json(),
-  );
+  const res = await fetch(`http://43.200.51.20:8080/stock/hot?country=${country}`, { method: 'GET', headers: Headers }).then((res) => res.json());
 
   return res;
 };
 
 const getRisingStocks = async (country: string) => {
-  const res = await fetch(`http://43.200.51.20:8080/stock/descent?country=${country}`, { method: 'GET', headers: { 'content-type': 'application/json' } }).then(
-    (res) => res.json(),
-  );
+  const res = await fetch(`http://43.200.51.20:8080/stock/rising?country=${country}`, { method: 'GET', headers: Headers }).then((res) => res.json());
 
   return res;
 };
 
 const getDescentStocks = async (country: string) => {
-  const res = await fetch(`http://43.200.51.20:8080/stock/descent?country=${country}`, { method: 'GET', headers: { 'content-type': 'application/json' } }).then(
-    (res) => res.json(),
-  );
+  const res = await fetch(`http://43.200.51.20:8080/stock/descent?country=${country}`, { method: 'GET', headers: Headers }).then((res) => res.json());
 
   return res;
 };

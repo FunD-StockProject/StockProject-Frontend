@@ -6,6 +6,7 @@ const width = Math.min(600, window.innerWidth);
 const StyledContainer = styled(`div`)`
   height: 200px;
   width: ${width - 60}px;
+  min-width: 360px;
   margin: 0px 10px 0px 0px;
   border-radius: 10px;
   // background-color: white;
@@ -30,7 +31,7 @@ const StyledCard = styled('div')`
 
   & > * {
     width: 30%;
-    height: 100%;
+    height: auto;
     flex: 1;
     border: 1px solid white;
     border-radius: 12px;

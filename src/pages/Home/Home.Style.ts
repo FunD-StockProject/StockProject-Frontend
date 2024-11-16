@@ -27,7 +27,6 @@ const StyleTabMenu = styled('ul')`
   flex-direction: row;
   align-items: center;
   list-style: none;
-  // margin-top: 10px;
   margin: 0px;
   padding-inline-start: 0px;
 

@@ -197,7 +197,6 @@ const Home = () => {
             </li>
           ))}
         </StyleTabMenu>
-
         <StyledImage src={isDarkMode ? hotTextDark : hotTextLight} />
         <CardList list={hotStocks[tabIndex] ?? []} isHot={true} />
 
