@@ -26,6 +26,7 @@ const StyledTitle = styled('span')`
 
 const StyledImage = styled('img')`
   padding: 10px 15px;
+  width: 40%;
 `;
 
 const StyleTabMenu = styled('ul')`

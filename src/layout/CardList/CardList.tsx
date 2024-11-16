@@ -10,10 +10,10 @@ const CardList = ({ list, backgroundColor, isHot = false }: { list: CardInterfac
       <ScrollMenu>
         {isHot
           ? list.map((item: CardInterface) => {
-              return <HotCard key={item.id} score={item.score} stockName={item.stockName} />;
+              return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
             })
           : list.map((item: CardInterface) => {
-              return <Card key={item.id} score={item.score} stockName={item.stockName} backgroundColor={backgroundColor ? backgroundColor : '#fd4821'} />;
+              return <Card key={item.stockId} score={item.score} stockName={item.symbolName} backgroundColor={backgroundColor ? backgroundColor : '#fd4821'} />;
             })}
       </ScrollMenu>
     </NoScrollbar>
