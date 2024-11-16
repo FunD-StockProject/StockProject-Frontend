@@ -1,7 +1,7 @@
 interface CardInterface {
-  id: number;
+  stockId: number;
+  symbolName: string;
   score: number;
-  stockName: string;
 }
 
 export type { CardInterface };
