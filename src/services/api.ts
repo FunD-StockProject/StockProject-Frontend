@@ -1,5 +1,3 @@
-import { CardInterface } from '../ts/Interfaces';
-
 const getScore = async (id: Number) => {
   const res = await fetch(`http://43.200.51.20:8080/${id}/score`, { method: 'GET', headers: { 'content-type': 'application/json' } }).then((res) => res.json());
   console.log(res);
