@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../router';
-import {
-  isExistItemLocalStorage,
-  getItemLocalStorage,
-  setItemLocalStorage,
-} from '../utils/LocalStorage';
+import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../utils/LocalStorage';
 import styled from '@emotion/styled';
 import noResultSVG from '../assets/noResult.svg';
 import { LayoutProps } from '../ts/Types';
@@ -50,16 +46,14 @@ interface ExpandSearchBarProps {
   active: boolean;
 }
 
-const ExpandSearchBar = styled(
-  ({ children, className }: ExpandSearchBarProps) => {
-    return (
-      <div className={className}>
-        <hr />
-        {children}
-      </div>
-    );
-  },
-)(
+const ExpandSearchBar = styled(({ children, className }: ExpandSearchBarProps) => {
+  return (
+    <div className={className}>
+      <hr />
+      {children}
+    </div>
+  );
+})(
   {
     padding: '0 12px 12px',
     height: '320px',
@@ -79,27 +73,15 @@ interface RecentSearchListProps {
   deleteRecentSearch: (name: string) => void;
 }
 
-const RecentSearchList = styled(
-  ({
-    className,
-    searchedData,
-    handleSearch,
-    deleteRecentSearch,
-  }: RecentSearchListProps) => {
-    return (
-      <div key={'asd'} className={className}>
-        {searchedData.map((name: string, idx: number) => (
-          <RecentSearchItem
-            name={name}
-            key={idx}
-            searchItem={() => handleSearch(name)}
-            deleteItem={() => deleteRecentSearch(name)}
-          />
-        ))}
-      </div>
-    );
-  },
-)({
+const RecentSearchList = styled(({ className, searchedData, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
+  return (
+    <div key={'asd'} className={className}>
+      {searchedData.map((name: string, idx: number) => (
+        <RecentSearchItem name={name} key={idx} searchItem={() => handleSearch(name)} deleteItem={() => deleteRecentSearch(name)} />
+      ))}
+    </div>
+  );
+})({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
@@ -114,18 +96,16 @@ interface RecentSearchItemProps {
   deleteItem: (e: any) => void;
 }
 
-const RecentSearchItem = styled(
-  ({ className, name, key, searchItem, deleteItem }: RecentSearchItemProps) => {
-    return (
-      <div key={key} className={className}>
-        <span>
-          <p onClick={searchItem}>{name}</p>
-        </span>
-        <CancelSVG fill="white" width={32} height={32} onClick={deleteItem} />
-      </div>
-    );
-  },
-)({
+const RecentSearchItem = styled(({ className, name, key, searchItem, deleteItem }: RecentSearchItemProps) => {
+  return (
+    <div key={key} className={className}>
+      <span>
+        <p onClick={searchItem}>{name}</p>
+      </span>
+      <CancelSVG fill="white" width={32} height={32} onClick={deleteItem} />
+    </div>
+  );
+})({
   display: 'flex',
   alignItems: 'center',
   margin: 0,
@@ -189,11 +169,7 @@ const SearchBar = () => {
 
   const [stockName, setStockName] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchedData, setSearchedData] = useState<string[]>(
-    isExistItemLocalStorage('searchedList')
-      ? getItemLocalStorage('searchedList')
-      : [],
-  );
+  const [searchedData, setSearchedData] = useState<string[]>(isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : []);
   const [activeSearchBar, setActiveSearchBar] = useState<boolean>(false);
 
   const callbackRef = useCallback((current: HTMLDivElement) => {
@@ -239,9 +215,7 @@ const SearchBar = () => {
 
   const deleteRecentSearch = (stockName: string) => {
     // 최근 검색 기록 삭제
-    setSearchedData((prevData) =>
-      prevData.filter((item) => item !== stockName),
-    );
+    setSearchedData((prevData) => prevData.filter((item) => item !== stockName));
   };
 
   return (
@@ -250,9 +224,7 @@ const SearchBar = () => {
         <SearchBarContainer
           ref={callbackRef}
           tabIndex={-1}
-          onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) =>
-            !e.relatedTarget && setActiveSearchBar(false)
-          }
+          onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => !e.relatedTarget && setActiveSearchBar(false)}
         >
           <SearchBarInputContainer>
             <SearchBarInput
@@ -263,19 +235,11 @@ const SearchBar = () => {
               onFocus={() => setActiveSearchBar(true)}
               placeholder={'입력'}
             />
-            <SearchSVG
-              stroke="white"
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleSearch(stockName)}
-            />
+            <SearchSVG stroke="white" style={{ cursor: 'pointer' }} onClick={() => handleSearch(stockName)} />
           </SearchBarInputContainer>
           <ExpandSearchBar active={activeSearchBar}>
             {stockName == '' ? (
-              <RecentSearchList
-                searchedData={searchedData}
-                handleSearch={handleSearch}
-                deleteRecentSearch={deleteRecentSearch}
-              />
+              <RecentSearchList searchedData={searchedData} handleSearch={handleSearch} deleteRecentSearch={deleteRecentSearch} />
             ) : (
               <AutoCompleteList />
             )}
