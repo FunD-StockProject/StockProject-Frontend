@@ -30,6 +30,7 @@ export type themeColor =
   | 'success'
   | 'information'
   | 'red'
+  | 'blue'
   | 'transparent';
 
 export type themeTextType = 'Display' | 'Heading' | 'Title' | 'Body' | 'Detail' | 'Label' | 'Links';
@@ -99,6 +100,7 @@ const theme: Theme = {
     information: '#2768FF',
     /* key */
     red: '#FD4821',
+    blue: '#2D92FF',
 
     transparent: '#DD000000',
   },

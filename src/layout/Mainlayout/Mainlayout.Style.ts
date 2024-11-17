@@ -6,7 +6,8 @@ const StyledMainlayout = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center', // 세로 방향 중앙 정렬
+  justifyContent: 'space-between',
+  width: '100%',
   minHeight: '100vh',
 });
 
