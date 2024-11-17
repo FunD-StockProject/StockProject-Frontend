@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { ReactComponent as LogoSVG } from '../../assets/logo_white.svg';
 import dictSVG from '../../assets/footer_dict.svg';
 import commentSVG from '../../assets/footer_comment.svg';

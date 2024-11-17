@@ -23,7 +23,7 @@ interface FlexDivProps {
 }
 
 const FlexDiv = styled.div(
-  ({ flexDirection = 'row', alignItems = 'start', justifyContent = 'start', padding = '0', width = 'auto', gap = '0' }: FlexDivProps) => ({
+  ({ flexDirection = 'row', alignItems = 'normal', justifyContent = 'normal', padding = '0', width = 'auto', gap = '0' }: FlexDivProps) => ({
     display: 'flex',
     flexDirection: flexDirection,
     alignItems: alignItems,
@@ -43,6 +43,7 @@ interface ButtonDivProps {
 }
 
 const ButtonDiv = styled.div(({ padding = '0', background, width = 'auto', height = 'auto', radius = 'auto' }: ButtonDivProps) => ({
+  display: 'flex',
   padding: padding,
   background: theme.colors[background ?? 'transparent'],
   cursor: 'pointer',

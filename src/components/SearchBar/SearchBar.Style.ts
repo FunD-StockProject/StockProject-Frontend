@@ -3,7 +3,6 @@ import theme from '../../styles/themes';
 
 const SearchBarContainer = styled.div(
   {
-    width: 'full',
     display: 'flex',
     flexDirection: 'column',
     background: theme.colors.primary100,

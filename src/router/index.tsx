@@ -1,11 +1,11 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
-import Result from '../pages/Result/Result';
 import Home from '../pages/Home/Home';
+import Search from '../pages/Search/Search';
 
 export const webPath = {
-  search: () => '/search',
+  search: () => 'search',
 };
 
 const Root = () => {
@@ -31,7 +31,7 @@ const routes = [
       },
       {
         path: webPath.search(),
-        element: <Result />,
+        element: <Search />,
       },
     ],
   },
