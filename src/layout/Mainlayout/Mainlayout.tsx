@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 import { LayoutProps } from '../../ts/Types';
 import { StyledMainlayout } from './Mainlayout.Style';
 

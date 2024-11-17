@@ -28,7 +28,9 @@ export type themeColor =
   | 'danger'
   | 'warning'
   | 'success'
-  | 'information';
+  | 'information'
+  | 'red'
+  | 'transparent';
 
 export type themeTextType = 'Display' | 'Heading' | 'Title' | 'Body' | 'Detail' | 'Label' | 'Links';
 export type themeFontSize = {
@@ -95,6 +97,10 @@ const theme: Theme = {
     warning: '#FFB724',
     success: '#008A1E',
     information: '#2768FF',
+    /* key */
+    red: '#FD4821',
+
+    transparent: '#DD000000',
   },
   fontSize: {
     Display: {
