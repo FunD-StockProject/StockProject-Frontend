@@ -7,7 +7,7 @@ const SearchTitle = ({ stockName, resultMode, onClick }: { stockName: string; re
     <SearchTitleContainer>
       <SearchTitleContents>
         <FlexDiv flexDirection="column" gap="18px" width="100%">
-          <ButtonDiv background="grayscale70" padding="12px 24px" radius="30px">
+          <ButtonDiv background="grayscale70" padding="12px 24px" width="fit-content" radius="30px">
             <TextDetail color="primary0" weight="Bold">
               국내 주식
             </TextDetail>
