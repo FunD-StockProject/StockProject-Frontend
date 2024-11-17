@@ -1,5 +1,3 @@
-import React, { ReactNode } from 'react';
-import { LayoutProps } from '../ts/Types';
 import styled from '@emotion/styled';
 import theme, { themeColor } from '../styles/themes';
 
@@ -106,7 +104,7 @@ interface TextDetailProps {
  * TextDetail
  * @size Large : 17px / Medium : 15px / Small : 13px
  */
-const TextDetail = styled.p((props: TextBodyProps) => ({
+const TextDetail = styled.p((props: TextDetailProps) => ({
   fontSize: props.size ? theme.fontSize.Detail[props.size] : theme.fontSize.Detail.Medium,
   fontWeight: props.weight == 'Bold' ? '700' : '400',
   lineHeight: '1.5',

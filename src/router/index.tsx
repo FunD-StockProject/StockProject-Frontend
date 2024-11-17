@@ -1,8 +1,4 @@
-import {
-  Outlet,
-  ScrollRestoration,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Result from '../pages/Result/Result';
@@ -15,13 +11,7 @@ export const webPath = {
 const Root = () => {
   return (
     <Mainlayout>
-      <Suspense
-        fallback={
-          <div className="h-full w-full flex items-center justify-center">
-            로딩중
-          </div>
-        }
-      >
+      <Suspense fallback={<div className="h-full w-full flex items-center justify-center">로딩중</div>}>
         <Outlet />
       </Suspense>
       <ScrollRestoration />
@@ -42,13 +32,6 @@ const routes = [
       {
         path: webPath.search(),
         element: <Result />,
-      },
-
-      // { path: '/', element: <Navigate to={webPath.timeDeal()} replace /> },
-      // { path: webPath.timeDeal(), element: <TimeDeal /> },
-      {
-        // path: webPath.brandDeal(),
-        // element: <BrandDeal />,
       },
     ],
   },
