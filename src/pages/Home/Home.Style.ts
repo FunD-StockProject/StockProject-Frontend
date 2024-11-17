@@ -3,11 +3,9 @@ import styled from '@emotion/styled';
 const width = Math.min(600, window.innerWidth);
 
 const StyledHome = styled('div')`
-  width: ${window.innerWidth}px;
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  justify-content: center; /* 세로 방향 중앙 정렬 */
-  align-items: center; /* 가로 방향 중앙 정렬 */
+  flex-direction: column;
+  justify-content: center;
   padding-bottom: 100px;
 `;
 
