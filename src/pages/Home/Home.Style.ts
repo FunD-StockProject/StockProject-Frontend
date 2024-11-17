@@ -2,47 +2,46 @@ import styled from '@emotion/styled';
 
 const width = Math.min(600, window.innerWidth);
 
-const StyledHome = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-bottom: 100px;
-`;
+const StyledHome = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  paddingBottom: '100px',
+});
 
-const StyledContainer = styled('div')`
-  width: ${width}px;
-`;
+const StyledContainer = styled.div({
+  width: `${width}px`,
+});
 
-const StyledImage = styled('img')`
-  padding: 10px 10px;
-  width: 40%;
-`;
+const StyledImage = styled.img({
+  padding: '10px 10px',
+  width: '40%',
+});
 
-const StyleTabMenu = styled('ul')`
-  background-color: white;
-  color: black;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  list-style: none;
-  margin: 0px;
-  padding-inline-start: 0px;
+const StyleTabMenu = styled.ul({
+  backgroundColor: 'white',
+  color: 'black',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  listStyle: 'none',
+  margin: '0px',
+  paddingInlineStart: '0px',
 
-  .submenu {
-    // 기본 Tabmenu 에 대한 CSS를 구현
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    padding: 10px 0px;
-    font-size: 15px;
-    font-weight: bold;
-  }
+  // 하위 클래스 스타일 정의
+  '.submenu': {
+    display: 'flex',
+    justifyContent: 'center',
+    flex: 1,
+    padding: '10px 0px',
+    fontSize: '15px',
+    fontWeight: 'bold',
+  },
 
-  .focused {
-    //선택된 Tabmenu 에만 적용되는 CSS를 구현
-    background-color: black;
-    color: white;
-  }
-`;
+  '.focused': {
+    backgroundColor: 'black',
+    color: 'white',
+  },
+});
 
 export { StyledHome, StyledContainer, StyledImage, StyleTabMenu };

@@ -1,5 +1,6 @@
 const Headers = { 'content-type': 'application/json' };
 
+// 추후 패턴 통일하자
 const getScore = async (id: Number) => {
   const res = await fetch(`http://43.200.51.20:8080/${id}/score`, { method: 'GET', headers: Headers }).then((res) => res.json());
 
