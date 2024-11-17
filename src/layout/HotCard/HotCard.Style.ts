@@ -9,7 +9,7 @@ const StyledContainer = styled.div({
   minWidth: '360px',
   margin: '0px 10px 0px 0px',
   borderRadius: '10px',
-  backgroundColor: '#1d1e1f',
+  backgroundColor: '#1D1E1F',
 });
 
 const StyledTitle = styled.h2({
@@ -19,6 +19,7 @@ const StyledTitle = styled.h2({
 
 // 카드 컴포넌트 스타일
 const StyledCard = styled.div({
+  backgroundColor: '#303033',
   display: 'flex',
   alignItems: 'stretch',
   justifyContent: 'space-around',

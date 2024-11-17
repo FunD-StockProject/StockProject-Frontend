@@ -188,7 +188,7 @@ const Home = () => {
   };
 
   return (
-    <StyledHome style={{ backgroundColor: `${isDarkMode ? 'black' : 'white'}` }}>
+    <StyledHome /*style={{ backgroundColor: `${isDarkMode ? 'black' : 'white'}` }}*/>
       <StyledContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
