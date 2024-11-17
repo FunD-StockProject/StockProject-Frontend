@@ -92,4 +92,27 @@ const Text = styled.p((props: TextBodyProps) => ({
   margin: 0,
 }));
 
-export { Text, TextDisplay, TextHeading, TextTitle };
+/* Detail */
+interface TextDetailProps {
+  /**
+   * Large : 17px / Medium : 15px / Small : 13px
+   */
+  size?: 'Large' | 'Medium' | 'Small';
+  weight?: 'Normal' | 'Bold';
+  color?: themeColor;
+}
+
+/**
+ * TextDetail
+ * @size Large : 17px / Medium : 15px / Small : 13px
+ */
+const TextDetail = styled.p((props: TextBodyProps) => ({
+  fontSize: props.size ? theme.fontSize.Detail[props.size] : theme.fontSize.Detail.Medium,
+  fontWeight: props.weight == 'Bold' ? '700' : '400',
+  lineHeight: '1.5',
+  letterSpacing: '0px',
+  color: props.color ? theme.colors[props.color] : '#000000',
+  margin: 0,
+}));
+
+export { Text, TextDisplay, TextHeading, TextTitle, TextDetail };
