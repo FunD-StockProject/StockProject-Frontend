@@ -232,6 +232,7 @@ const Result = () => {
 
   return (
     <ResultDiv>
+      {/* <Text textType={Display.Large}>asd</Text> */}
       <StockHeader type={stockType.국내} name={stockName} />
       <StockHumanIndicatorSlider />
       <StockHumanHowlingSlider />
