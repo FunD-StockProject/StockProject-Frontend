@@ -7,6 +7,7 @@ import noResultSVG from '../assets/noResult.svg';
 import { LayoutProps } from '../ts/Types';
 import { ReactComponent as SearchSVG } from '../assets/icons/search.svg';
 import { ReactComponent as CancelSVG } from '../assets/icons/cancel.svg';
+import { Text, TextDisplay, TextHeading, TextTitle } from './Text';
 
 // const SearchBarDiv = styled.div({
 //   position: 'relative',
@@ -225,11 +226,11 @@ const SearchBar = () => {
     borderRadius: '12px 12px 0 12px',
     padding: '24px 48px',
     gap: '12px',
-    ['p']: {
-      fontWeight: '700',
-      fontSize: '24px',
-      margin: 0,
-    },
+    // ['p']: {
+    //   fontWeight: '700',
+    //   fontSize: '24px',
+    //   margin: 0,
+    // },
   });
 
   const SearchBarContents = styled.div({
@@ -249,7 +250,9 @@ const SearchBar = () => {
   return (
     <>
       <SearchBarContainer>
-        <p>Search.</p>
+        <TextTitle size="XLarge" color="primary5">
+          Search
+        </TextTitle>
         <SearchBarContents>
           <SearchBarInput placeholder="검색어를 입력하세요." />
         </SearchBarContents>

@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
 import { LayoutProps } from '../../ts/Types';
 import logoBlueSvg from '../../assets/logo_blue.svg';
-import Text from '../../components/Text';
 
 const stockType = {
   국내: '국내',
@@ -233,7 +232,7 @@ const Result = () => {
 
   return (
     <ResultDiv>
-      <Text textType={Display.Large}>asd</Text>
+      {/* <Text textType={Display.Large}>asd</Text> */}
       <StockHeader type={stockType.국내} name={stockName} />
       <StockHumanIndicatorSlider />
       <StockHumanHowlingSlider />
