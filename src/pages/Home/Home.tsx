@@ -8,10 +8,11 @@ import risingTextDark from '../../assets/risingTextDark.svg';
 import descentTextLight from '../../assets/descentTextLight.svg';
 import descentTextDark from '../../assets/descentTextDark.svg';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
 import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../../controllers/api';
 import { KOREA, OVERSEA } from '../../ts/Constants';
+import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 const Home = () => {
   const [hotStocks, setHotStocks] = useState<CardInterface[][]>([[], []]);
@@ -21,6 +22,9 @@ const Home = () => {
 
   const isDarkMode = useSystemTheme();
   const tabMenu = ['국내주식', '해외주식'];
+  const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
+  const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
+  const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -41,7 +45,15 @@ const Home = () => {
     fetchStocks();
   }, []);
 
-  const handleTab = (index: number) => setTabIndex(index);
+  const handleTab = (index: number) => {
+    if (tabIndex === index) return;
+    const currentScrollPosition = window.scrollY;
+    setTabIndex(index);
+    hotStocksApiRef.current.scrollToItem(hotStocksApiRef.current.getItemByIndex('0'));
+    risingStocksApiRef.current.scrollToItem(risingStocksApiRef.current.getItemByIndex('0'));
+    descentStocksApiRef.current.scrollToItem(descentStocksApiRef.current.getItemByIndex('0'));
+    window.scrollTo(0, currentScrollPosition);
+  };
 
   const getImageSrc = (type: string) => {
     switch (type) {
@@ -67,11 +79,11 @@ const Home = () => {
           ))}
         </StyleTabMenu>
         <StyledImage src={getImageSrc('hot')} />
-        <CardList list={hotStocks[tabIndex]} isHot={true} />
+        <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
         <StyledImage src={getImageSrc('rising')} />
-        <CardList list={risingStocks[tabIndex]} isHot={false} />
+        <CardList list={risingStocks[tabIndex]} isHot={false} apiRef={risingStocksApiRef} />
         <StyledImage src={getImageSrc('descent')} />
-        <CardList list={descentStocks[tabIndex]} isHot={false} />
+        <CardList list={descentStocks[tabIndex]} isHot={false} apiRef={descentStocksApiRef} />
       </StyledContainer>
     </StyledHome>
   );
