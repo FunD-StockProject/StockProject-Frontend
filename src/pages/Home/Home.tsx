@@ -67,11 +67,11 @@ const Home = () => {
           ))}
         </StyleTabMenu>
         <StyledImage src={getImageSrc('hot')} />
-        <CardList list={hotStocks[tabIndex]} isHot={true} />;
+        <CardList list={hotStocks[tabIndex]} isHot={true} />
         <StyledImage src={getImageSrc('rising')} />
-        <CardList list={risingStocks[tabIndex]} isHot={false} />;
+        <CardList list={risingStocks[tabIndex]} isHot={false} />
         <StyledImage src={getImageSrc('descent')} />
-        <CardList list={descentStocks[tabIndex]} isHot={false} />;
+        <CardList list={descentStocks[tabIndex]} isHot={false} />
       </StyledContainer>
     </StyledHome>
   );
