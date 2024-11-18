@@ -16,6 +16,7 @@ const HeaderContents = styled.div({
   padding: '0 60px',
   height: '100%',
   gap: '32px',
+  cursor: 'pointer',
 });
 
 const HeaderLogo = styled.div({
