@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
-import { StyledContainer, StyledCard, StyledImage, StyledText, StyledTitle } from './HotCard.Style';
-import { scoreToImage, scoreToText } from '../../utils/ScoreConvert';
+import { StyledContainer, StyledCard, StyledTitle } from './HotCard.Style';
+import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 
 const Card = ({ score, stockName }: { score: number; stockName: string }) => {
   const navigate = useNavigate();
-  const imgLink = scoreToImage(score);
-  const text = scoreToText(score);
 
   const handleClick = (stockName: string) => {
     navigate(webPath.search(), { state: { stockName } });
@@ -16,9 +14,9 @@ const Card = ({ score, stockName }: { score: number; stockName: string }) => {
     <StyledContainer>
       <StyledTitle>{stockName}</StyledTitle>
       <StyledCard tabIndex={0} onClick={() => handleClick(stockName)}>
-        <StyledText>{text}</StyledText>
-        <StyledImage src={imgLink} alt="card image" />
-        <StyledText>{score}</StyledText>
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreTitle" />
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreImage" />
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScore" />
       </StyledCard>
     </StyledContainer>
   );
