@@ -7,6 +7,7 @@ import { useContext } from 'react';
 
 const CardList = ({ list, backgroundColor, isHot = false }: { list: CardInterface[]; backgroundColor?: string; isHot?: boolean }) => {
   const isMobile = window.innerWidth < 450;
+
   return (
     <NoScrollbar>
       <ScrollMenu LeftArrow={!isMobile ? LeftArrow : undefined} RightArrow={!isMobile ? RightArrow : undefined}>

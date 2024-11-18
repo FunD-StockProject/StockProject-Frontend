@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
-import omgPNG from '../../assets/omg.png';
 import sonjulPNG from '../../assets/sonjul.png';
 import theme from '../../styles/themes';
 import SearchTitle from '../../components/SearchTitle/SearchTitle';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common';
 import { useState } from 'react';
-import { Text, TextDisplay, TextHeading, TextTitle } from '../../components/Text';
+import { Text, TextHeading, TextTitle } from '../../components/Text';
 import LogoSVG from '../../assets/logo_white.svg';
 import InfoSVG from '../../assets/info.svg';
+import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 
 const SearchContainer = styled.div({
   width: '100%',
@@ -41,17 +41,7 @@ const SearchResultIndicatorContainer = styled.div({
   gap: '28px',
 });
 
-const SearchResultIndicatorItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '240px',
-  border: '2px solid ' + theme.colors.grayscale40,
-  borderRadius: '18px',
-  width: '100%',
-});
-
-const SearchResultIndicator = () => {
+const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
       <FlexDiv alignItems="center" gap="12px">
@@ -64,19 +54,9 @@ const SearchResultIndicator = () => {
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <SearchResultIndicatorItem>
-          <TextDisplay size="Small" color="grayscale5">
-            "극대노"
-          </TextDisplay>
-        </SearchResultIndicatorItem>
-        <SearchResultIndicatorItem>
-          <ImgDiv src={omgPNG} height="100%" />
-        </SearchResultIndicatorItem>
-        <SearchResultIndicatorItem>
-          <TextDisplay size="Large" color="grayscale5">
-            14
-          </TextDisplay>
-        </SearchResultIndicatorItem>
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreTitle" />
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreImage" />
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScore" />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
@@ -221,7 +201,7 @@ const Search = () => {
         <SearchResultContents>
           {resultMode == 'indicator' ? (
             <>
-              <SearchResultIndicator />
+              <SearchResultIndicator stockName={stockName} />
               <SearchResultSound />
             </>
           ) : (

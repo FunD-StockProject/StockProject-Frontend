@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from '../../styles/themes';
 
 // 추후 분리
 const width = Math.min(600, window.innerWidth);
