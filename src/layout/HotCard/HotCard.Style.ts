@@ -19,7 +19,6 @@ const StyledTitle = styled.h2({
 
 // 카드 컴포넌트 스타일
 const StyledCard = styled.div({
-  backgroundColor: '#303033',
   display: 'flex',
   alignItems: 'stretch',
   justifyContent: 'space-around',

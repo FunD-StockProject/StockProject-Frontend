@@ -46,8 +46,11 @@ const Home = () => {
   }, []);
 
   const handleTab = (index: number) => {
-    if (tabIndex === index) return;
+    if (tabIndex === index) {
+      return;
+    }
     const currentScrollPosition = window.scrollY;
+
     setTabIndex(index);
     hotStocksApiRef.current.scrollToItem(hotStocksApiRef.current.getItemByIndex('0'));
     risingStocksApiRef.current.scrollToItem(risingStocksApiRef.current.getItemByIndex('0'));
