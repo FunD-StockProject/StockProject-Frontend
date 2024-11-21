@@ -30,7 +30,7 @@ const NoScrollbar = styled.div({
   },
 });
 
-const ArrowButton = styled.button<{ disabled: boolean }>((props) => ({
+const ArrowButton = styled.img<{ disabled: boolean }>((props) => ({
   cursor: 'pointer',
   display: 'flex',
   margin: '0 5px', // 좌우 간격 조정
@@ -38,7 +38,7 @@ const ArrowButton = styled.button<{ disabled: boolean }>((props) => ({
   userSelect: 'none',
   borderRadius: '6px',
   borderWidth: '1px',
-  padding: '10px', // 버튼 크기 조정
+  padding: '5px', // 버튼 크기 조정
   backgroundColor: '#2e2e2e', // 버튼 색상
   color: 'white',
 }));
