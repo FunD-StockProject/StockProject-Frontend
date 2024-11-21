@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import useWorker from '../../hooks/useWorker';
+// import useWorker from '../../hooks/useWorker';
 import { WordCloudLayout } from './StockWordCloud.Type';
 import { Word, WordContainer } from './StockWordCloud.Style';
 
@@ -1035,7 +1035,7 @@ const sample = [
 const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [wordCloud, setWordCloud] = useState();
+  const [wordCloud, setWordCloud] = useState<any>(null);
   // const [wordCloud, setWordCloud] = useWorker({
   //   url: new URL('./StockWordCloudWorker.ts', import.meta.url),
   // });
