@@ -1,8 +1,3 @@
-interface FrequencyProp {
-  text: string;
-  value: number;
-}
-
 const GetnerateWordCloud = ({
   frequencies,
   height,
@@ -14,7 +9,10 @@ const GetnerateWordCloud = ({
   max_words = 200,
   relative_scaling = 0.5,
 }: {
-  frequencies: FrequencyProp[];
+  frequencies: {
+    text: string;
+    value: number;
+  }[];
   height: number;
   width: number;
   max_font_size?: number;
