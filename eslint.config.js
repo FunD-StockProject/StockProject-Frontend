@@ -14,16 +14,7 @@ export default [
         node: true,
       },
       plugins: ['@typescript-eslint', 'react', 'prettier'],
-      extends: [
-        'prettier',
-        'airbnb',
-        'airbnb/hooks',
-        'airbnb-typescript',
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:prettier/recommended',
-        'plugin:@typescript-eslint/recommended',
-      ],
+      extends: ['prettier', 'eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 'latest',
