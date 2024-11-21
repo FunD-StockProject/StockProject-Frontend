@@ -3,29 +3,36 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://43.200.51.20:8080",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://humanzipyo.com",
   "dependencies": {
     "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "framer-motion": "^11.11.17",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-horizontal-scrolling-menu": "^8.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@svgr/rollup": "^8.1.0",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
