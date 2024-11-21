@@ -1,6 +1,8 @@
 @font-face {
-  font-family: 'Pretendard';
-  src: url('./fonts/PretendardVariable.ttf');
+  font-family: 'Pretendardaa';
+  src: url('./fonts/PretendardVariable.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
 }
 
 :root {
@@ -28,4 +30,5 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: '#0000FF';
 }

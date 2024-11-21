@@ -125,7 +125,7 @@ const GetnerateWordCloud = (
 
   fontSizes = new Array(fontSize + 1);
   for (let i = 0; i <= fontSize; i++) {
-    fontSizes[i] = `${i}px Pretendard black`;
+    fontSizes[i] = `${i}px Pretendardaa`;
   }
   FontOffCtx.font = fontSizes[1];
 
@@ -216,9 +216,19 @@ const GetnerateWordCloud = (
   return layouts;
 };
 
-self.onmessage = (e) => {
+self.onmessage = async (e) => {
   console.log(e);
 
+  const font = new FontFace('Pretendardaa', `url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff')`, {
+    weight: '700',
+  });
+  await font.load();
+  self.fonts.add(font);
+
+  return responseMessage(e);
+};
+
+const responseMessage = (e: any) => {
   const frequencies = e.data.data;
   const height = e.data.height ?? 300;
   const width = e.data.width ?? 300;

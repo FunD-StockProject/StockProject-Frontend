@@ -15,7 +15,7 @@ const WordContainer = styled.div(
 const Word = styled.span(
   {
     position: 'absolute',
-    fontFamily: 'Pretendard black',
+    fontFamily: 'Pretendardaa',
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',

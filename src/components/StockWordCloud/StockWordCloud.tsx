@@ -1034,6 +1034,7 @@ const sample = [
 
 const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [wordCloud, setWordCloud] = useState<any>(null);
   // const [wordCloud, setWordCloud] = useWorker({
@@ -1052,19 +1053,19 @@ const StockWordCloud = () => {
     //   height: containerRef.current.offsetHeight,
     // });
   }, []);
+
   useEffect(() => {
-    if (window.Worker) {
-      if (!containerRef.current) return;
-      worker.postMessage({
-        data: sample,
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
-      });
-      worker.onmessage = (e: MessageEvent<any>) => {
-        console.log(e);
-        setWordCloud(e.data);
-      };
-    }
+    if (!containerRef.current) return;
+    worker.postMessage({
+      data: sample,
+      width: containerRef.current.offsetWidth,
+      height: containerRef.current.offsetHeight,
+    });
+
+    worker.onmessage = (e: MessageEvent<any>) => {
+      console.log(e);
+      setWordCloud(e.data);
+    };
   }, [worker]);
 
   return (
@@ -1077,6 +1078,8 @@ const StockWordCloud = () => {
         position: 'relative',
       }}
     >
+      {/* {wordCloud} */}
+      <canvas ref={canvasRef} width={400} height={400} />
       {wordCloud
         ? wordCloud.map((e: WordCloudLayout, i: number) => {
             // console.log(e.orientation);
