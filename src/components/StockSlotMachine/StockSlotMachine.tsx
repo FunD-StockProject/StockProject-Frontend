@@ -21,10 +21,10 @@ const ScoreSlotMachine = ({
   const elementArr = Array(arrayRepeat)
     .fill(
       slotMachineType == 'stockScoreTitle'
-        ? Array.from(ARRAY_STOCK_SCORE_TITLE, (e, i) => ARRAY_STOCK_SCORE_TITLE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_TITLE.length])
+        ? Array.from(ARRAY_STOCK_SCORE_TITLE, (_, i) => ARRAY_STOCK_SCORE_TITLE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_TITLE.length])
         : slotMachineType == 'stockScore'
-          ? Array.from({ length: 25 }, (e, i) => stockScore - (24 - i))
-          : Array.from(ARRAY_STOCK_SCORE_IMAGE, (e, i) => ARRAY_STOCK_SCORE_IMAGE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_IMAGE.length]),
+          ? Array.from({ length: 25 }, (_, i) => stockScore - (24 - i))
+          : Array.from(ARRAY_STOCK_SCORE_IMAGE, (_, i) => ARRAY_STOCK_SCORE_IMAGE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_IMAGE.length]),
     )
     .flat();
   const lastIndex = elementArr.length - 1;
