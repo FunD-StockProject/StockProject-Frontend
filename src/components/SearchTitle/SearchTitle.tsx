@@ -2,7 +2,15 @@ import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common';
 import { Text, TextDetail, TextHeading, TextTitle } from '../../components/Text';
 import { SearchTitleContainer, SearchTitleContents } from './SearchTitle.Syle';
 
-const SearchTitle = ({ stockName, resultMode, onClick }: { stockName: string; resultMode: 'indicator' | 'chart'; onClick: (e: any) => void }) => {
+const SearchTitle = ({
+  stockName,
+  resultMode,
+  onClick,
+}: {
+  stockName: string;
+  resultMode: 'indicator' | 'chart';
+  onClick: (e: any) => void;
+}) => {
   return (
     <SearchTitleContainer>
       <SearchTitleContents>

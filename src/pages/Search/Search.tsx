@@ -9,6 +9,7 @@ import { Text, TextHeading, TextTitle } from '../../components/Text';
 import LogoSVG from '../../assets/logo_white.svg';
 import InfoSVG from '../../assets/info.svg';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
+import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
 
 const SearchContainer = styled.div({
   width: '100%',
@@ -54,9 +55,21 @@ const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScore" />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={65}
+          slotMachineType="stockScoreTitle"
+        />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={65}
+          slotMachineType="stockScoreImage"
+        />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={65}
+          slotMachineType="stockScore"
+        />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
@@ -65,10 +78,9 @@ const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
 const SearchResultSoundContainer = styled.div({
   display: 'flex',
   margin: '0 48px',
-  background: theme.colors.grayscale90,
-  padding: '48px',
+  // background: theme.colors.grayscale90,
   gap: '28px',
-  height: '480px',
+  height: 'auto',
 });
 
 const SearchResultSound = () => {
@@ -82,7 +94,9 @@ const SearchResultSound = () => {
           <ImgDiv src={InfoSVG} />
         </ButtonDiv>
       </FlexDiv>
-      <SearchResultSoundContainer>여기 워드클라우드 들어감</SearchResultSoundContainer>
+      <SearchResultSoundContainer>
+        <StockWordCloud />
+      </SearchResultSoundContainer>
     </FlexDiv>
   );
 };
@@ -188,7 +202,9 @@ const Search = () => {
   const { state } = useLocation();
   const stockName = state?.stockName;
 
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>(
+    'indicator',
+  );
 
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
@@ -196,7 +212,11 @@ const Search = () => {
 
   return (
     <SearchContainer>
-      <SearchTitle stockName={stockName} resultMode={resultMode} onClick={toggleResultMode} />
+      <SearchTitle
+        stockName={stockName}
+        resultMode={resultMode}
+        onClick={toggleResultMode}
+      />
       <SearchResultContainer>
         <SearchResultContents>
           {resultMode == 'indicator' ? (
