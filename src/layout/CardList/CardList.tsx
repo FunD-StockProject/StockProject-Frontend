@@ -4,7 +4,8 @@ import Card from '../Card/Card';
 import { ArrowButton, NoScrollbar } from './CardList.Style';
 import HotCard from '../HotCard/HotCard';
 import { useContext } from 'react';
-
+import rightArrowImgLink from '../../assets/rightArrow.svg';
+import leftArrowImgLink from '../../assets/leftArrow.svg';
 const CardList = ({
   list,
   backgroundColor,
@@ -37,42 +38,30 @@ const LeftArrow = () => {
   const visibility = useContext<publicApiType>(VisibilityContext);
   const disabled = visibility.useLeftArrowVisible();
 
-  return (
-    <Arrow disabled={disabled} onClick={() => visibility.scrollPrev()} className="left" testId="left-arrow">
-      {'<'}
-    </Arrow>
-  );
+  return <Arrow imgLink={leftArrowImgLink} disabled={disabled} onClick={() => visibility.scrollPrev()} className="left" testId="left-arrow"></Arrow>;
 };
 
 const RightArrow = () => {
   const visibility = useContext<publicApiType>(VisibilityContext);
   const disabled = visibility.useRightArrowVisible();
 
-  return (
-    <Arrow disabled={disabled} onClick={() => visibility.scrollNext()} className="right" testId="right-arrow">
-      {'>'}
-    </Arrow>
-  );
+  return <Arrow imgLink={rightArrowImgLink} disabled={disabled} onClick={() => visibility.scrollNext()} className="right" testId="right-arrow"></Arrow>;
 };
 
 const Arrow = ({
-  children,
+  imgLink,
   disabled,
   onClick,
   className,
   testId,
 }: {
-  children: React.ReactNode;
+  imgLink: string;
   disabled: boolean;
   onClick: VoidFunction;
   className?: string;
   testId: string;
 }) => {
-  return (
-    <ArrowButton disabled={disabled} onClick={onClick} className={'arrow' + `-${className}`} data-testid={testId}>
-      {children}
-    </ArrowButton>
-  );
+  return <ArrowButton src={imgLink} disabled={disabled} onClick={onClick} className={'arrow' + `-${className}`} data-testid={testId} />;
 };
 
 export default CardList;
