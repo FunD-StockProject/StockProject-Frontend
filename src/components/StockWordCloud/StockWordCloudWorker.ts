@@ -219,18 +219,15 @@ const GetnerateWordCloud = (
 self.onmessage = (e) => {
   console.log(e);
 
-  const frequencies: {
-    text: string;
-    value: number;
-  }[] = e.data.data;
-  const height: number = e.data.height ?? 300;
-  const width: number = e.data.width ?? 300;
-  const minFontSize: number = e.data.minFontSize ?? 4;
-  const margin: number = e.data.margin ?? 2;
-  const maxWords: number = e.data.maxWords ?? 200;
-  const relativeScaling: number = e.data.relativeScaling ?? 0.5;
-  const randomState: number = e.data.randomState ?? Math.round(Math.random() * 1e9);
-  const maxFontSize: number = e.data.maxFontSize;
+  const frequencies = e.data.data;
+  const height = e.data.height ?? 300;
+  const width = e.data.width ?? 300;
+  const minFontSize = e.data.minFontSize ?? 4;
+  const margin = e.data.margin ?? 2;
+  const maxWords = e.data.maxWords ?? 200;
+  const relativeScaling = e.data.relativeScaling ?? 0.5;
+  const randomState = e.data.randomState ?? Math.round(Math.random() * 1e9);
+  const maxFontSize = e.data.maxFontSize;
 
   const processedData = () => {
     return GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);

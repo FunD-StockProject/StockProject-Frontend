@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useWorker from '../../hooks/useWorker';
 import { WordCloudLayout } from './StockWordCloud.Type';
 import { Word, WordContainer } from './StockWordCloud.Style';
@@ -1034,22 +1034,38 @@ const sample = [
 
 const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [wordCloud, setWordCloud] = useWorker({
-    url: './StockWordCloudWorker.ts',
-  });
+
+  const [wordCloud, setWordCloud] = useState();
+  // const [wordCloud, setWordCloud] = useWorker({
+  //   url: new URL('./StockWordCloudWorker.ts', import.meta.url),
+  // });
+  const worker: Worker = useMemo(() => new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), { type: 'module' }), []);
+
+  // useEffect(() => {
+  //   console.log(wordCloud);
+  // }, [wordCloud]);
 
   useEffect(() => {
-    console.log(wordCloud);
-  }, [wordCloud]);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    setWordCloud({
-      data: sample,
-      width: containerRef.current.offsetWidth,
-      height: containerRef.current.offsetHeight,
-    });
+    // setWordCloud({
+    //   data: sample,
+    //   width: containerRef.current.offsetWidth,
+    //   height: containerRef.current.offsetHeight,
+    // });
   }, []);
+  useEffect(() => {
+    if (window.Worker) {
+      if (!containerRef.current) return;
+      worker.postMessage({
+        data: sample,
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight,
+      });
+      worker.onmessage = (e: MessageEvent<any>) => {
+        console.log(e);
+        setWordCloud(e.data);
+      };
+    }
+  }, [worker]);
 
   return (
     <div
@@ -1065,8 +1081,8 @@ const StockWordCloud = () => {
         ? wordCloud.map((e: WordCloudLayout, i: number) => {
             // console.log(e.orientation);
             return (
-              <WordContainer orientation={e.orientation ? 1 : 0} posX={e.position.x} posY={e.position.y} sizeX={e.size.w} sizeY={e.size.h}>
-                <Word key={i} orientation={e.orientation ? 1 : 0} fontSize={e.fontSize} colors={~~Math.floor(Math.random() * 6)} delay={i}>
+              <WordContainer key={i} orientation={e.orientation ? 1 : 0} posX={e.position.x} posY={e.position.y} sizeX={e.size.w} sizeY={e.size.h}>
+                <Word orientation={e.orientation ? 1 : 0} fontSize={e.fontSize} colors={~~Math.floor(Math.random() * 6)} delay={i}>
                   {e.word}
                 </Word>
               </WordContainer>
