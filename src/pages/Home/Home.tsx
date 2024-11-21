@@ -8,203 +8,85 @@ import risingTextDark from '../../assets/risingTextDark.svg';
 import descentTextLight from '../../assets/descentTextLight.svg';
 import descentTextDark from '../../assets/descentTextDark.svg';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
+import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../../controllers/api';
+import { KOREA, OVERSEA } from '../../ts/Constants';
+import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 const Home = () => {
-  const [hotStocks, setHotStocks] = useState<CardInterface[][]>([]);
-  const [risingStocks, setRisingStocks] = useState<CardInterface[][]>([]);
-  const [descentStocks, setDescentStocks] = useState<CardInterface[][]>([]);
+  const [hotStocks, setHotStocks] = useState<CardInterface[][]>([[], []]);
+  const [risingStocks, setRisingStocks] = useState<CardInterface[][]>([[], []]);
+  const [descentStocks, setDescentStocks] = useState<CardInterface[][]>([[], []]);
   const [tabIndex, setTabIndex] = useState(0);
 
   const isDarkMode = useSystemTheme();
   const tabMenu = ['국내주식', '해외주식'];
+  const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
+  const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
+  const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
 
   useEffect(() => {
-    setHotStocks([
-      [
-        {
-          stockId: 1,
-          symbolName: '마이크로컨텍솔',
-          score: 51,
-        },
-        {
-          stockId: 3,
-          symbolName: 'AJ네트웍스',
-          score: 51,
-        },
-        {
-          stockId: 67,
-          symbolName: 'LF',
-          score: 51,
-        },
-      ],
-      [
-        {
-          stockId: 1,
-          symbolName: 'AAPL',
-          score: 90,
-        },
-        {
-          stockId: 2,
-          symbolName: 'TSLA',
-          score: 40,
-        },
-        {
-          stockId: 3,
-          symbolName: 'NVA',
-          score: 10,
-        },
-      ],
-    ]);
+    const fetchStocks = async () => {
+      try {
+        const [hotKorea, hotOversea] = await Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]);
+        setHotStocks([hotKorea, hotOversea]);
 
-    setRisingStocks([
-      [
-        {
-          stockId: 1,
-          symbolName: '마이크로컨텍솔',
-          score: 51,
-        },
-        {
-          stockId: 3,
-          symbolName: 'AJ네트웍스',
-          score: 51,
-        },
-        {
-          stockId: 16,
-          symbolName: 'CS홀딩스',
-          score: 51,
-        },
-        {
-          stockId: 17,
-          symbolName: 'DB',
-          score: 51,
-        },
-        {
-          stockId: 20,
-          symbolName: 'DB하이텍',
-          score: 51,
-        },
-        {
-          stockId: 54,
-          symbolName: 'KB금융',
-          score: 51,
-        },
-        {
-          stockId: 67,
-          symbolName: 'LF',
-          score: 51,
-        },
-        {
-          stockId: 5,
-          symbolName: 'BGF리테일',
-          score: 51,
-        },
-        {
-          stockId: 77,
-          symbolName: 'LG전자',
-          score: 51,
-        },
-      ],
-      [
-        { stockId: 1, score: 90, symbolName: '애플' },
-        { stockId: 2, score: 50, symbolName: '테슬라' },
-        { stockId: 3, score: 20, symbolName: '엔비디아' },
-        { stockId: 4, score: 50, symbolName: '테슬라' },
-        { stockId: 5, score: 90, symbolName: '애플' },
-        { stockId: 6, score: 20, symbolName: '엔비디아' },
-        { stockId: 7, score: 90, symbolName: '애플' },
-        { stockId: 8, score: 50, symbolName: '테슬라' },
-        { stockId: 9, score: 20, symbolName: '엔비디아' },
-      ],
-    ]);
+        const [risingKorea, risingOversea] = await Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]);
+        setRisingStocks([risingKorea, risingOversea]);
 
-    setDescentStocks([
-      [
-        {
-          stockId: 1,
-          symbolName: '마이크로컨텍솔',
-          score: 51,
-        },
-        {
-          stockId: 3,
-          symbolName: 'AJ네트웍스',
-          score: 51,
-        },
-        {
-          stockId: 16,
-          symbolName: 'CS홀딩스',
-          score: 51,
-        },
-        {
-          stockId: 17,
-          symbolName: 'DB',
-          score: 51,
-        },
-        {
-          stockId: 20,
-          symbolName: 'DB하이텍',
-          score: 51,
-        },
-        {
-          stockId: 54,
-          symbolName: 'KB금융',
-          score: 51,
-        },
-        {
-          stockId: 67,
-          symbolName: 'LF',
-          score: 51,
-        },
-        {
-          stockId: 5,
-          symbolName: 'BGF리테일',
-          score: 51,
-        },
-        {
-          stockId: 77,
-          symbolName: 'LG전자',
-          score: 51,
-        },
-      ],
-      [
-        { stockId: 1, score: 90, symbolName: '애플' },
-        { stockId: 2, score: 50, symbolName: '테슬라' },
-        { stockId: 3, score: 20, symbolName: '엔비디아' },
-        { stockId: 4, score: 50, symbolName: '테슬라' },
-        { stockId: 5, score: 90, symbolName: '애플' },
-        { stockId: 6, score: 20, symbolName: '엔비디아' },
-        { stockId: 7, score: 90, symbolName: '애플' },
-        { stockId: 8, score: 50, symbolName: '테슬라' },
-        { stockId: 9, score: 20, symbolName: '엔비디아' },
-      ],
-    ]);
+        const [descentKorea, descentOversea] = await Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]);
+        setDescentStocks([descentKorea, descentOversea]);
+      } catch (error) {
+        console.log('Error fetching stocks', error);
+      }
+    };
+
+    fetchStocks();
   }, []);
 
   const handleTab = (index: number) => {
-    if (tabIndex !== index) {
-      setTabIndex(index);
+    if (tabIndex === index) {
+      return;
+    }
+    const currentScrollPosition = window.scrollY;
+
+    setTabIndex(index);
+    hotStocksApiRef.current.scrollToItem(hotStocksApiRef.current.getItemByIndex('0'));
+    risingStocksApiRef.current.scrollToItem(risingStocksApiRef.current.getItemByIndex('0'));
+    descentStocksApiRef.current.scrollToItem(descentStocksApiRef.current.getItemByIndex('0'));
+    window.scrollTo(0, currentScrollPosition);
+  };
+
+  const getImageSrc = (type: string) => {
+    switch (type) {
+      case 'hot':
+        return isDarkMode ? hotTextDark : hotTextLight;
+      case 'rising':
+        return isDarkMode ? risingTextDark : risingTextLight;
+      case 'descent':
+        return isDarkMode ? descentTextDark : descentTextLight;
+      default:
+        return '';
     }
   };
 
   return (
-    <StyledHome /*style={{ backgroundColor: `${isDarkMode ? 'black' : 'white'}` }}*/>
+    <StyledHome>
       <StyledContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li className={index === tabIndex ? 'submenu focused' : 'submenu'} key={index} onClick={() => handleTab(index)}>
+            <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
               {el}
             </li>
           ))}
         </StyleTabMenu>
-        <StyledImage src={isDarkMode ? hotTextDark : hotTextLight} />
-        <CardList list={hotStocks[tabIndex] ?? []} isHot={true} />
-
-        <StyledImage src={isDarkMode ? risingTextDark : risingTextLight} />
-        <CardList list={risingStocks[tabIndex] ?? []} />
-
-        <StyledImage src={isDarkMode ? descentTextDark : descentTextLight} />
-        <CardList list={descentStocks[tabIndex] ?? []} backgroundColor="#2D92FF" />
+        <StyledImage src={getImageSrc('hot')} />
+        <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        <StyledImage src={getImageSrc('rising')} />
+        <CardList list={risingStocks[tabIndex]} isHot={false} apiRef={risingStocksApiRef} />
+        <StyledImage src={getImageSrc('descent')} />
+        <CardList list={descentStocks[tabIndex]} isHot={false} apiRef={descentStocksApiRef} />
       </StyledContainer>
     </StyledHome>
   );

@@ -5,12 +5,22 @@ import { ArrowButton, NoScrollbar } from './CardList.Style';
 import HotCard from '../HotCard/HotCard';
 import { useContext } from 'react';
 
-const CardList = ({ list, backgroundColor, isHot = false }: { list: CardInterface[]; backgroundColor?: string; isHot?: boolean }) => {
+const CardList = ({
+  list,
+  backgroundColor,
+  isHot = false,
+  apiRef,
+}: {
+  list: CardInterface[];
+  backgroundColor?: string;
+  isHot?: boolean;
+  apiRef: React.MutableRefObject<publicApiType>;
+}) => {
   const isMobile = window.innerWidth < 450;
 
   return (
     <NoScrollbar>
-      <ScrollMenu LeftArrow={!isMobile ? LeftArrow : undefined} RightArrow={!isMobile ? RightArrow : undefined}>
+      <ScrollMenu LeftArrow={!isMobile ? LeftArrow : undefined} RightArrow={!isMobile ? RightArrow : undefined} apiRef={apiRef}>
         {isHot
           ? list.map((item: CardInterface) => {
               return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
