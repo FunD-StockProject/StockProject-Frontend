@@ -1035,7 +1035,7 @@ const sample = [
 const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [wordCloud, setWordCloud] = useWorker({
-    url: new URL('./StockWordCloudWorker.ts', import.meta.url),
+    url: './StockWordCloudWorker.ts',
   });
 
   useEffect(() => {
