@@ -247,24 +247,24 @@ self.onmessage = (e) => {
       ctx.font = `900 ${50}px "Pretendardaaaaaa"`;
       ctx.fillStyle = '#FFFFFF';
       ctx.fillText('감자탕', 10, 50);
-      // const img = canvas.transferToImageBitmap();
-      // postMessage(img);
-      const ret = GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
-      postMessage(ret);
+      const img = canvas.transferToImageBitmap();
+      postMessage(img);
+      // const ret = GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
+      // postMessage(ret);
     });
   } else {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
   }
 
-  const frequencies = e.data.data;
-  const height = e.data.height ?? 300;
-  const width = e.data.width ?? 300;
-  const minFontSize = e.data.minFontSize ?? 4;
-  const margin = e.data.margin ?? 2;
-  const maxWords = e.data.maxWords ?? 200;
-  const relativeScaling = e.data.relativeScaling ?? 0.5;
-  const randomState = e.data.randomState ?? Math.round(Math.random() * 1e9);
-  const maxFontSize = e.data.maxFontSize;
+  // const frequencies = e.data.data;
+  // const height = e.data.height ?? 300;
+  // const width = e.data.width ?? 300;
+  // const minFontSize = e.data.minFontSize ?? 4;
+  // const margin = e.data.margin ?? 2;
+  // const maxWords = e.data.maxWords ?? 200;
+  // const relativeScaling = e.data.relativeScaling ?? 0.5;
+  // const randomState = e.data.randomState ?? Math.round(Math.random() * 1e9);
+  // const maxFontSize = e.data.maxFontSize;
 
   // const processedData = () => {
   //   return GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
