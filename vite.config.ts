@@ -1,9 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from '@svgr/rollup';
+import { VitePluginRadar } from 'vite-plugin-radar';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr()],
-  base: '/',
+plugins: [
+    react(),
+    svgr(),
+    VitePluginRadar({
+      analytics: {
+        id: 'G-EZPQMV95QJ',
+        disable: true,
+      },
+    }),
+  ],
 });
