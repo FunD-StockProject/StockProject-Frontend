@@ -4,13 +4,12 @@ import svgr from '@svgr/rollup';
 import { VitePluginRadar } from 'vite-plugin-radar';
 
 export default defineConfig({
-plugins: [
+  plugins: [
     react(),
     svgr(),
     VitePluginRadar({
       analytics: {
         id: 'G-EZPQMV95QJ',
-        disable: true,
       },
     }),
   ],
