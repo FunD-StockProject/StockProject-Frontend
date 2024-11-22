@@ -1045,13 +1045,23 @@ const StockWordCloud = () => {
   //   console.log(wordCloud);
   // }, [wordCloud]);
 
+  // const [ctx, setCtx] = useState<CanvasRenderingContext2D>();
+  // const [res, setRes] = useState<any>();
+
   useEffect(() => {
     // setWordCloud({
     //   data: sample,
     //   width: containerRef.current.offsetWidth,
     //   height: containerRef.current.offsetHeight,
     // });
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    context.lineWidth = 2.5;
+    // setCtx(context);
   }, []);
+
   useEffect(() => {
     if (window.Worker) {
       if (!containerRef.current) return;
@@ -1063,9 +1073,17 @@ const StockWordCloud = () => {
       worker.onmessage = (e: MessageEvent<any>) => {
         console.log(e);
         setWordCloud(e.data);
+        // setRes(e.data);
       };
     }
   }, [worker]);
+
+  // useEffect(() => {
+  //   // if (!ctx) return;
+  //   // ctx.drawImage(res, 0, 0);
+  // }, [res]);
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
     <div
@@ -1077,6 +1095,7 @@ const StockWordCloud = () => {
         position: 'relative',
       }}
     >
+      <canvas ref={canvasRef} />
       {wordCloud
         ? wordCloud.map((e: WordCloudLayout, i: number) => {
             // console.log(e.orientation);

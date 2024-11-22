@@ -12,6 +12,10 @@ const GetnerateWordCloud = (
   randomState: number,
   maxFontSize?: number,
 ) => {
+  setTimeout(() => {
+    return 1230;
+  }, 1000);
+
   const isEmptyArea = (x: number, y: number, w: number, h: number) => {
     return (
       prefixSum[(y + h) * (width + 1) + (x + w)] -
@@ -125,7 +129,7 @@ const GetnerateWordCloud = (
 
   fontSizes = new Array(fontSize + 1);
   for (let i = 0; i <= fontSize; i++) {
-    fontSizes[i] = `${i}px Pretendard black`;
+    fontSizes[i] = `900 ${i}px "Pretendardaaaaaa"`;
   }
   FontOffCtx.font = fontSizes[1];
 
@@ -219,6 +223,39 @@ const GetnerateWordCloud = (
 self.onmessage = (e) => {
   console.log(e);
 
+  if (self.FontFace) {
+    // first declare our font-face
+    const fontFace = new FontFace(
+      'Pretendardaaaaaa',
+      "url(https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff) format('woff')",
+    );
+    // add it to the list of fonts our worker supports
+    self.fonts.add(fontFace);
+    // load the font
+    fontFace.load().then(() => {
+      // font loaded
+      if (!self.OffscreenCanvas) {
+        postMessage("Your browser doesn't support OffscreeenCanvas yet");
+        return;
+      }
+      const canvas = new OffscreenCanvas(300, 150);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        postMessage("Your browser doesn't support the 2d context yet...");
+        return;
+      }
+      ctx.font = `900 ${50}px "Pretendardaaaaaa"`;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('감자탕', 10, 50);
+      // const img = canvas.transferToImageBitmap();
+      // postMessage(img);
+      const ret = GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
+      postMessage(ret);
+    });
+  } else {
+    postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
+  }
+
   const frequencies = e.data.data;
   const height = e.data.height ?? 300;
   const width = e.data.width ?? 300;
@@ -229,8 +266,8 @@ self.onmessage = (e) => {
   const randomState = e.data.randomState ?? Math.round(Math.random() * 1e9);
   const maxFontSize = e.data.maxFontSize;
 
-  const processedData = () => {
-    return GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
-  };
-  postMessage(processedData());
+  // const processedData = () => {
+  //   return GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
+  // };
+  // postMessage(processedData());
 };
