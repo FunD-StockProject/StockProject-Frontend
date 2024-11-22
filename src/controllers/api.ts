@@ -1,20 +1,4 @@
-const getBaseURL = () => {
-  const environment = import.meta.env.VITE_ENV; // VITE_ENV 값 가져오기 (local, dev, prod)
-
-  switch (environment) {
-    case 'local':
-      return import.meta.env.VITE_BASE_URL_LOCAL || 'http://43.200.51.20:8080';
-    case 'dev':
-      return import.meta.env.VITE_BASE_URL_DEV || 'https://stockvalue13.netlify.app';
-    case 'prod':
-      return import.meta.env.VITE_BASE_URL_PROD || 'https://humanzipyo.com';
-    default:
-      console.warn(`Unknown VITE_ENV: ${environment}, defaulting to local`);
-      return import.meta.env.VITE_BASE_URL_LOCAL || 'http://43.200.51.20:8080';
-  }
-};
-
-const baseURL = getBaseURL(); // 환경에 따라 baseURL 동적으로 설정
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Headers = { 'content-type': 'application/json' };
 
