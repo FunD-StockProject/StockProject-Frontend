@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-// import useWorker from '../../hooks/useWorker';
+import { useEffect, useRef } from 'react';
+import useWorker from '../../hooks/useWorker';
 import { WordCloudLayout } from './StockWordCloud.Type';
 import { Word, WordContainer } from './StockWordCloud.Style';
 
@@ -1036,37 +1036,22 @@ const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [wordCloud, setWordCloud] = useState<any>(null);
-  // const [wordCloud, setWordCloud] = useWorker({
-  //   url: new URL('./StockWordCloudWorker.ts', import.meta.url),
-  // });
-  const worker: Worker = useMemo(() => new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), { type: 'module' }), []);
-
-  // useEffect(() => {
-  //   console.log(wordCloud);
-  // }, [wordCloud]);
-
-  useEffect(() => {
-    // setWordCloud({
-    //   data: sample,
-    //   width: containerRef.current.offsetWidth,
-    //   height: containerRef.current.offsetHeight,
-    // });
-  }, []);
+  const [wordCloud, postMessage] = useWorker({
+    worker: new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), { type: 'module' }),
+  });
 
   useEffect(() => {
     if (!containerRef.current) return;
-    worker.postMessage({
+    postMessage({
       data: sample,
       width: containerRef.current.offsetWidth,
       height: containerRef.current.offsetHeight,
     });
+  }, []);
 
-    worker.onmessage = (e: MessageEvent<any>) => {
-      console.log(e);
-      setWordCloud(e.data);
-    };
-  }, [worker]);
+  useEffect(() => {
+    console.log(wordCloud);
+  }, [wordCloud]);
 
   return (
     <div
@@ -1078,11 +1063,9 @@ const StockWordCloud = () => {
         position: 'relative',
       }}
     >
-      {/* {wordCloud} */}
       <canvas ref={canvasRef} width={400} height={400} />
       {wordCloud
         ? wordCloud.map((e: WordCloudLayout, i: number) => {
-            // console.log(e.orientation);
             return (
               <WordContainer key={i} orientation={e.orientation ? 1 : 0} posX={e.position.x} posY={e.position.y} sizeX={e.size.w} sizeY={e.size.h}>
                 <Word orientation={e.orientation ? 1 : 0} fontSize={e.fontSize} colors={~~Math.floor(Math.random() * 6)} delay={i}>
