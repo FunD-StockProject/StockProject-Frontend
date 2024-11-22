@@ -20,7 +20,8 @@ const Word = styled.span(
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',
-    animation: pop + ' .75s ease-in-out',
+    // animation: slidein + ' 6s ease-in-out',
+    animation: pop + '.75s ease-in-out',
     animationFillMode: 'both',
   },
   ({ orientation, fontSize, colors, delay }: { orientation: number; fontSize: number; colors: number; delay: number }) => ({

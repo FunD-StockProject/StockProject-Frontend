@@ -1,21 +1,26 @@
-const GetnerateWordCloud = (
-  frequencies: {
-    text: string;
-    value: number;
-  }[],
-  height: number,
-  width: number,
-  minFontSize: number,
-  margin: number,
-  maxWords: number,
-  relativeScaling: number,
-  randomState: number,
-  maxFontSize?: number,
-) => {
-  setTimeout(() => {
-    return 1230;
-  }, 1000);
+import { WordCloudLayout, WordFrequency } from './StockWordCloud.Type';
 
+const GetnerateWordCloud = ({
+  frequencies,
+  height = 300,
+  width = 300,
+  minFontSize = 4,
+  margin = 2,
+  maxWords = 200,
+  relativeScaling = 0.5,
+  randomState = ~~(Math.random() * 1e9),
+  maxFontSize,
+}: {
+  frequencies: WordFrequency[];
+  height?: number;
+  width: number;
+  minFontSize?: number;
+  margin?: number;
+  maxWords?: number;
+  relativeScaling?: number;
+  randomState?: number;
+  maxFontSize?: number;
+}): WordCloudLayout[] | null => {
   const isEmptyArea = (x: number, y: number, w: number, h: number) => {
     return (
       prefixSum[(y + h) * (width + 1) + (x + w)] -
@@ -37,7 +42,7 @@ const GetnerateWordCloud = (
 
     for (i = 0; i < height - sizeY; i++) {
       for (j = 0; j < width - sizeX; j++) {
-        if (grid[i + width + (j + sizeX - 1)]) {
+        if (grid[i * width + (j + sizeX - 1)]) {
           j += sizeX - 1;
           continue;
         }
@@ -86,16 +91,16 @@ const GetnerateWordCloud = (
     }
   };
 
-  frequencies = frequencies.sort((a, b) => b.value - a.value).slice(0, maxWords);
+  frequencies = frequencies.sort((a, b) => b.freq - a.freq).slice(0, maxWords);
 
-  const max_frequency = frequencies[0].value;
+  const max_frequency = frequencies[0].freq;
   const FontOffCtx = new OffscreenCanvas(width, 1).getContext('2d');
 
   if (!FontOffCtx) return null;
 
   frequencies = Array.from(frequencies, (x) => ({
     text: x.text,
-    value: x.value / max_frequency,
+    freq: x.freq / max_frequency,
   }));
 
   let lastFreq = 1;
@@ -111,7 +116,17 @@ const GetnerateWordCloud = (
     if (frequencies.length == 1) {
       fontSize = height;
     } else {
-      const ret = GetnerateWordCloud(frequencies.slice(0, 2), height, width, minFontSize, margin, maxWords, relativeScaling, randomState, height);
+      const ret = GetnerateWordCloud({
+        frequencies: frequencies.slice(0, 2),
+        height: height,
+        width: width,
+        minFontSize: minFontSize,
+        margin: margin,
+        maxWords: maxWords,
+        relativeScaling: relativeScaling,
+        randomState: randomState,
+        maxFontSize: height,
+      });
 
       if (!ret) return null;
 
@@ -135,14 +150,14 @@ const GetnerateWordCloud = (
 
   for (const e of frequencies) {
     const word = e.text;
-    const freq = e.value;
+    const freq = e.freq;
 
     if (freq == 0) continue;
 
     let layout = null;
     let textPosition: any | null = null;
 
-    fontSize = ~~((relativeScaling * (e.value / lastFreq) + (1 - relativeScaling)) * fontSize);
+    fontSize = ~~((relativeScaling * (e.freq / lastFreq) + (1 - relativeScaling)) * fontSize);
 
     let orientation: boolean = Math.random() >= 0.9 ? true : false;
     let tried_other_orientation: boolean = false;
@@ -206,7 +221,7 @@ const GetnerateWordCloud = (
       position: { x: textPosition.spanX, y: textPosition.spanY },
       size: { w: textPosition.sizeX, h: textPosition.sizeY },
       orientation: orientation,
-      color: 'black',
+      color: ~~Math.floor(Math.random() * 6),
     };
     layouts.push(layout);
 
@@ -214,57 +229,29 @@ const GetnerateWordCloud = (
 
     Update(imageData.data, ~~textPosition.posX, ~~textPosition.posY, ~~textPosition.sizeX, ~~textPosition.sizeY);
 
-    lastFreq = e.value;
+    lastFreq = e.freq;
   }
 
   return layouts;
 };
 
 self.onmessage = (e) => {
-  console.log(e);
-
-  if (self.FontFace) {
-    // first declare our font-face
-    const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
-    // add it to the list of fonts our worker supports
-    self.fonts.add(fontFace);
-    // load the font
-    fontFace.load().then(() => {
-      // font loaded
-      if (!self.OffscreenCanvas) {
-        postMessage("Your browser doesn't support OffscreeenCanvas yet");
-        return;
-      }
-      const canvas = new OffscreenCanvas(300, 150);
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        postMessage("Your browser doesn't support the 2d context yet...");
-        return;
-      }
-      ctx.font = `900 ${50}px "Pretendard"`;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillText('감자탕', 10, 50);
-      // const img = canvas.transferToImageBitmap();
-      // postMessage(img);
-      const ret = GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
-      postMessage(ret);
-    });
-  } else {
+  if (!self.FontFace) {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
+    return;
   }
-
-  const frequencies = e.data.data;
-  const height = e.data.height ?? 300;
-  const width = e.data.width ?? 300;
-  const minFontSize = e.data.minFontSize ?? 4;
-  const margin = e.data.margin ?? 2;
-  const maxWords = e.data.maxWords ?? 200;
-  const relativeScaling = e.data.relativeScaling ?? 0.5;
-  const randomState = e.data.randomState ?? Math.round(Math.random() * 1e9);
-  const maxFontSize = e.data.maxFontSize;
-
-  // const processedData = () => {
-  //   return GetnerateWordCloud(frequencies, height, width, minFontSize, margin, maxWords, relativeScaling, randomState, maxFontSize);
-  // };
-  // postMessage(processedData());
+  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
+  self.fonts.add(fontFace);
+  fontFace.load().then(() => {
+    if (!self.OffscreenCanvas) {
+      postMessage("Your browser doesn't support OffscreeenCanvas yet");
+      return;
+    }
+    const ret = GetnerateWordCloud({
+      frequencies: e.data.data,
+      height: e.data.height,
+      width: e.data.width,
+    });
+    postMessage(ret);
+  });
 };
