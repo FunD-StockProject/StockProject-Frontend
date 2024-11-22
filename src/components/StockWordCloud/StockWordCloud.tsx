@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 // import useWorker from '../../hooks/useWorker';
-// import { WordCloudLayout } from './StockWordCloud.Type';
-// import { Word, WordContainer } from './StockWordCloud.Style';
+import { WordCloudLayout } from './StockWordCloud.Type';
+import { Word, WordContainer } from './StockWordCloud.Style';
 
 const sample = [
   { text: '다', value: 10 },
@@ -1035,7 +1035,7 @@ const sample = [
 const StockWordCloud = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // const [wordCloud, setWordCloud] = useState<any>(null);
+  const [wordCloud, setWordCloud] = useState<any>(null);
   // const [wordCloud, setWordCloud] = useWorker({
   //   url: new URL('./StockWordCloudWorker.ts', import.meta.url),
   // });
@@ -1045,8 +1045,8 @@ const StockWordCloud = () => {
   //   console.log(wordCloud);
   // }, [wordCloud]);
 
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D>();
-  const [res, setRes] = useState<any>();
+  // const [ctx, setCtx] = useState<CanvasRenderingContext2D>();
+  // const [res, setRes] = useState<any>();
 
   useEffect(() => {
     // setWordCloud({
@@ -1059,7 +1059,7 @@ const StockWordCloud = () => {
     const context = canvas.getContext('2d');
     if (!context) return;
     context.lineWidth = 2.5;
-    setCtx(context);
+    // setCtx(context);
   }, []);
 
   useEffect(() => {
@@ -1072,16 +1072,16 @@ const StockWordCloud = () => {
       });
       worker.onmessage = (e: MessageEvent<any>) => {
         console.log(e);
-        // setWordCloud(e.data);
-        setRes(e.data);
+        setWordCloud(e.data);
+        // setRes(e.data);
       };
     }
   }, [worker]);
 
-  useEffect(() => {
-    if (!ctx) return;
-    ctx.drawImage(res, 0, 0);
-  }, [res]);
+  // useEffect(() => {
+  //   if (!ctx) return;
+  //   ctx.drawImage(res, 0, 0);
+  // }, [res]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -1096,7 +1096,7 @@ const StockWordCloud = () => {
       }}
     >
       <canvas ref={canvasRef} />
-      {/* {wordCloud
+      {wordCloud
         ? wordCloud.map((e: WordCloudLayout, i: number) => {
             // console.log(e.orientation);
             return (
@@ -1107,7 +1107,7 @@ const StockWordCloud = () => {
               </WordContainer>
             );
           })
-        : ''} */}
+        : ''}
     </div>
   );
 };
