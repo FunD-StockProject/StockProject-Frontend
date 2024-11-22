@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from '@svgr/rollup';
-import path from 'path';
 import { VitePluginRadar } from 'vite-plugin-radar';
 
 export default defineConfig({
@@ -16,9 +15,4 @@ export default defineConfig({
     }),
   ],
   base: '/',
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
 });
