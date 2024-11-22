@@ -225,10 +225,7 @@ self.onmessage = (e) => {
 
   if (self.FontFace) {
     // first declare our font-face
-    const fontFace = new FontFace(
-      'Pretendardaaaaaa',
-      "url(https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff) format('woff')",
-    );
+    const fontFace = new FontFace('Pretendardaaaaaa', "url(https://picktime-image-s3.s3.ap-northeast-2.amazonaws.com/Pretendard-Black.woff) format('woff')");
     // add it to the list of fonts our worker supports
     self.fonts.add(fontFace);
     // load the font
