@@ -8,6 +8,11 @@ export interface Size {
   h: number;
 }
 
+export interface WordFrequency {
+  text: string;
+  freq: number;
+}
+
 export interface WordCloudLayout {
   word: string;
   freq: number;
@@ -16,5 +21,4 @@ export interface WordCloudLayout {
   size: Size;
   orientation: boolean;
   color: string;
-  rect: any;
 }

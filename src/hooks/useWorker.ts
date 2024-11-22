@@ -8,11 +8,7 @@ const useWorker = ({ worker }: { worker: Worker }): UseWorkerResult => {
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    console.log(worker);
     workerRef.current = worker;
-
-    console.log(workerRef);
-
     workerRef.current.onmessage = (e) => {
       setResult(e.data);
     };

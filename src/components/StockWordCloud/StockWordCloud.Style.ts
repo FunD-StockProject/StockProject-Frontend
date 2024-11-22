@@ -6,7 +6,19 @@ const WordContainer = styled.div(
   {
     position: 'absolute',
   },
-  ({ orientation, posX, posY, sizeX, sizeY }: { orientation: number; posX: number; posY: number; sizeX: number; sizeY: number }) => ({
+  ({
+    orientation,
+    posX,
+    posY,
+    sizeX,
+    sizeY,
+  }: {
+    orientation: number;
+    posX: number;
+    posY: number;
+    sizeX: number;
+    sizeY: number;
+  }) => ({
     left: (!orientation ? posX : posX - sizeY / 2 + sizeX / 2) + 'px',
     top: (!orientation ? posY : posY + sizeY / 2 - sizeX / 2) + 'px',
   }),
@@ -15,14 +27,24 @@ const WordContainer = styled.div(
 const Word = styled.span(
   {
     position: 'absolute',
-    fontFamily: 'Pretendardaa',
+    fontFamily: 'Pretendardaaa',
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',
     animation: pop + ' .75s ease-in-out',
     animationFillMode: 'both',
   },
-  ({ orientation, fontSize, colors, delay }: { orientation: number; fontSize: number; colors: number; delay: number }) => ({
+  ({
+    orientation,
+    fontSize,
+    colors,
+    delay,
+  }: {
+    orientation: number;
+    fontSize: number;
+    colors: number;
+    delay: number;
+  }) => ({
     fontSize: fontSize,
     lineHeight: 1,
     rotate: !orientation ? '' : '90deg',
