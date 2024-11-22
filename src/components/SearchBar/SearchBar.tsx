@@ -7,7 +7,7 @@ import { ReactComponent as NoResultSVG } from '../../assets/noResult.svg';
 import { TextDetail, TextTitle } from '../Text';
 import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common';
 import theme from '../../styles/themes';
-import { fetchAutoComplete, fetchSearchSymbolName, StockInfo } from '../../controllers/stock';
+import { fetchAutoComplete, fetchSearchSymbolName, StockInfo } from '../../controllers/api';
 import { AutoCompleteItemViewProps, AutoCompleteListViewProps, RecentSearchItemViewProps, RecentSearchListViewProps } from './SearchBar.Prop';
 import { AutoCompleteCorrectSpan, SearchBarContainer, SearchBarContents, SearchBarDesignPart, SearchBarInput } from './SearchBar.Style';
 

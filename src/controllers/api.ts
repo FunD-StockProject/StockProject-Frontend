@@ -31,5 +31,23 @@ const fetchRisingStocks = async (country: string) => {
 const fetchDescentStocks = async (country: string) => {
   return fetchData(`/stock/descent/${country}`);
 };
+// Additional stock-related API calls
+const fetchAutoComplete = (name: string) => {
+  return fetchData(`/stock/autocomplete?keyword=${name}`);
+};
 
-export { fetchScore, fetchHotStocks, fetchRisingStocks, fetchDescentStocks };
+const fetchSearchSymbolName = (name: string) => {
+  return fetchData(`/stock/search/${name}`);
+};
+export interface StockInfo {
+  stockId?: number;
+  symbol?: string;
+  symbolName?: string;
+  securityName?: string;
+  exchangeNum?: string;
+  scoreId?: number;
+  scoreKorea?: number;
+  scoreOversea?: number;
+}
+
+export { fetchScore, fetchHotStocks, fetchRisingStocks, fetchDescentStocks, fetchAutoComplete, fetchSearchSymbolName };
