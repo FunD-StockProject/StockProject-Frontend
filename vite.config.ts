@@ -9,7 +9,6 @@ export default defineConfig({
     react(),
     svgr(),
     VitePluginRadar({
-      // Google Analytics tag injection
       analytics: {
         id: 'G-EZPQMV95QJ',
         disable: true,
