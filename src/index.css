@@ -1,15 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
-
 @font-face {
-  font-family: 'Pretendardaaa';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Black.woff') format('woff');
   font-weight: 900;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Shadows';
-  src: url(https://fonts.gstatic.com/s/singleday/v17/LYjHdGDjlEgoAcF95EI5jV9tRtXRM_vAklfi4DzhOchwatn58A.0.woff2) format('woff2');
 }
 
 :root {

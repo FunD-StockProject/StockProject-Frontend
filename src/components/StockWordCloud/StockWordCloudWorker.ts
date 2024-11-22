@@ -129,7 +129,7 @@ const GetnerateWordCloud = (
 
   fontSizes = new Array(fontSize + 1);
   for (let i = 0; i <= fontSize; i++) {
-    fontSizes[i] = `900 ${i}px "Pretendardaaaaaa"`;
+    fontSizes[i] = `900 ${i}px "Pretendard"`;
   }
   FontOffCtx.font = fontSizes[1];
 
@@ -225,7 +225,7 @@ self.onmessage = (e) => {
 
   if (self.FontFace) {
     // first declare our font-face
-    const fontFace = new FontFace('Pretendardaaaaaa', "url(/fonts/Pretendard-Black.woff) format('woff')");
+    const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
     // add it to the list of fonts our worker supports
     self.fonts.add(fontFace);
     // load the font
@@ -241,7 +241,7 @@ self.onmessage = (e) => {
         postMessage("Your browser doesn't support the 2d context yet...");
         return;
       }
-      ctx.font = `900 ${50}px "Pretendardaaaaaa"`;
+      ctx.font = `900 ${50}px "Pretendard"`;
       ctx.fillStyle = '#FFFFFF';
       ctx.fillText('감자탕', 10, 50);
       // const img = canvas.transferToImageBitmap();
