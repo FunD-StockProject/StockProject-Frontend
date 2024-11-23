@@ -10,10 +10,7 @@ const plugin = <Partial<VitePWAOptions>>{
   manifest: {
     name: 'humanzipyo',
     short_name: 'humanzipyo',
-    start_url: '/',
-    display: 'standalone',
-    theme_color: '#5270FF',
-    background_color: '#ffffff',
+    theme_color: '#ffffff',
     icons: [
       {
         src: 'pwa-64x64.png',
