@@ -1,19 +1,39 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180" />
     <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF" />
-    <meta name="theme-color" content="#ffffff" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script>
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>인간지표</title>
   </head>
   <body>
     <div id="root" style="height: 100%; width: 100%; margin: 0 auto"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then((registration) => {
+              console.log('Service worker registration succeeded:', registration);
+            })
+            .catch((err) => {
+              console.log('Service worker registration failed:', err);
+            });
+        });
+      } else {
+        console.log('Service workers are not supported.');
+      }
+    </script>
   </body>
 </html>
