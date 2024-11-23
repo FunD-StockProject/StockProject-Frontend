@@ -1,6 +1,8 @@
-import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common';
-import { Text, TextDetail, TextHeading, TextTitle } from '../../components/Text';
+import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
+import { Text, TextDetail, TextHeading, TextTitle } from '../Text/Text';
 import { SearchTitleContainer, SearchTitleContents } from './SearchTitle.Syle';
+import ZipyoSVG from '../../assets/zipyo.svg?react';
+import theme from '../../styles/themes';
 
 const SearchTitle = ({
   stockName,
@@ -22,10 +24,13 @@ const SearchTitle = ({
           </ButtonDiv>
           <FlexDiv justifyContent="space-between" width="100%">
             <FlexDiv>
-              <TextHeading color="grayscale10">{stockName}</TextHeading>
+              <FlexDiv alignItems="center" gap="12px">
+                <TextHeading color="grayscale10">{stockName}</TextHeading>
+                <ZipyoSVG fill={theme.colors.primary40} />
+              </FlexDiv>
               <ImgDiv />
             </FlexDiv>
-            <ButtonDiv background="primary50" padding="16px 32px" radius="30px" onClick={onClick}>
+            <ButtonDiv background="primary50" padding="16px 48px" radius="30px" onClick={onClick}>
               <Text size="Large" weight="Bold" color="grayscale5">
                 {resultMode == 'indicator' ? '차트' : '인간지표'} 보기
               </Text>

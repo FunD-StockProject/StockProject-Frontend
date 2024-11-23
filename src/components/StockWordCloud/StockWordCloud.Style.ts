@@ -2,11 +2,33 @@ import styled from '@emotion/styled';
 import theme from '../../styles/themes';
 import { pop } from '../../styles/keyframes';
 
+const StockWordCloudContainer = styled.div({
+  display: 'flex',
+  margin: '0 48px',
+  // background: theme.colors.grayscale90,
+  gap: '28px',
+  height: '480px',
+  overflow: 'hidden',
+  position: 'relative',
+});
+
 const WordContainer = styled.div(
   {
     position: 'absolute',
   },
-  ({ orientation, posX, posY, sizeX, sizeY }: { orientation: number; posX: number; posY: number; sizeX: number; sizeY: number }) => ({
+  ({
+    orientation,
+    posX,
+    posY,
+    sizeX,
+    sizeY,
+  }: {
+    orientation: number;
+    posX: number;
+    posY: number;
+    sizeX: number;
+    sizeY: number;
+  }) => ({
     left: (!orientation ? posX : posX - sizeY / 2 + sizeX / 2) + 'px',
     top: (!orientation ? posY : posY + sizeY / 2 - sizeX / 2) + 'px',
   }),
@@ -24,7 +46,17 @@ const Word = styled.span(
     animation: pop + '.75s ease-in-out',
     animationFillMode: 'both',
   },
-  ({ orientation, fontSize, colors, delay }: { orientation: number; fontSize: number; colors: number; delay: number }) => ({
+  ({
+    orientation,
+    fontSize,
+    colors,
+    delay,
+  }: {
+    orientation: number;
+    fontSize: number;
+    colors: number;
+    delay: number;
+  }) => ({
     fontSize: fontSize,
     lineHeight: 1,
     rotate: !orientation ? '' : '90deg',
@@ -46,4 +78,4 @@ const Word = styled.span(
   }),
 );
 
-export { WordContainer, Word };
+export { StockWordCloudContainer, WordContainer, Word };

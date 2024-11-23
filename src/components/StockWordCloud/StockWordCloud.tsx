@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { WordCloudLayout } from './StockWordCloud.Type';
-import { Word, WordContainer } from './StockWordCloud.Style';
+import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import useWorker from '../../hooks/useWorker';
+import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
+import { TextHeading } from '../Text/Text';
+import InfoSVG from '../../assets/info.svg';
 
 const sample = [
   { text: '다', freq: 10 },
@@ -1032,15 +1035,35 @@ const sample = [
   { text: '나갑시다', freq: 1 },
 ];
 
-const StockWordCloud = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+const StockWordCloud = ({ stockId }: { stockId: number }) => {
   const [wordCloud, postMessage] = useWorker({
     worker: new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), {
       type: 'module',
     }),
   });
   const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockData, setStockData] = useState<any>();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const getStockData = async (stockId: number) => {
+    // const res = await Promise.resolve(fetchRelevant(stockId));
+    // if (!res) return null;
+    // setStockRelevantList(res);
+    stockId;
+    setStockData(sample);
+  };
+
+  useEffect(() => {
+    if (window.Worker) {
+      if (!containerRef.current) return;
+      postMessage({
+        data: stockData,
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight,
+      });
+    }
+  }, [stockData]);
 
   useEffect(() => {
     setDidMount(true);
@@ -1049,38 +1072,38 @@ const StockWordCloud = () => {
 
   useEffect(() => {
     if (!didMount) return;
-    if (window.Worker) {
-      if (!containerRef.current) return;
-      postMessage({
-        data: sample,
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
-      });
-    }
+    getStockData(stockId);
   }, [didMount]);
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: '100%',
-        height: '480px',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      {wordCloud
-        ? wordCloud.map((e: WordCloudLayout, i: number) => {
-            return (
-              <WordContainer key={i} orientation={e.orientation ? 1 : 0} posX={e.position.x} posY={e.position.y} sizeX={e.size.w} sizeY={e.size.h}>
+    <FlexDiv flexDirection="column" gap="24px" width="100%">
+      <FlexDiv alignItems="center" gap="12px">
+        <TextHeading size="Small" color="grayscale10">
+          국내 개미들의 소리
+        </TextHeading>
+        <ButtonDiv onClick={() => {}}>
+          <ImgDiv src={InfoSVG} width="28px" />
+        </ButtonDiv>
+      </FlexDiv>
+      <StockWordCloudContainer ref={containerRef}>
+        {wordCloud
+          ? wordCloud.map((e: WordCloudLayout, i: number) => (
+              <WordContainer
+                key={i}
+                orientation={e.orientation ? 1 : 0}
+                posX={e.position.x}
+                posY={e.position.y}
+                sizeX={e.size.w}
+                sizeY={e.size.h}
+              >
                 <Word orientation={e.orientation ? 1 : 0} fontSize={e.fontSize} colors={e.color} delay={i}>
                   {e.word}
                 </Word>
               </WordContainer>
-            );
-          })
-        : ''}
-    </div>
+            ))
+          : ''}
+      </StockWordCloudContainer>
+    </FlexDiv>
   );
 };
 
