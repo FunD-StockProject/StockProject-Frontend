@@ -6,13 +6,13 @@ import svgr from '@svgr/rollup';
 
 export default defineConfig({
   plugins: [
-    react(),
     svgr(),
     // VitePluginRadar({
     //   analytics: {
     //     id: 'G-EZPQMV95QJ',
     //   },
     // }),
+    react(),
     // VitePWA({
     //   registerType: 'autoUpdate',
     //   workbox: {
