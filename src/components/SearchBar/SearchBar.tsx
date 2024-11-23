@@ -4,18 +4,34 @@ import { webPath } from '../../router';
 import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../../utils/LocalStorage';
 import CancelSVG from '../../assets/icons/cancel.svg?react';
 import NoResultSVG from '../../assets/noResult.svg?react';
-import { TextDetail, TextTitle } from '../Text';
-import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common';
+import { TextDetail, TextTitle } from '../Text/Text';
+import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common/Common';
 import theme from '../../styles/themes';
 import { fetchAutoComplete, fetchSearchSymbolName, StockInfo } from '../../controllers/api';
-import { AutoCompleteItemViewProps, AutoCompleteListViewProps, RecentSearchItemViewProps, RecentSearchListViewProps } from './SearchBar.Prop';
-import { AutoCompleteCorrectSpan, SearchBarContainer, SearchBarContents, SearchBarDesignPart, SearchBarInput } from './SearchBar.Style';
+import {
+  AutoCompleteItemViewProps,
+  AutoCompleteListViewProps,
+  RecentSearchItemViewProps,
+  RecentSearchListViewProps,
+} from './SearchBar.Props';
+import {
+  AutoCompleteCorrectSpan,
+  SearchBarContainer,
+  SearchBarContents,
+  SearchBarDesignPart,
+  SearchBarInput,
+} from './SearchBar.Style';
 
 const RecentSearchListView = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListViewProps) => {
   return (
     <FlexDiv flexDirection="column" padding={searchedData.length ? '16px' : '0'} gap="8px">
       {searchedData.map((name: string, idx: number) => (
-        <RecentSearchItemView name={name} key={'recent_search_' + idx} searchItem={() => handleSearch(name)} deleteItem={() => deleteRecentSearch(name)} />
+        <RecentSearchItemView
+          name={name}
+          key={'recent_search_' + idx}
+          searchItem={() => handleSearch(name)}
+          deleteItem={() => deleteRecentSearch(name)}
+        />
       ))}
     </FlexDiv>
   );
@@ -70,7 +86,9 @@ const AutoCompleteItemView = ({ value, name, searchItem }: AutoCompleteItemViewP
       <ButtonDiv onClick={searchItem}>
         <FlexDiv gap="12px" alignItems="center">
           <TextDetail color="grayscale40">국내종목</TextDetail>
-          <TextTitle color="primary0">{[...name].map((e, i) => (arr[i] ? <AutoCompleteCorrectSpan>{e}</AutoCompleteCorrectSpan> : e))}</TextTitle>
+          <TextTitle color="primary0">
+            {[...name].map((e, i) => (arr[i] ? <AutoCompleteCorrectSpan>{e}</AutoCompleteCorrectSpan> : e))}
+          </TextTitle>
         </FlexDiv>
       </ButtonDiv>
       {/* <hr style={{ width: '100%' }} /> */}
@@ -83,7 +101,9 @@ const SearchBar = () => {
 
   const [stockName, setStockName] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchedData, setSearchedData] = useState<string[]>(isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : []);
+  const [searchedData, setSearchedData] = useState<string[]>(
+    isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : [],
+  );
   const [activeSearchBar, setActiveSearchBar] = useState<boolean>(false);
   const [searchedResult, setSearchedResult] = useState<StockInfo[]>([]);
 
@@ -172,7 +192,11 @@ const SearchBar = () => {
               />
               {activeSearchBar ? (
                 stockName == '' ? (
-                  <RecentSearchListView searchedData={searchedData} handleSearch={handleSearch} deleteRecentSearch={deleteRecentSearch} />
+                  <RecentSearchListView
+                    searchedData={searchedData}
+                    handleSearch={handleSearch}
+                    deleteRecentSearch={deleteRecentSearch}
+                  />
                 ) : (
                   <AutoCompleteListView value={stockName} searchedResult={searchedResult} handleSearch={handleSearch} />
                 )

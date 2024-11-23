@@ -31,6 +31,8 @@ export type themeColor =
   | 'information'
   | 'red'
   | 'blue'
+  | 'yellow'
+  | 'cyan'
   | 'transparent';
 
 export type themeTextType = 'Display' | 'Heading' | 'Title' | 'Body' | 'Detail' | 'Label' | 'Links';
@@ -101,6 +103,8 @@ const theme: Theme = {
     /* key */
     red: '#FD4821',
     blue: '#2D92FF',
+    yellow: '#FFEA64',
+    cyan: '#64FFEA',
 
     transparent: '#DD000000',
   },

@@ -30,7 +30,13 @@ const GetnerateWordCloud = ({
     );
   };
 
-  const getPosition = (textMetrics: TextMetrics, fontSize: number, margin: number, orientation: boolean, randomState: number) => {
+  const getPosition = (
+    textMetrics: TextMetrics,
+    fontSize: number,
+    margin: number,
+    orientation: boolean,
+    randomState: number,
+  ) => {
     const [sizeX, sizeY] = [
       margin + ~~(!orientation ? textMetrics.width * fontSize : fontSize),
       margin + ~~(!orientation ? fontSize : textMetrics.width * fontSize),
@@ -86,7 +92,10 @@ const GetnerateWordCloud = ({
     for (i = y; i < height; i++) {
       for (j = x; j < width; j++) {
         prefixSum[(i + 1) * (width + 1) + (j + 1)] =
-          prefixSum[i * (width + 1) + (j + 1)] + prefixSum[(i + 1) * (width + 1) + j] - prefixSum[i * (width + 1) + j] + grid[i * width + j];
+          prefixSum[i * (width + 1) + (j + 1)] +
+          prefixSum[(i + 1) * (width + 1) + j] -
+          prefixSum[i * (width + 1) + j] +
+          grid[i * width + j];
       }
     }
   };
@@ -240,7 +249,7 @@ self.onmessage = (e) => {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
+  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
   self.fonts.add(fontFace);
   fontFace.load().then(() => {
     if (!self.OffscreenCanvas) {
