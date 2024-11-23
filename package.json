@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "gen-pwa": "pwa-assets-generator --preset minimal public/appLogo.svg"
   },
   "homepage": "https://humanzipyo.com",
