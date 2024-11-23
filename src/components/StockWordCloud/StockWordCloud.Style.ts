@@ -7,7 +7,7 @@ const StockWordCloudContainer = styled.div({
   margin: '0 48px',
   // background: theme.colors.grayscale90,
   gap: '28px',
-  height: '480px',
+  height: '720px',
   overflow: 'hidden',
   position: 'relative',
 });
@@ -31,6 +31,8 @@ const WordContainer = styled.div(
   }) => ({
     left: (!orientation ? posX : posX - sizeY / 2 + sizeX / 2) + 'px',
     top: (!orientation ? posY : posY + sizeY / 2 - sizeX / 2) + 'px',
+    width: sizeX,
+    height: sizeY,
   }),
 );
 
@@ -42,21 +44,24 @@ const Word = styled.span(
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',
-    // animation: slidein + ' 6s ease-in-out',
-    animation: pop + '.75s ease-in-out',
     animationFillMode: 'both',
   },
   ({
+    animationState,
     orientation,
     fontSize,
     colors,
     delay,
   }: {
+    animationState: boolean;
     orientation: number;
     fontSize: number;
     colors: number;
     delay: number;
   }) => ({
+    animation: animationState ? pop + ' .75s ease-in-out' : '',
+    transform: animationState ? 'scale(1)' : 'scale(0)',
+    animationFillMode: 'both',
     fontSize: fontSize,
     lineHeight: 1,
     rotate: !orientation ? '' : '90deg',
@@ -74,7 +79,7 @@ const Word = styled.span(
                 : colors == 5
                   ? theme.colors.primary80
                   : '',
-    animationDelay: delay / 10 + 's',
+    animationDelay: animationState ? delay * 0.1 + 's' : '0s',
   }),
 );
 

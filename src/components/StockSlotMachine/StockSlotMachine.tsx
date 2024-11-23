@@ -1,7 +1,7 @@
 import { AnimatePresence, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { TextDisplay } from '../Text/Text';
-import { ImgDiv } from '../Common/Common';
+import { FlexDiv, ImgDiv } from '../Common/Common';
 import { scoreToIndex } from '../../utils/ScoreConvert';
 import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '../../constants/stockScore';
 import { SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
@@ -41,7 +41,7 @@ const ScoreSlotMachine = ({
       scaleY: 1,
       y: '0%',
       opacity: 1,
-      filter: !isLast ? 'blur(1.5px)' : 'blur(0px)',
+      filter: !isLast ? 'blur(5px)' : 'blur(0px)',
     }),
     exit: { scaleY: 1, y: '50%', opacity: 0 },
   };
@@ -69,6 +69,9 @@ const ScoreSlotMachine = ({
 
   return (
     <SlotMachineItemContainer>
+      <FlexDiv padding={'100% 0'}>
+        <TextDisplay color="grayscale90">.</TextDisplay>
+      </FlexDiv>
       <AnimatePresence mode="popLayout">
         {elementArr.map((e, i) => {
           const isLast = i === lastIndex;
@@ -84,7 +87,7 @@ const ScoreSlotMachine = ({
                 exit="exit"
                 transition={{
                   duration: getDuration(isLast ? 0.03 : 0.01, i),
-                  ease: isLast ? 'easeInOut' : 'linear',
+                  ease: 'easeIn',
                 }}
               >
                 {slotMachineType == 'stockScoreTitle' ? (
