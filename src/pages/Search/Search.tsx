@@ -90,6 +90,11 @@ const Search = () => {
     getScoreInfo(state?.stockName);
   }, [didMount]);
 
+  useEffect(() => {
+    if (!didMount) return;
+    getScoreInfo(state?.stockName);
+  }, [state]);
+
   return stockInfo ? (
     <SearchContainer>
       <SearchTitle stockName={stockInfo.symbolName} resultMode={resultMode} onClick={toggleResultMode} />
