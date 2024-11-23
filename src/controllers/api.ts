@@ -24,6 +24,10 @@ const fetchRelevant = async (id: number) => {
   return fetchData(`/${id}/relevant`);
 };
 
+const fetchStockChart = async (id: number) => {
+  return fetchData(`/${id}/relevant`); // add
+};
+
 const fetchHotStocks = async (country: string) => {
   return fetchData(`/stock/hot/${country}`);
 };
@@ -57,6 +61,7 @@ export interface StockInfo {
 export {
   fetchScore,
   fetchRelevant,
+  fetchStockChart,
   fetchHotStocks,
   fetchRisingStocks,
   fetchDescentStocks,

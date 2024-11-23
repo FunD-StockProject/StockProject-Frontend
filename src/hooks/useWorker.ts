@@ -1,7 +1,11 @@
 // useWorker.ts
 import { useEffect, useState, useRef, useCallback } from 'react';
 
-type UseWorkerResult = [result: any, postMessage: (message: any) => void];
+type UseWorkerResult = [
+  result: any,
+  setResult: React.Dispatch<React.SetStateAction<any>>,
+  postMessage: (message: any) => void,
+];
 
 const useWorker = ({ worker }: { worker: Worker }): UseWorkerResult => {
   const [result, setResult] = useState(null);
@@ -23,7 +27,7 @@ const useWorker = ({ worker }: { worker: Worker }): UseWorkerResult => {
     if (workerRef.current) workerRef.current.postMessage(message);
   }, []);
 
-  return [result, postMessage];
+  return [result, setResult, postMessage];
 };
 
 export default useWorker;

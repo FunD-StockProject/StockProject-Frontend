@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { WordCloudLayout } from './StockWordCloud.Type';
+import { WordCloudLayout, WordFrequency } from './StockWordCloud.Type';
 import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import useWorker from '../../hooks/useWorker';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
 import { TextHeading } from '../Text/Text';
 import InfoSVG from '../../assets/info.svg';
+import { useLocation } from 'react-router-dom';
 
 const sample = [
   { text: '다', freq: 10 },
@@ -228,7 +229,7 @@ const sample = [
   { text: '힘들어', freq: 1 },
   {
     text: '지겠지근데오르면이들은대박인가어쨋던내국인과외국인의차이가필요한',
-    value: 1,
+    freq: 1,
   },
   { text: '부분에', freq: 1 },
   { text: '대한점검이', freq: 1 },
@@ -952,7 +953,7 @@ const sample = [
   { text: '해야함', freq: 1 },
   {
     text: '외국애들은다덜부자가대가는데한국놈들만쪽빡차게하는이유가뭐야기회비용',
-    value: 1,
+    freq: 1,
   },
   { text: '날라가고', freq: 1 },
   { text: '우야꼬', freq: 1 },
@@ -1035,14 +1036,40 @@ const sample = [
   { text: '나갑시다', freq: 1 },
 ];
 
-const StockWordCloud = ({ stockId }: { stockId: number }) => {
-  const [wordCloud, postMessage] = useWorker({
+const StockWordCloudContents = ({ animationState, wordCloud }: { animationState: boolean; wordCloud: any }) => {
+  return wordCloud.map((e: WordCloudLayout, i: number) => (
+    <WordContainer
+      key={i}
+      orientation={e.orientation ? 1 : 0}
+      posX={e.position.x}
+      posY={e.position.y}
+      sizeX={e.size.w}
+      sizeY={e.size.h}
+    >
+      <Word
+        animationState={animationState}
+        orientation={e.orientation ? 1 : 0}
+        fontSize={e.fontSize}
+        colors={e.color}
+        delay={i}
+      >
+        {e.word}
+      </Word>
+    </WordContainer>
+  ));
+};
+
+const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: number }) => {
+  const { state } = useLocation();
+
+  const [wordCloud, setWordCloud, postMessage] = useWorker({
     worker: new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), {
       type: 'module',
     }),
   });
   const [didMount, setDidMount] = useState<boolean>(false);
-  const [stockData, setStockData] = useState<any>();
+  const [stockData, setStockData] = useState<WordFrequency[]>([]);
+  const [animationState, setAnimationState] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -1066,14 +1093,31 @@ const StockWordCloud = ({ stockId }: { stockId: number }) => {
   }, [stockData]);
 
   useEffect(() => {
+    if (!didMount) return;
+    getStockData(stockId);
+  }, [stockId]);
+
+  useEffect(() => {
+    if (!didMount) return;
+    if (stockName == state?.stockName) return;
+    setAnimationState(false);
+    setStockData([]);
+  }, [state]);
+
+  useEffect(() => {
     setDidMount(true);
     return () => {};
   }, []);
 
   useEffect(() => {
     if (!didMount) return;
+    setWordCloud(null);
     getStockData(stockId);
   }, [didMount]);
+
+  useEffect(() => {
+    setAnimationState(true);
+  }, [wordCloud]);
 
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
@@ -1081,27 +1125,12 @@ const StockWordCloud = ({ stockId }: { stockId: number }) => {
         <TextHeading size="Small" color="grayscale10">
           국내 개미들의 소리
         </TextHeading>
-        <ButtonDiv onClick={() => {}}>
+        <ButtonDiv>
           <ImgDiv src={InfoSVG} width="28px" />
         </ButtonDiv>
       </FlexDiv>
       <StockWordCloudContainer ref={containerRef}>
-        {wordCloud
-          ? wordCloud.map((e: WordCloudLayout, i: number) => (
-              <WordContainer
-                key={i}
-                orientation={e.orientation ? 1 : 0}
-                posX={e.position.x}
-                posY={e.position.y}
-                sizeX={e.size.w}
-                sizeY={e.size.h}
-              >
-                <Word orientation={e.orientation ? 1 : 0} fontSize={e.fontSize} colors={e.color} delay={i}>
-                  {e.word}
-                </Word>
-              </WordContainer>
-            ))
-          : ''}
+        {wordCloud ? <StockWordCloudContents wordCloud={wordCloud} animationState={animationState} /> : ''}
       </StockWordCloudContainer>
     </FlexDiv>
   );

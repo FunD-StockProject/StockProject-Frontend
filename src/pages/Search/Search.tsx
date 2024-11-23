@@ -10,8 +10,9 @@ import InfoSVG from '../../assets/info.svg';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
 import { SearchContainer, SearchResultContainer, SearchResultContents } from './Search.Style';
-import StockRelevant from '../../components/RelatedStock/RelatedStock';
+import StockRelevant from '../../components/StockRelevant/StockRelevant';
 import { fetchSearchSymbolName, StockInfo } from '../../controllers/api';
+import StockChart from '../../components/StockChart/StockChart';
 
 const SearchResultIndicatorContainer = styled.div({
   display: 'flex',
@@ -39,25 +40,6 @@ const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; s
         <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScoreImage" />
         <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScore" />
       </SearchResultIndicatorContainer>
-    </FlexDiv>
-  );
-};
-
-const SearchResultChartContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  gap: '28px',
-  height: '640px',
-  background: theme.colors.grayscale90,
-});
-
-const SearchResultChart = ({ stockId }: { stockId: number }) => {
-  return (
-    <FlexDiv flexDirection="column" width="100%">
-      {stockId}
-      <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <SearchResultChartContainer></SearchResultChartContainer>
-      </FlexDiv>
     </FlexDiv>
   );
 };
@@ -103,11 +85,11 @@ const Search = () => {
           {resultMode == 'indicator' ? (
             <>
               <SearchResultIndicator stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
-              <StockWordCloud stockId={stockInfo.stockId} />
+              <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
             </>
           ) : (
             <>
-              <SearchResultChart stockId={stockInfo.stockId} />
+              <StockChart stockId={stockInfo.stockId} />
             </>
           )}
           <StockRelevant stockId={stockInfo.stockId} />

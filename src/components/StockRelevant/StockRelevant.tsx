@@ -4,7 +4,7 @@ import { scoreToImage } from '../../utils/ScoreConvert';
 import theme from '../../styles/themes';
 import UpSVG from '../../assets/icons/up.svg?react';
 import DownSVG from '../../assets/icons/down.svg?react';
-import { StockRelevantContainer, StockRelevantItemContainer, StockRelevantItemTitle } from './RelatedStock.Style';
+import { StockRelevantContainer, StockRelevantItemContainer, StockRelevantItemTitle } from './StockRelevant.Style';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';

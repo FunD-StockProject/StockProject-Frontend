@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import theme from '../../styles/themes';
 
 const SlotMachineItemContainer = styled.div({
-  backgroundColor: '#303033',
+  backgroundColor: theme.colors.grayscale90,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -16,6 +16,7 @@ const SlotMachineItemContainer = styled.div({
 });
 
 const SlotMachineItemMotionDiv = styled(motion.div)({
+  position: 'absolute',
   width: '100%',
   height: '100%',
   display: 'flex',

@@ -28,4 +28,4 @@ export type Width<TLength = (string & {}) | 0> =
   | 'min-content'
   | 'min-intrinsic'
   | (string & {});
-export type Padding<TLength = (string & {}) | 0> = Globals | TLength | (string & {});
+export type Padding<TLength = string | 0> = Globals | TLength | string;
