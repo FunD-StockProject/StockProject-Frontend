@@ -3,8 +3,14 @@ import { useEffect, useState } from 'react';
 import { TextDisplay } from '../Text';
 import { ImgDiv } from '../Common';
 import { scoreToIndex } from '../../utils/ScoreConvert';
-import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '../../constants/stockScore';
-import { SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
+import {
+  ARRAY_STOCK_SCORE_IMAGE,
+  ARRAY_STOCK_SCORE_TITLE,
+} from '../../constants/stockScore';
+import {
+  SlotMachineItemContainer,
+  SlotMachineItemMotionDiv,
+} from './stockSlotMachine.Style';
 
 const ScoreSlotMachine = ({
   stockName,
@@ -17,14 +23,31 @@ const ScoreSlotMachine = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scoreIndex = scoreToIndex(stockScore);
-  const arrayRepeat = slotMachineType == 'stockScoreTitle' ? 3 : slotMachineType == 'stockScore' ? 1 : 4;
+  const arrayRepeat =
+    slotMachineType == 'stockScoreTitle'
+      ? 3
+      : slotMachineType == 'stockScore'
+        ? 1
+        : 4;
   const elementArr = Array(arrayRepeat)
     .fill(
       slotMachineType == 'stockScoreTitle'
-        ? Array.from(ARRAY_STOCK_SCORE_TITLE, (_, i) => ARRAY_STOCK_SCORE_TITLE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_TITLE.length])
+        ? Array.from(
+            ARRAY_STOCK_SCORE_TITLE,
+            (_, i) =>
+              ARRAY_STOCK_SCORE_TITLE[
+                (i + scoreIndex + 1) % ARRAY_STOCK_SCORE_TITLE.length
+              ],
+          )
         : slotMachineType == 'stockScore'
           ? Array.from({ length: 25 }, (_, i) => stockScore - (24 - i))
-          : Array.from(ARRAY_STOCK_SCORE_IMAGE, (_, i) => ARRAY_STOCK_SCORE_IMAGE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_IMAGE.length]),
+          : Array.from(
+              ARRAY_STOCK_SCORE_IMAGE,
+              (_, i) =>
+                ARRAY_STOCK_SCORE_IMAGE[
+                  (i + scoreIndex + 1) % ARRAY_STOCK_SCORE_IMAGE.length
+                ],
+            ),
     )
     .flat();
   const lastIndex = elementArr.length - 1;
@@ -76,14 +99,22 @@ const ScoreSlotMachine = ({
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                transition={{ duration: getDuration(isLast ? 0.03 : 0.01, i), ease: isLast ? 'easeInOut' : 'linear' }}
+                transition={{
+                  duration: getDuration(isLast ? 0.03 : 0.01, i),
+                  ease: isLast ? 'easeInOut' : 'linear',
+                }}
               >
                 {slotMachineType == 'stockScoreTitle' ? (
                   <TextDisplay color="primary0">{e}</TextDisplay>
                 ) : slotMachineType == 'stockScore' ? (
                   <TextDisplay color="primary0">{e}</TextDisplay>
                 ) : (
-                  <ImgDiv src={e} height="100%" width="100%" />
+                  <ImgDiv
+                    src={e}
+                    height="100%"
+                    width="100%"
+                    objectFit="cover"
+                  />
                 )}
               </SlotMachineItemMotionDiv>
             )

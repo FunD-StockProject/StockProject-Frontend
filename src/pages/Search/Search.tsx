@@ -5,15 +5,23 @@ import theme from '../../styles/themes';
 import SearchTitle from '../../components/SearchTitle/SearchTitle';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common';
 import { useState } from 'react';
-import { Text, TextHeading, TextTitle } from '../../components/Text';
+import {
+  Text,
+  TextDetail,
+  TextHeading,
+  TextTitle,
+} from '../../components/Text';
 import LogoSVG from '../../assets/logo_white.svg';
 import InfoSVG from '../../assets/info.svg';
+import UpSVG from '../../assets/icons/up.svg?react';
+import DownSVG from '../../assets/icons/down.svg?react';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
+import { scoreToImage } from '../../utils/ScoreConvert';
 
 const SearchContainer = styled.div({
   width: '100%',
-  marginBottom: 'auto',
+  marginBottom: '64px',
 });
 
 const SearchResultContainer = styled.div({
@@ -43,6 +51,9 @@ const SearchResultIndicatorContainer = styled.div({
 });
 
 const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
+  const score = ~~(Math.random() * 101);
+  // console.log(123);
+
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
       <FlexDiv alignItems="center" gap="12px">
@@ -55,9 +66,21 @@ const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScore" />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={score}
+          slotMachineType="stockScoreTitle"
+        />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={score}
+          slotMachineType="stockScoreImage"
+        />
+        <ScoreSlotMachine
+          stockName={stockName}
+          stockScore={score}
+          slotMachineType="stockScore"
+        />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
@@ -96,6 +119,7 @@ const SearchResultRelativeStockContainer = styled.div({
 });
 
 const SearchResultRelativeStockItem = styled.div({
+  overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -103,6 +127,7 @@ const SearchResultRelativeStockItem = styled.div({
   borderRadius: '18px',
   width: '100%',
   background: theme.colors.grayscale100,
+  cursor: 'pointer',
 });
 
 const SearchResultRelativeStockItemTitle = styled.div({
@@ -117,52 +142,83 @@ const SearchResultRelativeStockItemTitle = styled.div({
   gap: '12px',
 });
 
+const RelatedStockScoreDiv = styled(
+  ({
+    stockScore,
+    stockDeltaScore,
+  }: {
+    stockScore: number;
+    stockDeltaScore: number;
+  }) => {
+    return (
+      <ButtonDiv
+        gap="8px"
+        background={stockScore > 50 ? 'red' : 'blue'}
+        radius="100px"
+        padding="8px 24px"
+      >
+        <Text size="Large" weight="Bold" color="primary0">
+          {stockScore}점
+        </Text>
+        <FlexDiv gap="2px" alignItems="center">
+          <TextDetail weight="Bold" color="primary0">
+            {stockDeltaScore}
+          </TextDetail>
+          {stockDeltaScore > 0 ? (
+            <UpSVG fill={theme.colors.primary0} />
+          ) : (
+            <DownSVG fill={theme.colors.primary0} />
+          )}
+        </FlexDiv>
+      </ButtonDiv>
+    );
+  },
+)({});
+
+const RelatedStockItem = ({
+  stockName,
+  stockScore,
+  stockDeltaScore,
+}: {
+  stockName: string;
+  stockScore: number;
+  stockDeltaScore: number;
+}) => {
+  return (
+    <SearchResultRelativeStockItem onClick={() => {}}>
+      <ImgDiv src={scoreToImage(stockScore)} width="100%" />
+      <SearchResultRelativeStockItemTitle>
+        <RelatedStockScoreDiv
+          stockScore={stockScore}
+          stockDeltaScore={stockDeltaScore}
+        />
+        <TextHeading color="grayscale90">{stockName}</TextHeading>
+      </SearchResultRelativeStockItemTitle>
+    </SearchResultRelativeStockItem>
+  );
+};
+
 const SearchResultRelativeStock = () => {
+  const arr = [
+    { stockName: '삼성전자', stockScore: 81, stockDeltaScore: 18 },
+    { stockName: '한화솔루션', stockScore: 11, stockDeltaScore: -18 },
+    { stockName: 'SK하이닉스', stockScore: 32, stockDeltaScore: -7 },
+  ];
+
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
       <TextTitle size="XLarge" color="grayscale10">
         관련 종목
       </TextTitle>
       <SearchResultRelativeStockContainer>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
+        {arr.map((e, i) => (
+          <RelatedStockItem
+            key={i}
+            stockName={e.stockName}
+            stockScore={e.stockScore}
+            stockDeltaScore={e.stockDeltaScore}
+          />
+        ))}
       </SearchResultRelativeStockContainer>
     </FlexDiv>
   );
@@ -190,7 +246,9 @@ const Search = () => {
   const { state } = useLocation();
   const stockName = state?.stockName;
 
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>(
+    'indicator',
+  );
 
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
@@ -198,7 +256,11 @@ const Search = () => {
 
   return (
     <SearchContainer>
-      <SearchTitle stockName={stockName} resultMode={resultMode} onClick={toggleResultMode} />
+      <SearchTitle
+        stockName={stockName}
+        resultMode={resultMode}
+        onClick={toggleResultMode}
+      />
       <SearchResultContainer>
         <SearchResultContents>
           {resultMode == 'indicator' ? (
