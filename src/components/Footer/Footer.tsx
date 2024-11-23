@@ -1,4 +1,4 @@
-import { ReactComponent as LogoSVG } from '../../assets/logo_white.svg';
+import LogoSVG from '../../assets/logo_white.svg?react';
 import dictSVG from '../../assets/footer_dict.svg';
 import commentSVG from '../../assets/footer_comment.svg';
 import developerSVG from '../../assets/footer_developer.svg';
