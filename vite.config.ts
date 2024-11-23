@@ -6,7 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
-    svgr(), // SVG 파일을 React 컴포넌트로 변환하는 플러그인
+    svgr(),
     react(),
     VitePluginRadar({
       analytics: {
@@ -15,19 +15,12 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      workbox: {
-        clientsClaim: true,
-        skipWaiting: true,
-      },
-      devOptions: {
-        enabled: true,
-      },
-      // SVG 파일을 PWA 자산에 포함하지 않도록 수정
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'humanzipyo',
         short_name: 'humanzipyo',
-        theme_color: '#ffffff',
+        theme_color: '#5270FF',
+        background_color: '#000000',
         icons: [
           {
             src: 'pwa-64x64.png',
@@ -49,7 +42,7 @@ export default defineConfig({
             src: 'maskable-icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable',
+            purpose: 'c',
           },
         ],
       },
