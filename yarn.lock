@@ -1363,7 +1363,7 @@
   resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.9.3.tgz"
   integrity sha512-3YJJLQ5suIEHEKc1GHtqVq475guiyqisKSoUnoaRtxkDaW5g1yvPt9IoSLOe2mRs7+FFhGGU693RsBUSwOXSdQ==
 
-"@swc/core@^1.7.26":
+"@swc/core@^1.7.26", "@swc/core@^1.9.3":
   version "1.9.3"
   resolved "https://registry.npmjs.org/@swc/core/-/core-1.9.3.tgz"
   integrity sha512-oRj0AFePUhtatX+BscVhnzaAmWjpfAeySpM1TCbxA1rtBDeH/JDhi5yYzAKneDYtVtBvA7ApfeuzhMC9ye4xSg==
@@ -1436,7 +1436,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.3.10":
+"@types/react@*", "@types/react@^18.3.12":
   version "18.3.12"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.3.12.tgz"
   integrity sha512-D2wOSq/d6Agt28q7rSI3jhU7G6aiuzljDGZ2hTZHIkrTLUI+AF3WMeKkEZ9nN2fkBAlcktT6vcZjDFiIhMYEQw==
@@ -1547,7 +1547,7 @@
     sharp-ico "^0.1.5"
     unconfig "^0.3.11"
 
-"@vitejs/plugin-react-swc@^3.7.1":
+"@vitejs/plugin-react-swc@^3.5.0":
   version "3.7.1"
   resolved "https://registry.npmjs.org/@vitejs/plugin-react-swc/-/plugin-react-swc-3.7.1.tgz"
   integrity sha512-vgWOY0i1EROUK0Ctg1hwhtC3SdcDjZcdit4Ups4aPkDcB1jYhmo+RMYWY87cmXMhvtD5uf8lV89j2w16vkdSVg==
@@ -4636,7 +4636,7 @@ vite-plugin@^0.0.0:
   resolved "https://registry.npmjs.org/vite-plugin/-/vite-plugin-0.0.0.tgz"
   integrity sha512-6aFl/G7X41T3DCpNDQcji2TeFXhQ/41JfhsBoUqhR/86bWSrqwOc05RJpDKrVysGMKbdeHoJ6F9UkBL2iwGiLw==
 
-"vite@^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0", "vite@^3.1.0 || ^4.0.0 || ^5.0.0", "vite@^4 || ^5", vite@^5.4.11:
+"vite@^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0", "vite@^3.1.0 || ^4.0.0 || ^5.0.0", "vite@^4 || ^5", vite@^5.4.10:
   version "5.4.11"
   resolved "https://registry.npmjs.org/vite/-/vite-5.4.11.tgz"
   integrity sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==
