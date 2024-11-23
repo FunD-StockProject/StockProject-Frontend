@@ -18,20 +18,6 @@ export default defineConfig({
       workbox: {
         clientsClaim: true,
         skipWaiting: true,
-        globPatterns: ['**/*.{html,js,css,png,jpg,jpeg,svg}'], // SVG 포함
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.pathname.endsWith('.svg'), // .svg 파일만 캐시
-            handler: 'CacheFirst', // 캐시 정책 설정
-            options: {
-              cacheName: 'svg-cache',
-              expiration: {
-                maxEntries: 10, // 캐시할 파일 수
-                maxAgeSeconds: 60 * 60 * 24, // 1일
-              },
-            },
-          },
-        ],
       },
       devOptions: {
         enabled: true,
