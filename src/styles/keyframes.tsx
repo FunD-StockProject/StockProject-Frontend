@@ -7,8 +7,8 @@ const pop = keyframes`
   }
 
   50% {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
   }
 
   to {
@@ -19,13 +19,19 @@ const pop = keyframes`
 
 const slidein = keyframes`
   from {
-    margin-left: 100%;
-    width: 300%;
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  10% {
+  transform: translate3d(0, 0, 0);
+  }
+  
+  90% {
+  transform: translate3d(0, 0, 0);
   }
 
   to {
-    margin-left: 0%;
-    width: 100%;
+    transform: translate3d(-3000px, 0, 0);
   }
 `;
 
