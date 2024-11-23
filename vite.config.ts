@@ -6,8 +6,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
-    react(),
     svgr(),
+    react(),
     VitePluginRadar({
       analytics: {
         id: 'G-EZPQMV95QJ',
