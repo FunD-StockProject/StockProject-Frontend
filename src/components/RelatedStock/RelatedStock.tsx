@@ -6,6 +6,8 @@ import UpSVG from '../../assets/icons/up.svg?react';
 import DownSVG from '../../assets/icons/down.svg?react';
 import { StockRelevantContainer, StockRelevantItemContainer, StockRelevantItemTitle } from './RelatedStock.Style';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '../../router';
 // import { fetchRelevant } from '../../controllers/api';
 
 const sample = [
@@ -23,13 +25,18 @@ const StockRelevantItem = ({
   stockScore: number;
   stockDeltaScore: number;
 }) => {
+  const navigate = useNavigate();
   const scoreImage = scoreToImage(stockScore);
   const backgroundColor = stockScore > 50 ? 'red' : 'blue';
   const deltaColor = stockDeltaScore > 0 ? 'yellow' : 'cyan';
   const deltaSVG = stockDeltaScore > 0 ? <UpSVG fill={theme.colors.yellow} /> : <DownSVG fill={theme.colors.cyan} />;
 
+  const handleClick = () => {
+    navigate(webPath.search(), { state: { stockName } });
+  };
+
   return (
-    <StockRelevantItemContainer onClick={() => {}}>
+    <StockRelevantItemContainer onClick={handleClick}>
       <ImgDiv src={scoreImage} width="100%" />
       <StockRelevantItemTitle>
         <ButtonDiv gap="8px" background={backgroundColor} radius="100px" padding="8px 24px">
