@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import svgr from '@svgr/rollup';
+// import svgr from '@svgr/rollup';
 // import { VitePluginRadar } from 'vite-plugin-radar';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     react(),
-    svgr(),
+    // svgr(),
     // VitePluginRadar({
     //   analytics: {
     //     id: 'G-EZPQMV95QJ',

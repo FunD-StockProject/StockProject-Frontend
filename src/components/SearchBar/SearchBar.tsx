@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
 import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../../utils/LocalStorage';
-import { ReactComponent as CancelSVG } from '../../assets/icons/cancel.svg';
-import { ReactComponent as NoResultSVG } from '../../assets/noResult.svg';
+// import { ReactComponent as CancelSVG } from '../../assets/icons/cancel.svg';
+// import { ReactComponent as NoResultSVG } from '../../assets/noResult.svg';
 import { TextDetail, TextTitle } from '../Text';
 import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common';
-import theme from '../../styles/themes';
+// import theme from '../../styles/themes';
 import { fetchAutoComplete, fetchSearchSymbolName, StockInfo } from '../../controllers/api';
 import { AutoCompleteItemViewProps, AutoCompleteListViewProps, RecentSearchItemViewProps, RecentSearchListViewProps } from './SearchBar.Prop';
 import { AutoCompleteCorrectSpan, SearchBarContainer, SearchBarContents, SearchBarDesignPart, SearchBarInput } from './SearchBar.Style';
@@ -27,9 +27,7 @@ const RecentSearchItemView = ({ name, searchItem, deleteItem }: RecentSearchItem
       <ButtonDiv onClick={searchItem}>
         <TextTitle color="primary0">{name}</TextTitle>
       </ButtonDiv>
-      <ButtonDiv onClick={deleteItem}>
-        <CancelSVG fill={theme.colors.primary5} width={32} height={32} />
-      </ButtonDiv>
+      <ButtonDiv onClick={deleteItem}>{/* <CancelSVG fill={theme.colors.primary5} width={32} height={32} /> */}</ButtonDiv>
     </FlexDiv>
   );
 };
@@ -50,7 +48,7 @@ const AutoCompleteListView = ({ value, searchedResult, handleSearch }: AutoCompl
     </FlexDiv>
   ) : (
     <FlexDiv justifyContent="center" padding="32px 0">
-      <NoResultSVG />
+      {/* <NoResultSVG /> */}
     </FlexDiv>
   );
 };

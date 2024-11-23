@@ -1,4 +1,4 @@
-import { ReactComponent as LogoSVG } from '../../assets/logo_white.svg';
+// import { ReactComponent as LogoSVG } from '../../assets/logo_white.svg';
 import dictSVG from '../../assets/footer_dict.svg';
 import commentSVG from '../../assets/footer_comment.svg';
 import developerSVG from '../../assets/footer_developer.svg';
@@ -26,7 +26,7 @@ const Footer = () => {
         <FooterContents>
           <FlexDiv alignItems="center" gap="18px">
             <TextHeading color="primary0">About</TextHeading>
-            <LogoSVG />
+            {/* <LogoSVG /> */}
           </FlexDiv>
           <Text color="grayscale30" weight="Bold">
             개미들이 원하던 서비스! '인간지표'가 2025년 1월 11일에 공식 오픈이 예정되어있어요! 😊
