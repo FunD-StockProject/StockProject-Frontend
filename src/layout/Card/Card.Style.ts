@@ -28,9 +28,6 @@ const StyledCard = styled('div')`
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    border: none; /* 불필요한 border 제거 */
-    padding: 0; /* padding 제거 */
-    margin: 0; /* margin 제거 */
     line-height: 1;
   }
 `;
@@ -38,9 +35,22 @@ const StyledCard = styled('div')`
 const StyledScore = styled(`div`)<{ backgroundColor: string }>`
   background-color: ${(props) => props.backgroundColor};
   color: white;
-  font-size: 0.5em;
-  padding: 5px 10px;
-  border-radius: 50px;
+  font-size: 1em;
+  padding: 10px 20px;
+  border-radius: 40px;
 `;
 
-export { StyledCard, StyledScore };
+const StyledChangedScore = styled(`span`)<{ color: string }>`
+  color: ${(props) => props.color};
+  font-size: 0.5em;
+  padding: 2.5px;
+  vertical-align: middle;
+
+  img {
+    width: 1em; /* 텍스트 크기에 맞춤 */
+    // height: auto;
+    // margin-left: 4px; /* 텍스트와 이미지 사이 간격 */
+  }
+`;
+
+export { StyledCard, StyledScore, StyledChangedScore };
