@@ -20,6 +20,10 @@ const fetchScore = async (id: number) => {
   return fetchData(`/${id}/score`);
 };
 
+const fetchRelevant = async (id: number) => {
+  return fetchData(`/${id}/relevant`);
+};
+
 const fetchHotStocks = async (country: string) => {
   return fetchData(`/stock/hot/${country}`);
 };
@@ -40,14 +44,22 @@ const fetchSearchSymbolName = (name: string) => {
   return fetchData(`/stock/search/${name}`);
 };
 export interface StockInfo {
-  stockId?: number;
-  symbol?: string;
-  symbolName?: string;
-  securityName?: string;
-  exchangeNum?: string;
-  scoreId?: number;
-  scoreKorea?: number;
-  scoreOversea?: number;
+  stockId: number;
+  symbol: string;
+  symbolName: string;
+  securityName: string;
+  exchangeNum: string;
+  scoreId: number;
+  scoreKorea: number;
+  scoreOversea: number;
 }
 
-export { fetchScore, fetchHotStocks, fetchRisingStocks, fetchDescentStocks, fetchAutoComplete, fetchSearchSymbolName };
+export {
+  fetchScore,
+  fetchRelevant,
+  fetchHotStocks,
+  fetchRisingStocks,
+  fetchDescentStocks,
+  fetchAutoComplete,
+  fetchSearchSymbolName,
+};

@@ -1035,15 +1035,35 @@ const sample = [
   { text: '나갑시다', freq: 1 },
 ];
 
-const StockWordCloud = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+const StockWordCloud = ({ stockId }: { stockId: number }) => {
   const [wordCloud, postMessage] = useWorker({
     worker: new Worker(new URL('./StockWordCloudWorker.ts', import.meta.url), {
       type: 'module',
     }),
   });
   const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockData, setStockData] = useState<any>();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const getStockData = async (stockId: number) => {
+    // const res = await Promise.resolve(fetchRelevant(stockId));
+    // if (!res) return null;
+    // setStockRelevantList(res);
+    stockId;
+    setStockData(sample);
+  };
+
+  useEffect(() => {
+    if (window.Worker) {
+      if (!containerRef.current) return;
+      postMessage({
+        data: stockData,
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight,
+      });
+    }
+  }, [stockData]);
 
   useEffect(() => {
     setDidMount(true);
@@ -1052,14 +1072,7 @@ const StockWordCloud = () => {
 
   useEffect(() => {
     if (!didMount) return;
-    if (window.Worker) {
-      if (!containerRef.current) return;
-      postMessage({
-        data: sample,
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
-      });
-    }
+    getStockData(stockId);
   }, [didMount]);
 
   return (

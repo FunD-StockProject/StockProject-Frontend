@@ -3,14 +3,15 @@ import { useLocation } from 'react-router-dom';
 import theme from '../../styles/themes';
 import SearchTitle from '../../components/SearchTitle/SearchTitle';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextHeading } from '../../components/Text/Text';
 import LogoSVG from '../../assets/logo_white.svg';
 import InfoSVG from '../../assets/info.svg';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
 import { SearchContainer, SearchResultContainer, SearchResultContents } from './Search.Style';
-import RelatedStock from '../../components/RelatedStock/RelatedStock';
+import StockRelevant from '../../components/RelatedStock/RelatedStock';
+import { fetchSearchSymbolName, StockInfo } from '../../controllers/api';
 
 const SearchResultIndicatorContainer = styled.div({
   display: 'flex',
@@ -21,10 +22,7 @@ const SearchResultIndicatorContainer = styled.div({
   gap: '28px',
 });
 
-const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
-  const score = ~~(Math.random() * 101);
-  // console.log(123);
-
+const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; stockScore: number }) => {
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
       <FlexDiv alignItems="center" gap="12px">
@@ -37,9 +35,9 @@ const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScore" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScoreTitle" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScoreImage" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScore" />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
@@ -53,9 +51,10 @@ const SearchResultChartContainer = styled.div({
   background: theme.colors.grayscale90,
 });
 
-const SearchResultChart = () => {
+const SearchResultChart = ({ stockId }: { stockId: number }) => {
   return (
     <FlexDiv flexDirection="column" width="100%">
+      {stockId}
       <FlexDiv flexDirection="column" gap="24px" width="100%">
         <SearchResultChartContainer></SearchResultChartContainer>
       </FlexDiv>
@@ -65,33 +64,53 @@ const SearchResultChart = () => {
 
 const Search = () => {
   const { state } = useLocation();
-  const stockName = state?.stockName;
 
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockInfo, setStockInfo] = useState<StockInfo>();
 
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
   };
 
-  return (
+  const getScoreInfo = async (stockName: string) => {
+    if (!stockName) return null;
+    const res = await Promise.resolve(fetchSearchSymbolName(stockName));
+    if (!res) return null;
+    setStockInfo(res);
+  };
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getScoreInfo(state?.stockName);
+  }, [didMount]);
+
+  return stockInfo ? (
     <SearchContainer>
-      <SearchTitle stockName={stockName} resultMode={resultMode} onClick={toggleResultMode} />
+      <SearchTitle stockName={stockInfo.symbolName} resultMode={resultMode} onClick={toggleResultMode} />
       <SearchResultContainer>
         <SearchResultContents>
           {resultMode == 'indicator' ? (
             <>
-              <SearchResultIndicator stockName={stockName} />
-              <StockWordCloud />
+              <SearchResultIndicator stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
+              <StockWordCloud stockId={stockInfo.stockId} />
             </>
           ) : (
             <>
-              <SearchResultChart />
+              <SearchResultChart stockId={stockInfo.stockId} />
             </>
           )}
-          <RelatedStock />
+          <StockRelevant stockId={stockInfo.stockId} />
         </SearchResultContents>
       </SearchResultContainer>
     </SearchContainer>
+  ) : (
+    ''
   );
 };
 

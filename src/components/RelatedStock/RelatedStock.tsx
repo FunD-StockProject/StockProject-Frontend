@@ -4,9 +4,17 @@ import { scoreToImage } from '../../utils/ScoreConvert';
 import theme from '../../styles/themes';
 import UpSVG from '../../assets/icons/up.svg?react';
 import DownSVG from '../../assets/icons/down.svg?react';
-import { RelatedStockContainer, RelatedStockItemContainer, RelatedStockItemTitle } from './RelatedStock.Style';
+import { StockRelevantContainer, StockRelevantItemContainer, StockRelevantItemTitle } from './RelatedStock.Style';
+import { useEffect, useState } from 'react';
+// import { fetchRelevant } from '../../controllers/api';
 
-const RelatedStockItem = ({
+const sample = [
+  { stockName: '삼성전자', stockScore: 81, stockDeltaScore: 18 },
+  { stockName: '한화솔루션', stockScore: 11, stockDeltaScore: -18 },
+  { stockName: 'SK하이닉스', stockScore: 32, stockDeltaScore: -7 },
+];
+
+const StockRelevantItem = ({
   stockName,
   stockScore,
   stockDeltaScore,
@@ -21,9 +29,9 @@ const RelatedStockItem = ({
   const deltaSVG = stockDeltaScore > 0 ? <UpSVG fill={theme.colors.yellow} /> : <DownSVG fill={theme.colors.cyan} />;
 
   return (
-    <RelatedStockItemContainer onClick={() => {}}>
+    <StockRelevantItemContainer onClick={() => {}}>
       <ImgDiv src={scoreImage} width="100%" />
-      <RelatedStockItemTitle>
+      <StockRelevantItemTitle>
         <ButtonDiv gap="8px" background={backgroundColor} radius="100px" padding="8px 24px">
           <Text size="Large" weight="Bold" color="primary0">
             {stockScore}점
@@ -36,35 +44,52 @@ const RelatedStockItem = ({
           </FlexDiv>
         </ButtonDiv>
         <TextHeading color="grayscale90">{stockName}</TextHeading>
-      </RelatedStockItemTitle>
-    </RelatedStockItemContainer>
+      </StockRelevantItemTitle>
+    </StockRelevantItemContainer>
   );
 };
 
-const RelatedStock = () => {
-  const arr = [
-    { stockName: '삼성전자', stockScore: 81, stockDeltaScore: 18 },
-    { stockName: '한화솔루션', stockScore: 11, stockDeltaScore: -18 },
-    { stockName: 'SK하이닉스', stockScore: 32, stockDeltaScore: -7 },
-  ];
+const StockRelevant = ({ stockId }: { stockId: number }) => {
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockRelevantList, setStockRelevantList] = useState<any[]>();
 
-  return (
+  const getStockRelevantList = async (stockId: number) => {
+    // const res = await Promise.resolve(fetchRelevant(stockId));
+    // if (!res) return null;
+    // setStockRelevantList(res);
+    stockId;
+    setStockRelevantList(sample);
+  };
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getStockRelevantList(stockId);
+  }, [didMount]);
+
+  return stockRelevantList ? (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
       <TextHeading size="Small" color="grayscale10">
         관련 종목
       </TextHeading>
-      <RelatedStockContainer>
-        {arr.map((e, i) => (
-          <RelatedStockItem
+      <StockRelevantContainer>
+        {stockRelevantList.map((e, i) => (
+          <StockRelevantItem
             key={i}
             stockName={e.stockName}
             stockScore={e.stockScore}
             stockDeltaScore={e.stockDeltaScore}
           />
         ))}
-      </RelatedStockContainer>
+      </StockRelevantContainer>
     </FlexDiv>
+  ) : (
+    ''
   );
 };
 
-export default RelatedStock;
+export default StockRelevant;

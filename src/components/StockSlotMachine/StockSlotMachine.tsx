@@ -92,7 +92,7 @@ const ScoreSlotMachine = ({
                 ) : slotMachineType == 'stockScore' ? (
                   <TextDisplay color="primary0">{e}</TextDisplay>
                 ) : (
-                  <ImgDiv src={e} height="100%" width="100%" />
+                  <ImgDiv src={e} height="100%" width="100%" objectFit="cover" />
                 )}
               </SlotMachineItemMotionDiv>
             )
