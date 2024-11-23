@@ -3,12 +3,12 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 
 type UseWorkerResult = [result: any, postMessage: (message: any) => void];
 
-const useWorker = ({ url }: { url: URL }): UseWorkerResult => {
+const useWorker = ({ worker }: { worker: Worker }): UseWorkerResult => {
   const [result, setResult] = useState(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    workerRef.current = new Worker(url);
+    workerRef.current = worker;
 
     workerRef.current.onmessage = (e) => {
       setResult(e.data);
@@ -17,7 +17,7 @@ const useWorker = ({ url }: { url: URL }): UseWorkerResult => {
     return () => {
       if (workerRef.current) workerRef.current.terminate();
     };
-  }, [url]);
+  }, [worker]);
 
   const postMessage = useCallback((message: any) => {
     if (workerRef.current) workerRef.current.postMessage(message);

@@ -55,21 +55,9 @@ const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <ScoreSlotMachine
-          stockName={stockName}
-          stockScore={65}
-          slotMachineType="stockScoreTitle"
-        />
-        <ScoreSlotMachine
-          stockName={stockName}
-          stockScore={65}
-          slotMachineType="stockScoreImage"
-        />
-        <ScoreSlotMachine
-          stockName={stockName}
-          stockScore={65}
-          slotMachineType="stockScore"
-        />
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreTitle" />
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreImage" />
+        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScore" />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
@@ -202,9 +190,7 @@ const Search = () => {
   const { state } = useLocation();
   const stockName = state?.stockName;
 
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>(
-    'indicator',
-  );
+  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
 
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
@@ -212,11 +198,7 @@ const Search = () => {
 
   return (
     <SearchContainer>
-      <SearchTitle
-        stockName={stockName}
-        resultMode={resultMode}
-        onClick={toggleResultMode}
-      />
+      <SearchTitle stockName={stockName} resultMode={resultMode} onClick={toggleResultMode} />
       <SearchResultContainer>
         <SearchResultContents>
           {resultMode == 'indicator' ? (

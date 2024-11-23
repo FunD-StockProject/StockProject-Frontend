@@ -15,11 +15,13 @@ const WordContainer = styled.div(
 const Word = styled.span(
   {
     position: 'absolute',
-    fontFamily: 'Pretendard black',
+    fontFamily: 'Pretendard',
+    fontWeight: '900',
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',
-    animation: pop + ' .75s ease-in-out',
+    // animation: slidein + ' 6s ease-in-out',
+    animation: pop + '.75s ease-in-out',
     animationFillMode: 'both',
   },
   ({ orientation, fontSize, colors, delay }: { orientation: number; fontSize: number; colors: number; delay: number }) => ({
