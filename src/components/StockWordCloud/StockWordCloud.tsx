@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { WordCloudLayout, WordFrequency } from './StockWordCloud.Type';
+import { WordCloud, WordFrequency } from './StockWordCloud.Type';
 import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import useWorker from '../../hooks/useWorker';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
@@ -7,7 +7,7 @@ import { TextHeading } from '../Text/Text';
 import InfoSVG from '../../assets/info.svg';
 import { useLocation } from 'react-router-dom';
 
-const sample = [
+const sample: WordFrequency[] = [
   { text: '다', freq: 10 },
   { text: '차량용', freq: 9 },
   { text: '업체에', freq: 8 },
@@ -1036,27 +1036,35 @@ const sample = [
   { text: '나갑시다', freq: 1 },
 ];
 
-const StockWordCloudContents = ({ animationState, wordCloud }: { animationState: boolean; wordCloud: any }) => {
-  return wordCloud.map((e: WordCloudLayout, i: number) => (
+const StockWordCloudContents = ({
+  wordCloutItem,
+  index,
+  animationState,
+}: {
+  wordCloutItem: WordCloud;
+  index: number;
+  animationState: boolean;
+}) => {
+  return (
     <WordContainer
-      key={i}
-      orientation={e.orientation ? 1 : 0}
-      posX={e.position.x}
-      posY={e.position.y}
-      sizeX={e.size.w}
-      sizeY={e.size.h}
+      key={index}
+      orientation={wordCloutItem.orientation ? 1 : 0}
+      posX={wordCloutItem.position.x}
+      posY={wordCloutItem.position.y}
+      sizeX={wordCloutItem.size.w}
+      sizeY={wordCloutItem.size.h}
     >
       <Word
         animationState={animationState}
-        orientation={e.orientation ? 1 : 0}
-        fontSize={e.fontSize}
-        colors={e.color}
-        delay={i}
+        orientation={wordCloutItem.orientation ? 1 : 0}
+        fontSize={wordCloutItem.fontSize}
+        colors={wordCloutItem.color}
+        delay={0}
       >
-        {e.word}
+        {wordCloutItem.word}
       </Word>
     </WordContainer>
-  ));
+  );
 };
 
 const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: number }) => {
@@ -1068,41 +1076,26 @@ const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: nu
     }),
   });
   const [didMount, setDidMount] = useState<boolean>(false);
-  const [stockData, setStockData] = useState<WordFrequency[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [animationState, setAnimationState] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const getStockData = async (stockId: number) => {
+  const getWordCloud = async (stockId: number) => {
     // const res = await Promise.resolve(fetchRelevant(stockId));
     // if (!res) return null;
     // setStockRelevantList(res);
     stockId;
-    setStockData(sample);
-  };
-
-  useEffect(() => {
+    const res = await sample;
     if (window.Worker) {
       if (!containerRef.current) return;
       postMessage({
-        data: stockData,
+        data: res,
         width: containerRef.current.offsetWidth,
         height: containerRef.current.offsetHeight,
       });
     }
-  }, [stockData]);
-
-  useEffect(() => {
-    if (!didMount) return;
-    getStockData(stockId);
-  }, [stockId]);
-
-  useEffect(() => {
-    if (!didMount) return;
-    if (stockName == state?.stockName) return;
-    setAnimationState(false);
-    setStockData([]);
-  }, [state]);
+  };
 
   useEffect(() => {
     setDidMount(true);
@@ -1111,13 +1104,40 @@ const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: nu
 
   useEffect(() => {
     if (!didMount) return;
-    setWordCloud(null);
-    getStockData(stockId);
+    getWordCloud(stockId);
   }, [didMount]);
 
   useEffect(() => {
+    if (!didMount) return;
+    if (stockName == state?.stockName) return;
+    setAnimationState(false);
+    setCurrentIndex(-1);
+    setWordCloud(null);
+  }, [state]);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getWordCloud(stockId);
+  }, [stockId]);
+
+  useEffect(() => {
+    if (!didMount) return;
     setAnimationState(true);
+    setCurrentIndex(0);
   }, [wordCloud]);
+
+  useEffect(() => {
+    if (!didMount) return;
+    if (currentIndex == -1) return;
+    if (!wordCloud || currentIndex >= wordCloud.length) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => {
+        return prev + ~~(prev / 25) + 1;
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, wordCloud]);
 
   return (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
@@ -1130,7 +1150,13 @@ const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: nu
         </ButtonDiv>
       </FlexDiv>
       <StockWordCloudContainer ref={containerRef}>
-        {wordCloud ? <StockWordCloudContents wordCloud={wordCloud} animationState={animationState} /> : ''}
+        {wordCloud &&
+          wordCloud.map(
+            (e: WordCloud, i: number) =>
+              i <= currentIndex && (
+                <StockWordCloudContents key={i} animationState={animationState} wordCloutItem={e} index={i} />
+              ),
+          )}
       </StockWordCloudContainer>
     </FlexDiv>
   );

@@ -1,4 +1,4 @@
-import { WordCloudLayout, WordFrequency } from './StockWordCloud.Type';
+import { WordCloud, WordFrequency } from './StockWordCloud.Type';
 
 const GetnerateWordCloud = ({
   frequencies,
@@ -20,7 +20,7 @@ const GetnerateWordCloud = ({
   relativeScaling?: number;
   randomState?: number;
   maxFontSize?: number;
-}): WordCloudLayout[] | null => {
+}): WordCloud[] | null => {
   const isEmptyArea = (x: number, y: number, w: number, h: number) => {
     return (
       prefixSum[(y + h) * (width + 1) + (x + w)] -
@@ -249,7 +249,7 @@ self.onmessage = (e) => {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
+  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
   self.fonts.add(fontFace);
   fontFace.load().then(() => {
     if (!self.OffscreenCanvas) {

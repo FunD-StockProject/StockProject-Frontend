@@ -13,7 +13,7 @@ export interface WordFrequency {
   freq: number;
 }
 
-export interface WordCloudLayout {
+export interface WordCloud {
   word: string;
   freq: number;
   fontSize: number;

@@ -39,12 +39,12 @@ const WordContainer = styled.div(
 const Word = styled.span(
   {
     position: 'absolute',
-    fontFamily: 'Pretendard',
-    fontWeight: '900',
+    fontFamily: 'Pretendard black',
     wordBreak: 'keep-all',
     overflow: 'clip',
     color: '#FFFFFFAA',
     animationFillMode: 'both',
+    lineHeight: '1.0',
   },
   ({
     animationState,
@@ -61,9 +61,7 @@ const Word = styled.span(
   }) => ({
     animation: animationState ? pop + ' .75s ease-in-out' : '',
     transform: animationState ? 'scale(1)' : 'scale(0)',
-    animationFillMode: 'both',
     fontSize: fontSize,
-    lineHeight: 1,
     rotate: !orientation ? '' : '90deg',
     color:
       colors == 0
