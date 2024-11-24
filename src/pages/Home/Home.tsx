@@ -13,23 +13,21 @@ import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../../con
 import { KOREA, OVERSEA } from '../../ts/Constants';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { useQuery } from 'react-query';
+import { CardInterface } from '../../ts/Interfaces';
+import { StockType } from '../../ts/Types';
 
 const Home = () => {
-  const useStocks = (type: string) => {
-    const fetchStocks = async (type: string) => {
-      switch (type) {
-        case 'hot':
-          return Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]);
-        case 'rising':
-          return Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]);
-        case 'descent':
-          return Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]);
-        default:
-          throw new Error('Unknown type');
-      }
-    };
+  const useStocks = (type: StockType) => {
+    const fetchStocks = async (type: StockType): Promise<CardInterface[][]> => {
+      const stockFetchers: Record<StockType, Promise<CardInterface[][]>> = {
+        hot: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
+        rising: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
+        descent: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
+      };
 
-    return useQuery([type], () => fetchStocks(type), {
+      return stockFetchers[type];
+    };
+    return useQuery<CardInterface[][]>([type], () => fetchStocks(type), {
       suspense: true,
     });
   };
@@ -38,7 +36,7 @@ const Home = () => {
   const { data: risingStocks = [[], []] } = useStocks('rising');
   const { data: descentStocks = [[], []] } = useStocks('descent');
 
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState<number>(0);
   const isDarkMode = useSystemTheme();
 
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
@@ -55,23 +53,20 @@ const Home = () => {
     setTabIndex(index);
 
     const currentScrollPosition = window.scrollY;
-    hotStocksApiRef.current.scrollToItem(hotStocksApiRef.current.getItemByIndex('0'));
-    risingStocksApiRef.current.scrollToItem(risingStocksApiRef.current.getItemByIndex('0'));
-    descentStocksApiRef.current.scrollToItem(descentStocksApiRef.current.getItemByIndex('0'));
+    const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
+    refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('0')));
+
     window.scrollTo(0, currentScrollPosition);
   };
 
-  const getImageSrc = (type: string) => {
-    switch (type) {
-      case 'hot':
-        return isDarkMode ? hotTextDark : hotTextLight;
-      case 'rising':
-        return isDarkMode ? risingTextDark : risingTextLight;
-      case 'descent':
-        return isDarkMode ? descentTextDark : descentTextLight;
-      default:
-        return '';
-    }
+  const getImageSrc = (type: StockType) => {
+    const images: Record<StockType, string> = {
+      hot: isDarkMode ? hotTextDark : hotTextLight,
+      rising: isDarkMode ? risingTextDark : risingTextLight,
+      descent: isDarkMode ? descentTextDark : descentTextLight,
+    };
+
+    return images[type];
   };
 
   return (
