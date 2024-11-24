@@ -1,7 +1,8 @@
 import { WordFrequency } from './StockWordCloud.Type';
-import TestWorker from '../../utils/worker/GenerateWordCloud.ts?worker';
 
-export const testWorker = new TestWorker();
+export const testWorker = new Worker(new URL('../../utils/worker/GenerateWordCloud.ts', import.meta.url), {
+  type: 'module',
+});
 
 export const generateWordCloud = ({
   data,
