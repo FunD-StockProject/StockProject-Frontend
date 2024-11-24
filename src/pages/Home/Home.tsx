@@ -9,29 +9,11 @@ import descentTextDark from '../../assets/descentTextDark.svg';
 
 import { Suspense, useRef, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
-import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../../controllers/api';
-import { KOREA, OVERSEA } from '../../ts/Constants';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { useQuery } from 'react-query';
-import { CardInterface } from '../../ts/Interfaces';
 import { StockType } from '../../ts/Types';
+import { useStocks } from '../../hooks/useStocks';
 
 const Home = () => {
-  const useStocks = (type: StockType) => {
-    const fetchStocks = async (type: StockType): Promise<CardInterface[][]> => {
-      const stockFetchers: Record<StockType, Promise<CardInterface[][]>> = {
-        hot: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
-        rising: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
-        descent: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
-      };
-
-      return stockFetchers[type];
-    };
-    return useQuery<CardInterface[][]>([type], () => fetchStocks(type), {
-      suspense: true,
-    });
-  };
-
   const { data: hotStocks = [[], []] } = useStocks('hot');
   const { data: risingStocks = [[], []] } = useStocks('rising');
   const { data: descentStocks = [[], []] } = useStocks('descent');
@@ -70,6 +52,7 @@ const Home = () => {
   };
 
   return (
+    // <ErrorBoundary fallback={<div>Error Occured</div>}>
     <Suspense fallback={<div>Loading...</div>}>
       <StyledHome>
         <StyledContainer>
@@ -93,6 +76,7 @@ const Home = () => {
         </StyledContainer>
       </StyledHome>
     </Suspense>
+    // </ErrorBoundary>
   );
 };
 
