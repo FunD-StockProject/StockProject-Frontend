@@ -4,29 +4,32 @@ import Card from '../Card/Card';
 import { ArrowButton, NoScrollbar } from './CardList.Style';
 import HotCard from '../HotCard/HotCard';
 import { useContext } from 'react';
-
+import rightArrowImgLink from '../../assets/rightArrow.svg';
+import leftArrowImgLink from '../../assets/leftArrow.svg';
 const CardList = ({
   list,
-  backgroundColor,
   isHot = false,
   apiRef,
 }: {
   list: CardInterface[];
-  backgroundColor?: string;
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
 }) => {
-  const isMobile = window.innerWidth < 450;
+  const isMobile = window.innerWidth < 450; // 추후 수정
 
   return (
     <NoScrollbar>
-      <ScrollMenu LeftArrow={!isMobile ? LeftArrow : undefined} RightArrow={!isMobile ? RightArrow : undefined} apiRef={apiRef}>
+      <ScrollMenu
+        LeftArrow={!isMobile ? LeftArrow : undefined}
+        RightArrow={!isMobile ? RightArrow : undefined}
+        apiRef={apiRef}
+      >
         {isHot
           ? list.map((item: CardInterface) => {
               return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
             })
           : list.map((item: CardInterface) => {
-              return <Card key={item.stockId} score={item.score} stockName={item.symbolName} backgroundColor={backgroundColor ? backgroundColor : '#fd4821'} />;
+              return <Card key={item.stockId} score={item.score} stockName={item.symbolName} diff={item.diff} />;
             })}
       </ScrollMenu>
     </NoScrollbar>
@@ -38,9 +41,13 @@ const LeftArrow = () => {
   const disabled = visibility.useLeftArrowVisible();
 
   return (
-    <Arrow disabled={disabled} onClick={() => visibility.scrollPrev()} className="left" testId="left-arrow">
-      {'<'}
-    </Arrow>
+    <Arrow
+      imgLink={leftArrowImgLink}
+      disabled={disabled}
+      onClick={() => visibility.scrollPrev()}
+      className="left"
+      testId="left-arrow"
+    ></Arrow>
   );
 };
 
@@ -49,29 +56,37 @@ const RightArrow = () => {
   const disabled = visibility.useRightArrowVisible();
 
   return (
-    <Arrow disabled={disabled} onClick={() => visibility.scrollNext()} className="right" testId="right-arrow">
-      {'>'}
-    </Arrow>
+    <Arrow
+      imgLink={rightArrowImgLink}
+      disabled={disabled}
+      onClick={() => visibility.scrollNext()}
+      className="right"
+      testId="right-arrow"
+    ></Arrow>
   );
 };
 
 const Arrow = ({
-  children,
+  imgLink,
   disabled,
   onClick,
   className,
   testId,
 }: {
-  children: React.ReactNode;
+  imgLink: string;
   disabled: boolean;
   onClick: VoidFunction;
   className?: string;
   testId: string;
 }) => {
   return (
-    <ArrowButton disabled={disabled} onClick={onClick} className={'arrow' + `-${className}`} data-testid={testId}>
-      {children}
-    </ArrowButton>
+    <ArrowButton
+      src={imgLink}
+      disabled={disabled}
+      onClick={onClick}
+      className={'arrow' + `-${className}`}
+      data-testid={testId}
+    />
   );
 };
 

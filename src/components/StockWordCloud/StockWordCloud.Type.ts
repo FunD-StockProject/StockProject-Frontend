@@ -13,12 +13,12 @@ export interface WordFrequency {
   freq: number;
 }
 
-export interface WordCloudLayout {
+export interface WordCloud {
   word: string;
   freq: number;
   fontSize: number;
   position: Position;
   size: Size;
   orientation: boolean;
-  color: string;
+  color: number;
 }

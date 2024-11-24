@@ -11,9 +11,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   console.log(location);
 
   return (
-    <StyledMainlayout
-      style={{ backgroundColor: `${isDarkMode ? '#101010' : '#F6F6F6'}` }}
-    >
+    <StyledMainlayout style={{ backgroundColor: `${isDarkMode ? '#101010' : '#F6F6F6'}` }}>
       {location.pathname !== '/search/wordcloud' ? (
         <>
           <Header />
