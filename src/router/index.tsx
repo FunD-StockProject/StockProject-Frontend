@@ -1,9 +1,9 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
-
 export const webPath = {
   search: () => '/search',
 };
@@ -11,9 +11,11 @@ export const webPath = {
 const Root = () => {
   return (
     <Mainlayout>
-      <Suspense fallback={<div className="h-full w-full flex items-center justify-center">로딩중</div>}>
-        <Outlet />
-      </Suspense>
+      <ErrorBoundary fallback={<div style={{ background: 'black' }}>Error Occured</div>}>
+        <Suspense fallback={<div style={{ background: 'black' }}>로딩중</div>}>
+          <Outlet />
+        </Suspense>
+      </ErrorBoundary>
       <ScrollRestoration />
     </Mainlayout>
   );

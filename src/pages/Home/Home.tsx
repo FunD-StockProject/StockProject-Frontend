@@ -7,7 +7,7 @@ import risingTextDark from '../../assets/risingTextDark.svg';
 import descentTextLight from '../../assets/descentTextLight.svg';
 import descentTextDark from '../../assets/descentTextDark.svg';
 
-import { Suspense, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { StockType } from '../../ts/Types';
@@ -52,31 +52,27 @@ const Home = () => {
   };
 
   return (
-    // <ErrorBoundary fallback={<div>Error Occured</div>}>
-    <Suspense fallback={<div>Loading...</div>}>
-      <StyledHome>
-        <StyledContainer>
-          <StyleTabMenu>
-            {tabMenu.map((el, index) => (
-              <li
-                key={index}
-                className={index === tabIndex ? 'submenu focused' : 'submenu'}
-                onClick={() => handleTab(index)}
-              >
-                {el}
-              </li>
-            ))}
-          </StyleTabMenu>
-          <StyledImage src={getImageSrc('hot')} />
-          <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
-          <StyledImage src={getImageSrc('rising')} />
-          <CardList list={risingStocks[tabIndex]} apiRef={risingStocksApiRef} />
-          <StyledImage src={getImageSrc('descent')} />
-          <CardList list={descentStocks[tabIndex]} apiRef={descentStocksApiRef} />
-        </StyledContainer>
-      </StyledHome>
-    </Suspense>
-    // </ErrorBoundary>
+    <StyledHome>
+      <StyledContainer>
+        <StyleTabMenu>
+          {tabMenu.map((el, index) => (
+            <li
+              key={index}
+              className={index === tabIndex ? 'submenu focused' : 'submenu'}
+              onClick={() => handleTab(index)}
+            >
+              {el}
+            </li>
+          ))}
+        </StyleTabMenu>
+        <StyledImage src={getImageSrc('hot')} />
+        <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        <StyledImage src={getImageSrc('rising')} />
+        <CardList list={risingStocks[tabIndex]} apiRef={risingStocksApiRef} />
+        <StyledImage src={getImageSrc('descent')} />
+        <CardList list={descentStocks[tabIndex]} apiRef={descentStocksApiRef} />
+      </StyledContainer>
+    </StyledHome>
   );
 };
 
