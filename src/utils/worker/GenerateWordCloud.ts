@@ -1,4 +1,4 @@
-import { WordCloud, WordFrequency } from './StockWordCloud.Type';
+import { WordCloud, WordFrequency } from '../../components/StockWordCloud/StockWordCloud.Type';
 
 const GetnerateWordCloud = ({
   frequencies,
