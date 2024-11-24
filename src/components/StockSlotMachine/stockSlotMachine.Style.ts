@@ -16,7 +16,7 @@ const SlotMachineItemContainer = styled.div({
 });
 
 const SlotMachineItemMotionDiv = styled(motion.div)({
-  position: 'absolute',
+  position: 'relative',
   width: '100%',
   height: '100%',
   display: 'flex',

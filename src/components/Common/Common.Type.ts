@@ -13,7 +13,7 @@ export type JustifyContent =
   | 'right'
   | (string & {});
 export type FlexDirection = Globals | 'column' | 'column-reverse' | 'row' | 'row-reverse';
-export type Width<TLength = (string & {}) | 0> =
+export type Width<TLength = string | 0> =
   | Globals
   | TLength
   | '-moz-fit-content'
@@ -27,5 +27,16 @@ export type Width<TLength = (string & {}) | 0> =
   | 'max-content'
   | 'min-content'
   | 'min-intrinsic'
-  | (string & {});
+  | string;
+export type Height<TLength = string | 0> =
+  | Globals
+  | TLength
+  | '-moz-max-content'
+  | '-moz-min-content'
+  | '-webkit-fit-content'
+  | 'auto'
+  | 'fit-content'
+  | 'max-content'
+  | 'min-content'
+  | string;
 export type Padding<TLength = string | 0> = Globals | TLength | string;

@@ -1,12 +1,5 @@
 import { themeColor } from '../../styles/themes';
-import {
-  AlignItems,
-  FlexDirection,
-  JustifyContent,
-  ObjectFit,
-  Padding,
-  Width,
-} from './Common.Type';
+import { AlignItems, FlexDirection, Height, JustifyContent, ObjectFit, Padding, Width } from './Common.Type';
 
 export interface FlexDivProps {
   flexDirection?: FlexDirection;
@@ -21,14 +14,14 @@ export interface ButtonDivProps {
   padding?: string;
   background?: themeColor;
   width?: Width;
-  height?: string;
+  height?: Height;
   radius?: string;
   gap?: string;
 }
 
 export interface AbsoluteDivProps {
   width?: Width;
-  height?: string;
+  height?: Height;
   top?: string;
   bottom?: string;
   left?: string;
@@ -37,6 +30,6 @@ export interface AbsoluteDivProps {
 
 export interface ImgDivProps {
   width?: Width;
-  height?: string;
+  height?: Height;
   objectFit?: ObjectFit;
 }
