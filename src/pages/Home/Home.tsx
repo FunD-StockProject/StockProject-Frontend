@@ -1,6 +1,4 @@
 import CardList from '../../layout/CardList/CardList';
-
-import { CardInterface } from '../../ts/Interfaces';
 import { StyledContainer, StyledHome, StyledImage, StyleTabMenu } from './Home.Style';
 import hotTextLight from '../../assets/hotTextLight.svg';
 import hotTextDark from '../../assets/hotTextDark.svg';
@@ -17,10 +15,6 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { useQuery } from 'react-query';
 
 const Home = () => {
-  // const [hotStocks, setHotStocks] = useState<CardInterface[][]>([[], []]);
-  // const [risingStocks, setRisingStocks] = useState<CardInterface[][]>([[], []]);
-  // const [descentStocks, setDescentStocks] = useState<CardInterface[][]>([[], []]);
-
   const useStocks = (type: string) => {
     const fetchStocks = async (type: string) => {
       switch (type) {
@@ -57,9 +51,10 @@ const Home = () => {
     if (tabIndex === index) {
       return;
     }
-    const currentScrollPosition = window.scrollY;
+
     setTabIndex(index);
 
+    const currentScrollPosition = window.scrollY;
     hotStocksApiRef.current.scrollToItem(hotStocksApiRef.current.getItemByIndex('0'));
     risingStocksApiRef.current.scrollToItem(risingStocksApiRef.current.getItemByIndex('0'));
     descentStocksApiRef.current.scrollToItem(descentStocksApiRef.current.getItemByIndex('0'));
