@@ -249,7 +249,7 @@ self.onmessage = (e) => {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
+  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
   self.fonts.add(fontFace);
   fontFace.load().then(() => {
     if (!self.OffscreenCanvas) {
