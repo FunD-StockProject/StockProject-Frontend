@@ -50,7 +50,6 @@ const Home = () => {
     };
 
     fetchStocks();
-    debugger;
   }, []);
 
   const handleTab = (index: number) => {

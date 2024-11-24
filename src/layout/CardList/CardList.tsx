@@ -29,14 +29,7 @@ const CardList = ({
               return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
             })
           : list.map((item: CardInterface) => {
-              return (
-                <Card
-                  key={item.stockId}
-                  score={item.score}
-                  stockName={item.symbolName}
-                  scoreChanged={10} // -> scoreChanged={item.scoreChanged}
-                />
-              );
+              return <Card key={item.stockId} score={item.score} stockName={item.symbolName} diff={item.diff} />;
             })}
       </ScrollMenu>
     </NoScrollbar>
