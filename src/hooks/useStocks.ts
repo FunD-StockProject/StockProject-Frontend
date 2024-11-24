@@ -1,20 +1,18 @@
 import { useQuery } from 'react-query';
-import { StockType } from '../ts/Types';
 import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../controllers/api';
 import { CardInterface } from '../ts/Interfaces';
 import { KOREA, OVERSEA } from '../ts/Constants';
 
-export const useStocks = (type: StockType) => {
-  const fetchStocks = async (type: StockType): Promise<CardInterface[][]> => {
-    const stockFetchers: Record<StockType, Promise<CardInterface[][]>> = {
-      hot: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
-      rising: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
-      descent: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
-    };
+export const useStocks = () => {
+  const fetchStocks = async (): Promise<CardInterface[][][]> => {
+    const hotStocks = Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]);
+    const risingStocks = Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]);
+    const descentStocks = Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]);
 
-    return stockFetchers[type];
+    return Promise.all([hotStocks, risingStocks, descentStocks]);
   };
-  return useQuery<CardInterface[][]>([type], () => fetchStocks(type), {
+
+  return useQuery<CardInterface[][][]>(['stocks'], fetchStocks, {
     suspense: true,
   });
 };
