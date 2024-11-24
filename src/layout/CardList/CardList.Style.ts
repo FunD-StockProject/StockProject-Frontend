@@ -22,16 +22,18 @@ const NoScrollbar = styled.div({
     position: 'absolute',
     top: '50%',
     left: '-40px',
+    transform: 'translateY(-50%)',
   },
   '& .react-horizontal-scrolling-menu--arrow-right': {
     position: 'absolute',
     top: '50%',
     right: '-40px',
+    transform: 'translateY(-50%)',
   },
 });
 
 const ArrowButton = styled.img<{ disabled: boolean }>((props) => ({
-  cursor: 'pointer',
+  cursor: props.disabled ? 'not-allowed' : 'pointer',
   display: 'flex',
   margin: '0 5px', // 좌우 간격 조정
   opacity: props.disabled ? 0 : 1, // props로 opacity 설정
