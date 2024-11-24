@@ -7,31 +7,13 @@ import risingTextDark from '../../assets/risingTextDark.svg';
 import descentTextLight from '../../assets/descentTextLight.svg';
 import descentTextDark from '../../assets/descentTextDark.svg';
 
-import { Suspense, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSystemTheme } from '../../hooks/useSystemHook';
-import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../../controllers/api';
-import { KOREA, OVERSEA } from '../../ts/Constants';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { useQuery } from 'react-query';
-import { CardInterface } from '../../ts/Interfaces';
 import { StockType } from '../../ts/Types';
+import { useStocks } from '../../hooks/useStocks';
 
 const Home = () => {
-  const useStocks = (type: StockType) => {
-    const fetchStocks = async (type: StockType): Promise<CardInterface[][]> => {
-      const stockFetchers: Record<StockType, Promise<CardInterface[][]>> = {
-        hot: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
-        rising: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
-        descent: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
-      };
-
-      return stockFetchers[type];
-    };
-    return useQuery<CardInterface[][]>([type], () => fetchStocks(type), {
-      suspense: true,
-    });
-  };
-
   const { data: hotStocks = [[], []] } = useStocks('hot');
   const { data: risingStocks = [[], []] } = useStocks('rising');
   const { data: descentStocks = [[], []] } = useStocks('descent');
@@ -70,29 +52,27 @@ const Home = () => {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <StyledHome>
-        <StyledContainer>
-          <StyleTabMenu>
-            {tabMenu.map((el, index) => (
-              <li
-                key={index}
-                className={index === tabIndex ? 'submenu focused' : 'submenu'}
-                onClick={() => handleTab(index)}
-              >
-                {el}
-              </li>
-            ))}
-          </StyleTabMenu>
-          <StyledImage src={getImageSrc('hot')} />
-          <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
-          <StyledImage src={getImageSrc('rising')} />
-          <CardList list={risingStocks[tabIndex]} apiRef={risingStocksApiRef} />
-          <StyledImage src={getImageSrc('descent')} />
-          <CardList list={descentStocks[tabIndex]} apiRef={descentStocksApiRef} />
-        </StyledContainer>
-      </StyledHome>
-    </Suspense>
+    <StyledHome>
+      <StyledContainer>
+        <StyleTabMenu>
+          {tabMenu.map((el, index) => (
+            <li
+              key={index}
+              className={index === tabIndex ? 'submenu focused' : 'submenu'}
+              onClick={() => handleTab(index)}
+            >
+              {el}
+            </li>
+          ))}
+        </StyleTabMenu>
+        <StyledImage src={getImageSrc('hot')} />
+        <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        <StyledImage src={getImageSrc('rising')} />
+        <CardList list={risingStocks[tabIndex]} apiRef={risingStocksApiRef} />
+        <StyledImage src={getImageSrc('descent')} />
+        <CardList list={descentStocks[tabIndex]} apiRef={descentStocksApiRef} />
+      </StyledContainer>
+    </StyledHome>
   );
 };
 
