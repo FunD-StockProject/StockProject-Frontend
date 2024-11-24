@@ -1,23 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '../../router';
 import { scoreToImage } from '../../utils/ScoreConvert';
-import { StyledCard, StyledChangedScore, StyledScore } from './Card.Style';
+import { StyledCard, StyledChangedScore, StyledScore, StyledText } from './Card.Style';
 import risingSymbol from '../../assets/risingSymbol.svg';
 import descentSymbol from '../../assets/descentSymbol.svg';
 
-const Card = ({
-  score,
-  stockName,
-  scoreChanged,
-}: {
-  score: number;
-  stockName: string;
-  scoreChanged: number;
-}) => {
+const Card = ({ score, stockName, diff }: { score: number; stockName: string; diff: number }) => {
   const navigate = useNavigate();
   const imgLink = scoreToImage(score);
 
-  const isRising = scoreChanged > 0;
+  const isRising = diff >= 0;
   const backgroundColor = isRising ? '#fd4821' : '#2D92FF';
   const symbol = isRising ? risingSymbol : descentSymbol;
   const color = isRising ? '#FFEA64' : '#64FFEA';
@@ -33,11 +25,11 @@ const Card = ({
         <StyledScore backgroundColor={backgroundColor}>
           {score}점
           <StyledChangedScore color={color}>
-            {10}
+            {Math.abs(diff)}
             <img src={symbol}></img>
           </StyledChangedScore>
         </StyledScore>
-        {stockName}
+        <StyledText>{stockName}</StyledText>
       </div>
     </StyledCard>
   );
