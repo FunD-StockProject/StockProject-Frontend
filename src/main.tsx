@@ -4,11 +4,16 @@ import App from './App.tsx';
 import './index.css';
 import { ThemeProvider } from '@emotion/react';
 import theme from './styles/themes.tsx';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
