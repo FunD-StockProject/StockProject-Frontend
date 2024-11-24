@@ -14,9 +14,7 @@ import { StockType } from '../../ts/Types';
 import { useStocks } from '../../hooks/useStocks';
 
 const Home = () => {
-  const { data: hotStocks = [[], []] } = useStocks('hot');
-  const { data: risingStocks = [[], []] } = useStocks('rising');
-  const { data: descentStocks = [[], []] } = useStocks('descent');
+  const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const isDarkMode = useSystemTheme();
@@ -66,11 +64,11 @@ const Home = () => {
           ))}
         </StyleTabMenu>
         <StyledImage src={getImageSrc('hot')} />
-        <CardList list={hotStocks[tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
         <StyledImage src={getImageSrc('rising')} />
-        <CardList list={risingStocks[tabIndex]} apiRef={risingStocksApiRef} />
+        <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
         <StyledImage src={getImageSrc('descent')} />
-        <CardList list={descentStocks[tabIndex]} apiRef={descentStocksApiRef} />
+        <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
       </StyledContainer>
     </StyledHome>
   );
