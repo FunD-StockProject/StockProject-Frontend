@@ -1,10 +1,58 @@
-import { AnimatePresence, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { TextDisplay } from '../Text/Text';
 import { FlexDiv, ImgDiv } from '../Common/Common';
 import { scoreToIndex } from '../../utils/ScoreConvert';
 import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '../../constants/stockScore';
 import { SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
+import { AnimatePresence, Variants } from 'framer-motion';
+
+const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
+  const a = (3 * animationTime) / (lastIndex * lastIndex * lastIndex);
+  const b = a * idx * idx;
+  return b;
+};
+
+const variants: Variants = {
+  initial: (isLast: boolean) => ({
+    scaleY: 1,
+    y: '-100%',
+    opacity: 1,
+    filter: !isLast ? 'blur(2px)' : 'blur(0px)',
+  }),
+  animate: (isLast: boolean) => ({
+    scaleY: 1,
+    y: '0%',
+    opacity: 1,
+    filter: !isLast ? 'blur(2px)' : 'blur(0px)',
+  }),
+  exit: (isLast: boolean) => ({
+    scaleY: 1,
+    y: '100%',
+    opacity: 1,
+    filter: !isLast ? 'blur(2px)' : 'blur(0px)',
+  }),
+};
+
+const ScoreSlotMachineItem = ({
+  slotMachineType,
+  idx,
+}: {
+  slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE';
+  idx: number;
+}) => {
+  return slotMachineType == 'TITLE' ? (
+    <TextDisplay color="primary0">{ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]}</TextDisplay>
+  ) : slotMachineType == 'IMAGE' ? (
+    <ImgDiv
+      src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]}
+      height="100%"
+      width="100%"
+      objectFit="cover"
+    />
+  ) : (
+    <TextDisplay color="primary0">{idx % 101}</TextDisplay>
+  );
+};
 
 const ScoreSlotMachine = ({
   stockName,
@@ -13,55 +61,26 @@ const ScoreSlotMachine = ({
 }: {
   stockName?: string;
   stockScore: number;
-  slotMachineType: 'stockScoreTitle' | 'stockScore' | 'stockScoreImage';
+  slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE';
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scoreIndex = scoreToIndex(stockScore);
-  const arrayRepeat = slotMachineType == 'stockScoreTitle' ? 3 : slotMachineType == 'stockScore' ? 1 : 4;
-  const elementArr = Array(arrayRepeat)
-    .fill(
-      slotMachineType == 'stockScoreTitle'
-        ? Array.from(
-            ARRAY_STOCK_SCORE_TITLE,
-            (_, i) => ARRAY_STOCK_SCORE_TITLE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_TITLE.length],
-          )
-        : slotMachineType == 'stockScore'
-          ? Array.from({ length: 25 }, (_, i) => stockScore - (24 - i))
-          : Array.from(
-              ARRAY_STOCK_SCORE_IMAGE,
-              (_, i) => ARRAY_STOCK_SCORE_IMAGE[(i + scoreIndex + 1) % ARRAY_STOCK_SCORE_IMAGE.length],
-            ),
-    )
-    .flat();
-  const lastIndex = elementArr.length - 1;
-
-  const variants: Variants = {
-    initial: { scaleY: 1, y: '-50%', opacity: 0 },
-    animate: (isLast: boolean) => ({
-      scaleY: 1,
-      y: '0%',
-      opacity: 1,
-      filter: !isLast ? 'blur(5px)' : 'blur(0px)',
-    }),
-    exit: { scaleY: 1, y: '50%', opacity: 0 },
-  };
-
-  const getDuration = (base: number, index: number) => {
-    return base * (index + 1) * 0.5;
-  };
+  const lastIndex = slotMachineType == 'TITLE' ? 10 : slotMachineType == 'IMAGE' ? 15 : 20;
+  const animationTime = slotMachineType == 'TITLE' ? 0.5 : slotMachineType == 'IMAGE' ? 1 : 1.5;
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [stockName]);
 
   useEffect(() => {
+    if (currentIndex == lastIndex) return;
     const interval = setInterval(
       () => {
         setCurrentIndex((prev) => {
           return prev < lastIndex ? prev + 1 : prev;
         });
       },
-      getDuration(10, currentIndex),
+      getDuration(animationTime, currentIndex, lastIndex) * 1000,
     );
 
     return () => clearInterval(interval);
@@ -73,30 +92,30 @@ const ScoreSlotMachine = ({
         <TextDisplay color="grayscale90">.</TextDisplay>
       </FlexDiv>
       <AnimatePresence mode="popLayout">
-        {elementArr.map((e, i) => {
-          const isLast = i === lastIndex;
-
+        {Array.from({ length: lastIndex + 1 }, (_, i) => {
           return (
-            i === currentIndex && (
+            i == currentIndex && (
               <SlotMachineItemMotionDiv
-                key={e}
-                custom={isLast}
+                key={i}
+                style={{ position: 'absolute' }}
+                custom={currentIndex >= lastIndex * 0.95}
                 variants={variants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
                 transition={{
-                  duration: getDuration(isLast ? 0.03 : 0.01, i),
-                  ease: 'easeIn',
+                  duration: getDuration(animationTime, currentIndex, lastIndex),
+                  ease: currentIndex == lastIndex ? 'easeOut' : 'linear',
                 }}
               >
-                {slotMachineType == 'stockScoreTitle' ? (
-                  <TextDisplay color="primary0">{e}</TextDisplay>
-                ) : slotMachineType == 'stockScore' ? (
-                  <TextDisplay color="primary0">{e}</TextDisplay>
-                ) : (
-                  <ImgDiv src={e} height="100%" width="100%" objectFit="cover" />
-                )}
+                <ScoreSlotMachineItem
+                  slotMachineType={slotMachineType}
+                  idx={
+                    slotMachineType != 'SCORE'
+                      ? lastIndex - currentIndex + scoreIndex
+                      : lastIndex - currentIndex + stockScore
+                  }
+                />
               </SlotMachineItemMotionDiv>
             )
           );

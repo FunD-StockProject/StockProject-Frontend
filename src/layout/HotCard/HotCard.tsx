@@ -14,9 +14,9 @@ const Card = ({ score, stockName }: { score: number; stockName: string }) => {
     <StyledContainer>
       <StyledTitle>{stockName}</StyledTitle>
       <StyledCard tabIndex={0} onClick={() => handleClick(stockName)}>
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="stockScore" />
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="TITLE" />
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="IMAGE" />
+        <ScoreSlotMachine stockName={stockName} stockScore={score} slotMachineType="SCORE" />
       </StyledCard>
     </StyledContainer>
   );

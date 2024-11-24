@@ -36,9 +36,9 @@ const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; s
         </ButtonDiv>
       </FlexDiv>
       <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="stockScore" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
+        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
       </SearchResultIndicatorContainer>
     </FlexDiv>
   );
