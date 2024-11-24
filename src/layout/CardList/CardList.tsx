@@ -1,8 +1,4 @@
-import {
-  publicApiType,
-  ScrollMenu,
-  VisibilityContext,
-} from 'react-horizontal-scrolling-menu';
+import { publicApiType, ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '../../ts/Interfaces';
 import Card from '../Card/Card';
 import { ArrowButton, NoScrollbar } from './CardList.Style';
@@ -19,7 +15,8 @@ const CardList = ({
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
 }) => {
-  const isMobile = window.innerWidth < 450;
+  const isMobile = window.innerWidth < 450; // 추후 수정
+
   return (
     <NoScrollbar>
       <ScrollMenu
@@ -29,13 +26,7 @@ const CardList = ({
       >
         {isHot
           ? list.map((item: CardInterface) => {
-              return (
-                <HotCard
-                  key={item.stockId}
-                  score={item.score}
-                  stockName={item.symbolName}
-                />
-              );
+              return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
             })
           : list.map((item: CardInterface) => {
               return (
