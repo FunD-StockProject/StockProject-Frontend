@@ -1,7 +1,7 @@
 
 # 🤦‍♂️ 인간지표 📉
-- ㅁㄴㅇ
-- ㅁㄴㅇ
+- 여러 커뮤니티의 감정 데이터를 종합 분석하여 주식 종목별로 점수화하여 지표로 제공하는 서비스
+
 
 ## 🛠 Tech Stack
 ![TypeScript](https://img.shields.io/badge/typescript-3178C6.svg?style=flat-square&logo=typescript&logoColor=white)
