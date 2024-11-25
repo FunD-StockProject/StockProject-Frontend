@@ -59,6 +59,7 @@ export default defineConfig({
       { find: '@layout', replacement: '/src/layout' },
       { find: '@common', replacement: '/src/common' },
       { find: '@recoils', replacement: '/src/recoils' },
+      { find: '@constants', replacement: '/src/constants' },
       { find: '@controllers', replacement: '/src/controllers' },
       { find: '@components', replacement: '/src/components' },
       { find: '@styles', replacement: '/src/styles' },

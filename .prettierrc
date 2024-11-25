@@ -17,6 +17,7 @@
     "^@layout/(.*)$",
     "^@common/(.*)$",
     "^@recoils/(.*)$",
+    "^@constants/(.*)$",
     "^@components/(.*)$",
     "^@controllers/(.*)$",
     "^@styles/(.*)$",

@@ -1,14 +1,13 @@
+import { AnimatePresence, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { TextDisplay } from '../Text/Text';
-import { FlexDiv, ImgDiv } from '../Common/Common';
-import { scoreToIndex } from '../../utils/ScoreConvert';
-import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '../../constants/stockScore';
+import { scoreToIndex } from '@utils/ScoreConvert';
+import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/stockScore';
+import { ImgDiv } from '@components/Common/Common';
 import {
   ScoreSlotMachineContainer,
   SlotMachineItemContainer,
   SlotMachineItemMotionDiv,
 } from './stockSlotMachine.Style';
-import { AnimatePresence, Variants } from 'framer-motion';
 
 const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
   const a = (3 * animationTime) / (lastIndex * lastIndex * lastIndex);
@@ -45,20 +44,11 @@ const ScoreSlotMachineItemCard = ({
   idx: number;
 }) => {
   return slotMachineType == 'TITLE' ? (
-    <TextDisplay size="Small" color="primary0">
-      {ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]}
-    </TextDisplay>
+    ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]
   ) : slotMachineType == 'IMAGE' ? (
-    <ImgDiv
-      src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]}
-      height="100%"
-      width="100%"
-      objectFit="cover"
-    />
+    <ImgDiv src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]} />
   ) : (
-    <TextDisplay size="Large" color="primary0">
-      {idx % 101}
-    </TextDisplay>
+    idx % 101
   );
 };
 
@@ -101,6 +91,7 @@ const ScoreSlotMachineItem = ({
           return (
             i == currentIndex && (
               <SlotMachineItemMotionDiv
+                slotMachineType={slotMachineType}
                 key={i}
                 style={{ position: 'absolute' }}
                 custom={currentIndex >= lastIndex * 0.95}

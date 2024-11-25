@@ -1,23 +1,22 @@
-import CardList from '../../layout/CardList/CardList';
-import { StyledContainer, StyledHome, StyledImage, StyleTabMenu } from './Home.Style';
-import hotTextLight from '../../assets/hotTextLight.svg';
-import hotTextDark from '../../assets/hotTextDark.svg';
-import risingTextLight from '../../assets/risingTextLight.svg';
-import risingTextDark from '../../assets/risingTextDark.svg';
-import descentTextLight from '../../assets/descentTextLight.svg';
-import descentTextDark from '../../assets/descentTextDark.svg';
-import ZipyoSVG from '../../assets/zipyo.svg?react';
-
-import { useRef, useState } from 'react';
-import { useSystemTheme } from '../../hooks/useSystemHook';
-import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { StockType } from '../../ts/Types';
-import { useStocks } from '../../hooks/useStocks';
 import styled from '@emotion/styled';
-import { TextHeading } from '../../components/Text/Text';
-
-import { theme, themeColor } from '../../styles/themes';
+import { useRef, useState } from 'react';
+import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { ContentsItemContainer, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import descentTextDark from '../../assets/descentTextDark.svg';
+import descentTextLight from '../../assets/descentTextLight.svg';
+import hotTextDark from '../../assets/hotTextDark.svg';
+import hotTextLight from '../../assets/hotTextLight.svg';
+import risingTextDark from '../../assets/risingTextDark.svg';
+import risingTextLight from '../../assets/risingTextLight.svg';
+import ZipyoSVG from '../../assets/zipyo.svg?react';
 import { FlexDiv } from '../../components/Common/Common';
+import { TextHeading } from '../../components/Text/Text';
+import { useStocks } from '../../hooks/useStocks';
+import { useSystemTheme } from '../../hooks/useSystemHook';
+import CardList from '../../layout/CardList/CardList';
+import { theme, themeColor } from '../../styles/themes';
+import { StockType } from '../../ts/Types';
+import { StyleTabMenu, StyledContainer, StyledHome, StyledImage } from './Home.Style';
 
 const Home = () => {
   const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
@@ -90,29 +89,29 @@ const Home = () => {
         ))}
       </StyleTabMenu>
       <HomeContents>
-        <FlexDiv alignItems="center" gap="8px">
-          <TextHeading size="Small" color={isDarkMode ? 'grayscale10' : 'primary100'}>
-            지금 가장 <StyledSpan color="primary40">HOT</StyledSpan> 한
-          </TextHeading>
-          <ZipyoSVG fill={theme.colors.primary40} height={'30px'} />
-        </FlexDiv>
-        <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        <ContentsItemContainer>
+          <ContentsItemTitle color="primary40">
+            지금 가장<StyledSpan color="primary40">HOT</StyledSpan> 한
+            <ZipyoSVG />
+          </ContentsItemTitle>
+          <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+        </ContentsItemContainer>
 
-        <FlexDiv alignItems="center" gap="8px">
-          <TextHeading size="Small" color="grayscale10">
+        <ContentsItemContainer>
+          <ContentsItemTitle color="red">
             지금 민심 <StyledSpan color="red">떡상</StyledSpan> 중인
-          </TextHeading>
-          <ZipyoSVG fill={theme.colors.red} height={'30px'} />
-        </FlexDiv>
-        <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
+            <ZipyoSVG />
+          </ContentsItemTitle>
+          <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
+        </ContentsItemContainer>
 
-        <FlexDiv alignItems="center" gap="8px">
-          <TextHeading size="Small" color="grayscale10">
+        <ContentsItemContainer>
+          <ContentsItemTitle color="blue">
             지금 민심 <StyledSpan color="blue">떡락</StyledSpan> 중인
-          </TextHeading>
-          <ZipyoSVG fill={theme.colors.blue} height={'30px'} />
-        </FlexDiv>
-        <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
+            <ZipyoSVG />
+          </ContentsItemTitle>
+          <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
+        </ContentsItemContainer>
       </HomeContents>
     </HomeContainer>
   );

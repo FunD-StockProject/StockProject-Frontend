@@ -31,6 +31,7 @@
       "@layout/*": ["src/layout/*"],
       "@common/*": ["src/common/*"],
       "@recoils/*": ["src/recoils/*"],
+      "@constants/*": ["src/constants/*"],
       "@controllers/*": ["src/controllers/*"],
       "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],
