@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
-import theme from '../../styles/themes';
 import SearchTitle from '../../components/SearchTitle/SearchTitle';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
 import { useEffect, useState } from 'react';
@@ -14,6 +13,7 @@ import { fetchSearchSymbolName } from '../../controllers/api';
 import StockChart from '../../components/StockChart/StockChart';
 import StockCardItem from '../../components/StockCard/StockCard';
 import { StockInfo } from '../../controllers/api.Type';
+import { theme } from '../../styles/themes';
 
 const SearchResultIndicatorContainer = styled.div({
   display: 'flex',
@@ -102,7 +102,17 @@ const Search = () => {
 
   const getScoreInfo = async (stockName: string) => {
     if (!stockName) return null;
-    const res = await Promise.resolve(fetchSearchSymbolName(stockName));
+    // const res = await Promise.resolve(fetchSearchSymbolName(stockName));
+    const res = {
+      stockId: 1,
+      symbol: 'ㅁㄴㅇ',
+      symbolName: 'ㅁㄴㅇ',
+      securityName: 'ㅁㄴㅇ',
+      exchangeNum: 'ㅁㄴㅇ',
+      scoreId: 1,
+      scoreKorea: 1,
+      scoreOversea: 1,
+    };
     if (!res) return null;
     setStockInfo(res);
   };

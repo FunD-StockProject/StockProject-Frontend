@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
 import { pop } from '../../styles/keyframes';
+import { theme } from '../../styles/themes';
 
 const StockWordCloudContainer = styled.div({
   display: 'flex',

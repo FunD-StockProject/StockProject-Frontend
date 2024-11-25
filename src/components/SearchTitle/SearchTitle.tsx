@@ -2,7 +2,7 @@ import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
 import { Text, TextDetail, TextHeading, TextTitle } from '../Text/Text';
 import { SearchTitleContainer, SearchTitleContents } from './SearchTitle.Syle';
 import ZipyoSVG from '../../assets/zipyo.svg?react';
-import theme from '../../styles/themes';
+import { theme } from '../../styles/themes';
 
 const SearchTitle = ({
   stockName,

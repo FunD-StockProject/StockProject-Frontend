@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
+import { theme } from '../../styles/themes';
 
 const SearchBarContainer = styled.div(
   {

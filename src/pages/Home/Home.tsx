@@ -14,10 +14,9 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { StockType } from '../../ts/Types';
 import { useStocks } from '../../hooks/useStocks';
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
 import { TextHeading } from '../../components/Text/Text';
 
-import { themeColor } from '../../styles/themes';
+import { theme, themeColor } from '../../styles/themes';
 import { FlexDiv } from '../../components/Common/Common';
 
 const Home = () => {
@@ -92,7 +91,7 @@ const Home = () => {
       </StyleTabMenu>
       <HomeContents>
         <FlexDiv alignItems="center" gap="8px">
-          <TextHeading size="Small" color="grayscale10">
+          <TextHeading size="Small" color={isDarkMode ? 'grayscale10' : 'primary100'}>
             지금 가장 <StyledSpan color="primary40">HOT</StyledSpan> 한
           </TextHeading>
           <ZipyoSVG fill={theme.colors.primary40} height={'30px'} />

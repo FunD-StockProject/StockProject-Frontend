@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
+import { theme } from '../../styles/themes';
 
 const SearchTitleContainer = styled.div({
   background: theme.colors.grayscale100,

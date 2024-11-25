@@ -1,7 +1,6 @@
-import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
+import { ButtonDiv, FlexDiv, ImgDiv, StyledSVG } from '../Common/Common';
 import { Text, TextDetail, TextHeading } from '../Text/Text';
 import { scoreToImage } from '../../utils/ScoreConvert';
-import theme from '../../styles/themes';
 import UpSVG from '../../assets/icons/up.svg?react';
 import DownSVG from '../../assets/icons/down.svg?react';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ const StockCardItem = ({ name, score, delta }: { name: string; score: number; de
   const scoreImage = scoreToImage(score);
   const backgroundColor = score > 50 ? 'red' : 'blue';
   const deltaColor = delta > 0 ? 'yellow' : 'cyan';
-  const deltaSVG = delta > 0 ? <UpSVG fill={theme.colors.yellow} /> : <DownSVG fill={theme.colors.cyan} />;
+  const deltaSVG = delta > 0 ? <StyledSVG svg={UpSVG} fill="yellow" /> : <StyledSVG svg={DownSVG} fill="cyan" />;
 
   const handleClick = () => {
     navigate(webPath.search(), { state: { name } });

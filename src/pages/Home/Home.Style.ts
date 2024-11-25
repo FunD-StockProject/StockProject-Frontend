@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
+import { theme } from '../../styles/themes';
 
 const width = Math.min(600, window.innerWidth);
 
@@ -29,7 +29,7 @@ const StyleTabMenu = styled.ul({
   alignItems: 'center',
   listStyle: 'none',
   paddingInlineStart: '0px',
-  fontSize: theme.fontSize.Title.Large,
+  fontSize: theme.fontSize.Title.Large.Web,
 
   // 하위 클래스 스타일 정의
   '.submenu': {

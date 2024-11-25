@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import theme from '../../styles/themes';
+import { theme } from '../../styles/themes';
 
 const SlotMachineItemContainer = styled.div({
   backgroundColor: theme.colors.grayscale90,

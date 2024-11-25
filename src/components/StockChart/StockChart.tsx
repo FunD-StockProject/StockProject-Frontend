@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
 import { FlexDiv } from '../Common/Common';
 import { useEffect, useState } from 'react';
+import { theme } from '../../styles/themes';
 
 const sample = [123];
 
