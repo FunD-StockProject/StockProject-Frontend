@@ -45,4 +45,11 @@ const ArrowButton = styled.img<{ disabled: boolean }>((props) => ({
   color: 'white',
 }));
 
-export { NoScrollbar, ArrowButton };
+const StyledButton = styled.button({
+  borderRadius: '32px',
+  backgroundColor: 'black',
+  padding: '12px 24px',
+  color: 'white',
+  marginLeft: '10px',
+});
+export { NoScrollbar, ArrowButton, StyledButton };
