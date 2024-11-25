@@ -19,7 +19,7 @@ const HeaderContents = styled.div({
 
   [media[0]]: {
     gap: '18px',
-    padding: '24px 20px 12px',
+    padding: '24px 20px',
   },
 });
 

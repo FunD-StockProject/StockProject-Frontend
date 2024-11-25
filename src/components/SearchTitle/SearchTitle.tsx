@@ -1,8 +1,8 @@
+import ZipyoSVG from '../../assets/zipyo.svg?react';
+import { theme } from '../../styles/themes';
 import { ButtonDiv, FlexDiv, ImgDiv, StyledSVG } from '../Common/Common';
 import { Text, TextDetail, TextDisplay, TextHeading, TextTitle } from '../Text/Text';
 import { SearchTitleButton, SearchTitleContainer, SearchTitleContents } from './SearchTitle.Syle';
-import ZipyoSVG from '../../assets/zipyo.svg?react';
-import { theme } from '../../styles/themes';
 
 const SearchTitle = ({
   stockName,

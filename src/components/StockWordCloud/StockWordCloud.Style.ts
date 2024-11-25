@@ -2,14 +2,20 @@ import styled from '@emotion/styled';
 import { pop } from '@styles/keyframes';
 import { media, theme } from '@styles/themes';
 
+const Tmp = styled.div`
+  position: absolute;
+  margin-bottom: 0;
+  display: flex;
+`;
+
 const StockWordCloudContainer = styled.div({
   // background: theme.colors.grayscale90,
   height: '640px',
   overflow: 'hidden',
   position: 'relative',
-  margin: '0 18px',
-  borderRadius: '24px',
   padding: '32px',
+  borderRadius: '24px',
+  margin: '0 18px',
 
   [media[0]]: {
     gap: '12px',

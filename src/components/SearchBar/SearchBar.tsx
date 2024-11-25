@@ -1,88 +1,78 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import CancelSVG from '../../assets/icons/cancel.svg?react';
-import NoResultSVG from '../../assets/noResult.svg?react';
-import { fetchAutoComplete, fetchSearchSymbolName } from '../../controllers/api';
-import { StockInfo } from '../../controllers/api.Type';
-import { webPath } from '../../router';
-import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '../../utils/LocalStorage';
-import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common/Common';
-import { TextDetail, TextTitle } from '@components/Text/Text';
-import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
-
+import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
+import { webPath } from '@router/index';
+import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
+import { StockInfo } from '@controllers/api.Type';
+import CancelSVG from '@assets/icons/cancel.svg?react';
+import NoResultSVG from '@assets/noResult.svg?react';
 import {
-  AutoCompleteItemViewProps,
-  AutoCompleteListViewProps,
-  RecentSearchItemViewProps,
-  RecentSearchListViewProps,
+  AutoCompleteItemProps,
+  AutoCompleteListProps,
+  RecentSearchItemProps,
+  RecentSearchListProps,
 } from './SearchBar.Props';
 import {
-  AutoCompleteCorrectSpan,
+  AutoCompleteItemContainer,
+  AutoCompleteItemText,
+  AutoCompleteListContainer,
+  RecentSearchItemContainer,
+  RecentSearchListContainer,
   SearchBarContainer,
   SearchBarContents,
   SearchBarDesignPart,
   SearchBarInput,
+  SearchBarLayer,
+  SearchBarLayout,
 } from './SearchBar.Style';
 
-const RecentSearchListView = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListViewProps) => {
+const RecentSearchList = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
   return (
-    <FlexDiv flexDirection="column" padding={searchedData.length ? '16px' : '0'} gap="8px">
+    <RecentSearchListContainer>
+      {searchedData.length ? <span>최근검색어</span> : ''}
       {searchedData.map((name: string, idx: number) => (
-        <RecentSearchItemView
+        <RecentSearchItem
           name={name}
           key={'recent_search_' + idx}
           searchItem={() => handleSearch(name)}
           deleteItem={() => deleteRecentSearch(name)}
         />
       ))}
-    </FlexDiv>
+    </RecentSearchListContainer>
   );
 };
 
-const RecentSearchItemView = ({ name, searchItem, deleteItem }: RecentSearchItemViewProps) => {
+const RecentSearchItem = ({ name, searchItem, deleteItem }: RecentSearchItemProps) => {
   return (
-    <FlexDiv alignItems="center" justifyContent="space-between" width="100%">
-      <ButtonDiv onClick={searchItem}>
-        <TextTitle color="primary0">{name}</TextTitle>
-      </ButtonDiv>
-      <ButtonDiv onClick={deleteItem}>
-        <CancelSVG fill={theme.colors.primary5} width={32} height={32} />
-      </ButtonDiv>
-    </FlexDiv>
+    <RecentSearchItemContainer>
+      <span onClick={searchItem}>{name}</span>
+      <CancelSVG onClick={deleteItem} />
+    </RecentSearchItemContainer>
   );
 };
 
-const AutoCompleteListView = ({ value, searchedResult, handleSearch }: AutoCompleteListViewProps) => {
-  return searchedResult.length ? (
-    <FlexDiv flexDirection="column" padding="16px" gap="16px">
-      {searchedResult.map((e: StockInfo, idx: number) => (
-        <AutoCompleteItemView
-          key={'auto_complete_' + idx}
-          value={value}
-          name={e.symbolName ?? ''}
-          searchItem={() => {
-            handleSearch(e.symbolName);
-          }}
-        />
-      ))}
-    </FlexDiv>
-  ) : (
-    <FlexDiv justifyContent="center" padding="32px 0">
-      <NoResultSVG />
-    </FlexDiv>
+const AutoCompleteList = ({ value, searchedResult, handleSearch }: AutoCompleteListProps) => {
+  return (
+    <AutoCompleteListContainer>
+      {searchedResult.length ? (
+        searchedResult.map((e: StockInfo, idx: number) => (
+          <AutoCompleteItem
+            key={'auto_complete_' + idx}
+            value={value}
+            name={e.symbolName ?? ''}
+            searchItem={() => {
+              handleSearch(e.symbolName);
+            }}
+          />
+        ))
+      ) : (
+        <NoResultSVG />
+      )}
+    </AutoCompleteListContainer>
   );
 };
 
-const AutoCompleteItemContainer = styled.div({
-  cursor: 'pointer',
-  display: 'flex',
-  gap: '12px',
-  alignItems: 'center',
-});
-
-const AutoCompleteItemView = ({ value, name, searchItem }: AutoCompleteItemViewProps) => {
+const AutoCompleteItem = ({ value, name, searchItem }: AutoCompleteItemProps) => {
   let arr = Array.from({ length: name.length }, () => false);
   let idx = 0;
   [...name].map((e, i) => {
@@ -94,15 +84,10 @@ const AutoCompleteItemView = ({ value, name, searchItem }: AutoCompleteItemViewP
 
   return (
     <>
-      <ButtonDiv onClick={searchItem}>
-        <FlexDiv gap="12px" alignItems="center">
-          <TextDetail color="grayscale40">국내종목</TextDetail>
-          <TextTitle color="primary0">
-            {[...name].map((e, i) => (arr[i] ? <AutoCompleteCorrectSpan>{e}</AutoCompleteCorrectSpan> : e))}
-          </TextTitle>
-        </FlexDiv>
-      </ButtonDiv>
-      {/* <hr style={{ width: '100%' }} /> */}
+      <AutoCompleteItemContainer onClick={searchItem}>
+        국내종목
+        <AutoCompleteItemText>{[...name].map((e, i) => (arr[i] ? <span>{e}</span> : e))}</AutoCompleteItemText>
+      </AutoCompleteItemContainer>
     </>
   );
 };
@@ -179,9 +164,8 @@ const SearchBar = () => {
 
   return (
     <>
-      <RelativeDiv>
-        <div style={{ height: '200px' }}></div>
-        <AbsoluteDiv width="100%" top="0">
+      <SearchBarLayout>
+        <SearchBarLayer>
           <SearchBarContainer active={activeSearchBar}>
             Search
             <SearchBarContents
@@ -201,13 +185,13 @@ const SearchBar = () => {
               />
               {activeSearchBar ? (
                 stockName == '' ? (
-                  <RecentSearchListView
+                  <RecentSearchList
                     searchedData={searchedData}
                     handleSearch={handleSearch}
                     deleteRecentSearch={deleteRecentSearch}
                   />
                 ) : (
-                  <AutoCompleteListView value={stockName} searchedResult={searchedResult} handleSearch={handleSearch} />
+                  <AutoCompleteList value={stockName} searchedResult={searchedResult} handleSearch={handleSearch} />
                 )
               ) : (
                 ''
@@ -215,8 +199,8 @@ const SearchBar = () => {
             </SearchBarContents>
           </SearchBarContainer>
           <SearchBarDesignPart active={activeSearchBar} />
-        </AbsoluteDiv>
-      </RelativeDiv>
+        </SearchBarLayer>
+      </SearchBarLayout>
     </>
   );
 };

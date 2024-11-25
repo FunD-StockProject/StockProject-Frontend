@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import InfoSVG from '../../assets/info.svg';
 import LogoSVG from '../../assets/logo_white.svg';
 import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
@@ -13,8 +13,6 @@ import { TextHeading } from '../../components/Text/Text';
 import { fetchSearchSymbolName } from '../../controllers/api';
 import { StockInfo } from '../../controllers/api.Type';
 import { media, theme } from '../../styles/themes';
-import styled from '@emotion/styled';
-
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
 const ContentsItemContainer = styled.div({
@@ -95,17 +93,7 @@ const Search = () => {
 
   const getScoreInfo = async (stockName: string) => {
     if (!stockName) return null;
-    // const res = await Promise.resolve(fetchSearchSymbolName(stockName));
-    const res = {
-      stockId: 1,
-      symbol: 'ㅁㄴㅇ',
-      symbolName: 'ㅁㄴㅇ',
-      securityName: 'ㅁㄴㅇ',
-      exchangeNum: 'ㅁㄴㅇ',
-      scoreId: 1,
-      scoreKorea: 1,
-      scoreOversea: 1,
-    };
+    const res = await Promise.resolve(fetchSearchSymbolName(stockName));
     if (!res) return null;
     setStockInfo(res);
   };

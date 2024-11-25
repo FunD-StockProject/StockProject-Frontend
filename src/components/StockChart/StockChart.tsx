@@ -38,7 +38,12 @@ const StockChart = ({ stockId }: { stockId: number }) => {
   return stockChart ? (
     <FlexDiv flexDirection="column" width="100%">
       <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <SearchResultChartContainer></SearchResultChartContainer>
+        <SearchResultChartContainer
+          style={{
+            margin: 0,
+            display: 'flex',
+          }}
+        />
       </FlexDiv>
     </FlexDiv>
   ) : (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { media, theme } from '../../styles/themes';
+import { media, theme } from '@styles/themes';
 
 const FooterContainer = styled.div({
   background: theme.colors.primary50,
