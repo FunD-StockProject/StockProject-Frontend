@@ -47,16 +47,6 @@ const fetchAutoComplete = (name: string) => {
 const fetchSearchSymbolName = (name: string) => {
   return fetchData(`/stock/search/${name}`);
 };
-export interface StockInfo {
-  stockId: number;
-  symbol: string;
-  symbolName: string;
-  securityName: string;
-  exchangeNum: string;
-  scoreId: number;
-  scoreKorea: number;
-  scoreOversea: number;
-}
 
 export {
   fetchScore,

@@ -1,13 +1,7 @@
 import styled from '@emotion/styled';
 import theme from '../../styles/themes';
 
-const StockRelevantContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  gap: '28px',
-});
-
-const StockRelevantItemContainer = styled.div({
+const StockCardItemContainer = styled.div({
   overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
@@ -19,7 +13,7 @@ const StockRelevantItemContainer = styled.div({
   cursor: 'pointer',
 });
 
-const StockRelevantItemTitle = styled.div({
+const StockCardItemTitle = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -31,4 +25,4 @@ const StockRelevantItemTitle = styled.div({
   gap: '12px',
 });
 
-export { StockRelevantContainer, StockRelevantItemContainer, StockRelevantItemTitle };
+export { StockCardItemContainer, StockCardItemTitle };

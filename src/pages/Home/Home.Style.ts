@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from '../../styles/themes';
 
 const width = Math.min(600, window.innerWidth);
 
@@ -19,27 +20,28 @@ const StyledImage = styled.img({
 });
 
 const StyleTabMenu = styled.ul({
+  maxWidth: '1280px',
+  margin: '0 auto',
   backgroundColor: 'white',
   color: 'black',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   listStyle: 'none',
-  margin: '0px',
   paddingInlineStart: '0px',
+  fontSize: theme.fontSize.Title.Large,
 
   // 하위 클래스 스타일 정의
   '.submenu': {
     display: 'flex',
     justifyContent: 'center',
     flex: 1,
-    padding: '10px 0px',
-    fontSize: '15px',
+    padding: '12px 0px',
     fontWeight: 'bold',
   },
 
   '.focused': {
-    backgroundColor: 'black',
+    backgroundColor: theme.colors.primary100,
     color: 'white',
   },
 });

@@ -6,6 +6,7 @@ import HotCard from '../HotCard/HotCard';
 import { useContext } from 'react';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
+import StockCardItem from '../../components/StockCard/StockCard';
 const CardList = ({
   list,
   isHot = false,
@@ -16,6 +17,7 @@ const CardList = ({
   apiRef: React.MutableRefObject<publicApiType>;
 }) => {
   const isMobile = window.innerWidth < 450; // 추후 수정
+  console.log(list);
 
   return (
     <NoScrollbar>
@@ -29,7 +31,7 @@ const CardList = ({
               return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
             })
           : list.map((item: CardInterface) => {
-              return <Card key={item.stockId} score={item.score} stockName={item.symbolName} diff={item.diff} />;
+              return <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />;
             })}
       </ScrollMenu>
     </NoScrollbar>

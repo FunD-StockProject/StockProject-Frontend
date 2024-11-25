@@ -10,7 +10,7 @@ const FooterButton = ({ img, str }: { img: string; str: string }) => {
   return (
     <ButtonDiv background="primary0" padding="18px 24px" radius="15px">
       <FlexDiv alignItems="center" gap="12px">
-        <ImgDiv src={img} height="36px" />
+        <ImgDiv alt={str} src={img} height="36px" />
         <TextTitle size="Large" color="primary100">
           {str}
         </TextTitle>
@@ -28,7 +28,7 @@ const Footer = () => {
             <TextHeading color="primary0">About</TextHeading>
             <LogoSVG />
           </FlexDiv>
-          <Text color="grayscale30" weight="Bold">
+          <Text color="primary0" weight="Bold">
             개미들이 원하던 서비스! '인간지표'가 2025년 1월 11일에 공식 오픈이 예정되어있어요! 😊
             <br />
             '인간지표'를 사용하면서 불편한 부분이나 추가로 원하는 기능이 있으면 언제든지 피드백해주세요 :)

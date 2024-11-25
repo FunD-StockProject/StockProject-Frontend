@@ -46,6 +46,7 @@ const TextTitle = styled.p((props: TextTitleProps) => ({
  * @size Large : 19px / Medium : 17px / Small : 15px
  */
 const Text = styled.p((props: TextBodyProps) => ({
+  display: 'flex',
   fontSize: props.size ? theme.fontSize.Body[props.size] : theme.fontSize.Body.Medium,
   fontWeight: props.weight == 'Bold' ? '700' : '400',
   lineHeight: '1.5',
@@ -65,6 +66,7 @@ const TextDetail = styled.p((props: TextDetailProps) => ({
   letterSpacing: '0px',
   color: props.color ? theme.colors[props.color] : '#000000',
   margin: 0,
+  width: 'max-content',
 }));
 
 export { Text, TextDisplay, TextHeading, TextTitle, TextDetail };

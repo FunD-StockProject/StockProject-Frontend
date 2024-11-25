@@ -9,10 +9,11 @@ import LogoSVG from '../../assets/logo_white.svg';
 import InfoSVG from '../../assets/info.svg';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
-import { SearchContainer, SearchResultContainer, SearchResultContents } from './Search.Style';
-import StockRelevant from '../../components/StockRelevant/StockRelevant';
-import { fetchSearchSymbolName, StockInfo } from '../../controllers/api';
+import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
+import { fetchSearchSymbolName } from '../../controllers/api';
 import StockChart from '../../components/StockChart/StockChart';
+import StockCardItem from '../../components/StockCard/StockCard';
+import { StockInfo } from '../../controllers/api.Type';
 
 const SearchResultIndicatorContainer = styled.div({
   display: 'flex',
@@ -41,6 +42,50 @@ const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; s
         <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
       </SearchResultIndicatorContainer>
     </FlexDiv>
+  );
+};
+
+const sample = [
+  { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
+  { stockId: 123, symbolName: '한화솔루션', score: 11, diff: -18 },
+  { stockId: 123, symbolName: 'SK하이닉스', score: 32, diff: -7 },
+];
+
+const StockRelevant = ({ stockId }: { stockId: number }) => {
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockRelevantList, setStockRelevantList] = useState<any[]>();
+
+  const getStockRelevantList = async (stockId: number) => {
+    // const res = await Promise.resolve(fetchRelevant(stockId));
+    // if (!res) return null;
+    // setStockRelevantList(res);
+    stockId;
+    setStockRelevantList(sample);
+  };
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getStockRelevantList(stockId);
+  }, [didMount]);
+
+  return stockRelevantList ? (
+    <FlexDiv flexDirection="column" gap="24px" width="100%">
+      <TextHeading size="Small" color="grayscale10">
+        관련 종목
+      </TextHeading>
+      <StockRelevantContainer>
+        {stockRelevantList.map((e, i) => (
+          <StockCardItem key={i} name={e.symbolName} score={e.score} delta={e.diff} />
+        ))}
+      </StockRelevantContainer>
+    </FlexDiv>
+  ) : (
+    ''
   );
 };
 
@@ -78,7 +123,7 @@ const Search = () => {
   }, [state]);
 
   return stockInfo ? (
-    <SearchContainer>
+    <>
       <SearchTitle stockName={stockInfo.symbolName} resultMode={resultMode} onClick={toggleResultMode} />
       <SearchResultContainer>
         <SearchResultContents>
@@ -95,7 +140,7 @@ const Search = () => {
           <StockRelevant stockId={stockInfo.stockId} />
         </SearchResultContents>
       </SearchResultContainer>
-    </SearchContainer>
+    </>
   ) : (
     ''
   );

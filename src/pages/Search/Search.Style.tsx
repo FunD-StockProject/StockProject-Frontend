@@ -1,11 +1,6 @@
 import styled from '@emotion/styled';
 import theme from '../../styles/themes';
 
-const SearchContainer = styled.div({
-  width: '100%',
-  marginBottom: '64px',
-});
-
 const SearchResultContainer = styled.div({
   background: theme.colors.primary100,
   width: '100%',
@@ -23,4 +18,10 @@ const SearchResultContents = styled.div({
   gap: '48px',
 });
 
-export { SearchContainer, SearchResultContainer, SearchResultContents };
+const StockRelevantContainer = styled.div({
+  display: 'flex',
+  margin: '0 48px',
+  gap: '28px',
+});
+
+export { SearchResultContainer, SearchResultContents, StockRelevantContainer };
