@@ -9,11 +9,12 @@ const ScoreSlotMachineContainer = styled.div({
   background: theme.colors.grayscale100,
   borderRadius: '24px',
   gap: '24px',
+
   [media[0]]: {
+    gap: '12px',
     margin: '0 8px',
     padding: '12px',
     borderRadius: '12px',
-    gap: '12px',
   },
 });
 
@@ -29,6 +30,7 @@ const SlotMachineItemContainer = styled.div({
   overflow: 'hidden',
   position: 'relative',
   height: '240px',
+
   [media[0]]: {
     height: '80px',
     borderRadius: '8px',

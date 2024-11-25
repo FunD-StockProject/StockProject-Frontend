@@ -1,4 +1,4 @@
-import { StockInfo } from '../../controllers/api';
+import { StockInfo } from '@/controllers/api.Type';
 
 export interface RecentSearchListViewProps {
   searchedData: string[];

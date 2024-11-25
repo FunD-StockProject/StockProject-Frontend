@@ -8,22 +8,28 @@ const NoScrollbar = styled.div({
   '& .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar': {
     display: 'none',
   },
+
   '& .react-horizontal-scrolling-menu--scroll-container': {
     scrollbarWidth: 'none',
-    msOverflowStyle: 'none',
-    width: '100%',
-    height: 'auto',
+
     overflowX: 'auto',
     overflowY: 'hidden',
     display: 'flex',
     flexDirection: 'row',
+
+    width: '100%',
+    height: 'auto',
+
+    msOverflowStyle: 'none',
   },
+
   '& .react-horizontal-scrolling-menu--arrow-left': {
     position: 'absolute',
     top: '50%',
     left: '-40px',
     transform: 'translateY(-50%)',
   },
+
   '& .react-horizontal-scrolling-menu--arrow-right': {
     position: 'absolute',
     top: '50%',

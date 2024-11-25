@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { webPath } from '../../router';
-import { isExistItemLocalStorage, getItemLocalStorage, setItemLocalStorage } from '../../utils/LocalStorage';
+
 import CancelSVG from '../../assets/icons/cancel.svg?react';
 import NoResultSVG from '../../assets/noResult.svg?react';
-import { TextDetail, TextTitle } from '../Text/Text';
-import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common/Common';
 import { fetchAutoComplete, fetchSearchSymbolName } from '../../controllers/api';
+import { StockInfo } from '../../controllers/api.Type';
+import { webPath } from '../../router';
+import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '../../utils/LocalStorage';
+import { AbsoluteDiv, ButtonDiv, FlexDiv, RelativeDiv } from '../Common/Common';
+import { TextDetail, TextTitle } from '@components/Text/Text';
+import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
+
 import {
   AutoCompleteItemViewProps,
   AutoCompleteListViewProps,
@@ -20,9 +25,6 @@ import {
   SearchBarDesignPart,
   SearchBarInput,
 } from './SearchBar.Style';
-import { theme } from '../../styles/themes';
-import { StockInfo } from '../../controllers/api.Type';
-import styled from '@emotion/styled';
 
 const RecentSearchListView = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListViewProps) => {
   return (

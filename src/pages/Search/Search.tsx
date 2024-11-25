@@ -1,19 +1,21 @@
-import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
-import SearchTitle from '../../components/SearchTitle/SearchTitle';
-import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
 import { useEffect, useState } from 'react';
-import { TextHeading } from '../../components/Text/Text';
-import LogoSVG from '../../assets/logo_white.svg';
+import { useLocation } from 'react-router-dom';
+
 import InfoSVG from '../../assets/info.svg';
+import LogoSVG from '../../assets/logo_white.svg';
+import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
+import SearchTitle from '../../components/SearchTitle/SearchTitle';
+import StockCardItem from '../../components/StockCard/StockCard';
+import StockChart from '../../components/StockChart/StockChart';
 import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
-import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
+import { TextHeading } from '../../components/Text/Text';
 import { fetchSearchSymbolName } from '../../controllers/api';
-import StockChart from '../../components/StockChart/StockChart';
-import StockCardItem from '../../components/StockCard/StockCard';
 import { StockInfo } from '../../controllers/api.Type';
 import { media, theme } from '../../styles/themes';
+import styled from '@emotion/styled';
+
+import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
 const ContentsItemContainer = styled.div({
   display: 'flex',

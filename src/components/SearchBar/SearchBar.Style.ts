@@ -1,25 +1,41 @@
 import styled from '@emotion/styled';
 import { media, theme } from '../../styles/themes';
 
+const CustomText = styled.div`
+  display: flex;
+  background-color: black;
+  padding: 10px;
+  width: 200px;
+  margin: 10px;
+
+  font-size: 14px;
+  color: #e9ecef;
+  font-weight: bold;
+
+  animation: ease;
+  border-radius: 100%;
+`;
+
 const SearchBarContainer = styled.div(
   {
-    display: 'flex',
-    flexDirection: 'column',
-    background: theme.colors.primary100,
     padding: '24px 48px',
     gap: '12px',
-    fontSize: '32px',
     fontWeight: '700',
+    fontSize: '32px',
     color: theme.colors.primary5,
+    display: 'flex',
+    flexDirection: 'column',
     lineHeight: '1',
+    background: theme.colors.primary100,
+
     [media[0]]: {
+      gap: '6px',
       padding: '24px 32px',
       fontSize: '25px',
-      gap: '6px',
     },
   },
   ({ active }: { active: boolean }) => ({
-    borderRadius: '12px 12px ' + (active ? '12px' : '0px') + ' 12px',
+    borderRadius: +(active ? '12px' : '0px'),
   }),
 );
 
@@ -32,8 +48,7 @@ const SearchBarContents = styled.div(
   },
   ({ active }: { active: boolean }) => ({
     borderRadius: '10px',
-    WebkitBorderRadius: '10px',
-    MozBorderRadius: '10px',
+
     border: '1px solid ' + (active ? theme.colors.primary5 : theme.colors.transparent),
   }),
 );
@@ -56,7 +71,7 @@ const SearchBarDesignPart = styled.div(({ active }: { active: boolean }) => ({
   height: 0,
   marginLeft: 'auto',
   borderStyle: 'solid',
-  borderWidth: '50px 50px 0px 0px',
+  borderWidth: '50px 50px 0 0',
   borderColor: theme.colors.primary70 + ' transparent',
   display: active ? 'none' : 'block',
 }));

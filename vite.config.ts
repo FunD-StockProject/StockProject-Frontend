@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import svgr from 'vite-plugin-svgr';
-import { VitePluginRadar } from 'vite-plugin-radar';
 import { VitePWA } from 'vite-plugin-pwa';
+import { VitePluginRadar } from 'vite-plugin-radar';
+import svgr from 'vite-plugin-svgr';
+
+import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
   plugins: [
@@ -48,4 +49,12 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: [
+      { find: '@', replacement: '/src' },
+      { find: '@assets', replacement: '/src/assets' },
+      { find: '@styles', replacement: '/src/styles' },
+      { find: '@components', replacement: '/src/components' },
+    ],
+  },
 });

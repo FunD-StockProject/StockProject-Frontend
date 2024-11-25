@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
 import { pop } from '../../styles/keyframes';
 import { media, theme } from '../../styles/themes';
+import styled from '@emotion/styled';
 
 const StockWordCloudContainer = styled.div({
   // background: theme.colors.grayscale90,
@@ -10,12 +10,15 @@ const StockWordCloudContainer = styled.div({
   margin: '0 18px',
   borderRadius: '24px',
   padding: '32px',
+
   [media[0]]: {
+    gap: '12px',
+
     height: '480px',
     margin: '0 8px',
     padding: '12px',
+
     borderRadius: '12px',
-    gap: '12px',
   },
 });
 
@@ -49,7 +52,7 @@ const Word = styled.span(
     fontWeight: '900',
     wordBreak: 'keep-all',
     overflow: 'clip',
-    color: '#FFFFFFAA',
+    color: '#FFFA',
     animationFillMode: 'both',
     lineHeight: '1.0',
   },

@@ -7,14 +7,14 @@ const StyledContainer = styled.div({
   height: '200px',
   width: `${width - 60}px`,
   minWidth: '360px',
-  margin: '0px 10px 0px 0px',
+  margin: '0 10px 0 0',
   borderRadius: '10px',
   backgroundColor: '#1D1E1F',
 });
 
 const StyledTitle = styled.h2({
-  padding: '10px 0px 0px 10px',
-  margin: '0px',
+  padding: '10px 0 0 10px',
+  margin: '0',
 });
 
 // 카드 컴포넌트 스타일
@@ -29,12 +29,15 @@ const StyledCard = styled.div({
   gap: '10px',
 
   '& > *': {
+    flex: 1,
+
     width: '30%',
     height: 'auto',
-    flex: 1,
+
+    textAlign: 'center',
+
     border: '1px solid white',
     borderRadius: '12px',
-    textAlign: 'center',
   },
 });
 
@@ -49,7 +52,7 @@ const StyledText = styled.div({
   display: 'flex', // Flexbox 사용
   alignItems: 'center', // 세로 중앙 정렬
   justifyContent: 'center', // 가로 중앙 정렬
-  width: '100%', // 부모 요소의 높이를 모두 차지
+  width: '100%' // 부모 요소의 높이를 모두 차지
 });
 
 export { StyledContainer, StyledTitle, StyledCard, StyledImage, StyledText };
