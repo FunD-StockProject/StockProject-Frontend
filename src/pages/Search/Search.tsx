@@ -15,30 +15,6 @@ import { StockInfo } from '../../controllers/api.Type';
 import { media, theme } from '../../styles/themes';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
-const ContentsItemContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '18px',
-  [media[0]]: {
-    gap: '12px',
-  },
-});
-
-const ContentsItemTitle = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  ['img']: {
-    height: theme.fontSize.Title.XLarge.Web,
-  },
-  [media[0]]: {
-    gap: '6px',
-    ['img']: {
-      height: theme.fontSize.Title.XLarge.Mobile,
-    },
-  },
-});
-
 const sample = [
   { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
   { stockId: 123, symbolName: '한화솔루션', score: 11, diff: -18 },
@@ -79,6 +55,44 @@ const StockRelevant = ({ stockId }: { stockId: number }) => {
     ''
   );
 };
+
+const ContentsItemContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '18px',
+  [media[0]]: {
+    gap: '12px',
+  },
+});
+
+const ContentsItemTitle = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  fontSize: '40px',
+  fontWeight: '700',
+  color: theme.colors.grayscale10,
+  ['img']: {
+    height: '36px',
+    width: 'auto',
+  },
+  ['.btn_info']: {
+    marginLeft: '8px',
+    height: '32px',
+    cursor: 'pointer',
+  },
+  [media[0]]: {
+    fontSize: '19px',
+    gap: '6px',
+    ['img']: {
+      height: '17px',
+    },
+    ['.btn_info']: {
+      marginLeft: '4px',
+      height: '19px',
+    },
+  },
+});
 
 const Search = () => {
   const { state } = useLocation();
@@ -122,25 +136,16 @@ const Search = () => {
             <>
               <ContentsItemContainer>
                 <ContentsItemTitle>
-                  <TextHeading size="Small" color="grayscale10">
-                    국내 개미
-                  </TextHeading>
+                  국내 개미
                   <ImgDiv src={LogoSVG} />
-                  <ButtonDiv onClick={() => {}}>
-                    <ImgDiv src={InfoSVG} width="28px" />
-                  </ButtonDiv>
+                  <ImgDiv className="btn_info" src={InfoSVG} onClick={() => {}} />
                 </ContentsItemTitle>
                 <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
               </ContentsItemContainer>
               <ContentsItemContainer>
                 <ContentsItemTitle>
-                  <TextHeading size="Small" color="grayscale10">
-                    국내 개미
-                  </TextHeading>
-                  <ImgDiv src={LogoSVG} />
-                  <ButtonDiv onClick={() => {}}>
-                    <ImgDiv src={InfoSVG} width="28px" />
-                  </ButtonDiv>
+                  국내 개미들의 소리
+                  <ImgDiv className="btn_info" src={InfoSVG} onClick={() => {}} />
                 </ContentsItemTitle>
                 <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
               </ContentsItemContainer>
@@ -151,11 +156,7 @@ const Search = () => {
             </>
           )}
           <ContentsItemContainer>
-            <ContentsItemTitle>
-              <TextHeading size="Small" color="grayscale10">
-                관련 종목
-              </TextHeading>
-            </ContentsItemTitle>
+            <ContentsItemTitle>관련 종목</ContentsItemTitle>
             <StockRelevant stockId={stockInfo.stockId} />
           </ContentsItemContainer>
         </SearchResultContents>
