@@ -2,27 +2,18 @@ import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { ContentsItemContainer, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import descentTextDark from '../../assets/descentTextDark.svg';
-import descentTextLight from '../../assets/descentTextLight.svg';
-import hotTextDark from '../../assets/hotTextDark.svg';
-import hotTextLight from '../../assets/hotTextLight.svg';
-import risingTextDark from '../../assets/risingTextDark.svg';
-import risingTextLight from '../../assets/risingTextLight.svg';
 import ZipyoSVG from '../../assets/zipyo.svg?react';
-import { FlexDiv } from '../../components/Common/Common';
-import { TextHeading } from '../../components/Text/Text';
 import { useStocks } from '../../hooks/useStocks';
-import { useSystemTheme } from '../../hooks/useSystemHook';
+// import { useSystemTheme } from '../../hooks/useSystemHook';
 import CardList from '../../layout/CardList/CardList';
 import { theme, themeColor } from '../../styles/themes';
-import { StockType } from '../../ts/Types';
-import { StyleTabMenu, StyledContainer, StyledHome, StyledImage } from './Home.Style';
+import { StyleTabMenu } from './Home.Style';
 
 const Home = () => {
   const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
 
   const [tabIndex, setTabIndex] = useState<number>(0);
-  const isDarkMode = useSystemTheme();
+  // const isDarkMode = useSystemTheme();
 
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
@@ -44,15 +35,15 @@ const Home = () => {
     window.scrollTo(0, currentScrollPosition);
   };
 
-  const getImageSrc = (type: StockType) => {
-    const images: Record<StockType, string> = {
-      hot: isDarkMode ? hotTextDark : hotTextLight,
-      rising: isDarkMode ? risingTextDark : risingTextLight,
-      descent: isDarkMode ? descentTextDark : descentTextLight,
-    };
+  // const getImageSrc = (type: StockType) => {
+  //   const images: Record<StockType, string> = {
+  //     hot: isDarkMode ? hotTextDark : hotTextLight,
+  //     rising: isDarkMode ? risingTextDark : risingTextLight,
+  //     descent: isDarkMode ? descentTextDark : descentTextLight,
+  //   };
 
-    return images[type];
-  };
+  //   return images[type];
+  // };
 
   const HomeContainer = styled.div({
     background: theme.colors.primary100,

@@ -1,5 +1,3 @@
-import { Theme } from '@emotion/react';
-
 /**
  * @namespace asdasd
  */

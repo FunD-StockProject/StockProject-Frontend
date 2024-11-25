@@ -2,12 +2,6 @@ import styled from '@emotion/styled';
 import { pop } from '@styles/keyframes';
 import { media, theme } from '@styles/themes';
 
-const Tmp = styled.div`
-  position: absolute;
-  margin-bottom: 0;
-  display: flex;
-`;
-
 const StockWordCloudContainer = styled.div({
   // background: theme.colors.grayscale90,
   height: '640px',

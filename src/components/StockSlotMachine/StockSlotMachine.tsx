@@ -121,9 +121,19 @@ const ScoreSlotMachineItem = ({
   );
 };
 
-const ScoreSlotMachine = ({ stockName, stockScore }: { stockName: string; stockScore: number }) => {
+const ScoreSlotMachine = ({
+  stockName,
+  stockScore,
+  tabIndex,
+  onClick,
+}: {
+  stockName: string;
+  stockScore: number;
+  tabIndex?: number;
+  onClick?: (e: any) => void;
+}) => {
   return (
-    <ScoreSlotMachineContainer>
+    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={onClick}>
       <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
       <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
       <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />

@@ -1,7 +1,7 @@
 const setItemLocalStorage = (name: string, data: any) => {
-  if (typeof data == "object") {
+  if (typeof data == 'object') {
     localStorage.setItem(name, JSON.stringify(data));
-  } else if (typeof data == "number") {
+  } else if (typeof data == 'number') {
     localStorage.setItem(name, data.toString());
   } else {
     localStorage.setItem(name, data);
@@ -19,7 +19,6 @@ const getItemLocalStorage = (name: string) => {
     const json = JSON.parse(data);
     return json;
   } catch {
-    const json = JSON.parse(data);
     return data;
   }
 };

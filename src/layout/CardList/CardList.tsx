@@ -1,12 +1,13 @@
-import { publicApiType, ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { CardInterface } from '../../ts/Interfaces';
-import Card from '../Card/Card';
-import { ArrowButton, NoScrollbar } from './CardList.Style';
-import HotCard from '../HotCard/HotCard';
 import { useContext } from 'react';
-import rightArrowImgLink from '../../assets/rightArrow.svg';
+import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
+import rightArrowImgLink from '../../assets/rightArrow.svg';
 import StockCardItem from '../../components/StockCard/StockCard';
+import { CardInterface } from '../../ts/Interfaces';
+import HotCard from '../HotCard/HotCard';
+// import Card from '../Card/Card';
+import { ArrowButton, NoScrollbar } from './CardList.Style';
+
 const CardList = ({
   list,
   isHot = false,

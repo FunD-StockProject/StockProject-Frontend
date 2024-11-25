@@ -1,14 +1,6 @@
 import styled from '@emotion/styled';
+import { media, theme, themeColor, themeFontSizeBody, themeTextType } from '../../styles/themes';
 import { AbsoluteDivProps, ButtonDivProps, FlexDivProps, ImgDivProps } from './Common.Props';
-import {
-  media,
-  theme,
-  themeColor,
-  themeFontSize,
-  themeFontSizeBody,
-  themeFontSizeTitle,
-  themeTextType,
-} from '../../styles/themes';
 
 const FlexDiv = styled.div(
   ({
