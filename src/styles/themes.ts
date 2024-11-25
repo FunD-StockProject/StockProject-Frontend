@@ -140,30 +140,30 @@ const Title = {
     /** 32px */ Web: '32px',
     /** 25px */ Mobile: '25px',
   },
-  /** @param Web 25px @param Mobile 25px */
+  /** @param Web 25px @param Mobile 21px */
   XLarge: {
     /** 25px */ Web: '25px',
-    /** 25px */ Mobile: '25px',
-  },
-  /** @param Web 21px @param Mobile 21px */
-  Large: {
-    /** 21px */ Web: '21px',
     /** 21px */ Mobile: '21px',
   },
-  /** @param Web 19px @param Mobile 19px */
-  Medium: {
-    /** 19px */ Web: '19px',
+  /** @param Web 21px @param Mobile 19px */
+  Large: {
+    /** 21px */ Web: '21px',
     /** 19px */ Mobile: '19px',
   },
-  /** @param Web 17px @param Mobile 17px */
-  Small: {
-    /** 17px */ Web: '17px',
+  /** @param Web 19px @param Mobile 17px */
+  Medium: {
+    /** 19px */ Web: '19px',
     /** 17px */ Mobile: '17px',
   },
-  /** @param Web 15px @param Mobile 15px */
+  /** @param Web 17px @param Mobile 15px */
+  Small: {
+    /** 17px */ Web: '17px',
+    /** 15px */ Mobile: '15px',
+  },
+  /** @param Web 15px @param Mobile 13px */
   XSmall: {
     /** 15px */ Web: '15px',
-    /** 15px */ Mobile: '15px',
+    /** 13px */ Mobile: '13px',
   },
 };
 
@@ -249,7 +249,7 @@ const fontSize = {
   Display: Display,
   /** @param Large 50px / 40px @param Medium 40px / 32px @param Small 32px / 25px */
   Heading: Heading,
-  /** @param XXLarge 32px / 25px @param XLarge 25px @param Large 21px @param Medium 19px @param Small 17px @param XSmall 15px */
+  /** @param XXLarge 32px / 25px @param XLarge 25px / 21px @param Large 21px / 19px @param Medium 19px / 17px @param Small 17px / 15px @param XSmall 15px / 13px */
   Title: Title,
   /** @param Large 19px @param Medium 17px @param Small 15px */
   Body: Body,
@@ -266,7 +266,7 @@ const theme = {
   fontSize: fontSize,
 };
 
-const breakpoints = [576, 768, 992, 1200];
+const breakpoints = [720, 480];
 
 const media = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
 

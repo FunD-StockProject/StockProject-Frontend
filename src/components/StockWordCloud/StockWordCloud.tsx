@@ -1117,25 +1117,15 @@ const StockWordCloud = ({ stockName, stockId }: { stockName: string; stockId: nu
   }, [currentIndex, wordCloud]);
 
   return (
-    <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <FlexDiv alignItems="center" gap="12px">
-        <TextHeading size="Small" color="grayscale10">
-          국내 개미들의 소리
-        </TextHeading>
-        <ButtonDiv>
-          <ImgDiv src={InfoSVG} width="28px" />
-        </ButtonDiv>
-      </FlexDiv>
-      <StockWordCloudContainer ref={containerRef}>
-        {wordCloud &&
-          wordCloud.map(
-            (e: WordCloud, i: number) =>
-              i <= currentIndex && (
-                <StockWordCloudContents key={i} animationState={animationState} wordCloutItem={e} index={i} />
-              ),
-          )}
-      </StockWordCloudContainer>
-    </FlexDiv>
+    <StockWordCloudContainer ref={containerRef}>
+      {wordCloud &&
+        wordCloud.map(
+          (e: WordCloud, i: number) =>
+            i <= currentIndex && (
+              <StockWordCloudContents key={i} animationState={animationState} wordCloutItem={e} index={i} />
+            ),
+        )}
+    </StockWordCloudContainer>
   );
 };
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../styles/themes';
+import { media, theme } from '../../styles/themes';
 
 const SearchResultContainer = styled.div({
   background: theme.colors.primary100,
@@ -16,12 +16,21 @@ const SearchResultContents = styled.div({
   padding: '60px 60px',
   height: '100%',
   gap: '48px',
+  [media[0]]: {
+    padding: '30px 30px',
+    gap: '32px',
+  },
 });
 
 const StockRelevantContainer = styled.div({
   display: 'flex',
-  margin: '0 48px',
+  margin: '0 18px',
   gap: '28px',
+  [media[0]]: {
+    // padding: '30px 30px',
+    margin: '0 8px',
+    gap: '14px',
+  },
 });
 
 export { SearchResultContainer, SearchResultContents, StockRelevantContainer };

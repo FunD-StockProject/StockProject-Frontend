@@ -166,7 +166,7 @@ const GetnerateWordCloud = ({
     let layout = null;
     let textPosition: any | null = null;
 
-    fontSize = ~~((relativeScaling * (e.freq / lastFreq) + (1 - relativeScaling)) * fontSize);
+    // fontSize = ~~((relativeScaling * (e.freq / lastFreq) + (1 - relativeScaling)) * fontSize);
 
     let orientation: boolean = Math.random() >= 0.9 ? true : false;
     let tried_other_orientation: boolean = false;

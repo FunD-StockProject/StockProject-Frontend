@@ -13,37 +13,31 @@ import { fetchSearchSymbolName } from '../../controllers/api';
 import StockChart from '../../components/StockChart/StockChart';
 import StockCardItem from '../../components/StockCard/StockCard';
 import { StockInfo } from '../../controllers/api.Type';
-import { theme } from '../../styles/themes';
+import { media, theme } from '../../styles/themes';
 
-const SearchResultIndicatorContainer = styled.div({
+const ContentsItemContainer = styled.div({
   display: 'flex',
-  margin: '0 48px',
-  background: theme.colors.grayscale100,
-  borderRadius: '25px',
-  padding: '48px',
-  gap: '28px',
+  flexDirection: 'column',
+  gap: '18px',
+  [media[0]]: {
+    gap: '12px',
+  },
 });
 
-const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; stockScore: number }) => {
-  return (
-    <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <FlexDiv alignItems="center" gap="12px">
-        <TextHeading size="Small" color="grayscale10">
-          국내 개미
-        </TextHeading>
-        <ImgDiv src={LogoSVG} height="28px" />
-        <ButtonDiv onClick={() => {}}>
-          <ImgDiv src={InfoSVG} width="28px" />
-        </ButtonDiv>
-      </FlexDiv>
-      <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
-      </SearchResultIndicatorContainer>
-    </FlexDiv>
-  );
-};
+const ContentsItemTitle = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  ['img']: {
+    height: theme.fontSize.Title.XLarge.Web,
+  },
+  [media[0]]: {
+    gap: '6px',
+    ['img']: {
+      height: theme.fontSize.Title.XLarge.Mobile,
+    },
+  },
+});
 
 const sample = [
   { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
@@ -75,9 +69,6 @@ const StockRelevant = ({ stockId }: { stockId: number }) => {
 
   return stockRelevantList ? (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <TextHeading size="Small" color="grayscale10">
-        관련 종목
-      </TextHeading>
       <StockRelevantContainer>
         {stockRelevantList.map((e, i) => (
           <StockCardItem key={i} name={e.symbolName} score={e.score} delta={e.diff} />
@@ -139,15 +130,44 @@ const Search = () => {
         <SearchResultContents>
           {resultMode == 'indicator' ? (
             <>
-              <SearchResultIndicator stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
-              <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+              <ContentsItemContainer>
+                <ContentsItemTitle>
+                  <TextHeading size="Small" color="grayscale10">
+                    국내 개미
+                  </TextHeading>
+                  <ImgDiv src={LogoSVG} />
+                  <ButtonDiv onClick={() => {}}>
+                    <ImgDiv src={InfoSVG} width="28px" />
+                  </ButtonDiv>
+                </ContentsItemTitle>
+                <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
+              </ContentsItemContainer>
+              <ContentsItemContainer>
+                <ContentsItemTitle>
+                  <TextHeading size="Small" color="grayscale10">
+                    국내 개미
+                  </TextHeading>
+                  <ImgDiv src={LogoSVG} />
+                  <ButtonDiv onClick={() => {}}>
+                    <ImgDiv src={InfoSVG} width="28px" />
+                  </ButtonDiv>
+                </ContentsItemTitle>
+                <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+              </ContentsItemContainer>
             </>
           ) : (
             <>
               <StockChart stockId={stockInfo.stockId} />
             </>
           )}
-          <StockRelevant stockId={stockInfo.stockId} />
+          <ContentsItemContainer>
+            <ContentsItemTitle>
+              <TextHeading size="Small" color="grayscale10">
+                관련 종목
+              </TextHeading>
+            </ContentsItemTitle>
+            <StockRelevant stockId={stockInfo.stockId} />
+          </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>
     </>

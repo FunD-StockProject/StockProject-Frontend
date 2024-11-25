@@ -1,6 +1,14 @@
 import styled from '@emotion/styled';
 import { AbsoluteDivProps, ButtonDivProps, FlexDivProps, ImgDivProps } from './Common.Props';
-import { theme, themeColor } from '../../styles/themes';
+import {
+  media,
+  theme,
+  themeColor,
+  themeFontSize,
+  themeFontSizeBody,
+  themeFontSizeTitle,
+  themeTextType,
+} from '../../styles/themes';
 
 const FlexDiv = styled.div(
   ({
@@ -66,6 +74,9 @@ const ImgDiv = styled.img(({ width = 'auto', height = 'auto', objectFit = 'conta
 const StyledSVG = ({
   svg,
   fill,
+  stroke,
+  type,
+  size,
 }: {
   svg: React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & {
@@ -76,9 +87,18 @@ const StyledSVG = ({
     }
   >;
   fill?: themeColor;
+  stroke?: themeColor;
+  type?: themeTextType;
+  size?: themeFontSizeBody;
 }) => {
   const SVG = styled(svg)({
     fill: fill ? theme.colors[fill] : 'current',
+    stroke: stroke ? theme.colors[stroke] : 'current',
+    width: 'auto',
+    height: type ? (size ? theme.fontSize[type][size].Web : theme.fontSize[type].Medium.Web) : 'auto',
+    [media[0]]: {
+      height: type ? (size ? theme.fontSize[type][size].Mobile : theme.fontSize[type].Medium.Mobile) : 'auto',
+    },
   });
   return <SVG />;
 };

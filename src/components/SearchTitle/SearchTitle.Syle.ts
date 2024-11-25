@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../styles/themes';
+import { media, theme } from '../../styles/themes';
 
 const SearchTitleContainer = styled.div({
   background: theme.colors.grayscale100,
@@ -15,7 +15,21 @@ const SearchTitleContents = styled.div({
   margin: '0 auto',
   padding: '60px 60px',
   height: '100%',
-  gap: '32px',
+  gap: '24px',
+  [media[0]]: {
+    padding: '30px 30px',
+    gap: '18px',
+  },
 });
 
-export { SearchTitleContainer, SearchTitleContents };
+const SearchTitleButton = styled.div({
+  padding: '16px 48px',
+  borderRadius: '30px',
+  border: 'none',
+  background: theme.colors.primary50,
+  [media[0]]: {
+    padding: '12px 32px',
+  },
+});
+
+export { SearchTitleContainer, SearchTitleContents, SearchTitleButton };

@@ -22,6 +22,7 @@ import {
 } from './SearchBar.Style';
 import { theme } from '../../styles/themes';
 import { StockInfo } from '../../controllers/api.Type';
+import styled from '@emotion/styled';
 
 const RecentSearchListView = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListViewProps) => {
   return (
@@ -71,6 +72,13 @@ const AutoCompleteListView = ({ value, searchedResult, handleSearch }: AutoCompl
     </FlexDiv>
   );
 };
+
+const AutoCompleteItemContainer = styled.div({
+  cursor: 'pointer',
+  display: 'flex',
+  gap: '12px',
+  alignItems: 'center',
+});
 
 const AutoCompleteItemView = ({ value, name, searchItem }: AutoCompleteItemViewProps) => {
   let arr = Array.from({ length: name.length }, () => false);
@@ -170,12 +178,10 @@ const SearchBar = () => {
   return (
     <>
       <RelativeDiv>
-        <div style={{ height: '240px' }}></div>
+        <div style={{ height: '200px' }}></div>
         <AbsoluteDiv width="100%" top="0">
           <SearchBarContainer active={activeSearchBar}>
-            <TextTitle size="XLarge" color="primary5">
-              Search
-            </TextTitle>
+            Search
             <SearchBarContents
               active={activeSearchBar}
               ref={callbackRef}

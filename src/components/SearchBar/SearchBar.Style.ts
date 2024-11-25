@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../styles/themes';
+import { media, theme } from '../../styles/themes';
 
 const SearchBarContainer = styled.div(
   {
@@ -8,6 +8,15 @@ const SearchBarContainer = styled.div(
     background: theme.colors.primary100,
     padding: '24px 48px',
     gap: '12px',
+    fontSize: '32px',
+    fontWeight: '700',
+    color: theme.colors.primary5,
+    lineHeight: '1',
+    [media[0]]: {
+      padding: '24px 32px',
+      fontSize: '25px',
+      gap: '6px',
+    },
   },
   ({ active }: { active: boolean }) => ({
     borderRadius: '12px 12px ' + (active ? '12px' : '0px') + ' 12px',

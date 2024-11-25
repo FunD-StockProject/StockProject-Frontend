@@ -1,15 +1,22 @@
 import styled from '@emotion/styled';
 import { pop } from '../../styles/keyframes';
-import { theme } from '../../styles/themes';
+import { media, theme } from '../../styles/themes';
 
 const StockWordCloudContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
   // background: theme.colors.grayscale90,
-  gap: '28px',
-  height: '720px',
+  height: '640px',
   overflow: 'hidden',
   position: 'relative',
+  margin: '0 18px',
+  borderRadius: '24px',
+  padding: '32px',
+  [media[0]]: {
+    height: '480px',
+    margin: '0 8px',
+    padding: '12px',
+    borderRadius: '12px',
+    gap: '12px',
+  },
 });
 
 const WordContainer = styled.div(
