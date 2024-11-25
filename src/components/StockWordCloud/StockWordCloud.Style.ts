@@ -1,6 +1,6 @@
-import { pop } from '../../styles/keyframes';
-import { media, theme } from '../../styles/themes';
 import styled from '@emotion/styled';
+import { pop } from '@styles/keyframes';
+import { media, theme } from '@styles/themes';
 
 const StockWordCloudContainer = styled.div({
   // background: theme.colors.grayscale90,

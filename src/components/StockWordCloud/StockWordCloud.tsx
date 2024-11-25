@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { WordCloud, WordFrequency } from './StockWordCloud.Type';
-import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
-import { ButtonDiv, FlexDiv, ImgDiv } from '../Common/Common';
-import { TextHeading } from '../Text/Text';
-import InfoSVG from '../../assets/info.svg';
 import { useLocation } from 'react-router-dom';
+import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
+import { WordCloud, WordFrequency } from './StockWordCloud.Type';
 import { generateWordCloud, testWorker } from './StockWordCloud.Worker';
 
 const sample: WordFrequency[] = [

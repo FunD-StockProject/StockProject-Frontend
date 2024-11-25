@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { media, theme } from '../../styles/themes';
+import { media, theme } from '@styles/themes';
 
 const HeaderContainer = styled.div({
   width: '100%',

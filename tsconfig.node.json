@@ -20,10 +20,19 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
+      "@ts/*": ["src/ts/*"],
+      "@base/*": ["src/base/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@router/*": ["src/router/*"],
+      "@layout/*": ["src/layout/*"],
+      "@common/*": ["src/common/*"],
+      "@recoils/*": ["src/recoils/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],
-      "@components/*": ["src/components/*"]
+      "@assets/*": ["src/assets/*"]
     }
   },
   "include": ["src", "vite.config.ts"]

@@ -1,4 +1,8 @@
-import { ImgDiv } from '../Common/Common';
+import { ImgDiv } from '@components/Common/Common';
+import commentSVG from '@assets/footer_comment.svg';
+import developerSVG from '@assets/footer_developer.svg';
+import dictSVG from '@assets/footer_dict.svg';
+import LogoSVG from '@assets/logo_white.svg?react';
 import {
   FooterButtonContainer,
   FooterButtonItemContainer,
@@ -6,10 +10,6 @@ import {
   FooterContents,
   FooterTitle,
 } from './Footer.Style';
-import LogoSVG from '../../assets/logo_white.svg?react';
-import dictSVG from '../../assets/footer_dict.svg';
-import commentSVG from '../../assets/footer_comment.svg';
-import developerSVG from '../../assets/footer_developer.svg';
 
 const FooterButton = ({ img, str }: { img: string; str: string }) => {
   return (
