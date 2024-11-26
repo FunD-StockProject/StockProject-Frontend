@@ -4,17 +4,20 @@ import { media, theme } from '@styles/themes';
 
 const ScoreSlotMachineContainer = styled.div({
   display: 'flex',
-  margin: '0 18px',
+  flexDirection: 'column',
   padding: '32px',
   background: theme.colors.grayscale100,
   borderRadius: '24px',
-  gap: '24px',
+  fontSize: '32px',
+  fontWeight: '700',
+  lineHeight: '1',
+  gap: '21px',
 
   [media[0]]: {
-    gap: '12px',
-    margin: '0 8px',
+    fontSize: '17px',
     padding: '12px',
     borderRadius: '12px',
+    gap: '13px',
   },
 });
 
@@ -34,6 +37,14 @@ const SlotMachineItemContainer = styled.div({
   [media[0]]: {
     height: '80px',
     borderRadius: '8px',
+  },
+});
+
+const ScoreSlotMachineContent = styled.div({
+  display: 'flex',
+  gap: '24px',
+  [media[0]]: {
+    gap: '12px',
   },
 });
 
@@ -71,4 +82,4 @@ const SlotMachineItemMotionDiv = styled(motion.div)(
   },
 );
 
-export { ScoreSlotMachineContainer, SlotMachineItemContainer, SlotMachineItemMotionDiv };
+export { ScoreSlotMachineContainer, SlotMachineItemContainer, ScoreSlotMachineContent, SlotMachineItemMotionDiv };

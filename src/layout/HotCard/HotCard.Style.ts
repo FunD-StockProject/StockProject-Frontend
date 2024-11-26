@@ -1,21 +1,14 @@
 import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
 
 // 추후 분리
-const width = Math.min(600, window.innerWidth);
+// const width = Math.min(600, window.innerWidth);
 
-const StyledContainer = styled.div({
-  height: '200px',
-  width: `${width - 60}px`,
-  minWidth: '360px',
-  margin: '0 10px 0 0',
-  borderRadius: '10px',
-  backgroundColor: '#1D1E1F',
-});
-
-const StyledTitle = styled.h2({
-  padding: '10px 0 0 10px',
-  margin: '0',
-});
+const StyledContainer = styled.div(({ width }: { width: number }) => ({
+  width: `${width}px`,
+  borderRadius: '24px',
+  backgroundColor: theme.colors.grayscale100,
+}));
 
 // 카드 컴포넌트 스타일
 const StyledCard = styled.div({
@@ -52,7 +45,7 @@ const StyledText = styled.div({
   display: 'flex', // Flexbox 사용
   alignItems: 'center', // 세로 중앙 정렬
   justifyContent: 'center', // 가로 중앙 정렬
-  width: '100%' // 부모 요소의 높이를 모두 차지
+  width: '100%', // 부모 요소의 높이를 모두 차지
 });
 
-export { StyledContainer, StyledTitle, StyledCard, StyledImage, StyledText };
+export { StyledContainer, StyledCard, StyledImage, StyledText };

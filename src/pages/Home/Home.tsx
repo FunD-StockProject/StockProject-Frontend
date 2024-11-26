@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { ContentsItemContainer, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import ZipyoSVG from '../../assets/zipyo.svg?react';
 import { useStocks } from '../../hooks/useStocks';
 // import { useSystemTheme } from '../../hooks/useSystemHook';
 import CardList from '../../layout/CardList/CardList';
 import { theme, themeColor } from '../../styles/themes';
-import { StyleTabMenu } from './Home.Style';
+import { HomeContainer, HomeContents, StyleTabMenu } from './Home.Style';
 
 const Home = () => {
   const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
@@ -45,23 +45,6 @@ const Home = () => {
   //   return images[type];
   // };
 
-  const HomeContainer = styled.div({
-    background: theme.colors.primary100,
-    width: '100%',
-  });
-
-  const HomeContents = styled.div({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    maxWidth: '1280px',
-    boxSizing: 'border-box',
-    margin: '0px auto',
-    padding: '60px 60px',
-    height: '100%',
-    gap: '48px',
-  });
-
   const StyledSpan = styled.span((props: { color?: themeColor }) => ({
     color: props.color ? theme.colors[props.color] : '#000000',
   }));
@@ -85,7 +68,9 @@ const Home = () => {
             지금 가장<StyledSpan color="primary40">HOT</StyledSpan> 한
             <ZipyoSVG />
           </ContentsItemTitle>
-          <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+          <ContentsItemContent>
+            <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+          </ContentsItemContent>
         </ContentsItemContainer>
 
         <ContentsItemContainer>
@@ -93,7 +78,9 @@ const Home = () => {
             지금 민심 <StyledSpan color="red">떡상</StyledSpan> 중인
             <ZipyoSVG />
           </ContentsItemTitle>
-          <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
+          <ContentsItemContent>
+            <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
+          </ContentsItemContent>
         </ContentsItemContainer>
 
         <ContentsItemContainer>
@@ -101,7 +88,9 @@ const Home = () => {
             지금 민심 <StyledSpan color="blue">떡락</StyledSpan> 중인
             <ZipyoSVG />
           </ContentsItemTitle>
-          <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
+          <ContentsItemContent>
+            <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
+          </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
     </HomeContainer>

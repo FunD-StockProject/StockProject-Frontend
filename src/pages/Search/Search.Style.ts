@@ -25,13 +25,10 @@ const SearchResultContents = styled.div({
 
 const StockRelevantContainer = styled.div({
   display: 'flex',
-  margin: '0 18px',
   gap: '28px',
 
   [media[0]]: {
     gap: '14px',
-    // padding: '30px 30px',
-    margin: '0 8px',
   },
 });
 

@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
+import { StyledContainer } from '@layout/HotCard/HotCard.Style';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import StockCardItem from '../../components/StockCard/StockCard';
@@ -17,24 +18,38 @@ const CardList = ({
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
 }) => {
-  const isMobile = window.innerWidth < 450; // 추후 수정
-  console.log(list);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [width, setWidth] = useState<number>();
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    if (!containerRef.current) return;
+    setWidth(containerRef.current.offsetWidth);
+  }, [didMount]);
 
   return (
-    <NoScrollbar>
-      <ScrollMenu
-        LeftArrow={!isMobile ? LeftArrow : undefined}
-        RightArrow={!isMobile ? RightArrow : undefined}
-        apiRef={apiRef}
-      >
-        {isHot
-          ? list.map((item: CardInterface) => {
-              return <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />;
-            })
-          : list.map((item: CardInterface) => {
-              return <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />;
-            })}
-      </ScrollMenu>
+    <NoScrollbar ref={containerRef}>
+      {width && (
+        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} apiRef={apiRef}>
+          {isHot
+            ? list.map((item: CardInterface) => {
+                return <HotCard width={width} key={item.stockId} score={item.score} stockName={item.symbolName} />;
+              })
+            : list.map((item: CardInterface) => {
+                return (
+                  <StyledContainer width={width / 4}>
+                    <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />
+                  </StyledContainer>
+                );
+              })}
+        </ScrollMenu>
+      )}
     </NoScrollbar>
   );
 };

@@ -5,6 +5,7 @@ import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/sto
 import { ImgDiv } from '@components/Common/Common';
 import {
   ScoreSlotMachineContainer,
+  ScoreSlotMachineContent,
   SlotMachineItemContainer,
   SlotMachineItemMotionDiv,
 } from './stockSlotMachine.Style';
@@ -123,20 +124,25 @@ const ScoreSlotMachineItem = ({
 
 const ScoreSlotMachine = ({
   stockName,
+  title,
   stockScore,
   tabIndex,
   onClick,
 }: {
   stockName: string;
+  title?: boolean;
   stockScore: number;
   tabIndex?: number;
   onClick?: (e: any) => void;
 }) => {
   return (
     <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={onClick}>
-      <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
-      <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
-      <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
+      {title ? stockName : ''}
+      <ScoreSlotMachineContent>
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
+      </ScoreSlotMachineContent>
     </ScoreSlotMachineContainer>
   );
 };

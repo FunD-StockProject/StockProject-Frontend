@@ -40,4 +40,11 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
   },
 }));
 
-export { ContentsItemContainer, ContentsItemTitle };
+const ContentsItemContent = styled.div({
+  margin: '0 18px',
+  [media[0]]: {
+    margin: '0 8px',
+  },
+});
+
+export { ContentsItemContainer, ContentsItemTitle, ContentsItemContent };

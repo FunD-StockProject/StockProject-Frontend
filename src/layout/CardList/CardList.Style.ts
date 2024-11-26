@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
+import { media } from '@styles/themes';
 
 const NoScrollbar = styled.div({
-  padding: '10px',
   borderRadius: '10px',
   position: 'relative',
 
@@ -16,6 +16,10 @@ const NoScrollbar = styled.div({
     overflowY: 'hidden',
     display: 'flex',
     flexDirection: 'row',
+    gap: '24px',
+    [media[0]]: {
+      gap: '12px',
+    },
 
     width: '100%',
     height: 'auto',
@@ -26,15 +30,21 @@ const NoScrollbar = styled.div({
   '& .react-horizontal-scrolling-menu--arrow-left': {
     position: 'absolute',
     top: '50%',
-    left: '-40px',
+    left: '-50px',
     transform: 'translateY(-50%)',
+    [media[0]]: {
+      display: 'none',
+    },
   },
 
   '& .react-horizontal-scrolling-menu--arrow-right': {
     position: 'absolute',
     top: '50%',
-    right: '-40px',
+    right: '-50px',
     transform: 'translateY(-50%)',
+    [media[0]]: {
+      display: 'none',
+    },
   },
 });
 

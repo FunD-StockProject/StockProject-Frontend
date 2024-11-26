@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FlexDiv } from '@components/Common/Common';
-import { ContentsItemContainer, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import SearchTitle from '@components/SearchTitle/SearchTitle';
 import StockCardItem from '@components/StockCard/StockCard';
 import StockChart from '@components/StockChart/StockChart';
@@ -100,14 +100,18 @@ const Search = () => {
                   <LogoSVG />
                   <InfoSVG className="btn_info" onClick={() => {}} />
                 </ContentsItemTitle>
-                <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
+                <ContentsItemContent>
+                  <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
+                </ContentsItemContent>
               </ContentsItemContainer>
               <ContentsItemContainer>
                 <ContentsItemTitle>
                   국내 개미들의 소리
                   <InfoSVG className="btn_info" onClick={() => {}} />
                 </ContentsItemTitle>
-                <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+                <ContentsItemContent>
+                  <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+                </ContentsItemContent>
               </ContentsItemContainer>
             </>
           ) : (
@@ -117,7 +121,9 @@ const Search = () => {
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>관련 종목</ContentsItemTitle>
-            <StockRelevant stockId={stockInfo.stockId} />
+            <ContentsItemContent>
+              <StockRelevant stockId={stockInfo.stockId} />
+            </ContentsItemContent>
           </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>

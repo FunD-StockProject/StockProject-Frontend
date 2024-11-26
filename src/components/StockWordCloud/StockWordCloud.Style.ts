@@ -9,15 +9,10 @@ const StockWordCloudContainer = styled.div({
   position: 'relative',
   padding: '32px',
   borderRadius: '24px',
-  margin: '0 18px',
-
   [media[0]]: {
     gap: '12px',
-
     height: '480px',
-    margin: '0 8px',
     padding: '12px',
-
     borderRadius: '12px',
   },
 });
