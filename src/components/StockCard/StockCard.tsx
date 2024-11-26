@@ -17,7 +17,7 @@ const StockCardItem = ({ name, score, delta }: { name: string; score: number; de
   const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { name } });
+    navigate(webPath.search(), { state: { stockName: name } });
   };
 
   return (
