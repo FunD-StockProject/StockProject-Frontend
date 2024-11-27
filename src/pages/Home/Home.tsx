@@ -35,16 +35,6 @@ const Home = () => {
     window.scrollTo(0, currentScrollPosition);
   };
 
-  // const getImageSrc = (type: StockType) => {
-  //   const images: Record<StockType, string> = {
-  //     hot: isDarkMode ? hotTextDark : hotTextLight,
-  //     rising: isDarkMode ? risingTextDark : risingTextLight,
-  //     descent: isDarkMode ? descentTextDark : descentTextLight,
-  //   };
-
-  //   return images[type];
-  // };
-
   const StyledSpan = styled.span((props: { color?: themeColor }) => ({
     color: props.color ? theme.colors[props.color] : '#000000',
   }));

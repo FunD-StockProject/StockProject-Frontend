@@ -1,13 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
-import { StyledContainer } from '@layout/HotCard/HotCard.Style';
+import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import StockCardItem from '../../components/StockCard/StockCard';
 import { CardInterface } from '../../ts/Interfaces';
-import HotCard from '../HotCard/HotCard';
-// import Card from '../Card/Card';
-import { ArrowButton, NoScrollbar } from './CardList.Style';
+import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
 
 const CardList = ({
   list,
@@ -30,8 +28,16 @@ const CardList = ({
   useEffect(() => {
     if (!didMount) return;
     if (!containerRef.current) return;
-    setWidth(containerRef.current.offsetWidth);
+
+    observer.observe(containerRef.current);
   }, [didMount]);
+
+  const observer = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+      const { width } = entry.contentRect;
+      setWidth(width);
+    }
+  });
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -39,13 +45,17 @@ const CardList = ({
         <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} apiRef={apiRef}>
           {isHot
             ? list.map((item: CardInterface) => {
-                return <HotCard width={width} key={item.stockId} score={item.score} stockName={item.symbolName} />;
+                return (
+                  <CardListItemContainer width={width ?? 0}>
+                    <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
+                  </CardListItemContainer>
+                );
               })
             : list.map((item: CardInterface) => {
                 return (
-                  <StyledContainer width={width / 4}>
+                  <CardListItemContainer width={width / 4}>
                     <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />
-                  </StyledContainer>
+                  </CardListItemContainer>
                 );
               })}
         </ScrollMenu>

@@ -1,6 +1,8 @@
 import { AnimatePresence, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { scoreToIndex } from '@utils/ScoreConvert';
+import { webPath } from '@router/index';
 import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/stockScore';
 import { ImgDiv } from '@components/Common/Common';
 import {
@@ -127,16 +129,20 @@ const ScoreSlotMachine = ({
   title,
   stockScore,
   tabIndex,
-  onClick,
 }: {
   stockName: string;
   title?: boolean;
   stockScore: number;
   tabIndex?: number;
-  onClick?: (e: any) => void;
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(webPath.search(), { state: { stockName: stockName } });
+  };
+
   return (
-    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={onClick}>
+    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={title ? handleClick : () => {}}>
       {title ? stockName : ''}
       <ScoreSlotMachineContent>
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />

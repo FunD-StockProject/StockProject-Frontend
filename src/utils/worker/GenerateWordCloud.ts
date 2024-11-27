@@ -105,8 +105,6 @@ const GetnerateWordCloud = ({
   const max_frequency = frequencies[0].freq;
   const FontOffCtx = new OffscreenCanvas(width, 1).getContext('2d');
 
-  let lastFreq = 1;
-
   if (!FontOffCtx) return null;
 
   frequencies = Array.from(frequencies, (x) => ({
@@ -166,8 +164,6 @@ const GetnerateWordCloud = ({
 
     let layout = null;
     let textPosition: any | null = null;
-
-    fontSize = ~~((relativeScaling * (e.freq / lastFreq) + (1 - relativeScaling)) * fontSize);
 
     let orientation: boolean = Math.random() >= 0.9 ? true : false;
     let tried_other_orientation: boolean = false;
@@ -238,8 +234,6 @@ const GetnerateWordCloud = ({
     const imageData = offCtx.getImageData(0, 0, textPosition.sizeX, textPosition.sizeY);
 
     Update(imageData.data, ~~textPosition.posX, ~~textPosition.posY, ~~textPosition.sizeX, ~~textPosition.sizeY);
-
-    lastFreq = e.freq;
   }
 
   return layouts;

@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { media } from '@styles/themes';
+import { media, theme } from '@styles/themes';
+
+const CardListItemContainer = styled.div((props: { width: number }) => ({
+  width: props.width ?? 0,
+}));
 
 const NoScrollbar = styled.div({
   borderRadius: '10px',
@@ -48,17 +52,23 @@ const NoScrollbar = styled.div({
   },
 });
 
-const ArrowButton = styled.img<{ disabled: boolean }>((props) => ({
-  cursor: props.disabled ? 'not-allowed' : 'pointer',
-  display: 'flex',
-  margin: '0 5px', // 좌우 간격 조정
-  opacity: props.disabled ? 0 : 1, // props로 opacity 설정
-  userSelect: 'none',
-  borderRadius: '6px',
-  borderWidth: '1px',
-  padding: '5px', // 버튼 크기 조정
-  backgroundColor: '#2e2e2e', // 버튼 색상
-  color: 'white',
-}));
+const ArrowButton = styled.img(
+  {
+    display: 'flex',
+    margin: '0 5px', // 좌우 간격 조정
+    userSelect: 'none',
+    padding: '5px', // 버튼 크기 조정
+    borderRadius: '6px',
+    backgroundColor: theme.colors.grayscale80, // 버튼 색상
+    color: 'white',
+    [':hover']: {
+      backgroundColor: theme.colors.primary50, // 버튼 색상
+    },
+  },
+  (props: { disabled: boolean }) => ({
+    cursor: props.disabled ? 'not-allowed' : 'pointer',
+    display: props.disabled ? 'none' : '',
+  }),
+);
 
-export { NoScrollbar, ArrowButton };
+export { NoScrollbar, CardListItemContainer, ArrowButton };

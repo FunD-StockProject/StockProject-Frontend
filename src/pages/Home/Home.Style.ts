@@ -4,6 +4,7 @@ import { media, theme } from '@styles/themes';
 const HomeContainer = styled.div({
   background: theme.colors.primary100,
   width: '100%',
+  marginBottom: 'auto',
 });
 
 const HomeContents = styled.div({
