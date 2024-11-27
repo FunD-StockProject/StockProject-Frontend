@@ -1,6 +1,4 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
@@ -11,11 +9,7 @@ export const webPath = {
 const Root = () => {
   return (
     <Mainlayout>
-      <ErrorBoundary fallback={<div style={{ background: 'black' }}>Error Occured</div>}>
-        <Suspense fallback={<div style={{ background: 'black' }}>로딩중</div>}>
-          <Outlet />
-        </Suspense>
-      </ErrorBoundary>
+      <Outlet />
       <ScrollRestoration />
     </Mainlayout>
   );

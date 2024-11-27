@@ -1,3 +1,4 @@
+
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
@@ -6,6 +7,17 @@ import rightArrowImgLink from '../../assets/rightArrow.svg';
 import StockCardItem from '../../components/StockCard/StockCard';
 import { CardInterface } from '../../ts/Interfaces';
 import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
+
+import { publicApiType, ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { CardInterface } from '../../ts/Interfaces';
+import Card from '../Card/Card';
+import { ArrowButton, NoScrollbar, StyledButton } from './CardList.Style';
+import HotCard from '../HotCard/HotCard';
+import { Suspense, useContext, useMemo } from 'react';
+import rightArrowImgLink from '../../assets/rightArrow.svg';
+import leftArrowImgLink from '../../assets/leftArrow.svg';
+import { ErrorBoundary } from 'react-error-boundary';
+
 
 const CardList = ({
   list,
@@ -63,59 +75,54 @@ const CardList = ({
     </NoScrollbar>
   );
 };
+  const isMobile = useMemo(() => window.innerWidth < 450, []);
 
-const LeftArrow = () => {
-  const visibility = useContext<publicApiType>(VisibilityContext);
-  const disabled = visibility.useLeftArrowVisible();
+  // Helper function for rendering items
+  const renderItem = (item: CardInterface) =>
+    isHot ? (
+      <HotCard key={item.stockId} score={item.score} stockName={item.symbolName} />
+    ) : (
+      <Card key={item.stockId} score={item.score} stockName={item.symbolName} diff={item.diff} />
+    );
+
+  const handleClick = (idx: number) => {
+    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  };
 
   return (
-    <Arrow
-      imgLink={leftArrowImgLink}
-      disabled={disabled}
-      onClick={() => visibility.scrollPrev()}
-      className="left"
-      testId="left-arrow"
-    ></Arrow>
+    <ErrorBoundary fallback={<div>Error Occured</div>}>
+      <Suspense fallback={<div>로딩중</div>}>
+        <NoScrollbar>
+          <ScrollMenu
+            LeftArrow={!isMobile && <ScrollArrow direction="left" />}
+            RightArrow={!isMobile && <ScrollArrow direction="right" />}
+            apiRef={apiRef}
+          >
+            {list.map(renderItem)}
+          </ScrollMenu>
+        </NoScrollbar>
+        {isHot && (
+          <div>
+            {list.map((item, idx) => (
+              <StyledButton key={item.stockId} onClick={() => handleClick(idx)}>
+                {item.symbolName}
+              </StyledButton>
+            ))}
+          </div>
+        )}
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
-const RightArrow = () => {
+// Reusable Arrow component with better naming
+const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
   const visibility = useContext<publicApiType>(VisibilityContext);
-  const disabled = visibility.useRightArrowVisible();
+  const isDisabled = direction === 'left' ? visibility.useLeftArrowVisible() : visibility.useRightArrowVisible();
+  const onClick = direction === 'left' ? visibility.scrollPrev : visibility.scrollNext;
+  const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  return (
-    <Arrow
-      imgLink={rightArrowImgLink}
-      disabled={disabled}
-      onClick={() => visibility.scrollNext()}
-      className="right"
-      testId="right-arrow"
-    ></Arrow>
-  );
-};
-
-const Arrow = ({
-  imgLink,
-  disabled,
-  onClick,
-  className,
-  testId,
-}: {
-  imgLink: string;
-  disabled: boolean;
-  onClick: VoidFunction;
-  className?: string;
-  testId: string;
-}) => {
-  return (
-    <ArrowButton
-      src={imgLink}
-      disabled={disabled}
-      onClick={onClick}
-      className={'arrow' + `-${className}`}
-      data-testid={testId}
-    />
-  );
+  return <ArrowButton src={imgLink} disabled={isDisabled} onClick={() => onClick()} className={`arrow-${direction}`} />;
 };
 
 export default CardList;
