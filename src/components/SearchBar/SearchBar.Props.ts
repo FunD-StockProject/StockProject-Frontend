@@ -6,6 +6,7 @@ export interface SearchBarActiveProps {
 
 export interface RecentSearchListProps {
   searchedData: string[];
+  focusIdx: number;
   handleSearch: (name: string) => void;
   deleteRecentSearch: (name: string) => void;
 }
@@ -18,6 +19,7 @@ export interface RecentSearchItemProps {
 
 export interface AutoCompleteListProps {
   value: string;
+  focusIdx: number;
   searchedResult: StockInfo[];
   handleSearch: (name?: string) => void;
 }
