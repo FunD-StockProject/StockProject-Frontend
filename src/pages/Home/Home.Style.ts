@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { media, theme } from '@styles/themes';
+import { media, theme, themeColor } from '@styles/themes';
 
 const HomeContainer = styled.div({
+  position: 'relative',
   background: theme.colors.primary100,
   width: '100%',
   marginBottom: 'auto',
@@ -24,10 +25,19 @@ const HomeContents = styled.div({
   },
 });
 
-const StyleTabMenu = styled.ul({
+const StyleTabMenuContainer = styled.div({
+  boxSizing: 'border-box',
+  width: '100%',
   maxWidth: '1280px',
   margin: '0 auto',
-  backgroundColor: 'white',
+  padding: '0 60px',
+  [media[0]]: {
+    padding: '0',
+  },
+});
+
+const StyleTabMenu = styled.ul({
+  maxWidth: '1280px',
   color: 'black',
   display: 'flex',
   flexDirection: 'row',
@@ -35,14 +45,20 @@ const StyleTabMenu = styled.ul({
   listStyle: 'none',
   paddingInlineStart: '0',
   fontSize: '21px',
+  position: 'absolute',
+  margin: 0,
+  bottom: '100%',
+  overflow: 'hidden',
+  borderRadius: '8px 8px 0 0',
 
   // 하위 클래스 스타일 정의
   '.submenu': {
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
-    padding: '12px 0',
+    padding: '12px 24px',
     fontWeight: 'bold',
+    backgroundColor: 'white',
   },
 
   '.focused': {
@@ -50,9 +66,22 @@ const StyleTabMenu = styled.ul({
     backgroundColor: theme.colors.primary100,
   },
   [media[0]]: {
+    position: 'static',
     fontSize: '17px',
-    '.submenu': { padding: '8px 0' },
+    top: '0px',
+    left: '0px',
+    width: '100%',
+    borderRadius: '0',
+    '.submenu': {
+      display: 'flex',
+      flex: 1,
+      padding: '8px 0',
+    },
   },
 });
 
-export { HomeContainer, HomeContents, StyleTabMenu };
+const StyledSpan = styled.span((props: { color?: themeColor }) => ({
+  color: props.color ? theme.colors[props.color] : '#000000',
+}));
+
+export { HomeContainer, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan };

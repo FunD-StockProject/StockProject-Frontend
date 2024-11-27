@@ -8,9 +8,8 @@ import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import {
   ArrowButton,
-  CardListItemContainer,
-  HotItemButton,
-  HotItemButtonContainer,
+  CardListItemContainer, // HotItemButton,
+  // HotItemButtonContainer,
   NoScrollbar,
 } from './CardList.Style';
 
@@ -49,18 +48,18 @@ const CardList = ({
   // Helper function for rendering items
   const renderItem = (item: CardInterface) =>
     isHot ? (
-      <CardListItemContainer width={width ?? 0}>
+      <CardListItemContainer key={item.stockId} width={width ?? 0}>
         <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
       </CardListItemContainer>
     ) : (
-      <CardListItemContainer width={width / 4}>
-        <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />
+      <CardListItemContainer key={item.stockId} width={width / 4}>
+        <StockCardItem score={item.score} name={item.symbolName} delta={item.diff} />
       </CardListItemContainer>
     );
 
-  const handleClick = (idx: number) => {
-    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
-  };
+  // const handleClick = (idx: number) => {
+  //   apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  // };
 
   return (
     <ErrorBoundary fallback={<div>Error Occured</div>}>
@@ -76,7 +75,7 @@ const CardList = ({
             </ScrollMenu>
           )}
         </NoScrollbar>
-        {isHot && (
+        {/* {isHot && (
           <HotItemButtonContainer>
             {list.map((item, idx) => (
               <HotItemButton key={item.stockId} onClick={() => handleClick(idx)}>
@@ -84,7 +83,7 @@ const CardList = ({
               </HotItemButton>
             ))}
           </HotItemButtonContainer>
-        )}
+        )} */}
       </Suspense>
     </ErrorBoundary>
   );
