@@ -21,6 +21,21 @@ import {
   SearchBarLayout,
 } from './SearchBar.Style';
 
+const getCommonString = ({ from, to }: { from: string; to: string }) => {
+  const arr = Array.from([...to], (e) => ({
+    char: e,
+    check: false,
+  }));
+  let idx = 0;
+  arr.map((e, i) => {
+    if (from[idx] == e.char) {
+      arr[i].check = true;
+      idx++;
+    }
+  });
+  return arr;
+};
+
 const RecentSearchList = ({ searchedData, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
   return (
     <RecentSearchListContainer isEmpty={searchedData.length == 0}>
@@ -34,21 +49,6 @@ const RecentSearchList = ({ searchedData, focusIdx, handleSearch, deleteRecentSe
       ))}
     </RecentSearchListContainer>
   );
-};
-
-const getCommonString = (props: { from: string; to: string }) => {
-  const arr = Array.from([...props.to], (e) => ({
-    char: e,
-    check: false,
-  }));
-  let idx = 0;
-  arr.map((e, i) => {
-    if (props.from[idx] == e.char) {
-      arr[i].check = true;
-      idx++;
-    }
-  });
-  return arr;
 };
 
 const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: AutoCompleteListProps) => {

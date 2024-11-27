@@ -71,10 +71,6 @@ const SearchBarInput = styled.input(
 );
 
 const RecentSearchListContainer = styled.div(
-  (props: { isEmpty: boolean }) =>
-    !props.isEmpty && {
-      margin: '6px 0',
-    },
   {
     display: 'flex',
     flexDirection: 'column',
@@ -91,16 +87,13 @@ const RecentSearchListContainer = styled.div(
       },
     },
   },
+  (props: { isEmpty: boolean }) =>
+    !props.isEmpty && {
+      margin: '6px 0',
+    },
 );
 
 const RecentSearchItemContainer = styled.div(
-  (props: { focus: boolean }) =>
-    props.focus && {
-      background: theme.colors.grayscale100,
-      ['> svg']: {
-        fill: theme.colors.primary5,
-      },
-    },
   {
     display: 'flex',
     alignItems: 'center',
@@ -155,6 +148,13 @@ const RecentSearchItemContainer = styled.div(
       },
     },
   },
+  (props: { focus: boolean }) =>
+    props.focus && {
+      background: theme.colors.grayscale100,
+      ['> svg']: {
+        fill: theme.colors.primary5,
+      },
+    },
 );
 
 const AutoCompleteListContainer = styled.div({
@@ -169,10 +169,6 @@ const AutoCompleteListContainer = styled.div({
 });
 
 const AutoCompleteItemContainer = styled.div(
-  (props: { focus: boolean }) =>
-    props.focus && {
-      background: theme.colors.grayscale100,
-    },
   {
     cursor: 'pointer',
     display: 'flex',
@@ -192,6 +188,10 @@ const AutoCompleteItemContainer = styled.div(
       background: theme.colors.grayscale100,
     },
   },
+  (props: { focus: boolean }) =>
+    props.focus && {
+      background: theme.colors.grayscale100,
+    },
 );
 
 const AutoCompleteItemText = styled.div({
