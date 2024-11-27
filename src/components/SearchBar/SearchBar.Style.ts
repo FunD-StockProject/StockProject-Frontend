@@ -6,7 +6,7 @@ const SearchBarLayout = styled.div({
   position: 'relative',
   height: '200px',
   [media[0]]: {
-    height: '180px',
+    height: '150px',
   },
 });
 
@@ -31,7 +31,7 @@ const SearchBarContainer = styled.div(
 
     [media[0]]: {
       gap: '12px',
-      padding: '24px 32px',
+      padding: '18px 24px',
       fontSize: '25px',
     },
   },
@@ -52,18 +52,39 @@ const SearchBarContents = styled.div(
   },
   (props: SearchBarActiveProps) => ({
     borderRadius: '10px',
-
+    overflow: 'hidden',
     border: '1px solid ' + (props.active ? theme.colors.primary5 : theme.colors.transparent),
   }),
 );
 
-const SearchBarInput = styled.input(
+const SearchBarInput = styled.div(
   {
-    border: 'none',
-    boxSizing: 'border-box',
+    display: 'flex',
+    alignItems: 'center',
     background: theme.colors.grayscale100,
-    padding: '18px',
-    outline: 'none',
+    padding: '0 18px',
+    ['input']: {
+      padding: '18px 0',
+      boxSizing: 'border-box',
+      width: '100%',
+      border: 'none',
+      background: theme.colors.transparent,
+      outline: 'none',
+    },
+    ['svg']: {
+      height: '24px',
+      width: 'auto',
+      stroke: theme.colors.primary0,
+    },
+    [media[0]]: {
+      padding: '0 12px',
+      ['input']: {
+        padding: '12px 0',
+      },
+      ['svg']: {
+        height: '18px',
+      },
+    },
   },
   (props: SearchBarActiveProps) => ({
     borderRadius: props.active ? '12px 12px 0px 0px' : '12px',
@@ -216,6 +237,9 @@ const SearchBarDesignPart = styled.div((props: SearchBarActiveProps) => ({
   borderWidth: '50px 50px 0 0',
   borderColor: `${theme.colors.primary70} transparent`,
   display: props.active ? 'none' : 'block',
+  [media[0]]: {
+    borderWidth: '40px 40px 0 0',
+  },
 }));
 
 export {

@@ -5,6 +5,7 @@ import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
 import { StockInfo } from '@controllers/api.Type';
 import CancelSVG from '@assets/icons/cancel.svg?react';
+import SearchSVG from '@assets/icons/search.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
 import { AutoCompleteListProps, RecentSearchListProps } from './SearchBar.Props';
 import {
@@ -175,15 +176,17 @@ const SearchBar = () => {
                 setFocusIdx(-1);
               }}
             >
-              <SearchBarInput
-                type="text"
-                value={searchValue}
-                active={activeSearchBar}
-                onChange={handleSearchValueChange}
-                onKeyDown={searchBarInputKeyDown}
-                onFocus={() => setActiveSearchBar(true)}
-                placeholder="검색어를 입력하세요."
-              />
+              <SearchBarInput active={activeSearchBar}>
+                <input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchValueChange}
+                  onKeyDown={searchBarInputKeyDown}
+                  onFocus={() => setActiveSearchBar(true)}
+                  placeholder="검색어를 입력하세요."
+                />
+                <SearchSVG />
+              </SearchBarInput>
               {activeSearchBar &&
                 (stockName == '' ? (
                   <RecentSearchList
