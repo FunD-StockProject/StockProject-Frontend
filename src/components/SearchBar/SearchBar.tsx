@@ -5,13 +5,9 @@ import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
 import { StockInfo } from '@controllers/api.Type';
 import CancelSVG from '@assets/icons/cancel.svg?react';
+import SearchSVG from '@assets/icons/search.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
-import {
-  AutoCompleteItemProps,
-  AutoCompleteListProps,
-  RecentSearchItemProps,
-  RecentSearchListProps,
-} from './SearchBar.Props';
+import { AutoCompleteListProps, RecentSearchListProps } from './SearchBar.Props';
 import {
   AutoCompleteItemContainer,
   AutoCompleteItemText,
@@ -26,69 +22,54 @@ import {
   SearchBarLayout,
 } from './SearchBar.Style';
 
-const RecentSearchList = ({ searchedData, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
+const getCommonString = ({ from, to }: { from: string; to: string }) => {
+  const arr = Array.from([...to], (e) => ({
+    char: e,
+    check: false,
+  }));
+  let idx = 0;
+  arr.map((e, i) => {
+    if (from[idx] == e.char) {
+      arr[i].check = true;
+      idx++;
+    }
+  });
+  return arr;
+};
+
+const RecentSearchList = ({ searchedData, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
   return (
-    <RecentSearchListContainer>
-      {searchedData.length ? <span>최근검색어</span> : ''}
+    <RecentSearchListContainer isEmpty={searchedData.length == 0}>
+      {searchedData.length != 0 && <span>최근검색어</span>}
       {searchedData.map((name: string, idx: number) => (
-        <RecentSearchItem
-          name={name}
-          key={'recent_search_' + idx}
-          searchItem={() => handleSearch(name)}
-          deleteItem={() => deleteRecentSearch(name)}
-        />
+        <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
+          국내종목
+          <span onClick={() => handleSearch(name)}>{name}</span>
+          <CancelSVG onClick={() => deleteRecentSearch(name)} />
+        </RecentSearchItemContainer>
       ))}
     </RecentSearchListContainer>
   );
 };
 
-const RecentSearchItem = ({ name, searchItem, deleteItem }: RecentSearchItemProps) => {
-  return (
-    <RecentSearchItemContainer>
-      <span onClick={searchItem}>{name}</span>
-      <CancelSVG onClick={deleteItem} />
-    </RecentSearchItemContainer>
-  );
-};
-
-const AutoCompleteList = ({ value, searchedResult, handleSearch }: AutoCompleteListProps) => {
+const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: AutoCompleteListProps) => {
   return (
     <AutoCompleteListContainer>
       {searchedResult.length ? (
         searchedResult.map((e: StockInfo, idx: number) => (
-          <AutoCompleteItem
-            key={'auto_complete_' + idx}
-            value={value}
-            name={e.symbolName ?? ''}
-            searchItem={() => {
-              handleSearch(e.symbolName);
-            }}
-          />
+          <AutoCompleteItemContainer focus={idx == focusIdx} onClick={() => handleSearch(e.symbolName)}>
+            국내종목
+            <AutoCompleteItemText>
+              {getCommonString({ from: value, to: e.symbolName }).map((e) =>
+                e.check ? <span>{e.char}</span> : e.char,
+              )}
+            </AutoCompleteItemText>
+          </AutoCompleteItemContainer>
         ))
       ) : (
         <NoResultSVG />
       )}
     </AutoCompleteListContainer>
-  );
-};
-
-const AutoCompleteItem = ({ value, name, searchItem }: AutoCompleteItemProps) => {
-  let arr = Array.from({ length: name.length }, () => false);
-  let idx = 0;
-  [...name].map((e, i) => {
-    if (value[idx] == e) {
-      arr[i] = true;
-      idx++;
-    }
-  });
-
-  return (
-    <>
-      <AutoCompleteItemContainer onClick={searchItem}>
-        국내종목
-        <AutoCompleteItemText>{[...name].map((e, i) => (arr[i] ? <span>{e}</span> : e))}</AutoCompleteItemText>
-      </AutoCompleteItemContainer>
-    </>
   );
 };
 
@@ -102,6 +83,7 @@ const SearchBar = () => {
   );
   const [activeSearchBar, setActiveSearchBar] = useState<boolean>(false);
   const [searchedResult, setSearchedResult] = useState<StockInfo[]>([]);
+  const [focusIdx, setFocusIdx] = useState<number>(-1);
 
   const callbackRef = useCallback((current: HTMLDivElement) => {
     current?.focus();
@@ -113,8 +95,6 @@ const SearchBar = () => {
       return;
     }
     const result = await fetchAutoComplete(name);
-    console.log(name);
-    console.log(result);
     if (result) setSearchedResult(result);
   };
 
@@ -122,16 +102,35 @@ const SearchBar = () => {
     setSearchValue(e.target.value);
     setStockName(e.target.value.trim());
     updateSearchedResult(e.target.value.trim());
+    setFocusIdx(-1);
   };
 
   const searchBarInputKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const result = await fetchSearchSymbolName(stockName);
-      if (result) handleSearch(stockName);
+    if (e.key == 'ArrowDown') {
+      e.preventDefault();
+      setFocusIdx((prev) => (stockName == '' ? (prev + 1) % searchedData.length : (prev + 1) % searchedResult.length));
+    } else if (e.key == 'ArrowUp') {
+      e.preventDefault();
+      setFocusIdx((prev) =>
+        stockName == ''
+          ? ((prev == -1 ? 0 : prev) + searchedData.length - 1) % searchedData.length
+          : ((prev == -1 ? 0 : prev) + searchedResult.length - 1) % searchedResult.length,
+      );
+    } else if (e.key == 'Escape') {
+      (document.activeElement as HTMLElement).blur();
+      setFocusIdx(-1);
+    } else if (e.key === 'Enter') {
+      let name = stockName;
+      if (focusIdx != -1) {
+        name = stockName == '' ? searchedData[focusIdx] : searchedResult[focusIdx].symbolName;
+      }
+      const result = await fetchSearchSymbolName(name);
+      if (result) handleSearch(name);
     }
   };
 
   const handleSearch = (stockName: string | undefined) => {
+    console.log(stockName);
     if (!stockName) {
       return;
     }
@@ -172,30 +171,38 @@ const SearchBar = () => {
               active={activeSearchBar}
               ref={callbackRef}
               tabIndex={-1}
-              onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => !e.relatedTarget && setActiveSearchBar(false)}
+              onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => {
+                !e.relatedTarget && setActiveSearchBar(false);
+                setFocusIdx(-1);
+              }}
             >
-              <SearchBarInput
-                type="text"
-                value={searchValue}
-                active={activeSearchBar}
-                onChange={handleSearchValueChange}
-                onKeyDown={searchBarInputKeyDown}
-                onFocus={() => setActiveSearchBar(true)}
-                placeholder="검색어를 입력하세요."
-              />
-              {activeSearchBar ? (
-                stockName == '' ? (
+              <SearchBarInput active={activeSearchBar}>
+                <input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchValueChange}
+                  onKeyDown={searchBarInputKeyDown}
+                  onFocus={() => setActiveSearchBar(true)}
+                  placeholder="검색어를 입력하세요."
+                />
+                <SearchSVG />
+              </SearchBarInput>
+              {activeSearchBar &&
+                (stockName == '' ? (
                   <RecentSearchList
                     searchedData={searchedData}
+                    focusIdx={focusIdx}
                     handleSearch={handleSearch}
                     deleteRecentSearch={deleteRecentSearch}
                   />
                 ) : (
-                  <AutoCompleteList value={stockName} searchedResult={searchedResult} handleSearch={handleSearch} />
-                )
-              ) : (
-                ''
-              )}
+                  <AutoCompleteList
+                    value={stockName}
+                    focusIdx={focusIdx}
+                    searchedResult={searchedResult}
+                    handleSearch={handleSearch}
+                  />
+                ))}
             </SearchBarContents>
           </SearchBarContainer>
           <SearchBarDesignPart active={activeSearchBar} />
