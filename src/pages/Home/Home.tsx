@@ -1,13 +1,10 @@
-import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { useStocks } from '@hooks/useStocks';
+import CardList from '@layout/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import ZipyoSVG from '../../assets/zipyo.svg?react';
-import { useStocks } from '../../hooks/useStocks';
-// import { useSystemTheme } from '../../hooks/useSystemHook';
-import CardList from '../../layout/CardList/CardList';
-import { theme, themeColor } from '../../styles/themes';
-import { HomeContainer, HomeContents, StyleTabMenu } from './Home.Style';
+import ZipyoSVG from '@assets/zipyo.svg?react';
+import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
 const Home = () => {
   const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
@@ -35,23 +32,21 @@ const Home = () => {
     window.scrollTo(0, currentScrollPosition);
   };
 
-  const StyledSpan = styled.span((props: { color?: themeColor }) => ({
-    color: props.color ? theme.colors[props.color] : '#000000',
-  }));
-
   return (
     <HomeContainer>
-      <StyleTabMenu>
-        {tabMenu.map((el, index) => (
-          <li
-            key={index}
-            className={index === tabIndex ? 'submenu focused' : 'submenu'}
-            onClick={() => handleTab(index)}
-          >
-            {el}
-          </li>
-        ))}
-      </StyleTabMenu>
+      <StyleTabMenuContainer>
+        <StyleTabMenu>
+          {tabMenu.map((el, index) => (
+            <li
+              key={index}
+              className={index === tabIndex ? 'submenu focused' : 'submenu'}
+              onClick={() => handleTab(index)}
+            >
+              {el}
+            </li>
+          ))}
+        </StyleTabMenu>
+      </StyleTabMenuContainer>
       <HomeContents>
         <ContentsItemContainer>
           <ContentsItemTitle color="primary40">
