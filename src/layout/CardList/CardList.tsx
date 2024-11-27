@@ -1,7 +1,15 @@
-import { Suspense, useContext, useEffect, useRef, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import {
+  /*Suspense,*/
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+// import { ErrorBoundary } from 'react-error-boundary';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '@ts/Interfaces';
+import { StockType } from '@ts/Types';
+import { useStocks } from '@hooks/useStocks';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
@@ -14,17 +22,24 @@ import {
 } from './CardList.Style';
 
 const CardList = ({
-  list,
+  // list,
   isHot = false,
   apiRef,
+  name,
+  index,
 }: {
-  list: CardInterface[];
+  // list: CardInterface[];
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
+  name: StockType;
+  index: number;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [didMount, setDidMount] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(0);
+
+  const { data: stocks = [[], []] } = useStocks(name);
+  const curStocks = stocks[index];
 
   useEffect(() => {
     setDidMount(true);
@@ -62,20 +77,19 @@ const CardList = ({
   // };
 
   return (
-    <ErrorBoundary fallback={<div>Error Occured</div>}>
-      <Suspense fallback={<div>로딩중</div>}>
-        <NoScrollbar ref={containerRef}>
-          {width && (
-            <ScrollMenu
-              LeftArrow={<ScrollArrow direction="left" />}
-              RightArrow={<ScrollArrow direction="right" />}
-              apiRef={apiRef}
-            >
-              {list.map(renderItem)}
-            </ScrollMenu>
-          )}
-        </NoScrollbar>
-        {/* {isHot && (
+    <>
+      <NoScrollbar ref={containerRef}>
+        {width && (
+          <ScrollMenu
+            LeftArrow={<ScrollArrow direction="left" />}
+            RightArrow={<ScrollArrow direction="right" />}
+            apiRef={apiRef}
+          >
+            {curStocks.map(renderItem)}
+          </ScrollMenu>
+        )}
+      </NoScrollbar>
+      {/* {isHot && (
           <HotItemButtonContainer>
             {list.map((item, idx) => (
               <HotItemButton key={item.stockId} onClick={() => handleClick(idx)}>
@@ -84,8 +98,7 @@ const CardList = ({
             ))}
           </HotItemButtonContainer>
         )} */}
-      </Suspense>
-    </ErrorBoundary>
+    </>
   );
 };
 
