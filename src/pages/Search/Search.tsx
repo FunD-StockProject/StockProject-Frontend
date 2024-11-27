@@ -1,46 +1,56 @@
-import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
-import theme from '../../styles/themes';
-import SearchTitle from '../../components/SearchTitle/SearchTitle';
-import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common/Common';
 import { useEffect, useState } from 'react';
-import { TextHeading } from '../../components/Text/Text';
-import LogoSVG from '../../assets/logo_white.svg';
-import InfoSVG from '../../assets/info.svg';
-import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
-import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
-import { SearchContainer, SearchResultContainer, SearchResultContents } from './Search.Style';
-import StockRelevant from '../../components/StockRelevant/StockRelevant';
-import { fetchSearchSymbolName, StockInfo } from '../../controllers/api';
-import StockChart from '../../components/StockChart/StockChart';
+import { useLocation } from 'react-router-dom';
+import { FlexDiv } from '@components/Common/Common';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import SearchTitle from '@components/SearchTitle/SearchTitle';
+import StockCardItem from '@components/StockCard/StockCard';
+import StockChart from '@components/StockChart/StockChart';
+import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import StockWordCloud from '@components/StockWordCloud/StockWordCloud';
+import { fetchSearchSymbolName } from '@controllers/api';
+import { StockInfo } from '@controllers/api.Type';
+import InfoSVG from '@assets/info.svg?react';
+import LogoSVG from '@assets/logo_white.svg?react';
+import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
-const SearchResultIndicatorContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  background: theme.colors.grayscale100,
-  borderRadius: '25px',
-  padding: '48px',
-  gap: '28px',
-});
+const sample = [
+  { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
+  { stockId: 123, symbolName: '한화솔루션', score: 11, diff: -18 },
+  { stockId: 123, symbolName: 'SK하이닉스', score: 32, diff: -7 },
+];
 
-const SearchResultIndicator = ({ stockName, stockScore }: { stockName: string; stockScore: number }) => {
-  return (
+const StockRelevant = ({ stockId }: { stockId: number }) => {
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [stockRelevantList, setStockRelevantList] = useState<any[]>();
+
+  const getStockRelevantList = async (stockId: number) => {
+    // const res = await Promise.resolve(fetchRelevant(stockId));
+    // if (!res) return null;
+    // setStockRelevantList(res);
+    stockId;
+    setStockRelevantList(sample);
+  };
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getStockRelevantList(stockId);
+  }, [didMount]);
+
+  return stockRelevantList ? (
     <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <FlexDiv alignItems="center" gap="12px">
-        <TextHeading size="Small" color="grayscale10">
-          국내 개미
-        </TextHeading>
-        <ImgDiv src={LogoSVG} height="28px" />
-        <ButtonDiv onClick={() => {}}>
-          <ImgDiv src={InfoSVG} width="28px" />
-        </ButtonDiv>
-      </FlexDiv>
-      <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
-        <ScoreSlotMachine stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
-      </SearchResultIndicatorContainer>
+      <StockRelevantContainer>
+        {stockRelevantList.map((e, i) => (
+          <StockCardItem key={i} name={e.symbolName} score={e.score} delta={e.diff} />
+        ))}
+      </StockRelevantContainer>
     </FlexDiv>
+  ) : (
+    ''
   );
 };
 
@@ -78,24 +88,46 @@ const Search = () => {
   }, [state]);
 
   return stockInfo ? (
-    <SearchContainer>
+    <>
       <SearchTitle stockName={stockInfo.symbolName} resultMode={resultMode} onClick={toggleResultMode} />
       <SearchResultContainer>
         <SearchResultContents>
           {resultMode == 'indicator' ? (
             <>
-              <SearchResultIndicator stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
-              <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+              <ContentsItemContainer>
+                <ContentsItemTitle>
+                  국내 개미
+                  <LogoSVG />
+                  <InfoSVG className="btn_info" onClick={() => {}} />
+                </ContentsItemTitle>
+                <ContentsItemContent>
+                  <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
+                </ContentsItemContent>
+              </ContentsItemContainer>
+              <ContentsItemContainer>
+                <ContentsItemTitle>
+                  국내 개미들의 소리
+                  <InfoSVG className="btn_info" onClick={() => {}} />
+                </ContentsItemTitle>
+                <ContentsItemContent>
+                  <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+                </ContentsItemContent>
+              </ContentsItemContainer>
             </>
           ) : (
             <>
               <StockChart stockId={stockInfo.stockId} />
             </>
           )}
-          <StockRelevant stockId={stockInfo.stockId} />
+          <ContentsItemContainer>
+            <ContentsItemTitle>관련 종목</ContentsItemTitle>
+            <ContentsItemContent>
+              <StockRelevant stockId={stockInfo.stockId} />
+            </ContentsItemContent>
+          </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>
-    </SearchContainer>
+    </>
   ) : (
     ''
   );

@@ -1,55 +1,74 @@
 import styled from '@emotion/styled';
+import { media, theme } from '@styles/themes';
+
+const CardListItemContainer = styled.div((props: { width: number }) => ({
+  width: props.width ?? 0,
+}));
 
 const NoScrollbar = styled.div({
-  padding: '10px',
   borderRadius: '10px',
   position: 'relative',
 
   '& .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar': {
     display: 'none',
   },
+
   '& .react-horizontal-scrolling-menu--scroll-container': {
     scrollbarWidth: 'none',
-    msOverflowStyle: 'none',
-    width: '100%',
-    height: 'auto',
+
     overflowX: 'auto',
     overflowY: 'hidden',
     display: 'flex',
     flexDirection: 'row',
+    gap: '24px',
+    [media[0]]: {
+      gap: '12px',
+    },
+
+    width: '100%',
+    height: 'auto',
+
+    msOverflowStyle: 'none',
   },
+
   '& .react-horizontal-scrolling-menu--arrow-left': {
     position: 'absolute',
     top: '50%',
-    left: '-40px',
+    left: '-50px',
     transform: 'translateY(-50%)',
+    [media[0]]: {
+      display: 'none',
+    },
   },
+
   '& .react-horizontal-scrolling-menu--arrow-right': {
     position: 'absolute',
     top: '50%',
-    right: '-40px',
+    right: '-50px',
     transform: 'translateY(-50%)',
+    [media[0]]: {
+      display: 'none',
+    },
   },
 });
 
-const ArrowButton = styled.img<{ disabled: boolean }>((props) => ({
-  cursor: props.disabled ? 'not-allowed' : 'pointer',
-  display: 'flex',
-  margin: '0 5px', // 좌우 간격 조정
-  opacity: props.disabled ? 0 : 1, // props로 opacity 설정
-  userSelect: 'none',
-  borderRadius: '6px',
-  borderWidth: '1px',
-  padding: '5px', // 버튼 크기 조정
-  backgroundColor: '#2e2e2e', // 버튼 색상
-  color: 'white',
-}));
+const ArrowButton = styled.img(
+  {
+    display: 'flex',
+    margin: '0 5px', // 좌우 간격 조정
+    userSelect: 'none',
+    padding: '5px', // 버튼 크기 조정
+    borderRadius: '6px',
+    backgroundColor: theme.colors.grayscale80, // 버튼 색상
+    color: 'white',
+    [':hover']: {
+      backgroundColor: theme.colors.primary50, // 버튼 색상
+    },
+  },
+  (props: { disabled: boolean }) => ({
+    cursor: props.disabled ? 'not-allowed' : 'pointer',
+    display: props.disabled ? 'none' : '',
+  }),
+);
 
-const StyledButton = styled.button({
-  borderRadius: '32px',
-  backgroundColor: 'black',
-  padding: '12px 24px',
-  color: 'white',
-  marginLeft: '10px',
-});
-export { NoScrollbar, ArrowButton, StyledButton };
+export { NoScrollbar, CardListItemContainer, ArrowButton };

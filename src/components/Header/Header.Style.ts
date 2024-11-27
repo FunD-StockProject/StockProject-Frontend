@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
+import { media, theme } from '@styles/themes';
 
 const HeaderContainer = styled.div({
-  background: theme.colors.primary50,
   width: '100%',
+  background: theme.colors.primary50,
 });
 
 const HeaderContents = styled.div({
@@ -13,15 +13,28 @@ const HeaderContents = styled.div({
   maxWidth: '1280px',
   boxSizing: 'border-box',
   margin: '0 auto',
-  padding: '0 60px',
+  padding: '32px 60px',
   height: '100%',
   gap: '32px',
-  cursor: 'pointer',
+
+  [media[0]]: {
+    gap: '18px',
+    padding: '24px 20px',
+  },
 });
 
 const HeaderLogo = styled.div({
   margin: '0 auto',
-  padding: '24px',
+
+  ['svg']: {
+    cursor: 'pointer',
+    width: 'auto',
+    height: '48px',
+
+    [media[0]]: {
+      height: '24px',
+    },
+  },
 });
 
 export { HeaderContainer, HeaderContents, HeaderLogo };

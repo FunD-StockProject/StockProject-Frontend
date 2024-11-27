@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
-import { TextDisplay } from '../Text/Text';
-import { FlexDiv, ImgDiv } from '../Common/Common';
-import { scoreToIndex } from '../../utils/ScoreConvert';
-import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '../../constants/stockScore';
-import { SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
 import { AnimatePresence, Variants } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { scoreToIndex } from '@utils/ScoreConvert';
+import { webPath } from '@router/index';
+import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/stockScore';
+import { ImgDiv } from '@components/Common/Common';
+import {
+  ScoreSlotMachineContainer,
+  ScoreSlotMachineContent,
+  SlotMachineItemContainer,
+  SlotMachineItemMotionDiv,
+} from './stockSlotMachine.Style';
 
 const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
   const a = (3 * animationTime) / (lastIndex * lastIndex * lastIndex);
@@ -33,7 +39,7 @@ const variants: Variants = {
   }),
 };
 
-const ScoreSlotMachineItem = ({
+const ScoreSlotMachineItemCard = ({
   slotMachineType,
   idx,
 }: {
@@ -41,20 +47,15 @@ const ScoreSlotMachineItem = ({
   idx: number;
 }) => {
   return slotMachineType == 'TITLE' ? (
-    <TextDisplay color="primary0">{ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]}</TextDisplay>
+    ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]
   ) : slotMachineType == 'IMAGE' ? (
-    <ImgDiv
-      src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]}
-      height="100%"
-      width="100%"
-      objectFit="cover"
-    />
+    <ImgDiv src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]} />
   ) : (
-    <TextDisplay color="primary0">{idx % 101}</TextDisplay>
+    idx % 101
   );
 };
 
-const ScoreSlotMachine = ({
+const ScoreSlotMachineItem = ({
   stockName,
   stockScore,
   slotMachineType,
@@ -88,14 +89,12 @@ const ScoreSlotMachine = ({
 
   return (
     <SlotMachineItemContainer>
-      <FlexDiv padding={'100% 0'}>
-        <TextDisplay color="grayscale90">.</TextDisplay>
-      </FlexDiv>
       <AnimatePresence mode="popLayout">
         {Array.from({ length: lastIndex + 1 }, (_, i) => {
           return (
             i == currentIndex && (
               <SlotMachineItemMotionDiv
+                slotMachineType={slotMachineType}
                 key={i}
                 style={{ position: 'absolute' }}
                 custom={currentIndex >= lastIndex * 0.95}
@@ -108,7 +107,7 @@ const ScoreSlotMachine = ({
                   ease: currentIndex == lastIndex ? 'easeOut' : 'linear',
                 }}
               >
-                <ScoreSlotMachineItem
+                <ScoreSlotMachineItemCard
                   slotMachineType={slotMachineType}
                   idx={
                     slotMachineType != 'SCORE'
@@ -122,6 +121,35 @@ const ScoreSlotMachine = ({
         })}
       </AnimatePresence>
     </SlotMachineItemContainer>
+  );
+};
+
+const ScoreSlotMachine = ({
+  stockName,
+  title,
+  stockScore,
+  tabIndex,
+}: {
+  stockName: string;
+  title?: boolean;
+  stockScore: number;
+  tabIndex?: number;
+}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(webPath.search(), { state: { stockName: stockName } });
+  };
+
+  return (
+    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={title ? handleClick : () => {}}>
+      {title ? stockName : ''}
+      <ScoreSlotMachineContent>
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
+        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
+      </ScoreSlotMachineContent>
+    </ScoreSlotMachineContainer>
   );
 };
 

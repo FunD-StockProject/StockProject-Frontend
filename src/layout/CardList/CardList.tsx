@@ -1,3 +1,13 @@
+
+import { useContext, useEffect, useRef, useState } from 'react';
+import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
+import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import leftArrowImgLink from '../../assets/leftArrow.svg';
+import rightArrowImgLink from '../../assets/rightArrow.svg';
+import StockCardItem from '../../components/StockCard/StockCard';
+import { CardInterface } from '../../ts/Interfaces';
+import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
+
 import { publicApiType, ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '../../ts/Interfaces';
 import Card from '../Card/Card';
@@ -8,6 +18,7 @@ import rightArrowImgLink from '../../assets/rightArrow.svg';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import { ErrorBoundary } from 'react-error-boundary';
 
+
 const CardList = ({
   list,
   isHot = false,
@@ -17,6 +28,53 @@ const CardList = ({
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [didMount, setDidMount] = useState<boolean>(false);
+  const [width, setWidth] = useState<number>();
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    if (!containerRef.current) return;
+
+    observer.observe(containerRef.current);
+  }, [didMount]);
+
+  const observer = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+      const { width } = entry.contentRect;
+      setWidth(width);
+    }
+  });
+
+  return (
+    <NoScrollbar ref={containerRef}>
+      {width && (
+        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} apiRef={apiRef}>
+          {isHot
+            ? list.map((item: CardInterface) => {
+                return (
+                  <CardListItemContainer width={width ?? 0}>
+                    <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
+                  </CardListItemContainer>
+                );
+              })
+            : list.map((item: CardInterface) => {
+                return (
+                  <CardListItemContainer width={width / 4}>
+                    <StockCardItem key={item.stockId} score={item.score} name={item.symbolName} delta={item.diff} />
+                  </CardListItemContainer>
+                );
+              })}
+        </ScrollMenu>
+      )}
+    </NoScrollbar>
+  );
+};
   const isMobile = useMemo(() => window.innerWidth < 450, []);
 
   // Helper function for rendering items

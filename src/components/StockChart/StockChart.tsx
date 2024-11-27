@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
-import { FlexDiv } from '../Common/Common';
 import { useEffect, useState } from 'react';
+import { FlexDiv } from '@components/Common/Common';
+import { theme } from '@styles/themes';
 
 const sample = [123];
 
@@ -38,7 +38,12 @@ const StockChart = ({ stockId }: { stockId: number }) => {
   return stockChart ? (
     <FlexDiv flexDirection="column" width="100%">
       <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <SearchResultChartContainer></SearchResultChartContainer>
+        <SearchResultChartContainer
+          style={{
+            margin: 0,
+            display: 'flex',
+          }}
+        />
       </FlexDiv>
     </FlexDiv>
   ) : (

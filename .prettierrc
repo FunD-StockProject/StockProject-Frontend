@@ -6,5 +6,25 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "printWidth": 120,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "importOrder": [
+    "^@ts/(.*)$",
+    "^@base/(.*)$",
+    "^@utils/(.*)$",
+    "^@hooks/(.*)$",
+    "^@pages/(.*)$",
+    "^@router/(.*)$",
+    "^@layout/(.*)$",
+    "^@common/(.*)$",
+    "^@recoils/(.*)$",
+    "^@constants/(.*)$",
+    "^@components/(.*)$",
+    "^@controllers/(.*)$",
+    "^@styles/(.*)$",
+    "^@assets/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["prettier-plugin-css-order", "@trivago/prettier-plugin-sort-imports"]
 }
