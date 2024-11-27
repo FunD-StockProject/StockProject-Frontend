@@ -1,13 +1,16 @@
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { useStocks } from '@hooks/useStocks';
+// import { useStocks } from '@hooks/useStocks';
 import CardList from '@layout/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
 const Home = () => {
-  const { data: stocks = [[], [], []] } = useStocks(); // useStocks 훅에서 모든 데이터를 가져옴
+  // const { data: hotStocks = [[], []] } = useStocks('hot');
+  // const { data: risingStocks = [[], []] } = useStocks('rising');
+  // const { data: descentStocks = [[], []] } = useStocks('descent');
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   // const isDarkMode = useSystemTheme();
@@ -15,7 +18,6 @@ const Home = () => {
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
-
   const tabMenu = ['국내주식', '해외주식'];
 
   const handleTab = (index: number) => {
@@ -47,6 +49,7 @@ const Home = () => {
           ))}
         </StyleTabMenu>
       </StyleTabMenuContainer>
+
       <HomeContents>
         <ContentsItemContainer>
           <ContentsItemTitle color="primary40">
@@ -54,7 +57,11 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <CardList list={stocks[0][tabIndex]} isHot={true} apiRef={hotStocksApiRef} />
+            <ErrorBoundary fallback={<div>Hot Stocks Error Occured</div>}>
+              <Suspense fallback={<div>로딩중</div>}>
+                <CardList isHot={true} apiRef={hotStocksApiRef} name={'hot'} index={tabIndex} />
+              </Suspense>
+            </ErrorBoundary>
           </ContentsItemContent>
         </ContentsItemContainer>
 
@@ -64,7 +71,11 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <CardList list={stocks[1][tabIndex]} apiRef={risingStocksApiRef} />
+            <ErrorBoundary fallback={<div>Rising Stocks Error Occured</div>}>
+              <Suspense fallback={<div>로딩중</div>}>
+                <CardList apiRef={risingStocksApiRef} name={'rising'} index={tabIndex} />
+              </Suspense>
+            </ErrorBoundary>
           </ContentsItemContent>
         </ContentsItemContainer>
 
@@ -74,7 +85,11 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <CardList list={stocks[2][tabIndex]} apiRef={descentStocksApiRef} />
+            <ErrorBoundary fallback={<div>Descent Stocks Error Occured</div>}>
+              <Suspense fallback={<div>로딩중</div>}>
+                <CardList apiRef={descentStocksApiRef} name={'descent'} index={tabIndex} />
+              </Suspense>
+            </ErrorBoundary>
           </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
