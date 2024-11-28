@@ -53,7 +53,7 @@ const CardList = ({
         <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
       </CardListItemContainer>
     ) : (
-      <CardListItemContainer key={`${name}_${item.stockId}`} width={(width ?? 0) / 3}>
+      <CardListItemContainer key={`${name}_${item.stockId}`} width={(width ?? 0) * 0.3}>
         <StockCardItem score={item.score} name={item.symbolName} delta={item.diff} />
       </CardListItemContainer>
     );

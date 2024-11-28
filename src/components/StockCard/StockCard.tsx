@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { scoreToImage } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
-import { ImgDiv } from '@components/Common/Common';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import {
+  ScoreImage,
   StockCardItemContainer,
   StockCardItemDeltaScore,
   StockCardItemScore,
+  StockCardItemText,
   StockCardItemTitle,
 } from './StockCard.Style';
 
@@ -22,8 +23,8 @@ const StockCardItem = ({ name, score, delta }: { name: string; score: number; de
 
   return (
     <StockCardItemContainer onClick={handleClick}>
-      <ImgDiv src={scoreImage} width="100%" />
       <StockCardItemTitle>
+        <StockCardItemText>{name}</StockCardItemText>
         <StockCardItemScore delta={delta}>
           {score}점
           <StockCardItemDeltaScore delta={delta}>
@@ -31,8 +32,8 @@ const StockCardItem = ({ name, score, delta }: { name: string; score: number; de
             {deltaSVG}
           </StockCardItemDeltaScore>
         </StockCardItemScore>
-        {name}
       </StockCardItemTitle>
+      <ScoreImage src={scoreImage} />
     </StockCardItemContainer>
   );
 };
