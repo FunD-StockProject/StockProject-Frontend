@@ -49,11 +49,11 @@ const CardList = ({
   // Helper function for rendering items
   const renderItem = (item: CardInterface) =>
     isHot ? (
-      <CardListItemContainer key={item.stockId} width={width ?? 0}>
+      <CardListItemContainer key={`${name}_${item.stockId}`} width={width ?? 0}>
         <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
       </CardListItemContainer>
     ) : (
-      <CardListItemContainer key={item.stockId} width={width / 4}>
+      <CardListItemContainer key={`${name}_${item.stockId}`} width={(width ?? 0) / 3}>
         <StockCardItem score={item.score} name={item.symbolName} delta={item.diff} />
       </CardListItemContainer>
     );
