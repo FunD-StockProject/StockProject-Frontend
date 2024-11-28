@@ -7,9 +7,9 @@ import { CardInterface } from '../ts/Interfaces';
 export const useStocks = (type: StockType) => {
   const fetchStocks = async (type: StockType): Promise<CardInterface[][]> => {
     const stockFetchers: Record<StockType, Promise<CardInterface[][]>> = {
-      hot: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
-      rising: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
-      descent: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
+      HOT: Promise.all([fetchHotStocks(KOREA), fetchHotStocks(OVERSEA)]),
+      RISING: Promise.all([fetchRisingStocks(KOREA), fetchRisingStocks(OVERSEA)]),
+      DESCENT: Promise.all([fetchDescentStocks(KOREA), fetchDescentStocks(OVERSEA)]),
     };
 
     return stockFetchers[type];

@@ -2,6 +2,8 @@ const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Headers = { 'content-type': 'application/json' };
 
+const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
+
 const fetchData = async (path: string) => {
   try {
     const url = `${baseURL}${path}`;
@@ -9,6 +11,7 @@ const fetchData = async (path: string) => {
     if (!res.ok) {
       throw new Error(`${res.status} Error!!`);
     }
+    await wait(0);
     return await res.json();
   } catch (error) {
     console.error(error);
@@ -21,7 +24,15 @@ const fetchScore = async (id: number) => {
 };
 
 const fetchRelevant = async (id: number) => {
-  return fetchData(`/${id}/relevant`);
+  const sample = [
+    { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
+    { stockId: 123, symbolName: '한화솔루션', score: 11, diff: -18 },
+    { stockId: 123, symbolName: 'SK하이닉스', score: 32, diff: -7 },
+  ];
+  id;
+  // await wait(3000);
+  return sample;
+  // return fetchData(`/${id}/relevant`);
 };
 
 const fetchStockChart = async (id: number) => {

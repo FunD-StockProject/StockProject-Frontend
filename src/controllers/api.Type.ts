@@ -8,3 +8,10 @@ export interface StockInfo {
   scoreKorea: number;
   scoreOversea: number;
 }
+
+export interface StockScore {
+  stockId: number;
+  symbolName: string;
+  score: number;
+  diff: number;
+}

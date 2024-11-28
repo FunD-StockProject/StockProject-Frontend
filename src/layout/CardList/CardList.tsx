@@ -1,34 +1,21 @@
-import {
-  /*Suspense,*/
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-// import { ErrorBoundary } from 'react-error-boundary';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
-import { useStocks } from '@hooks/useStocks';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import {
-  ArrowButton,
-  CardListItemContainer, // HotItemButton,
-  // HotItemButtonContainer,
-  NoScrollbar,
-} from './CardList.Style';
+import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
 
 const CardList = ({
-  // list,
   isHot = false,
   apiRef,
   name,
   index,
 }: {
-  // list: CardInterface[];
   isHot?: boolean;
   apiRef: React.MutableRefObject<publicApiType>;
   name: StockType;
@@ -38,8 +25,7 @@ const CardList = ({
   const [didMount, setDidMount] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(0);
 
-  const { data: stocks = [[], []] } = useStocks(name);
-  const curStocks = stocks[index];
+  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
 
   useEffect(() => {
     setDidMount(true);
@@ -77,9 +63,9 @@ const CardList = ({
   // };
 
   return (
-    <>
-      <NoScrollbar ref={containerRef}>
-        {width && (
+    <NoScrollbar ref={containerRef}>
+      {suspend ||
+        (curStocks != null && width != 0 && (
           <ScrollMenu
             LeftArrow={<ScrollArrow direction="left" />}
             RightArrow={<ScrollArrow direction="right" />}
@@ -87,9 +73,10 @@ const CardList = ({
           >
             {curStocks.map(renderItem)}
           </ScrollMenu>
-        )}
-      </NoScrollbar>
-      {/* {isHot && (
+        ))}
+    </NoScrollbar>
+  );
+  /* {isHot && (
           <HotItemButtonContainer>
             {list.map((item, idx) => (
               <HotItemButton key={item.stockId} onClick={() => handleClick(idx)}>
@@ -97,9 +84,7 @@ const CardList = ({
               </HotItemButton>
             ))}
           </HotItemButtonContainer>
-        )} */}
-    </>
-  );
+            )} */
 };
 
 // Reusable Arrow component with better naming
