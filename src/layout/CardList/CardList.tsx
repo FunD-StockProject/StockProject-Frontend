@@ -40,10 +40,10 @@ const CardList = ({
   }, [didMount]);
 
   const observer = new ResizeObserver((entries) => {
-    for (let entry of entries) {
+    entries.forEach((entry) => {
       const { width } = entry.contentRect;
       setWidth(width);
-    }
+    });
   });
 
   // Helper function for rendering items
