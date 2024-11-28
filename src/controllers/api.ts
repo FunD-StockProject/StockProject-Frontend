@@ -1,3 +1,5 @@
+import { fetchRelevantMock, fetchScoreCardMock } from './mock';
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Headers = { 'content-type': 'application/json' };
@@ -24,15 +26,9 @@ const fetchScore = async (id: number) => {
 };
 
 const fetchRelevant = async (id: number) => {
-  const sample = [
-    { stockId: 123, symbolName: '삼성전자', score: 81, diff: 18 },
-    { stockId: 123, symbolName: '한화솔루션', score: 11, diff: -18 },
-    { stockId: 123, symbolName: 'SK하이닉스', score: 32, diff: -7 },
-  ];
-  id;
   // await wait(3000);
-  return sample;
-  // return fetchData(`/${id}/relevant`);
+  return fetchRelevantMock;
+  return fetchData(`/${id}/relevant`);
 };
 
 const fetchStockChart = async (id: number) => {
@@ -44,10 +40,12 @@ const fetchHotStocks = async (country: string) => {
 };
 
 const fetchRisingStocks = async (country: string) => {
+  return fetchScoreCardMock;
   return fetchData(`/stock/rising/${country}`);
 };
 
 const fetchDescentStocks = async (country: string) => {
+  return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
 // Additional stock-related API calls
