@@ -1,5 +1,4 @@
-import { Suspense, useRef, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 // import { useStocks } from '@hooks/useStocks';
 import CardList from '@layout/CardList/CardList';
@@ -8,10 +7,6 @@ import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
 const Home = () => {
-  // const { data: hotStocks = [[], []] } = useStocks('hot');
-  // const { data: risingStocks = [[], []] } = useStocks('rising');
-  // const { data: descentStocks = [[], []] } = useStocks('descent');
-
   const [tabIndex, setTabIndex] = useState<number>(0);
   // const isDarkMode = useSystemTheme();
 
@@ -57,11 +52,7 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <ErrorBoundary fallback={<div>Hot Stocks Error Occured</div>}>
-              <Suspense fallback={<div>로딩중</div>}>
-                <CardList isHot={true} apiRef={hotStocksApiRef} name={'hot'} index={tabIndex} />
-              </Suspense>
-            </ErrorBoundary>
+            <CardList isHot={true} apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
         </ContentsItemContainer>
 
@@ -71,11 +62,7 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <ErrorBoundary fallback={<div>Rising Stocks Error Occured</div>}>
-              <Suspense fallback={<div>로딩중</div>}>
-                <CardList apiRef={risingStocksApiRef} name={'rising'} index={tabIndex} />
-              </Suspense>
-            </ErrorBoundary>
+            <CardList apiRef={risingStocksApiRef} name={'RISING'} index={tabIndex} />
           </ContentsItemContent>
         </ContentsItemContainer>
 
@@ -85,11 +72,7 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <ErrorBoundary fallback={<div>Descent Stocks Error Occured</div>}>
-              <Suspense fallback={<div>로딩중</div>}>
-                <CardList apiRef={descentStocksApiRef} name={'descent'} index={tabIndex} />
-              </Suspense>
-            </ErrorBoundary>
+            <CardList apiRef={descentStocksApiRef} name={'DESCENT'} index={tabIndex} />
           </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
