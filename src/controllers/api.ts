@@ -1,4 +1,4 @@
-import { fetchRelevantMock, fetchScoreCardMock } from './mock';
+// import { fetchRelevantMock, fetchScoreCardMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -27,7 +27,7 @@ const fetchScore = async (id: number) => {
 
 const fetchRelevant = async (id: number) => {
   // await wait(3000);
-  return fetchRelevantMock;
+  // return fetchRelevantMock;
   return fetchData(`/${id}/relevant`);
 };
 
@@ -40,12 +40,12 @@ const fetchHotStocks = async (country: string) => {
 };
 
 const fetchRisingStocks = async (country: string) => {
-  return fetchScoreCardMock;
+  // return fetchScoreCardMock;
   return fetchData(`/stock/rising/${country}`);
 };
 
 const fetchDescentStocks = async (country: string) => {
-  return fetchScoreCardMock;
+  // return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
 // Additional stock-related API calls
