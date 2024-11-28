@@ -65,4 +65,16 @@ const bounce = keyframes`
   }
 `;
 
-export { pop, popOut, slidein, bounce };
+const marquee = keyframes`
+  0%, 30% {
+    left: 0;
+    transform: translateX(0%);
+  }
+
+  70%, 100% {
+    left: 100%;
+    transform: translateX(-100%);
+  }
+`;
+
+export { pop, popOut, slidein, bounce, marquee };

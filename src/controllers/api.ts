@@ -1,4 +1,4 @@
-// import { fetchRelevantMock, fetchScoreCardMock } from './mock';
+import { fetchRelevantMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -21,13 +21,13 @@ const fetchData = async (path: string) => {
   }
 };
 
-const fetchScore = async (id: number) => {
-  return fetchData(`/${id}/score`);
+const fetchScore = async (id: number, country: string) => {
+  return fetchData(`/${id}/score/${country}`);
 };
 
 const fetchRelevant = async (id: number) => {
   // await wait(3000);
-  // return fetchRelevantMock;
+  return fetchRelevantMock;
   return fetchData(`/${id}/relevant`);
 };
 

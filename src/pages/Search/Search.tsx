@@ -9,7 +9,7 @@ import StockChart from '@components/StockChart/StockChart';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import StockWordCloud from '@components/StockWordCloud/StockWordCloud';
 import { StockScore } from '@controllers/api.Type';
-import { SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
+import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
@@ -31,6 +31,26 @@ const StockRelevant = ({ stockId }: { stockId: number }) => {
   );
 };
 
+const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
+  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
+
+  return (
+    suspend ||
+    (score != null && (
+      <ContentsItemContainer>
+        <ContentsItemTitle>
+          국내 개미
+          <LogoSVG />
+          <InfoSVG className="btn_info" onClick={() => {}} />
+        </ContentsItemTitle>
+        <ContentsItemContent>
+          <ScoreSlotMachine stockScore={score.score} />
+        </ContentsItemContent>
+      </ContentsItemContainer>
+    ))
+  );
+};
+
 const Search = () => {
   const { state } = useLocation();
 
@@ -45,21 +65,12 @@ const Search = () => {
     suspend ||
     (stockInfo && (
       <>
-        <SearchTitle stockName={stockInfo.symbolName} resultMode={resultMode} onClick={toggleResultMode} />
+        <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
         <SearchResultContainer>
           <SearchResultContents>
             {resultMode == 'indicator' ? (
               <>
-                <ContentsItemContainer>
-                  <ContentsItemTitle>
-                    국내 개미
-                    <LogoSVG />
-                    <InfoSVG className="btn_info" onClick={() => {}} />
-                  </ContentsItemTitle>
-                  <ContentsItemContent>
-                    <ScoreSlotMachine stockName={stockInfo.symbolName} stockScore={stockInfo.scoreKorea} />
-                  </ContentsItemContent>
-                </ContentsItemContainer>
+                <SearchResultHumanIndicator stockId={stockInfo.stockId} country="KOREA" />
                 <ContentsItemContainer>
                   <ContentsItemTitle>
                     국내 개미들의 소리
