@@ -130,7 +130,7 @@ const ScoreSlotMachine = ({
   stockScore,
   tabIndex,
 }: {
-  stockName: string;
+  stockName?: string;
   title?: boolean;
   stockScore: number;
   tabIndex?: number;

@@ -1,7 +1,14 @@
 import { useQuery } from 'react-query';
 import { KOREA, OVERSEA } from '@ts/Constants';
 import { StockType } from '@ts/Types';
-import { fetchDescentStocks, fetchHotStocks, fetchRelevant, fetchRisingStocks, fetchSearchSymbolName } from './api';
+import {
+  fetchDescentStocks,
+  fetchHotStocks,
+  fetchRelevant,
+  fetchRisingStocks,
+  fetchScore,
+  fetchSearchSymbolName,
+} from './api';
 import { StockInfo } from './api.Type';
 
 export const queryOptions = {
@@ -25,4 +32,8 @@ const StockFetchers = {
 
 export const StockFetchQuery = (type: StockType, index: number) => {
   return useQuery<any>([type + ' ' + index], () => StockFetchers[type](!index ? KOREA : OVERSEA), queryOptions);
+};
+
+export const ScoreQuery = (id: number, country: string) => {
+  return useQuery<StockInfo>(['searchSymbolByName', id, country], () => fetchScore(id, country), queryOptions);
 };
