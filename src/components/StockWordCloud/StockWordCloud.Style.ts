@@ -1,32 +1,72 @@
 import styled from '@emotion/styled';
-import theme from '../../styles/themes';
-import { pop } from '../../styles/keyframes';
+import { pop } from '@styles/keyframes';
+import { media, theme } from '@styles/themes';
+
+const StockWordCloudContainer = styled.div({
+  // background: theme.colors.grayscale90,
+  height: '640px',
+  overflow: 'hidden',
+  position: 'relative',
+  padding: '32px',
+  borderRadius: '24px',
+  [media[0]]: {
+    gap: '12px',
+    height: '480px',
+    padding: '12px',
+    borderRadius: '12px',
+  },
+});
 
 const WordContainer = styled.div(
   {
     position: 'absolute',
   },
-  ({ orientation, posX, posY, sizeX, sizeY }: { orientation: number; posX: number; posY: number; sizeX: number; sizeY: number }) => ({
+  ({
+    orientation,
+    posX,
+    posY,
+    sizeX,
+    sizeY,
+  }: {
+    orientation: number;
+    posX: number;
+    posY: number;
+    sizeX: number;
+    sizeY: number;
+  }) => ({
     left: (!orientation ? posX : posX - sizeY / 2 + sizeX / 2) + 'px',
     top: (!orientation ? posY : posY + sizeY / 2 - sizeX / 2) + 'px',
+    width: sizeX,
+    height: sizeY,
   }),
 );
 
 const Word = styled.span(
   {
     position: 'absolute',
-    fontFamily: 'Pretendard',
     fontWeight: '900',
     wordBreak: 'keep-all',
     overflow: 'clip',
-    color: '#FFFFFFAA',
-    // animation: slidein + ' 6s ease-in-out',
-    animation: pop + '.75s ease-in-out',
+    color: '#FFFA',
     animationFillMode: 'both',
+    lineHeight: '1.0',
   },
-  ({ orientation, fontSize, colors, delay }: { orientation: number; fontSize: number; colors: number; delay: number }) => ({
+  ({
+    animationState,
+    orientation,
+    fontSize,
+    colors,
+    delay,
+  }: {
+    animationState: boolean;
+    orientation: number;
+    fontSize: number;
+    colors: number;
+    delay: number;
+  }) => ({
+    animation: animationState ? pop + ' .75s ease-in-out' : '',
+    transform: animationState ? 'scale(1)' : 'scale(0)',
     fontSize: fontSize,
-    lineHeight: 1,
     rotate: !orientation ? '' : '90deg',
     color:
       colors == 0
@@ -42,8 +82,8 @@ const Word = styled.span(
                 : colors == 5
                   ? theme.colors.primary80
                   : '',
-    animationDelay: delay / 10 + 's',
+    animationDelay: animationState ? delay * 0.1 + 's' : '0s',
   }),
 );
 
-export { WordContainer, Word };
+export { StockWordCloudContainer, WordContainer, Word };

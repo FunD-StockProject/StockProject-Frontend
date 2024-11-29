@@ -3,4 +3,6 @@ interface LayoutProps {
   className?: string;
 }
 
-export type { LayoutProps };
+type StockType = 'HOT' | 'RISING' | 'DESCENT';
+
+export type { LayoutProps, StockType };

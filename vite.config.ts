@@ -1,13 +1,13 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import svgr from '@svgr/rollup';
-import { VitePluginRadar } from 'vite-plugin-radar';
+import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { VitePluginRadar } from 'vite-plugin-radar';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [
-    svgr(),
     react(),
+    svgr(),
     VitePluginRadar({
       analytics: {
         id: 'G-EZPQMV95QJ',
@@ -48,4 +48,22 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: [
+      { find: '@ts', replacement: '/src/ts' },
+      { find: '@base', replacement: '/src/base' },
+      { find: '@utils', replacement: '/src/utils' },
+      { find: '@hooks', replacement: '/src/hooks' },
+      { find: '@pages', replacement: '/src/pages' },
+      { find: '@router', replacement: '/src/router' },
+      { find: '@layout', replacement: '/src/layout' },
+      { find: '@common', replacement: '/src/common' },
+      { find: '@recoils', replacement: '/src/recoils' },
+      { find: '@constants', replacement: '/src/constants' },
+      { find: '@controllers', replacement: '/src/controllers' },
+      { find: '@components', replacement: '/src/components' },
+      { find: '@styles', replacement: '/src/styles' },
+      { find: '@assets', replacement: '/src/assets' },
+    ],
+  },
 });

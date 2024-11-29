@@ -29,7 +29,7 @@ export default [
         'react/jsx-one-expression-per-line': 0,
         'no-nested-ternary': 0,
       },
-    },
+    }
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

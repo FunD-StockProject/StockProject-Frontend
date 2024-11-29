@@ -1,47 +1,87 @@
 import styled from '@emotion/styled';
+import { media, theme, themeColor } from '@styles/themes';
 
-const width = Math.min(600, window.innerWidth);
+const HomeContainer = styled.div({
+  position: 'relative',
+  background: theme.colors.primary100,
+  width: '100%',
+  marginBottom: 'auto',
+});
 
-const StyledHome = styled.div({
+const HomeContents = styled.div({
+  boxSizing: 'border-box',
+  width: '100%',
+  margin: '0 auto',
+  padding: '60px',
+  height: '100%',
+  gap: '48px',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
-  paddingBottom: '100px',
+  maxWidth: '1280px',
+
+  [media[0]]: {
+    gap: '32px',
+    padding: '30px',
+  },
 });
 
-const StyledContainer = styled.div({
-  width: `${width}px`,
-});
-
-const StyledImage = styled.img({
-  padding: '10px 10px',
-  width: '40%',
+const StyleTabMenuContainer = styled.div({
+  boxSizing: 'border-box',
+  width: '100%',
+  maxWidth: '1280px',
+  margin: '0 auto',
+  padding: '0 60px',
+  [media[0]]: {
+    padding: '0',
+  },
 });
 
 const StyleTabMenu = styled.ul({
-  backgroundColor: 'white',
+  maxWidth: '1280px',
   color: 'black',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   listStyle: 'none',
-  margin: '0px',
-  paddingInlineStart: '0px',
+  paddingInlineStart: '0',
+  fontSize: '21px',
+  position: 'absolute',
+  margin: 0,
+  bottom: '100%',
+  overflow: 'hidden',
+  borderRadius: '8px 8px 0 0',
 
   // 하위 클래스 스타일 정의
   '.submenu': {
     display: 'flex',
-    justifyContent: 'center',
     flex: 1,
-    padding: '10px 0px',
-    fontSize: '15px',
+    justifyContent: 'center',
+    padding: '12px 24px',
     fontWeight: 'bold',
+    backgroundColor: 'white',
   },
 
   '.focused': {
-    backgroundColor: 'black',
     color: 'white',
+    backgroundColor: theme.colors.primary100,
+  },
+  [media[0]]: {
+    position: 'static',
+    fontSize: '17px',
+    top: '0px',
+    left: '0px',
+    width: '100%',
+    borderRadius: '0',
+    '.submenu': {
+      display: 'flex',
+      flex: 1,
+      padding: '8px 0',
+    },
   },
 });
 
-export { StyledHome, StyledContainer, StyledImage, StyleTabMenu };
+const StyledSpan = styled.span((props: { color?: themeColor }) => ({
+  color: props.color ? theme.colors[props.color] : '#000000',
+}));
+
+export { HomeContainer, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan };

@@ -1,6 +1,10 @@
+import { fetchRelevantMock } from './mock';
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Headers = { 'content-type': 'application/json' };
+
+const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
 const fetchData = async (path: string) => {
   try {
@@ -9,6 +13,7 @@ const fetchData = async (path: string) => {
     if (!res.ok) {
       throw new Error(`${res.status} Error!!`);
     }
+    await wait(0);
     return await res.json();
   } catch (error) {
     console.error(error);
@@ -16,8 +21,18 @@ const fetchData = async (path: string) => {
   }
 };
 
-const fetchScore = async (id: number) => {
-  return fetchData(`/${id}/score`);
+const fetchScore = async (id: number, country: string) => {
+  return fetchData(`/${id}/score/${country}`);
+};
+
+const fetchRelevant = async (id: number) => {
+  // await wait(3000);
+  return fetchRelevantMock;
+  return fetchData(`/${id}/relevant`);
+};
+
+const fetchStockChart = async (id: number) => {
+  return fetchData(`/${id}/relevant`); // add
 };
 
 const fetchHotStocks = async (country: string) => {
@@ -25,10 +40,12 @@ const fetchHotStocks = async (country: string) => {
 };
 
 const fetchRisingStocks = async (country: string) => {
+  // return fetchScoreCardMock;
   return fetchData(`/stock/rising/${country}`);
 };
 
 const fetchDescentStocks = async (country: string) => {
+  // return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
 // Additional stock-related API calls
@@ -39,15 +56,14 @@ const fetchAutoComplete = (name: string) => {
 const fetchSearchSymbolName = (name: string) => {
   return fetchData(`/stock/search/${name}`);
 };
-export interface StockInfo {
-  stockId?: number;
-  symbol?: string;
-  symbolName?: string;
-  securityName?: string;
-  exchangeNum?: string;
-  scoreId?: number;
-  scoreKorea?: number;
-  scoreOversea?: number;
-}
 
-export { fetchScore, fetchHotStocks, fetchRisingStocks, fetchDescentStocks, fetchAutoComplete, fetchSearchSymbolName };
+export {
+  fetchScore,
+  fetchRelevant,
+  fetchStockChart,
+  fetchHotStocks,
+  fetchRisingStocks,
+  fetchDescentStocks,
+  fetchAutoComplete,
+  fetchSearchSymbolName,
+};

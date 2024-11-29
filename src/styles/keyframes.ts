@@ -17,6 +17,18 @@ const pop = keyframes`
   }
 `;
 
+const popOut = keyframes`
+  from {
+    -webkit-transform: scale(1.0);
+    transform: scale(1);
+  }
+
+  to {
+    -webkit-transform: scale(0.0);
+    transform: scale(0);
+  }
+`;
+
 const slidein = keyframes`
   from {
     transform: translate3d(3000px, 0, 0);
@@ -53,4 +65,16 @@ const bounce = keyframes`
   }
 `;
 
-export { pop, slidein, bounce };
+const marquee = keyframes`
+  0%, 30% {
+    left: 0;
+    transform: translateX(0%);
+  }
+
+  70%, 100% {
+    left: 100%;
+    transform: translateX(-100%);
+  }
+`;
+
+export { pop, popOut, slidein, bounce, marquee };

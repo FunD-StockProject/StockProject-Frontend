@@ -1,195 +1,60 @@
-import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
-import sonjulPNG from '../../assets/sonjul.png';
-import theme from '../../styles/themes';
-import SearchTitle from '../../components/SearchTitle/SearchTitle';
-import { ButtonDiv, FlexDiv, ImgDiv } from '../../components/Common';
 import { useState } from 'react';
-import { Text, TextHeading, TextTitle } from '../../components/Text';
-import LogoSVG from '../../assets/logo_white.svg';
-import InfoSVG from '../../assets/info.svg';
-import ScoreSlotMachine from '../../components/StockSlotMachine/StockSlotMachine';
-import StockWordCloud from '../../components/StockWordCloud/StockWordCloud';
+import { useLocation } from 'react-router-dom';
+import { useQueryComponent } from '@hooks/useQueryComponent';
+import { FlexDiv } from '@components/Common/Common';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import SearchTitle from '@components/SearchTitle/SearchTitle';
+import StockCardItem from '@components/StockCard/StockCard';
+import StockChart from '@components/StockChart/StockChart';
+import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import StockWordCloud from '@components/StockWordCloud/StockWordCloud';
+import { StockScore } from '@controllers/api.Type';
+import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
+import InfoSVG from '@assets/info.svg?react';
+import LogoSVG from '@assets/logo_white.svg?react';
+import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
-const SearchContainer = styled.div({
-  width: '100%',
-  marginBottom: 'auto',
-});
+const StockRelevant = ({ stockId }: { stockId: number }) => {
+  const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
 
-const SearchResultContainer = styled.div({
-  background: theme.colors.primary100,
-  width: '100%',
-});
-
-const SearchResultContents = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  maxWidth: '1280px',
-  boxSizing: 'border-box',
-  margin: '0 auto',
-  padding: '60px 60px',
-  height: '100%',
-  gap: '48px',
-});
-
-const SearchResultIndicatorContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  background: theme.colors.grayscale100,
-  borderRadius: '25px',
-  padding: '48px',
-  gap: '28px',
-});
-
-const SearchResultIndicator = ({ stockName }: { stockName: string }) => {
   return (
-    <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <FlexDiv alignItems="center" gap="12px">
-        <TextTitle size="XLarge" color="grayscale10">
-          국내 개미
-        </TextTitle>
-        <ImgDiv src={LogoSVG} height="24px" />
-        <ButtonDiv onClick={() => {}}>
-          <ImgDiv src={InfoSVG} />
-        </ButtonDiv>
-      </FlexDiv>
-      <SearchResultIndicatorContainer>
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreTitle" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScoreImage" />
-        <ScoreSlotMachine stockName={stockName} stockScore={65} slotMachineType="stockScore" />
-      </SearchResultIndicatorContainer>
-    </FlexDiv>
-  );
-};
-
-const SearchResultSoundContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  // background: theme.colors.grayscale90,
-  gap: '28px',
-  height: 'auto',
-});
-
-const SearchResultSound = () => {
-  return (
-    <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <FlexDiv alignItems="center" gap="12px">
-        <TextTitle size="XLarge" color="grayscale10">
-          국내 개미들의 소리
-        </TextTitle>
-        <ButtonDiv onClick={() => {}}>
-          <ImgDiv src={InfoSVG} />
-        </ButtonDiv>
-      </FlexDiv>
-      <SearchResultSoundContainer>
-        <StockWordCloud />
-      </SearchResultSoundContainer>
-    </FlexDiv>
-  );
-};
-
-const SearchResultRelativeStockContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  gap: '28px',
-});
-
-const SearchResultRelativeStockItem = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: '18px',
-  width: '100%',
-  background: theme.colors.grayscale100,
-});
-
-const SearchResultRelativeStockItemTitle = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: '0 0 18px 18px',
-  padding: '24px 0',
-  width: '100%',
-  background: theme.colors.grayscale10,
-  gap: '12px',
-});
-
-const SearchResultRelativeStock = () => {
-  return (
-    <FlexDiv flexDirection="column" gap="24px" width="100%">
-      <TextTitle size="XLarge" color="grayscale10">
-        관련 종목
-      </TextTitle>
-      <SearchResultRelativeStockContainer>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
-        <SearchResultRelativeStockItem>
-          <ImgDiv src={sonjulPNG} width="240px" />
-          <SearchResultRelativeStockItemTitle>
-            <ButtonDiv background="blue" radius="24px" padding="12px 24px">
-              <Text size="Small" color="primary0">
-                결국 손절 타이밍을 놓쳤다!
-              </Text>
-            </ButtonDiv>
-            <TextHeading size="Small" color="grayscale90">
-              삼성전자
-            </TextHeading>
-          </SearchResultRelativeStockItemTitle>
-        </SearchResultRelativeStockItem>
-      </SearchResultRelativeStockContainer>
-    </FlexDiv>
-  );
-};
-
-const SearchResultChartContainer = styled.div({
-  display: 'flex',
-  margin: '0 48px',
-  gap: '28px',
-  height: '640px',
-  background: theme.colors.grayscale90,
-});
-
-const SearchResultChart = () => {
-  return (
-    <FlexDiv flexDirection="column" width="100%">
+    suspend ||
+    (stockRelevantList && (
       <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <SearchResultChartContainer></SearchResultChartContainer>
+        <StockRelevantContainer>
+          {stockRelevantList.map((e: StockScore, i: number) => (
+            <StockCardItem key={i} name={e.symbolName} score={e.score} delta={e.diff} />
+          ))}
+        </StockRelevantContainer>
       </FlexDiv>
-    </FlexDiv>
+    ))
+  );
+};
+
+const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
+  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
+
+  return (
+    suspend ||
+    (score != null && (
+      <ContentsItemContainer>
+        <ContentsItemTitle>
+          국내 개미
+          <LogoSVG />
+          <InfoSVG className="btn_info" onClick={() => {}} />
+        </ContentsItemTitle>
+        <ContentsItemContent>
+          <ScoreSlotMachine stockScore={score.score} />
+        </ContentsItemContent>
+      </ContentsItemContainer>
+    ))
   );
 };
 
 const Search = () => {
   const { state } = useLocation();
-  const stockName = state?.stockName;
 
+  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.stockName) });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
 
   const toggleResultMode = () => {
@@ -197,24 +62,40 @@ const Search = () => {
   };
 
   return (
-    <SearchContainer>
-      <SearchTitle stockName={stockName} resultMode={resultMode} onClick={toggleResultMode} />
-      <SearchResultContainer>
-        <SearchResultContents>
-          {resultMode == 'indicator' ? (
-            <>
-              <SearchResultIndicator stockName={stockName} />
-              <SearchResultSound />
-            </>
-          ) : (
-            <>
-              <SearchResultChart />
-            </>
-          )}
-          <SearchResultRelativeStock />
-        </SearchResultContents>
-      </SearchResultContainer>
-    </SearchContainer>
+    suspend ||
+    (stockInfo && (
+      <>
+        <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
+        <SearchResultContainer>
+          <SearchResultContents>
+            {resultMode == 'indicator' ? (
+              <>
+                <SearchResultHumanIndicator stockId={stockInfo.stockId} country="KOREA" />
+                <ContentsItemContainer>
+                  <ContentsItemTitle>
+                    국내 개미들의 소리
+                    <InfoSVG className="btn_info" onClick={() => {}} />
+                  </ContentsItemTitle>
+                  <ContentsItemContent>
+                    <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+                  </ContentsItemContent>
+                </ContentsItemContainer>
+              </>
+            ) : (
+              <>
+                <StockChart stockId={stockInfo.stockId} />
+              </>
+            )}
+            <ContentsItemContainer>
+              <ContentsItemTitle>관련 종목</ContentsItemTitle>
+              <ContentsItemContent>
+                <StockRelevant stockId={stockInfo.stockId} />
+              </ContentsItemContent>
+            </ContentsItemContainer>
+          </SearchResultContents>
+        </SearchResultContainer>
+      </>
+    ))
   );
 };
 

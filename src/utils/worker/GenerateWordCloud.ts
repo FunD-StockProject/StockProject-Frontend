@@ -1,4 +1,4 @@
-import { WordCloudLayout, WordFrequency } from './StockWordCloud.Type';
+import { WordCloud, WordFrequency } from '../../components/StockWordCloud/StockWordCloud.Type';
 
 const GetnerateWordCloud = ({
   frequencies,
@@ -20,7 +20,7 @@ const GetnerateWordCloud = ({
   relativeScaling?: number;
   randomState?: number;
   maxFontSize?: number;
-}): WordCloudLayout[] | null => {
+}): WordCloud[] | null => {
   const isEmptyArea = (x: number, y: number, w: number, h: number) => {
     return (
       prefixSum[(y + h) * (width + 1) + (x + w)] -
@@ -30,7 +30,13 @@ const GetnerateWordCloud = ({
     );
   };
 
-  const getPosition = (textMetrics: TextMetrics, fontSize: number, margin: number, orientation: boolean, randomState: number) => {
+  const getPosition = (
+    textMetrics: TextMetrics,
+    fontSize: number,
+    margin: number,
+    orientation: boolean,
+    randomState: number,
+  ) => {
     const [sizeX, sizeY] = [
       margin + ~~(!orientation ? textMetrics.width * fontSize : fontSize),
       margin + ~~(!orientation ? fontSize : textMetrics.width * fontSize),
@@ -86,7 +92,10 @@ const GetnerateWordCloud = ({
     for (i = y; i < height; i++) {
       for (j = x; j < width; j++) {
         prefixSum[(i + 1) * (width + 1) + (j + 1)] =
-          prefixSum[i * (width + 1) + (j + 1)] + prefixSum[(i + 1) * (width + 1) + j] - prefixSum[i * (width + 1) + j] + grid[i * width + j];
+          prefixSum[i * (width + 1) + (j + 1)] +
+          prefixSum[(i + 1) * (width + 1) + j] -
+          prefixSum[i * (width + 1) + j] +
+          grid[i * width + j];
       }
     }
   };
@@ -103,7 +112,6 @@ const GetnerateWordCloud = ({
     freq: x.freq / max_frequency,
   }));
 
-  let lastFreq = 1;
   let fontSize = 1;
 
   let layouts = [];
@@ -156,8 +164,6 @@ const GetnerateWordCloud = ({
 
     let layout = null;
     let textPosition: any | null = null;
-
-    fontSize = ~~((relativeScaling * (e.freq / lastFreq) + (1 - relativeScaling)) * fontSize);
 
     let orientation: boolean = Math.random() >= 0.9 ? true : false;
     let tried_other_orientation: boolean = false;
@@ -228,8 +234,6 @@ const GetnerateWordCloud = ({
     const imageData = offCtx.getImageData(0, 0, textPosition.sizeX, textPosition.sizeY);
 
     Update(imageData.data, ~~textPosition.posX, ~~textPosition.posY, ~~textPosition.sizeX, ~~textPosition.sizeY);
-
-    lastFreq = e.freq;
   }
 
   return layouts;
@@ -240,7 +244,7 @@ self.onmessage = (e) => {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff) format('woff')");
+  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
   self.fonts.add(fontFace);
   fontFace.load().then(() => {
     if (!self.OffscreenCanvas) {
