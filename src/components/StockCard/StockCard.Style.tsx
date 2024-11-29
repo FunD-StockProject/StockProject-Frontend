@@ -9,16 +9,16 @@ const StockCardItemContainer = styled.div({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  gap: '15px',
+  gap: '4em',
   borderRadius: '18px',
-  padding: '27px 33px',
+  padding: '1.6em 2.0em',
   background: theme.colors.grayscale100,
   cursor: 'pointer',
   width: '100%',
 
   [media[0]]: {
-    borderRadius: '12px',
-    padding: '9px 11px',
+    padding: '0.4em 0.5em',
+    gap: '0.5em',
   },
 });
 
@@ -27,18 +27,17 @@ const StockCardItemTitle = styled.div({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  padding: '20px 0',
-  gap: '12px',
-  fontSize: '1.4em',
+  gap: '0.6em',
+  fontSize: '1.6em',
   fontWeight: '700',
   color: 'white',
   lineHeight: '1.0',
   width: '100%',
+  padding: '0.5em',
 
   [media[0]]: {
-    padding: '10px 0',
-    gap: '8px',
-    fontSize: '0.7em',
+    gap: '0.4em',
+    fontSize: '0.8em',
   },
 });
 
@@ -52,33 +51,33 @@ const StockCardItemText = styled.div({
 const StockCardItemScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: '16px',
+  gap: '0.5em',
   color: delta > 0 ? theme.colors.red : theme.colors.blue,
-  fontSize: '1.6em',
+
+  fontSize: '1.0em',
   [media[0]]: {
-    gap: '8px',
-    fontSize: '0.8em',
+    // gap: '8px',
   },
 }));
 
 const StockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
   alignItems: 'center',
-  fontSize: '0.6em',
+  fontSize: '0.7em',
   gap: '4px',
   background: 'white',
-  padding: '5px 10px',
+  padding: '0.2em 0.4em',
   borderRadius: '100px',
+
   ['svg']: {
-    height: '11px',
+    height: '0.5em',
+    width: 'auto',
     fill: delta > 0 ? theme.colors.red : theme.colors.blue,
   },
   [media[0]]: {
     gap: '2px',
-    fontSize: '0.3em',
-    padding: '2.5px 3px',
     ['svg']: {
-      height: '6px',
+      // height: '6px',
     },
   },
 }));
@@ -87,6 +86,10 @@ const ScoreImage = styled(ImgDiv)({
   width: '80%',
   borderRadius: '15px',
   marginLeft: 'auto',
+
+  [media[0]]: {
+    width: '100%',
+  },
 });
 export {
   StockCardItemContainer,
