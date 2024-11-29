@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ImgDiv } from '@components/Common/Common';
-import { media, theme } from '../../styles/themes';
+import { media, theme } from '@styles/themes';
 
 const StockCardItemContainer = styled.div({
   boxSizing: 'border-box',
