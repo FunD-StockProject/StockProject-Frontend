@@ -38,7 +38,7 @@ const SearchTitle = ({
   return (
     <SearchTitleLayout>
       <SearchTitleContainer>
-        <SearchTitleCountryButton>국내 주식</SearchTitleCountryButton>
+        <SearchTitleCountryButton>{stockInfo.country == 'KOREA' ? '국내 주식' : '해외 주식'}</SearchTitleCountryButton>
         <SearchTitleContent>
           <SearchTitleText ref={titleTextRef}>
             {stockInfo.symbolName}

@@ -58,7 +58,7 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
       {searchedResult.length ? (
         searchedResult.map((e: StockInfo, idx: number) => (
           <AutoCompleteItemContainer focus={idx == focusIdx} onClick={() => handleSearch(e.symbolName)}>
-            국내종목
+            {e.country}
             <AutoCompleteItemText>
               {getCommonString({ from: value, to: e.symbolName }).map((e) =>
                 e.check ? <span>{e.char}</span> : e.char,

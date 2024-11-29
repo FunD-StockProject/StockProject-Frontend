@@ -7,6 +7,7 @@ export interface StockInfo {
   scoreId: number;
   scoreKorea: number;
   scoreOversea: number;
+  country: string;
 }
 
 export interface StockScore {

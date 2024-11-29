@@ -60,7 +60,6 @@ const Search = () => {
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
   };
-
   return (
     suspend ||
     (stockInfo && (
@@ -70,7 +69,7 @@ const Search = () => {
           <SearchResultContents>
             {resultMode == 'indicator' ? (
               <>
-                <SearchResultHumanIndicator stockId={stockInfo.stockId} country="KOREA" />
+                <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
                 <ContentsItemContainer>
                   <ContentsItemTitle>
                     국내 개미들의 소리
