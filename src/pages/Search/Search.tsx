@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
@@ -39,7 +40,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
     (score != null && (
       <ContentsItemContainer>
         <ContentsItemTitle>
-          국내 개미
+          {STOCK_COUNTRY_TYPE[country]} 개미
           <LogoSVG />
           <InfoSVG className="btn_info" onClick={() => {}} />
         </ContentsItemTitle>

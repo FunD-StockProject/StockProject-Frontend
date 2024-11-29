@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { MARKET_CODES, STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { StockInfo } from '@controllers/api.Type';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
@@ -38,7 +39,7 @@ const SearchTitle = ({
   return (
     <SearchTitleLayout>
       <SearchTitleContainer>
-        <SearchTitleCountryButton>{stockInfo.country == 'KOREA' ? '국내 주식' : '해외 주식'}</SearchTitleCountryButton>
+        <SearchTitleCountryButton>{STOCK_COUNTRY_TYPE[stockInfo.country]} 주식</SearchTitleCountryButton>
         <SearchTitleContent>
           <SearchTitleText ref={titleTextRef}>
             {stockInfo.symbolName}
@@ -53,7 +54,7 @@ const SearchTitle = ({
         </SearchTitleContent>
         <SearchTitleLabelContainer>
           <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
-          <SearchTitleLabelItem>코스피</SearchTitleLabelItem>
+          <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
           <SearchTitleLabelItem bold={true} delta={1900 > 0}>
             {'57,900'}
             <span>{'+1900(3.39%)'}</span>
