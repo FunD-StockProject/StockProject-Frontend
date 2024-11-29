@@ -41,46 +41,46 @@ const SearchTitleCountryButton = styled.div({
 
 const SearchTitleContent = styled.div({
   display: 'flex',
+  boxSizing: 'content-box',
   gap: '12px',
   alignItems: 'center',
-});
-
-const SearchTitleAnimatedText = styled.div({
-  position: 'relative',
-  height: '40px',
-  overflow: 'hidden',
-  flexGrow: 1,
   width: '100%',
-  ['span']: {
-    top: '0%',
-    position: 'absolute',
-    animation: marquee + ' ' + 5 + 's linear infinite',
-  },
+  fontSize: '40px',
+  fontWeight: '700',
   [media[0]]: {
-    height: '21px',
+    gap: '8px',
+    fontSize: '21px',
   },
 });
 
 const SearchTitleText = styled.div({
-  flexGrow: '1',
-  display: 'flex',
-  gap: '12px',
-  color: theme.colors.grayscale10,
-  fontSize: '40px',
-  fontWeight: '700',
-  height: '100%',
   textWrap: 'nowrap',
-  lineHeight: '1',
-  alignItems: 'center',
+  overflow: 'hidden',
+  position: 'relative',
+  color: theme.colors.transparent,
+});
+
+const SearchTitleAnimatedText = styled.div(
+  ({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' },
+  {
+    top: '0',
+    position: 'absolute',
+    color: theme.colors.primary0,
+  },
+);
+
+const SearchTitleSVG = styled.div({
+  display: 'flex',
   ['svg']: {
     fill: theme.colors.primary40,
-  },
-  [media[0]]: {
-    fontSize: '21px',
-    gap: '8px',
-    ['svg']: {
-      height: '21px',
-      width: 'auto',
+    height: '40px',
+    width: '85px',
+    marginRight: 'auto',
+    textWrap: 'nowrap',
+    overflowWrap: 'anywhere',
+    [media[0]]: {
+      height: 'auto',
+      width: '45px',
     },
   },
 });
@@ -144,8 +144,9 @@ export {
   SearchTitleContainer,
   SearchTitleCountryButton,
   SearchTitleContent,
-  SearchTitleAnimatedText,
   SearchTitleText,
+  SearchTitleAnimatedText,
+  SearchTitleSVG,
   SearchTitleButton,
   SearchTitleLabelContainer,
   SearchTitleLabelItem,

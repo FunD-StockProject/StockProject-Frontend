@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { StockInfo } from '@controllers/api.Type';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
@@ -10,8 +11,9 @@ import {
   SearchTitleLabelContainer,
   SearchTitleLabelItem,
   SearchTitleLayout,
+  SearchTitleSVG,
   SearchTitleText,
-} from './SearchTitle.Syle';
+} from './SearchTitle.Style';
 
 const SearchTitle = ({
   stockInfo,
@@ -22,32 +24,29 @@ const SearchTitle = ({
   resultMode: 'indicator' | 'chart';
   onClick: (e: any) => void;
 }) => {
-  const titleContainerRef = useRef<HTMLDivElement>(null);
+  const { state } = useLocation();
+
+  const titleTextRef = useRef<HTMLDivElement>(null);
 
   const [animated, setAnimated] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!titleContainerRef.current) return;
-    if (titleContainerRef.current.scrollWidth > titleContainerRef.current.offsetWidth) {
-      setAnimated(true);
-    }
-  }, []);
+    if (!titleTextRef.current) return;
+    setAnimated(titleTextRef.current.scrollWidth > titleTextRef.current.offsetWidth);
+  }, [state]);
 
   return (
     <SearchTitleLayout>
       <SearchTitleContainer>
         <SearchTitleCountryButton>국내 주식</SearchTitleCountryButton>
-        <SearchTitleContent ref={titleContainerRef}>
-          <SearchTitleText>
-            {!animated ? (
-              <span>{stockInfo.symbolName}</span>
-            ) : (
-              <SearchTitleAnimatedText>
-                <span>{stockInfo.symbolName}</span>
-              </SearchTitleAnimatedText>
-            )}
-            <ZipyoSVG />
+        <SearchTitleContent>
+          <SearchTitleText ref={titleTextRef}>
+            {stockInfo.symbolName}
+            <SearchTitleAnimatedText animated={animated}>{stockInfo.symbolName}</SearchTitleAnimatedText>
           </SearchTitleText>
+          <SearchTitleSVG>
+            <ZipyoSVG />
+          </SearchTitleSVG>
           <SearchTitleButton onClick={onClick}>
             {resultMode == 'indicator' ? '차트' : '인간지표'} 보기
           </SearchTitleButton>
