@@ -8,7 +8,13 @@ import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
+import {
+  ArrowButton,
+  CardListItemContainer,
+  HotItemButton,
+  HotItemButtonContainer,
+  NoScrollbar,
+} from './CardList.Style';
 
 const CardList = ({
   isHot = false,
@@ -58,9 +64,9 @@ const CardList = ({
       </CardListItemContainer>
     );
 
-  // const handleClick = (idx: number) => {
-  //   apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
-  // };
+  const handleClick = (idx: number) => {
+    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  };
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -74,17 +80,18 @@ const CardList = ({
             {curStocks.map(renderItem)}
           </ScrollMenu>
         ))}
-    </NoScrollbar>
-  );
-  /* {isHot && (
-          <HotItemButtonContainer>
-            {list.map((item, idx) => (
+      {!isHot && (
+        <HotItemButtonContainer>
+          {curStocks &&
+            curStocks.map((item: CardInterface, idx: number) => (
               <HotItemButton key={item.stockId} onClick={() => handleClick(idx)}>
-                {item.symbolName}
+                {idx + 1}
               </HotItemButton>
             ))}
-          </HotItemButtonContainer>
-            )} */
+        </HotItemButtonContainer>
+      )}
+    </NoScrollbar>
+  );
 };
 
 // Reusable Arrow component with better naming

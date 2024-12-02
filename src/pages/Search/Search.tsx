@@ -77,7 +77,7 @@ const Search = () => {
                     <InfoSVG className="btn_info" onClick={() => {}} />
                   </ContentsItemTitle>
                   <ContentsItemContent>
-                    <StockWordCloud stockName={stockInfo.symbolName} stockId={stockInfo.stockId} />
+                    <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
                   </ContentsItemContent>
                 </ContentsItemContainer>
               </>

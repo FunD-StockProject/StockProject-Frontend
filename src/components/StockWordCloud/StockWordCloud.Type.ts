@@ -9,7 +9,7 @@ export interface Size {
 }
 
 export interface WordFrequency {
-  text: string;
+  word: string;
   freq: number;
 }
 
