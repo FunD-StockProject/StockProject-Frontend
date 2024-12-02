@@ -71,19 +71,26 @@ const ArrowButton = styled.img(
   }),
 );
 
-const HotItemButtonContainer = styled.div({
+const ItemButtonContainer = styled.div({
   display: 'flex',
   marginTop: '12px',
   gap: '8px',
   width: '100%',
+
+  [media[0]]: {
+    display: 'none',
+  },
 });
 
-const HotItemButton = styled.button({
+const ItemButton = styled.button({
   borderRadius: '32px',
   backgroundColor: 'black',
   padding: '0.2em 0.4em',
   color: 'white',
   flex: 1,
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
 });
 
-export { NoScrollbar, CardListItemContainer, ArrowButton, HotItemButtonContainer, HotItemButton };
+export { NoScrollbar, CardListItemContainer, ArrowButton, ItemButtonContainer, ItemButton };
