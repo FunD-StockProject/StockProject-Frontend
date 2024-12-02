@@ -1,4 +1,4 @@
-import { fetchRelevantMock } from './mock';
+// import { fetchRelevantMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -26,9 +26,8 @@ const fetchScore = async (id: number, country: string) => {
 };
 
 const fetchRelevant = async (id: number) => {
-  // await wait(3000);
-  return fetchRelevantMock;
-  return fetchData(`/${id}/relevant`);
+  // return fetchRelevantMock;
+  return fetchData(`/stock/${id}/relevant`);
 };
 
 const fetchStockChart = async (id: number) => {

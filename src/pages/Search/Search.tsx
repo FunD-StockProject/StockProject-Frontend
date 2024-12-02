@@ -57,6 +57,8 @@ const Search = () => {
 
   const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.stockName) });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  // const [zipyoModalOpen, setZipyoModalOpen] = useState();
+  // const [antVoiceModalOpen, setAntVoiceModalOpen] = useState();
 
   const toggleResultMode = () => {
     setResultMode(resultMode == 'indicator' ? 'chart' : 'indicator');
@@ -73,7 +75,7 @@ const Search = () => {
                 <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
                 <ContentsItemContainer>
                   <ContentsItemTitle>
-                    국내 개미들의 소리
+                    {STOCK_COUNTRY_TYPE[stockInfo.country]} 개미들의 소리
                     <InfoSVG className="btn_info" onClick={() => {}} />
                   </ContentsItemTitle>
                   <ContentsItemContent>
@@ -87,7 +89,7 @@ const Search = () => {
               </>
             )}
             <ContentsItemContainer>
-              <ContentsItemTitle>관련 종목</ContentsItemTitle>
+              <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
               <ContentsItemContent>
                 <StockRelevant stockId={stockInfo.stockId} />
               </ContentsItemContent>

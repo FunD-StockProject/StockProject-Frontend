@@ -92,7 +92,7 @@ const colors = {
   /** #2D92FF */ blue: '#2D92FF',
   /** #FFEA64 */ yellow: '#FFEA64',
   /** #64FFEA */ cyan: '#64FFEA',
-
+  /** #6495ED */ cornflowerblue: '#6495ED',
   /** #DD000000 */ transparent: '#DD000000',
 };
 
