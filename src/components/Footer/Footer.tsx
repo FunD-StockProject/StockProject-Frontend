@@ -11,13 +11,26 @@ import {
   FooterTitle,
 } from './Footer.Style';
 
-const FooterButton = ({ img, str }: { img: string; str: string }) => {
+const FooterButton = ({
+  img,
+  str,
+  onClick,
+}: {
+  img: string;
+  str: string;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
   return (
-    <FooterButtonItemContainer>
+    <FooterButtonItemContainer onClick={onClick}>
       <ImgDiv alt={str} src={img} objectFit="cover" />
       {str}
     </FooterButtonItemContainer>
   );
+};
+const openDictionaryModel = () => {};
+const openCreatorsInfoModal = () => {};
+const openSurveyWindow = () => {
+  window.open('https://forms.gle/G8cvb7RqtPjGhxvK7');
 };
 
 const Footer = () => {
@@ -33,9 +46,9 @@ const Footer = () => {
           <br />
           '인간지표'를 사용하면서 불편한 부분이나 추가로 원하는 기능이 있으면 언제든지 피드백해주세요 :)
           <FooterButtonContainer>
-            <FooterButton img={dictSVG} str="인간지표 백과사전" />
-            <FooterButton img={commentSVG} str="서비스 의견 남기기" />
-            <FooterButton img={developerSVG} str="만든이들" />
+            <FooterButton img={dictSVG} str="인간지표 백과사전" onClick={openDictionaryModel} />
+            <FooterButton img={commentSVG} str="서비스 의견 남기기" onClick={openSurveyWindow} />
+            <FooterButton img={developerSVG} str="만든이들" onClick={openCreatorsInfoModal} />
           </FooterButtonContainer>
         </FooterContents>
       </FooterContainer>

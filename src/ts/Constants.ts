@@ -14,4 +14,5 @@ const MARKET_CODES: Record<string, string> = {
   '002': '코스닥',
   '003': 'ETF',
 };
+
 export { KOREA, OVERSEA, MARKET_CODES, STOCK_COUNTRY_TYPE };
