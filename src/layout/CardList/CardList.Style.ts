@@ -75,13 +75,15 @@ const HotItemButtonContainer = styled.div({
   display: 'flex',
   marginTop: '12px',
   gap: '8px',
+  width: '100%',
 });
 
 const HotItemButton = styled.button({
   borderRadius: '32px',
   backgroundColor: 'black',
-  padding: '12px 24px',
+  padding: '0.2em 0.4em',
   color: 'white',
+  flex: 1,
 });
 
 export { NoScrollbar, CardListItemContainer, ArrowButton, HotItemButtonContainer, HotItemButton };
