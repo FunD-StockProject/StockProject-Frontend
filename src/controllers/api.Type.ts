@@ -4,10 +4,12 @@ export interface StockInfo {
   symbolName: string;
   securityName: string;
   exchangeNum: string;
-  scoreId: number;
-  scoreKorea: number;
-  scoreOversea: number;
   country: string;
+
+  price: number;
+  priceDiff: number;
+  priceDiffPerCent: number;
+  priceSign: number;
 }
 
 export interface StockScore {
