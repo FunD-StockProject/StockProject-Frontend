@@ -29,10 +29,13 @@ const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
             <PopUpDetailNumber color={'grayscale80'}>2</PopUpDetailNumber>
             <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 0 }}>
               <span style={{ fontSize: '30px' }}>
-                가장많이 <br />
+                가장 많이 <br />
                 언급된 단어
               </span>
-              <span style={{ color: theme.colors.grayscale60, fontSize: '8px' }}>상대적으로 적게 언급된 단어</span>
+              <span style={{ color: theme.colors.grayscale60, fontSize: '8px' }}>
+                상대적으로 적게
+                <br /> 언급된 단어
+              </span>
             </p>
           </div>
           <div>
