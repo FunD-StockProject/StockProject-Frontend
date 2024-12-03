@@ -4,6 +4,7 @@ import { StockType } from '@ts/Types';
 import {
   fetchDescentStocks,
   fetchHotStocks,
+  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -36,4 +37,8 @@ export const StockFetchQuery = (type: StockType, index: number) => {
 
 export const ScoreQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['searchSymbolByName', id, country], () => fetchScore(id, country), queryOptions);
+};
+
+export const RealStockInfoQuery = (id: number, country: string) => {
+  return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
