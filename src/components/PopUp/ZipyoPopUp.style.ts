@@ -75,8 +75,8 @@ const PopUpImage = styled('ul')({
     },
 
     ['img']: {
+      height: '100%',
       width: '100%',
-      objectFit: 'contain',
       borderRadius: '8px',
     },
   },
