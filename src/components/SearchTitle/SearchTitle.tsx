@@ -1,6 +1,8 @@
+import { $ } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MARKET_CODES, STOCK_COUNTRY_TYPE } from '@ts/Constants';
+import { fetchRealStockInfo } from '@controllers/api';
 import { StockInfo } from '@controllers/api.Type';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
@@ -35,7 +37,31 @@ const SearchTitle = ({
     if (!titleTextRef.current) return;
     setAnimated(titleTextRef.current.scrollWidth > titleTextRef.current.offsetWidth);
   }, [state]);
+  // stockInfo.price = 164900.0;
+  // stockInfo.priceDiff = 6100.0;
+  // stockInfo.priceDiffPerCent = 3.84;
+  // stockInfo.priceSign = 2;
 
+  const [realStockInfo, setRealStockInfo] = useState({
+    symbol: '000660',
+    exchange: '001',
+    price: 164900.0,
+    priceDiff: 6100.0,
+    priceDiffPerCent: 3.84,
+    priceSign: 2,
+  });
+  const getRealStockInfo = async () => {
+    const res = await fetchRealStockInfo(stockInfo.stockId, stockInfo.country);
+    setRealStockInfo(res);
+    debugger;
+  };
+  useEffect(() => {
+    getRealStockInfo();
+  }, []);
+
+  const color = realStockInfo.priceSign <= 3 ? 'red' : 'blue';
+  const symbol = realStockInfo.priceSign <= 3 ? '+' : '-';
+  const money = stockInfo.country === 'KOREA' ? '₩' : '$';
   return (
     <SearchTitleLayout>
       <SearchTitleContainer>
@@ -56,9 +82,10 @@ const SearchTitle = ({
           <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
           <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
           <SearchTitleLabelItem bold={true} delta={1900 > 0}>
-            {stockInfo.price}
-            <span>
-              {stockInfo.priceDiff} {stockInfo.priceDiffPerCent}
+            {money} {realStockInfo.price.toLocaleString()}
+            <span style={{ color }}>
+              {symbol}
+              {realStockInfo.priceDiff.toLocaleString()} ({realStockInfo.priceDiffPerCent}%)
             </span>
           </SearchTitleLabelItem>
         </SearchTitleLabelContainer>
