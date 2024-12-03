@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MARKET_CODES, STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { fetchRealStockInfo } from '@controllers/api';
