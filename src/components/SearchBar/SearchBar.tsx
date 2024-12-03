@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
@@ -43,7 +44,7 @@ const RecentSearchList = ({ searchedData, focusIdx, handleSearch, deleteRecentSe
       {searchedData.length != 0 && <span>최근검색어</span>}
       {searchedData.map((name: string, idx: number) => (
         <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
-          국내종목
+          {/* 국내종목 */}
           <span onClick={() => handleSearch(name)}>{name}</span>
           <CancelSVG onClick={() => deleteRecentSearch(name)} />
         </RecentSearchItemContainer>
@@ -58,7 +59,7 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
       {searchedResult.length ? (
         searchedResult.map((e: StockInfo, idx: number) => (
           <AutoCompleteItemContainer focus={idx == focusIdx} onClick={() => handleSearch(e.symbolName)}>
-            국내종목
+            {STOCK_COUNTRY_TYPE[e.country]} 종목
             <AutoCompleteItemText>
               {getCommonString({ from: value, to: e.symbolName }).map((e) =>
                 e.check ? <span>{e.char}</span> : e.char,

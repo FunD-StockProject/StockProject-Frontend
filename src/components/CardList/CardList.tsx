@@ -8,7 +8,7 @@ import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
+import { ArrowButton, CardListItemContainer, ItemButton, ItemButtonContainer, NoScrollbar } from './CardList.Style';
 
 const CardList = ({
   isHot = false,
@@ -46,45 +46,45 @@ const CardList = ({
     });
   });
 
-  // Helper function for rendering items
-  const renderItem = (item: CardInterface) =>
+  const renderStocks = (stock: CardInterface) =>
     isHot ? (
-      <CardListItemContainer key={`${name}_${item.stockId}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={item.symbolName} title={true} stockScore={item.score} tabIndex={0} />
+      <CardListItemContainer key={`${name}_${stock.stockId}`} width={width ?? 0}>
+        <ScoreSlotMachine stockName={stock.symbolName} title={true} stockScore={stock.score} tabIndex={0} />
       </CardListItemContainer>
     ) : (
-      <CardListItemContainer key={`${name}_${item.stockId}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={item.score} name={item.symbolName} delta={item.diff} />
+      <CardListItemContainer key={`${name}_${stock.stockId}`} width={(width ?? 0) * 0.3}>
+        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} />
       </CardListItemContainer>
     );
 
-  // const handleClick = (idx: number) => {
-  //   apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
-  // };
+  const handleButtonClick = (idx: number) => {
+    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  };
 
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
-        (curStocks != null && width != 0 && (
+        (curStocks && width != 0 && (
           <ScrollMenu
             LeftArrow={<ScrollArrow direction="left" />}
             RightArrow={<ScrollArrow direction="right" />}
             apiRef={apiRef}
           >
-            {curStocks.map(renderItem)}
+            {curStocks.map(renderStocks)}
           </ScrollMenu>
         ))}
+      {!isHot && (
+        <ItemButtonContainer>
+          {curStocks &&
+            curStocks.map((stock: CardInterface, idx: number) => (
+              <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
+                {stock.symbolName}
+              </ItemButton>
+            ))}
+        </ItemButtonContainer>
+      )}
     </NoScrollbar>
   );
-  /* {isHot && (
-          <HotItemButtonContainer>
-            {list.map((item, idx) => (
-              <HotItemButton key={item.stockId} onClick={() => handleClick(idx)}>
-                {item.symbolName}
-              </HotItemButton>
-            ))}
-          </HotItemButtonContainer>
-            )} */
 };
 
 // Reusable Arrow component with better naming

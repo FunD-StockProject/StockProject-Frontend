@@ -73,6 +73,12 @@ const FooterButtonItemContainer = styled.div({
     height: '32px',
   },
 
+  '&:hover': {
+    background: theme.colors.cornflowerblue,
+    color: 'white',
+    transition: '0.5s',
+  },
+
   [media[0]]: {
     gap: '8px',
 

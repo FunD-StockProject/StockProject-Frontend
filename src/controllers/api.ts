@@ -1,4 +1,4 @@
-import { fetchRelevantMock } from './mock';
+// import { fetchRelevantMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -26,9 +26,8 @@ const fetchScore = async (id: number, country: string) => {
 };
 
 const fetchRelevant = async (id: number) => {
-  // await wait(3000);
-  return fetchRelevantMock;
-  return fetchData(`/${id}/relevant`);
+  // return fetchRelevantMock;
+  return fetchData(`/stock/${id}/relevant`);
 };
 
 const fetchStockChart = async (id: number) => {
@@ -53,10 +52,13 @@ const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
-const fetchSearchSymbolName = (name: string) => {
-  return fetchData(`/stock/search/${name}`);
+const fetchSearchSymbolName = (symbolname: string) => {
+  return fetchData(`/stock/search/${symbolname}`);
 };
 
+const fetchSearchWordCloud = (symbol: string, country: string) => {
+  return fetchData(`/wordcloud/${symbol}/${country}`);
+};
 export {
   fetchScore,
   fetchRelevant,
@@ -66,4 +68,5 @@ export {
   fetchDescentStocks,
   fetchAutoComplete,
   fetchSearchSymbolName,
+  fetchSearchWordCloud,
 };

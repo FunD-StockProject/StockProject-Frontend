@@ -108,7 +108,7 @@ const GetnerateWordCloud = ({
   if (!FontOffCtx) return null;
 
   frequencies = Array.from(frequencies, (x) => ({
-    text: x.text,
+    word: x.word,
     freq: x.freq / max_frequency,
   }));
 
@@ -157,7 +157,7 @@ const GetnerateWordCloud = ({
   FontOffCtx.font = fontSizes[1];
 
   for (const e of frequencies) {
-    const word = e.text;
+    const word = e.word;
     const freq = e.freq;
 
     if (freq == 0) continue;
@@ -213,11 +213,11 @@ const GetnerateWordCloud = ({
     if (orientation) {
       offCtx.textBaseline = 'bottom';
       offCtx.rotate((90 * Math.PI) / 180);
-      offCtx.fillText(e.text, textY, -textX);
+      offCtx.fillText(e.word, textY, -textX);
       offCtx.rotate((-90 * Math.PI) / 180);
     } else {
       offCtx.textBaseline = 'top';
-      offCtx.fillText(e.text, textX, textY);
+      offCtx.fillText(e.word, textX, textY);
     }
 
     layout = {
