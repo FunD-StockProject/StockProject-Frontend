@@ -125,9 +125,6 @@ const ConfirmButton = styled('div')({
   color: theme.colors.primary0,
   borderRadius: '0 0 12px 12px',
   padding: '27px 0',
-  // '&:hover': {
-  //   textDecoration: 'underline',
-  // },
 });
 
 const Backdrop = styled('div')({
