@@ -59,6 +59,10 @@ const fetchSearchSymbolName = (symbolname: string) => {
 const fetchSearchWordCloud = (symbol: string, country: string) => {
   return fetchData(`/wordcloud/${symbol}/${country}`);
 };
+
+const fetchRealStockInfo = (stockId: number, country: string) => {
+  return fetchData(`/stock/${stockId}/info/${country}`);
+};
 export {
   fetchScore,
   fetchRelevant,
@@ -69,4 +73,5 @@ export {
   fetchAutoComplete,
   fetchSearchSymbolName,
   fetchSearchWordCloud,
+  fetchRealStockInfo,
 };
