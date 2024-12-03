@@ -56,8 +56,10 @@ const SearchTitle = ({
           <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
           <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
           <SearchTitleLabelItem bold={true} delta={1900 > 0}>
-            {'57,900'}
-            <span>{'+1900(3.39%)'}</span>
+            {stockInfo.price}
+            <span>
+              {stockInfo.priceDiff} {stockInfo.priceDiffPerCent}
+            </span>
           </SearchTitleLabelItem>
         </SearchTitleLabelContainer>
         인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
