@@ -93,6 +93,7 @@ const SearchTitleButton = styled.div({
   color: theme.colors.grayscale5,
   fontWeight: '700',
   textWrap: 'nowrap',
+  marginLeft: 'auto',
   [media[0]]: {
     padding: '6px 24px',
     fontSize: '13px',
@@ -125,7 +126,7 @@ const SearchTitleLabelItem = styled.div(
     padding: '12px 18px',
     display: 'flex',
     alignItems: 'center',
-    gap: '4px',
+    gap: '6px',
     span: {
       fontSize: '15px',
     },
