@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MARKET_CODES, STOCK_COUNTRY_TYPE } from '@ts/Constants';
-import { useQueryComponent } from '@hooks/useQueryComponent';
 import { StockInfo } from '@controllers/api.Type';
-import { RealStockInfoQuery } from '@controllers/query';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
   SearchTitleAnimatedText,
@@ -28,12 +26,8 @@ const SearchTitle = ({
   onClick: (e: any) => void;
 }) => {
   const { state } = useLocation();
-
   const titleTextRef = useRef<HTMLDivElement>(null);
-
   const [animated, setAnimated] = useState<boolean>(false);
-
-  const [stock, suspend] = useQueryComponent({ query: RealStockInfoQuery(stockInfo.stockId, stockInfo.country) });
 
   useEffect(() => {
     if (!titleTextRef.current) return;
@@ -46,8 +40,7 @@ const SearchTitle = ({
 
   const money = stockInfo.country === 'KOREA' ? '₩' : '$';
   return (
-    suspend ||
-    (stock && (
+    stockInfo && (
       <SearchTitleLayout>
         <SearchTitleContainer>
           <SearchTitleCountryButton>{STOCK_COUNTRY_TYPE[stockInfo.country]} 주식</SearchTitleCountryButton>
@@ -66,12 +59,12 @@ const SearchTitle = ({
           <SearchTitleLabelContainer>
             <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
             <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
-            <SearchTitleLabelItem bold={true} delta={stock.priceDiff > 0}>
-              {money} {stock.price.toLocaleString()}
+            <SearchTitleLabelItem bold={true} delta={stockInfo.priceDiff > 0}>
+              {money} {stockInfo.price.toLocaleString()}
               <span>
                 {`
-                ${priceDiff(stock.priceDiff)}
-                (${stock.priceDiffPerCent}%)
+                ${priceDiff(stockInfo.priceDiff)}
+                (${stockInfo.priceDiffPerCent}%)
               `}
               </span>
             </SearchTitleLabelItem>
@@ -79,7 +72,7 @@ const SearchTitle = ({
           인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
         </SearchTitleContainer>
       </SearchTitleLayout>
-    ))
+    )
   );
 };
 
