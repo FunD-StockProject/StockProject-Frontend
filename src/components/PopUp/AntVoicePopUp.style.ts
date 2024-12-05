@@ -185,8 +185,8 @@ const ConfirmButton = styled('div')({
   padding: '27px 0',
 
   [media[0]]: {
-    fontSize: '14px', // 모바일 글자 크기 축소
-    padding: '16px 0', // 모바일 패딩 축소
+    fontSize: '14px',
+    padding: '16px 0',
   },
 });
 

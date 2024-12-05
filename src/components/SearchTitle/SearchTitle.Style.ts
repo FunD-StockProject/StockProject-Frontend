@@ -134,7 +134,7 @@ const SearchTitleLabelItem = styled.div(
       padding: '8px 12px',
       gap: '4px',
       span: {
-        fontSize: '11px',
+        fontSize: '10px',
       },
     },
   },
