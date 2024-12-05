@@ -8,7 +8,6 @@ import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, Style
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
-  // const isDarkMode = useSystemTheme();
 
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
@@ -24,7 +23,7 @@ const Home = () => {
 
     const currentScrollPosition = window.scrollY;
     const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
-    refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('0')));
+    refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('1')));
 
     window.scrollTo(0, currentScrollPosition);
   };
