@@ -29,6 +29,15 @@ const CardList = ({
   const isMobile = width < 768;
 
   useEffect(() => {
+    if (isMobile && curStocks?.length > 1) {
+      setTimeout(() => {
+        apiRef.current.scrollToItem(apiRef.current.getItemByIndex(1));
+        window.scrollTo(0, 0);
+      }, 1000);
+    }
+  }, [isMobile, curStocks]);
+
+  useEffect(() => {
     setDidMount(true);
     return () => {};
   }, []);
@@ -36,7 +45,6 @@ const CardList = ({
   useEffect(() => {
     if (!didMount) return;
     if (!containerRef.current) return;
-
     observer.observe(containerRef.current);
   }, [didMount]);
 
@@ -79,13 +87,6 @@ const CardList = ({
     ));
   };
 
-  const moveIndex = () => {
-    setTimeout(() => {
-      apiRef.current.scrollToItem(apiRef.current.getItemByIndex(1));
-      window.scrollTo(0, 0);
-    }, 1000);
-  };
-
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
@@ -94,7 +95,6 @@ const CardList = ({
             LeftArrow={<ScrollArrow direction="left" />}
             RightArrow={<ScrollArrow direction="right" />}
             apiRef={apiRef}
-            onInit={isMobile ? moveIndex : undefined}
           >
             {isMobile ? renderMobileStocks(curStocks) : curStocks.map(renderStocks)}
           </ScrollMenu>
