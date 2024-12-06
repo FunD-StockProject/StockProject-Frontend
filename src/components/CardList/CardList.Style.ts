@@ -74,18 +74,15 @@ const ArrowButton = styled.img(
 const ItemButtonContainer = styled.div({
   display: 'flex',
   marginTop: '12px',
-  gap: '8px',
+  gap: '24px',
   width: '100%',
-
-  [media[0]]: {
-    display: 'none',
-  },
 });
 
 const ItemButton = styled.button({
   borderRadius: '32px',
   backgroundColor: 'black',
-  padding: '0.2em 0.4em',
+  border: `solid 2px ${theme.colors.grayscale50}`,
+  padding: '0.5em 1em',
   color: 'white',
   flex: 1,
   whiteSpace: 'nowrap',
