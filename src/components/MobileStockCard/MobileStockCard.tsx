@@ -27,7 +27,7 @@ const MobileStockCardItem = ({ name, score, delta }: { name: string; score: numb
       <MobileStockCardItemTitle>
         <MobileStockCardItemText>{name}</MobileStockCardItemText>
         <MobileStockCardItemScore delta={delta}>
-          {score}점{' '}
+          {score}점
           <MobileStockCardItemDeltaScore delta={delta}>
             {Math.abs(delta)}
             {deltaSVG}
