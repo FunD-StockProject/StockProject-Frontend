@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme, themeColor } from '@styles/themes';
+import { media, theme, themeColor } from '@styles/themes';
 
 const PopUpContainer = styled('div')({
   display: 'flex',
@@ -16,6 +16,13 @@ const PopUpContainer = styled('div')({
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
   zIndex: 1000,
   fontFamily: 'Pretendard',
+
+  [media[0]]: {
+    width: '90%',
+    ['svg']: {
+      width: '40%',
+    },
+  },
 });
 
 const PopUpTitle = styled('div')({
@@ -24,19 +31,24 @@ const PopUpTitle = styled('div')({
   gap: '8px',
   fontSize: '40px',
   fontWeight: '700',
-
   padding: '48px 32px 0 32px',
+
   ['svg']: {
     height: '36px',
     width: 'auto',
   },
+
+  [media[0]]: {
+    fontSize: '24px', // 모바일에서는 작은 글자 크기
+    padding: '32px 32px 0 32px',
+  },
 });
 
 const PopUpContent = styled('div')({
-  padding: '0 48px 32px 32px',
+  padding: '0 32px 32px 32px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '12px',
   fontSize: '16px',
   lineHeight: '1.5',
   color: theme.colors.grayscale100,
@@ -80,6 +92,17 @@ const PopUpImage = styled('ul')({
       borderRadius: '8px',
     },
   },
+
+  [media[0]]: {
+    ['div']: {
+      height: '120px',
+      ['img']: {
+        height: '100%',
+        width: '100%',
+        borderRadius: '8px',
+      },
+    },
+  },
 });
 
 const PopUpDetailContainer = styled('div')({
@@ -90,6 +113,11 @@ const PopUpDetailContainer = styled('div')({
   borderRadius: '8px',
   padding: '16px',
   marginTop: '12px',
+
+  [media[0]]: {
+    padding: '12px', // 모바일 내부 여백 축소
+    marginTop: '8px',
+  },
 });
 
 const PopUpDetail = styled('div')({
@@ -100,6 +128,12 @@ const PopUpDetail = styled('div')({
   ['span']: {
     fontSize: '14px',
     color: theme.colors.grayscale100,
+  },
+
+  [media[0]]: {
+    ['span']: {
+      fontSize: '11px',
+    },
   },
 });
 
@@ -114,6 +148,12 @@ const PopUpDetailNumber = styled.div(({ color }: { color?: themeColor }) => ({
   borderRadius: '4px',
   background: color ? theme.colors[color] : theme.colors.primary40,
   color: theme.colors.primary0,
+
+  [media[0]]: {
+    width: '20px', // 모바일 크기 축소
+    height: '20px',
+    fontSize: '12px',
+  },
 }));
 
 const ConfirmButton = styled('div')({
@@ -125,6 +165,11 @@ const ConfirmButton = styled('div')({
   color: theme.colors.primary0,
   borderRadius: '0 0 12px 12px',
   padding: '27px 0',
+
+  [media[0]]: {
+    fontSize: '14px', // 모바일 글자 크기 축소
+    padding: '16px 0', // 모바일 패딩 축소
+  },
 });
 
 const Backdrop = styled('div')({
@@ -146,6 +191,11 @@ const CloseButton = styled('button')({
   fontSize: '18px',
   cursor: 'pointer',
   color: theme.colors.grayscale100,
+
+  [media[0]]: {
+    top: '12px',
+    right: '0px',
+  },
 });
 
 export {

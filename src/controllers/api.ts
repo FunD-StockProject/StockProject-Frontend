@@ -1,4 +1,5 @@
 // import { fetchRelevantMock } from './mock';
+// import { fetchScoreCardMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 

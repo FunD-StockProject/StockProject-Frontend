@@ -3,6 +3,7 @@ import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-s
 import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
 import { useQueryComponent } from '@hooks/useQueryComponent';
+import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockFetchQuery } from '@controllers/query';
@@ -24,8 +25,17 @@ const CardList = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [didMount, setDidMount] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(0);
-
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
+  const isMobile = width < 768;
+
+  useEffect(() => {
+    if (isMobile && curStocks?.length > 1) {
+      setTimeout(() => {
+        apiRef.current.scrollToItem(apiRef.current.getItemByIndex(1));
+        window.scrollTo(0, 0);
+      }, 1000);
+    }
+  }, [isMobile, curStocks]);
 
   useEffect(() => {
     setDidMount(true);
@@ -35,7 +45,6 @@ const CardList = ({
   useEffect(() => {
     if (!didMount) return;
     if (!containerRef.current) return;
-
     observer.observe(containerRef.current);
   }, [didMount]);
 
@@ -61,6 +70,23 @@ const CardList = ({
     apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
   };
 
+  const renderMobileStocks = (curStocks: CardInterface[]) => {
+    if (isHot) {
+      return curStocks.map(renderStocks);
+    }
+
+    const chunkCount = Math.ceil(curStocks.length / 3);
+    const verticalStocks = Array.from({ length: chunkCount }, (_, idx) => curStocks.slice(idx * 3, idx * 3 + 3));
+
+    return verticalStocks.map((verticalStock) => (
+      <CardListItemContainer key={`${name}_${verticalStock[0].stockId}`} width={width ?? 0}>
+        {verticalStock.map((el) => (
+          <MobileStockCardItem key={`${name}_${el.stockId}`} score={el.score} name={el.symbolName} delta={el.diff} />
+        ))}
+      </CardListItemContainer>
+    ));
+  };
+
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
@@ -70,17 +96,20 @@ const CardList = ({
             RightArrow={<ScrollArrow direction="right" />}
             apiRef={apiRef}
           >
-            {curStocks.map(renderStocks)}
+            {isMobile ? renderMobileStocks(curStocks) : curStocks.map(renderStocks)}
           </ScrollMenu>
         ))}
       {!isHot && (
         <ItemButtonContainer>
           {curStocks &&
-            curStocks.map((stock: CardInterface, idx: number) => (
-              <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
-                {stock.symbolName}
-              </ItemButton>
-            ))}
+            curStocks.map((stock: CardInterface, idx: number) => {
+              if (isMobile && idx % 3) return;
+              return (
+                <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
+                  {stock.symbolName}
+                </ItemButton>
+              );
+            })}
         </ItemButtonContainer>
       )}
     </NoScrollbar>

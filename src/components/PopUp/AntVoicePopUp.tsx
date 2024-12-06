@@ -8,6 +8,7 @@ import {
   PopUpDetail,
   PopUpDetailContainer,
   PopUpDetailNumber,
+  PopUpDetailWord,
   PopUpImage,
   PopUpTitle,
 } from './AntVoicePopUp.style';
@@ -23,24 +24,24 @@ const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
         <PopUpImage>
           <div>
             <PopUpDetailNumber color={'grayscale80'}>1</PopUpDetailNumber>
-            <p style={{ color: theme.colors.primary30 }}>긍정단어</p>
+            <PopUpDetailWord style={{ color: theme.colors.primary30 }}>긍정단어</PopUpDetailWord>
           </div>
           <div>
             <PopUpDetailNumber color={'grayscale80'}>2</PopUpDetailNumber>
-            <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 0 }}>
-              <span style={{ fontSize: '30px' }}>
+            <PopUpDetailWord>
+              <span>
                 가장 많이 <br />
                 언급된 단어
               </span>
-              <span style={{ color: theme.colors.grayscale60, fontSize: '8px' }}>
+              <span>
                 상대적으로 적게
                 <br /> 언급된 단어
               </span>
-            </p>
+            </PopUpDetailWord>
           </div>
           <div>
             <PopUpDetailNumber color={'grayscale80'}>3</PopUpDetailNumber>
-            <p style={{ color: '#FF6058' }}>부정단어</p>
+            <PopUpDetailWord style={{ color: '#FF6058' }}>부정단어</PopUpDetailWord>
           </div>
         </PopUpImage>
         <PopUpDetailContainer>

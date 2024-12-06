@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme, themeColor } from '@styles/themes';
+import { media, theme, themeColor } from '@styles/themes';
 
 const PopUpContainer = styled('div')({
   display: 'flex',
@@ -16,6 +16,13 @@ const PopUpContainer = styled('div')({
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
   zIndex: 1000,
   fontFamily: 'Pretendard',
+
+  [media[0]]: {
+    width: '90%',
+    ['svg']: {
+      width: '30%',
+    },
+  },
 });
 
 const PopUpTitle = styled('div')({
@@ -30,10 +37,15 @@ const PopUpTitle = styled('div')({
     height: '36px',
     width: 'auto',
   },
+
+  [media[0]]: {
+    fontSize: '24px',
+    padding: '32px 32px 0 32px',
+  },
 });
 
 const PopUpContent = styled('div')({
-  padding: '0 48px 32px 32px',
+  padding: '0 32px 32px 32px',
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
@@ -46,7 +58,6 @@ const PopUpImage = styled('ul')({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  // gap: '8px',
   padding: 0,
   listStyle: 'none',
 
@@ -73,6 +84,50 @@ const PopUpImage = styled('ul')({
       width: '100%',
     },
   },
+  [media[0]]: {
+    ['div']: {
+      height: '120px',
+      ['img']: {
+        height: '100%',
+        width: '100%',
+        borderRadius: '8px',
+      },
+    },
+  },
+});
+
+const PopUpDetailWord = styled('p')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  margin: 0,
+
+  ['span:first-of-type']: {
+    fontSize: '1.5em',
+    textAlign: 'center',
+    lineHeight: '1.4',
+  },
+
+  ['span:last-of-type']: {
+    color: theme.colors.grayscale60,
+    fontSize: '0.8em',
+    textAlign: 'center',
+    lineHeight: '1.2',
+  },
+  [media[0]]: {
+    ['span:first-of-type']: {
+      fontSize: '1em',
+      textAlign: 'center',
+      lineHeight: '1.4',
+    },
+
+    ['span:last-of-type']: {
+      color: theme.colors.grayscale60,
+      fontSize: '0.6em',
+      textAlign: 'center',
+      lineHeight: '1.2',
+    },
+  },
 });
 
 const PopUpDetailContainer = styled('div')({
@@ -83,6 +138,11 @@ const PopUpDetailContainer = styled('div')({
   borderRadius: '8px',
   padding: '16px',
   marginTop: '12px',
+
+  [media[0]]: {
+    padding: '12px',
+    marginTop: '8px',
+  },
 });
 
 const PopUpDetail = styled('div')({
@@ -107,6 +167,11 @@ const PopUpDetailNumber = styled.div(({ color }: { color?: themeColor }) => ({
   borderRadius: '4px',
   background: color ? theme.colors[color] : theme.colors.primary40,
   color: theme.colors.primary0,
+  [media[0]]: {
+    width: '20px', // 모바일 크기 축소
+    height: '20px',
+    fontSize: '12px',
+  },
 }));
 
 const ConfirmButton = styled('div')({
@@ -118,6 +183,11 @@ const ConfirmButton = styled('div')({
   color: theme.colors.primary0,
   borderRadius: '0 0 12px 12px',
   padding: '27px 0',
+
+  [media[0]]: {
+    fontSize: '14px',
+    padding: '16px 0',
+  },
 });
 
 const Backdrop = styled('div')({
@@ -139,6 +209,11 @@ const CloseButton = styled('button')({
   fontSize: '18px',
   cursor: 'pointer',
   color: theme.colors.grayscale100,
+
+  [media[0]]: {
+    top: '12px',
+    right: '0px',
+  },
 });
 
 export {
@@ -146,6 +221,7 @@ export {
   PopUpTitle,
   PopUpContent,
   PopUpImage,
+  PopUpDetailWord,
   PopUpDetailContainer,
   PopUpDetail,
   PopUpDetailNumber,
