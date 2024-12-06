@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
+import { StockSearchInfo } from '@ts/Types';
 import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
@@ -38,17 +39,20 @@ const getCommonString = ({ from, to }: { from: string; to: string }) => {
   return arr;
 };
 
-const RecentSearchList = ({ searchedData, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
+const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
+  console.log(stockSearchedInfo);
+
   return (
-    <RecentSearchListContainer isEmpty={searchedData.length == 0}>
-      {searchedData.length != 0 && <span>최근검색어</span>}
-      {searchedData.map((name: string, idx: number) => (
-        <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
-          {/* 국내종목 */}
-          <span onClick={() => handleSearch(name)}>{name}</span>
-          <CancelSVG onClick={() => deleteRecentSearch(name)} />
-        </RecentSearchItemContainer>
-      ))}
+    <RecentSearchListContainer isEmpty={stockSearchedInfo.length == 0}>
+      {stockSearchedInfo.length != 0 && <span>최근검색어</span>}
+      {stockSearchedInfo &&
+        stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
+          <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
+            {STOCK_COUNTRY_TYPE[stock.country]} 종목
+            <span onClick={() => handleSearch(stock.symbolName)}>{stock.symbolName}</span>
+            <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
+          </RecentSearchItemContainer>
+        ))}
     </RecentSearchListContainer>
   );
 };
@@ -58,9 +62,13 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
     <AutoCompleteListContainer>
       {searchedResult.length ? (
         searchedResult.map((e: StockInfo, idx: number) => (
-          <AutoCompleteItemContainer focus={idx == focusIdx} onClick={() => handleSearch(e.symbolName)}>
+          <AutoCompleteItemContainer
+            key={`${e.symbolName}_${e.stockId}`}
+            focus={idx == focusIdx}
+            onClick={() => handleSearch(e.symbolName)}
+          >
             {STOCK_COUNTRY_TYPE[e.country]} 종목
-            <AutoCompleteItemText>
+            <AutoCompleteItemText key={`${e.symbolName}_${e.symbolName}`}>
               {getCommonString({ from: value, to: e.symbolName }).map((e) =>
                 e.check ? <span>{e.char}</span> : e.char,
               )}
@@ -79,8 +87,8 @@ const SearchBar = () => {
 
   const [stockName, setStockName] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchedData, setSearchedData] = useState<string[]>(
-    isExistItemLocalStorage('searchedList') ? getItemLocalStorage('searchedList') : [],
+  const [stockSearchInfo, setStockSearchInfo] = useState<StockSearchInfo[]>(
+    isExistItemLocalStorage('stockSearchInfo') ? getItemLocalStorage('stockSearchInfo') : [],
   );
   const [activeSearchBar, setActiveSearchBar] = useState<boolean>(false);
   const [searchedResult, setSearchedResult] = useState<StockInfo[]>([]);
@@ -109,12 +117,14 @@ const SearchBar = () => {
   const searchBarInputKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'ArrowDown') {
       e.preventDefault();
-      setFocusIdx((prev) => (stockName == '' ? (prev + 1) % searchedData.length : (prev + 1) % searchedResult.length));
+      setFocusIdx((prev) =>
+        stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length,
+      );
     } else if (e.key == 'ArrowUp') {
       e.preventDefault();
       setFocusIdx((prev) =>
         stockName == ''
-          ? ((prev == -1 ? 0 : prev) + searchedData.length - 1) % searchedData.length
+          ? ((prev == -1 ? 0 : prev) + stockSearchInfo.length - 1) % stockSearchInfo.length
           : ((prev == -1 ? 0 : prev) + searchedResult.length - 1) % searchedResult.length,
       );
     } else if (e.key == 'Escape') {
@@ -123,20 +133,23 @@ const SearchBar = () => {
     } else if (e.key === 'Enter') {
       let name = stockName;
       if (focusIdx != -1) {
-        name = stockName == '' ? searchedData[focusIdx] : searchedResult[focusIdx].symbolName;
+        name = stockName == '' ? stockSearchInfo[focusIdx].symbolName : searchedResult[focusIdx].symbolName;
       }
       const result = await fetchSearchSymbolName(name);
-      if (result) handleSearch(name);
+
+      if (result) {
+        const curStockSearchInfo: StockSearchInfo = { symbolName: result.symbolName, country: result.country };
+        addRecentSearch(curStockSearchInfo);
+        handleSearch(name);
+      }
     }
   };
 
   const handleSearch = (stockName: string | undefined) => {
-    console.log(stockName);
     if (!stockName) {
       return;
     }
 
-    addRecentSearch(stockName);
     navigate(webPath.search(), { state: { stockName } });
     setStockName('');
     setSearchValue('');
@@ -144,23 +157,25 @@ const SearchBar = () => {
     setActiveSearchBar(false);
   };
 
-  const addRecentSearch = (stockName: string) => {
+  const addRecentSearch = (stockInfo: StockSearchInfo) => {
+    if (!stockInfo.symbolName) return;
     // 최근 검색 기록 추가
-    const nextData = Array.from(new Set([stockName, ...searchedData]));
-    if (JSON.stringify(nextData) !== JSON.stringify(searchedData)) {
-      setSearchedData(nextData);
+    const nextData = Array.from(new Set([stockInfo, ...stockSearchInfo]));
+
+    if (JSON.stringify(nextData) !== JSON.stringify(stockSearchInfo)) {
+      setStockSearchInfo(nextData);
     }
   };
 
   const deleteRecentSearch = (stockName: string) => {
     // 최근 검색 기록 삭제
-    setSearchedData((prevData) => prevData.filter((item) => item !== stockName));
+    setStockSearchInfo((prevData) => prevData.filter((item) => item.symbolName !== stockName));
   };
 
   useEffect(() => {
     // searchedData 값이 변경될 때 localStorage에 저장
-    setItemLocalStorage('searchedList', searchedData);
-  }, [searchedData]);
+    setItemLocalStorage('stockSearchInfo', stockSearchInfo);
+  }, [stockSearchInfo]);
 
   return (
     <>
@@ -191,7 +206,7 @@ const SearchBar = () => {
               {activeSearchBar &&
                 (stockName == '' ? (
                   <RecentSearchList
-                    searchedData={searchedData}
+                    stockSearchedInfo={stockSearchInfo}
                     focusIdx={focusIdx}
                     handleSearch={handleSearch}
                     deleteRecentSearch={deleteRecentSearch}
