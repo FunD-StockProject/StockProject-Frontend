@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
@@ -48,10 +48,10 @@ const CardList = ({
     apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
   };
 
-  const renderStocks = useCallback(() => {
+  const renderStocks = () => {
     if (isHot) return renderHotStocks(curStocks);
     return isMobile ? renderMobileStocks(curStocks) : renderWebStocks(curStocks);
-  }, [isHot, isMobile, curStocks]);
+  };
 
   const renderHotStocks = (curStocks: CardInterface[]) => {
     return curStocks.map((stock) => (
