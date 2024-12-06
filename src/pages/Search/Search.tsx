@@ -62,7 +62,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 
 const Search = () => {
   const { state } = useLocation();
-  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.stockName) });
+  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName) });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
 

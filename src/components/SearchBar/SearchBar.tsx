@@ -40,8 +40,6 @@ const getCommonString = ({ from, to }: { from: string; to: string }) => {
 };
 
 const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
-  console.log(stockSearchedInfo);
-
   return (
     <RecentSearchListContainer isEmpty={stockSearchedInfo.length == 0}>
       {stockSearchedInfo.length != 0 && <span>최근검색어</span>}
@@ -49,7 +47,7 @@ const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRec
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
           <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch(stock.symbolName)}>{stock.symbolName}</span>
+            <span onClick={() => handleSearch(stock)}>{stock.symbolName}</span>
             <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
           </RecentSearchItemContainer>
         ))}
@@ -65,10 +63,10 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
           <AutoCompleteItemContainer
             key={`${e.symbolName}_${e.stockId}`}
             focus={idx == focusIdx}
-            onClick={() => handleSearch(e.symbolName)}
+            onClick={() => handleSearch({ symbolName: e.symbolName, country: e.country })}
           >
             {STOCK_COUNTRY_TYPE[e.country]} 종목
-            <AutoCompleteItemText key={`${e.symbolName}_${e.symbolName}`}>
+            <AutoCompleteItemText key={`${e.symbolName}_${e.stockId}`}>
               {getCommonString({ from: value, to: e.symbolName }).map((e) =>
                 e.check ? <span>{e.char}</span> : e.char,
               )}
@@ -139,18 +137,19 @@ const SearchBar = () => {
 
       if (result) {
         const curStockSearchInfo: StockSearchInfo = { symbolName: result.symbolName, country: result.country };
-        addRecentSearch(curStockSearchInfo);
-        handleSearch(name);
+        handleSearch(curStockSearchInfo);
       }
     }
   };
 
-  const handleSearch = (stockName: string | undefined) => {
-    if (!stockName) {
+  const handleSearch = (curStockSearchInfo: StockSearchInfo) => {
+    if (!curStockSearchInfo.symbolName) {
       return;
     }
+    const symbolName = curStockSearchInfo.symbolName;
 
-    navigate(webPath.search(), { state: { stockName } });
+    addRecentSearch(curStockSearchInfo);
+    navigate(webPath.search(), { state: { symbolName } });
     setStockName('');
     setSearchValue('');
     (document.activeElement as HTMLElement).blur();
@@ -160,9 +159,10 @@ const SearchBar = () => {
   const addRecentSearch = (stockInfo: StockSearchInfo) => {
     if (!stockInfo.symbolName) return;
     // 최근 검색 기록 추가
-    const nextData = Array.from(new Set([stockInfo, ...stockSearchInfo]));
+    const exists = stockSearchInfo.some((item) => JSON.stringify(item) === JSON.stringify(stockInfo));
 
-    if (JSON.stringify(nextData) !== JSON.stringify(stockSearchInfo)) {
+    if (!exists) {
+      const nextData = [...stockSearchInfo, stockInfo];
       setStockSearchInfo(nextData);
     }
   };
