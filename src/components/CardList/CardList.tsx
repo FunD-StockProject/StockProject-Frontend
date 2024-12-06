@@ -48,10 +48,10 @@ const CardList = ({
     apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
   };
 
-  const renderStocks = useCallback(() => {
+  const renderStocks = () => {
     if (isHot) return renderHotStocks(curStocks);
     return isMobile ? renderMobileStocks(curStocks) : renderWebStocks(curStocks);
-  }, [isHot, isMobile, curStocks]);
+  };
 
   const renderHotStocks = (curStocks: CardInterface[]) => {
     return curStocks.map((stock) => (
