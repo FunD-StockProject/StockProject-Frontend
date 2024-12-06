@@ -149,7 +149,7 @@ const SearchBar = () => {
     const symbolName = curStockSearchInfo.symbolName;
 
     addRecentSearch(curStockSearchInfo);
-    navigate(webPath.search(), { state: { symbolName } });
+    navigate(webPath.search(), { state: { symbolName: symbolName } });
     setStockName('');
     setSearchValue('');
     (document.activeElement as HTMLElement).blur();

@@ -25,7 +25,7 @@ const CardList = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
-  const isMobile = width < 720;
+  const isMobile = window.innerWidth < 720;
 
   useEffect(() => {
     if (isMobile && curStocks?.length > 1) {
@@ -94,16 +94,15 @@ const CardList = ({
             {renderStocks()}
           </ScrollMenu>
         ))}
-      {!isHot && (
+      {!isHot && !isMobile && curStocks && (
         <ItemButtonContainer>
-          {curStocks &&
-            curStocks.map((stock: CardInterface, idx: number) => {
-              return (
-                <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
-                  {stock.symbolName}
-                </ItemButton>
-              );
-            })}
+          {curStocks.map((stock: CardInterface, idx: number) => {
+            return (
+              <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
+                {stock.symbolName}
+              </ItemButton>
+            );
+          })}
         </ItemButtonContainer>
       )}
     </NoScrollbar>
