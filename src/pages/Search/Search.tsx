@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
+import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import MobileStockCardGrid from '@components/MobileStockCardGrid/MobileStockCardGrid';
 import AntVoicePopUp from '@components/PopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp';
 import SearchTitle from '@components/SearchTitle/SearchTitle';
@@ -17,21 +19,36 @@ import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
+const MobileRelevantStocks = ({ stocks }: { stocks: StockScore[] }) => (
+  <FlexDiv flexDirection="row" gap="24px" width="100%">
+    <MobileStockCardGrid curStocks={stocks} name="RELEVANT" />
+  </FlexDiv>
+);
+
+const WebRelevantStocks = ({ stocks }: { stocks: StockScore[] }) => (
+  <FlexDiv flexDirection="column" gap="24px" width="100%">
+    <StockRelevantContainer>
+      {stocks.map((stock) => (
+        <StockCardItem
+          key={`RELEVANT_${stock.stockId}`}
+          name={stock.symbolName}
+          score={stock.score}
+          delta={stock.diff}
+        />
+      ))}
+    </StockRelevantContainer>
+  </FlexDiv>
+);
+
 const StockRelevant = ({ stockId }: { stockId: number }) => {
   const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
+  const isMobile = useIsMobile();
 
   if (suspend) return null;
 
   return (
-    stockRelevantList && (
-      <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <StockRelevantContainer>
-          {stockRelevantList.map((stock: StockScore, index: number) => (
-            <StockCardItem key={index} name={stock.symbolName} score={stock.score} delta={stock.diff} />
-          ))}
-        </StockRelevantContainer>
-      </FlexDiv>
-    )
+    stockRelevantList &&
+    (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} /> : <WebRelevantStocks stocks={stockRelevantList} />)
   );
 };
 
