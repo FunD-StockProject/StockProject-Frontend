@@ -30,6 +30,7 @@ const Home = () => {
 
   return (
     <HomeContainer>
+      {'새 버전이 있습니다. 페이지를 새로고침하시겠습니까?가 떠야돼 제발'}
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
