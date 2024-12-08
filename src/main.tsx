@@ -9,7 +9,7 @@ import './index.css';
 import queryClient from './queryClient';
 import { theme } from './styles/themes.ts';
 
-const updateSW = registerSW({
+registerSW({
   immediate: true,
   onNeedRefresh() {
     const userConfirmed = confirm('새 버전이 있습니다. 페이지를 새로고침하시겠습니까?');
@@ -18,8 +18,6 @@ const updateSW = registerSW({
     }
   },
 });
-
-console.log('Service Worker 업데이트 테스트:', updateSW);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
