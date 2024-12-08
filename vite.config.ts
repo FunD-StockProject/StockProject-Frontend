@@ -15,6 +15,17 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        cleanupOutdatedCaches: true, // 이전 캐시 삭제
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // 필요한 파일만 포함
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) =>
+              request.destination === 'script' || request.destination === 'style' || request.destination === 'document',
+            handler: 'NetworkOnly', // 네트워크만 사용
+          },
+        ],
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'humanzipyo',
