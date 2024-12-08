@@ -14,7 +14,21 @@ export default defineConfig({
       },
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'autoUpdate', // 자동 업데이트 설정
+      devOptions: {
+        enabled: false,
+      },
+      workbox: {
+        cleanupOutdatedCaches: true, // 이전 캐시 삭제
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // 필요한 파일만 포함
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) =>
+              request.destination === 'script' || request.destination === 'style' || request.destination === 'document',
+            handler: 'NetworkOnly', // 네트워크만 사용
+          },
+        ],
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'humanzipyo',
@@ -42,7 +56,7 @@ export default defineConfig({
             src: 'maskable-icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'c',
+            purpose: 'maskable',
           },
         ],
       },
