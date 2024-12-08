@@ -19,10 +19,7 @@ const updateSW = registerSW({
   },
 });
 
-// 예: 개발 환경에서 업데이트를 강제로 트리거
-if (process.env.NODE_ENV === 'development') {
-  console.log('Service Worker 업데이트 테스트:', updateSW);
-}
+console.log('Service Worker 업데이트 테스트:', updateSW);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
