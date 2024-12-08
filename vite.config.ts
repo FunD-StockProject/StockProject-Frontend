@@ -14,10 +14,7 @@ export default defineConfig({
       },
     }),
     VitePWA({
-      registerType: 'autoUpdate', // 자동 업데이트 설정
-      devOptions: {
-        enabled: false,
-      },
+      registerType: 'autoUpdate',
       workbox: {
         cleanupOutdatedCaches: true, // 이전 캐시 삭제
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // 필요한 파일만 포함
