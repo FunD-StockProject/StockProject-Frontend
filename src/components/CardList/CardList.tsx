@@ -8,9 +8,10 @@ import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockFetchQuery } from '@controllers/query';
+import { theme } from '@styles/themes';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, ItemButton, ItemButtonContainer, NoScrollbar } from './CardList.Style';
+import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
 const CardList = ({
   isHot = false,
@@ -26,9 +27,12 @@ const CardList = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
 
-  // 컨테이너 너비 감지
+  const [activeIndex, setActiveIndex] = useState(`${name}_1`);
+  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
+  const array = isHot ? [1, 2, 3, 4, 5, 6, 7, 8, 9] : [1, 4, 7];
+  const indicatorColor = name === 'RISING' ? '#FD4821' : theme.colors.primary30;
+
   useEffect(() => {
     if (!containerRef.current) return;
     const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
@@ -37,19 +41,9 @@ const CardList = ({
     return () => observer.disconnect();
   }, []);
 
-  // 자동 스크롤 (모바일 전용)
-  useEffect(() => {
-    if (isMobile && curStocks && curStocks.length > 1) {
-      setTimeout(() => {
-        apiRef.current.scrollToItem(apiRef.current.getItemByIndex(1));
-        window.scrollTo(0, 0);
-      }, 1000);
-    }
-  }, [isMobile, curStocks, apiRef]);
-
-  const handleButtonClick = (idx: number) => {
-    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
-  };
+  // const handleButtonClick = (idx: number) => {
+  //   apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  // };
 
   const renderHotStocks = () => {
     return curStocks.map((stock: CardInterface) => (
@@ -73,13 +67,8 @@ const CardList = ({
 
     return verticalStocks.map((verticalStock) => (
       <CardListItemContainer key={`${name}_${verticalStock[0].stockId}`} width={width ?? 0}>
-        {verticalStock.map((stock: CardInterface) => (
-          <MobileStockCardItem
-            key={`${name}_${stock.stockId}`}
-            score={stock.score}
-            name={stock.symbolName}
-            delta={stock.diff}
-          />
+        {verticalStock.map((stock: CardInterface, idx: number) => (
+          <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} />
         ))}
       </CardListItemContainer>
     ));
@@ -87,25 +76,30 @@ const CardList = ({
 
   return (
     <NoScrollbar ref={containerRef}>
+      {curStocks && (
+        <IndicatorContainer>
+          {array.map((el) => (
+            <Indicator key={el} isActive={`${name}_${el}` === activeIndex} color={indicatorColor}></Indicator>
+          ))}
+        </IndicatorContainer>
+      )}
       {suspend ||
         (curStocks && width !== 0 && (
           <ScrollMenu
             LeftArrow={<ScrollArrow direction="left" />}
             RightArrow={<ScrollArrow direction="right" />}
             apiRef={apiRef}
+            onUpdate={() => {
+              if (apiRef.current.items.getVisible().length === 0) {
+                return;
+              }
+              // console.log(apiRef.current.items.getVisible()[0][0]);
+              setActiveIndex(apiRef.current.items.getVisible()[0][0]);
+            }}
           >
             {isHot ? renderHotStocks() : isMobile ? renderMobileStocks() : renderWebStocks()}
           </ScrollMenu>
         ))}
-      {curStocks && !isHot && !isMobile && (
-        <ItemButtonContainer>
-          {curStocks.map((stock: CardInterface, idx: number) => (
-            <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
-              {stock.symbolName}
-            </ItemButton>
-          ))}
-        </ItemButtonContainer>
-      )}
     </NoScrollbar>
   );
 };
