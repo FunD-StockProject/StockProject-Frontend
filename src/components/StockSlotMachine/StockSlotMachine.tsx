@@ -138,7 +138,7 @@ const ScoreSlotMachine = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { stockName: stockName } });
+    navigate(webPath.search(), { state: { symbolName: stockName } });
   };
 
   return (
