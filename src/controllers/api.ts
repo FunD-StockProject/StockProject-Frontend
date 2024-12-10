@@ -36,6 +36,7 @@ const fetchStockChart = async (id: number) => {
 };
 
 const fetchHotStocks = async (country: string) => {
+  // return fetchScoreCardMock;
   return fetchData(`/stock/hot/${country}`);
 };
 

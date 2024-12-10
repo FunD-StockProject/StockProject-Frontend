@@ -51,7 +51,7 @@ const ScoreSlotMachineItemCard = ({
   ) : slotMachineType == 'IMAGE' ? (
     <ImgDiv src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]} />
   ) : (
-    idx % 101
+    `${idx % 101}점`
   );
 };
 
@@ -138,7 +138,7 @@ const ScoreSlotMachine = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { stockName: stockName } });
+    navigate(webPath.search(), { state: { symbolName: stockName } });
   };
 
   return (

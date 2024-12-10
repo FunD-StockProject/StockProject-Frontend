@@ -18,7 +18,7 @@ const MobileStockCardItem = ({ name, score, delta }: { name: string; score: numb
   const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { stockName: name } });
+    navigate(webPath.search(), { state: { symbolName: name } });
   };
 
   return (
@@ -27,7 +27,7 @@ const MobileStockCardItem = ({ name, score, delta }: { name: string; score: numb
       <MobileStockCardItemTitle>
         <MobileStockCardItemText>{name}</MobileStockCardItemText>
         <MobileStockCardItemScore delta={delta}>
-          {score}점{' '}
+          {score}점
           <MobileStockCardItemDeltaScore delta={delta}>
             {Math.abs(delta)}
             {deltaSVG}

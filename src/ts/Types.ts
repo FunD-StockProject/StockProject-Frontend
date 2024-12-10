@@ -5,4 +5,9 @@ interface LayoutProps {
 
 type StockType = 'HOT' | 'RISING' | 'DESCENT';
 
-export type { LayoutProps, StockType };
+interface StockSearchInfo {
+  symbolName: string;
+  country: string;
+}
+
+export type { LayoutProps, StockType, StockSearchInfo };
