@@ -51,7 +51,7 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <CardList isHot={true} apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
+            <CardList apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
         </ContentsItemContainer>
 
