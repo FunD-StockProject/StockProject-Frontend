@@ -51,7 +51,7 @@ const ScoreSlotMachineItemCard = ({
   ) : slotMachineType == 'IMAGE' ? (
     <ImgDiv src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]} />
   ) : (
-    idx % 101
+    `${idx % 101}점`
   );
 };
 
