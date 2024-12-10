@@ -1,5 +1,5 @@
 // import { fetchRelevantMock } from './mock';
-import { fetchScoreCardMock } from './mock';
+// import { fetchScoreCardMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -36,7 +36,7 @@ const fetchStockChart = async (id: number) => {
 };
 
 const fetchHotStocks = async (country: string) => {
-  return fetchScoreCardMock;
+  // return fetchScoreCardMock;
   return fetchData(`/stock/hot/${country}`);
 };
 
