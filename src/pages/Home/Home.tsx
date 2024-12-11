@@ -3,6 +3,7 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 // import { useStocks } from '@hooks/useStocks';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
@@ -76,6 +77,7 @@ const Home = () => {
           </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
+      <PWAInfoPopUp />
     </HomeContainer>
   );
 };

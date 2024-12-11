@@ -16,7 +16,7 @@ const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
   <>
     <Backdrop onClick={onClose} />
     <PopUpContainer>
-      <CloseButton onClick={onClose}>✖</CloseButton>
+      <CloseButton onClick={onClose}>✕</CloseButton>
       <PopUpTitle>개미들의 목소리란?</PopUpTitle>
       <PopUpContent>
         각종 커뮤니티의 댓글을 한눈에 볼 수 있는 워드클라우드에요.
