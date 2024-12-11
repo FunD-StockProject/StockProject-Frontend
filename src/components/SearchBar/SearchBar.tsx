@@ -47,7 +47,9 @@ const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRec
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
           <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}></span>
+            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
+              {stock.symbolName}
+            </span>
             <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
           </RecentSearchItemContainer>
         ))}
