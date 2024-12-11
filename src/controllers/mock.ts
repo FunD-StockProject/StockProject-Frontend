@@ -30,6 +30,10 @@ export const fetchSearchSymbolNameMock = {
   priceSign: 2,
 };
 
+export const fetchScoreMock = {
+  score: 50,
+};
+
 export const fetchSearchWordCloudMock = [
   { word: '에어레인', freq: 94 },
   { word: '전략적', freq: 92 },

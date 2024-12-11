@@ -1,4 +1,10 @@
-import { fetchRelevantMock, fetchScoreCardMock, fetchSearchSymbolNameMock, fetchSearchWordCloudMock } from './mock';
+import {
+  fetchRelevantMock,
+  fetchScoreCardMock,
+  fetchScoreMock,
+  fetchSearchSymbolNameMock,
+  fetchSearchWordCloudMock,
+} from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -6,7 +12,7 @@ const Headers = { 'content-type': 'application/json' };
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
-const enableMock = false;
+const enableMock = true;
 
 const fetchData = async (path: string) => {
   try {
@@ -24,6 +30,7 @@ const fetchData = async (path: string) => {
 };
 
 const fetchScore = async (id: number, country: string) => {
+  if (enableMock) return fetchScoreMock;
   return fetchData(`/${id}/score/${country}`);
 };
 
