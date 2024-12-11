@@ -126,12 +126,12 @@ const ScoreSlotMachineItem = ({
 
 const ScoreSlotMachine = ({
   stockName,
-  title,
+  active,
   stockScore,
   tabIndex,
 }: {
   stockName?: string;
-  title?: boolean;
+  active?: boolean;
   stockScore: number;
   tabIndex?: number;
 }) => {
@@ -142,8 +142,8 @@ const ScoreSlotMachine = ({
   };
 
   return (
-    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={title ? handleClick : () => {}}>
-      {title ? stockName : ''}
+    <ScoreSlotMachineContainer active={active} tabIndex={tabIndex} onClick={active ? handleClick : () => {}}>
+      {active ? stockName : ''}
       <ScoreSlotMachineContent>
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />

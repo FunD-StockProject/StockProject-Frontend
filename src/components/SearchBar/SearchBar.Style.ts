@@ -75,6 +75,7 @@ const SearchBarInput = styled.div(
       height: '24px',
       width: 'auto',
       stroke: theme.colors.primary0,
+      cursor: 'pointer',
     },
     [media[0]]: {
       padding: '0 12px',

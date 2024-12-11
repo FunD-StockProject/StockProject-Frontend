@@ -56,7 +56,7 @@ const CardList = ({
   const renderHotStocks = (curStocks: CardInterface[]) => {
     return curStocks.map((stock) => (
       <CardListItemContainer key={`${name}_${stock.stockId}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={stock.symbolName} title={true} stockScore={stock.score} tabIndex={0} />
+        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} />
       </CardListItemContainer>
     ));
   };

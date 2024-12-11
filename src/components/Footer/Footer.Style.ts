@@ -76,7 +76,7 @@ const FooterButtonItemContainer = styled.div({
   '&:hover': {
     background: theme.colors.cornflowerblue,
     color: 'white',
-    transition: '0.5s',
+    transition: '.1s',
   },
 
   [media[0]]: {
