@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 
-const CardListItemContainer = styled.div((props: { width: number }) => ({
-  width: props.width ?? 0,
+const CardListItemContainer = styled.div((props: { width?: number }) => ({
+  width: props.width ?? '100%',
 }));
 
 const NoScrollbar = styled.div({
