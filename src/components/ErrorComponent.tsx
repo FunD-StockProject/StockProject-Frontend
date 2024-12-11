@@ -4,7 +4,7 @@ import { Container } from './Component.style';
 const ErrorComponent = () => {
   return (
     <Container>
-      <ErrorSVG />;
+      <ErrorSVG />
     </Container>
   );
 };

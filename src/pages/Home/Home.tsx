@@ -20,10 +20,11 @@ const Home = () => {
     }
 
     setTabIndex(index);
-
     const currentScrollPosition = window.scrollY;
+
     const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
-    refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('1')));
+    const refsCheck = refs.some((ref) => !ref.current || Object.keys(ref.current).length === 0);
+    if (!refsCheck) refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('1')));
 
     window.scrollTo(0, currentScrollPosition);
   };

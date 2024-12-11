@@ -15,3 +15,16 @@ export const fetchRelevantMock = [
   { stockId: 2, symbolName: '한화솔루션', score: 11, diff: -18 },
   { stockId: 3, symbolName: 'SK하이닉스', score: 32, diff: -7 },
 ];
+
+export const fetchSearchSymbolNameMock = {
+  stockId: 0,
+  symbolName: 'string',
+  securityName: 'string',
+  symbol: 'string',
+  exchangeNum: '512',
+  country: 'KOREA',
+  price: 0,
+  priceDiff: 0,
+  priceDiffPerCent: 0,
+  priceSign: 0,
+};

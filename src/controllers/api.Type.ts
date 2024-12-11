@@ -18,3 +18,10 @@ export interface StockScore {
   score: number;
   diff: number;
 }
+
+export interface RevelantStockInfo {
+  stockId: number;
+  symbolName: string;
+  score: number;
+  diff: number;
+}
