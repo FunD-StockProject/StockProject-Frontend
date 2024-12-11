@@ -182,7 +182,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <div onClick={() => navigate(webPath.search(), { state: { symbolName: '테슬라' } })}>{'테스트'}</div>
+      {/* <div onClick={() => navigate(webPath.search(), { state: { symbolName: '테슬라' } })}>{'테스트'}</div> */}
       <SearchBarLayout>
         <SearchBarLayer>
           <SearchBarContainer active={activeSearchBar}>

@@ -1,5 +1,6 @@
 // import { fetchRelevantMock } from './mock';
 // import { fetchScoreCardMock } from './mock';
+// import { fetchSearchSymbolNameMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -55,6 +56,7 @@ const fetchAutoComplete = (name: string) => {
 };
 
 const fetchSearchSymbolName = (symbolname: string) => {
+  // return fetchSearchSymbolNameMock;
   return fetchData(`/stock/search/${symbolname}`);
 };
 
