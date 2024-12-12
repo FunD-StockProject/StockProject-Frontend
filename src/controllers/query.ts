@@ -19,7 +19,7 @@ export const queryOptions = {
 };
 
 export const SearchSymbolNameQuery = (name: string) => {
-  return useQuery<StockInfo>(['searchSymbolByName', name], () => fetchSearchSymbolName(name), queryOptions);
+  return useQuery<any>(['searchSymbolByName', name], () => fetchSearchSymbolName(name), queryOptions);
 };
 
 export const StockRelevantQuery = (id: number) => {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useIsMobile } from '@hooks/useIsMobile';
-import PWASVG from '@assets/pwa.svg?react';
+import { ImgDiv } from '@components/Common/Common';
+import PWAPNG from '@assets/PWA.png';
 import {
   Backdrop,
   ButtonContainer,
@@ -68,7 +69,7 @@ const PWAInfoPopUp = ({}: {}) => {
                 인간지표를 누려보세요.
               </NormalText>
             </TextArea>
-            <PWASVG width={'140px'} height={'auto'} />
+            <ImgDiv src={PWAPNG} width={'140px'} />
           </DetailContainer>
           <ButtonContainer>
             <Close24HourButton onClick={closePopUp24Hours}>24시간 동안 안보기</Close24HourButton>

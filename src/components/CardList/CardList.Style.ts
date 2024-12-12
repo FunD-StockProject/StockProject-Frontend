@@ -88,6 +88,7 @@ const ItemButton = styled.button({
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
+  cursor: 'pointer',
 });
 
 const IndicatorContainer = styled.div({
