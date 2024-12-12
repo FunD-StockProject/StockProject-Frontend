@@ -91,4 +91,43 @@ const ItemButton = styled.button({
   cursor: 'pointer',
 });
 
-export { NoScrollbar, CardListItemContainer, ArrowButton, ItemButtonContainer, ItemButton };
+const IndicatorContainer = styled.div({
+  display: 'flex',
+  position: 'absolute',
+  bottom: '100%',
+  right: '-40px',
+  gap: '8px',
+  alignItems: 'center',
+  borderRadius: '10px',
+  margin: '0 0 40px 0',
+  [media[0]]: {
+    margin: '0 0 20px 0',
+    right: '0px',
+    gap: '4px',
+  },
+});
+
+const Indicator = styled.div(({ isActive, name }: { isActive: boolean; name: string }) => ({
+  width: '10px',
+  height: '10px',
+  borderRadius: '50%', // 완전한 원
+  backgroundColor: isActive ? (name === 'RISING' ? '#FD4821' : theme.colors.primary30) : theme.colors.primary5,
+  transition: 'background-color 0.3s ease',
+  border: 'none',
+  cursor: 'pointer',
+  [media[0]]: {
+    width: '5px',
+    height: '5px',
+    borderRadius: '50%', // 완전한 원
+  },
+}));
+
+export {
+  NoScrollbar,
+  CardListItemContainer,
+  ArrowButton,
+  ItemButtonContainer,
+  ItemButton,
+  IndicatorContainer,
+  Indicator,
+};

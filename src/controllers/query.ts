@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import { KOREA, OVERSEA } from '@ts/Constants';
 import { StockType } from '@ts/Types';
+import { RevelantStockInfo } from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
@@ -22,7 +23,7 @@ export const SearchSymbolNameQuery = (name: string) => {
 };
 
 export const StockRelevantQuery = (id: number) => {
-  return useQuery<any>(['searchSymbolByName', id], () => fetchRelevant(id), queryOptions);
+  return useQuery<RevelantStockInfo>(['searchRelevangStockById', id], () => fetchRelevant(id), queryOptions);
 };
 
 const StockFetchers = {

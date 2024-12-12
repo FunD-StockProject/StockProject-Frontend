@@ -44,11 +44,14 @@ const StockRelevant = ({ stockId }: { stockId: number }) => {
   const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
   const isMobile = useIsMobile();
 
-  if (suspend) return null;
-
   return (
-    stockRelevantList &&
-    (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} /> : <WebRelevantStocks stocks={stockRelevantList} />)
+    suspend ||
+    (stockRelevantList &&
+      (isMobile ? (
+        <MobileRelevantStocks stocks={stockRelevantList} />
+      ) : (
+        <WebRelevantStocks stocks={stockRelevantList} />
+      )))
   );
 };
 
@@ -56,24 +59,18 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
   const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  if (suspend) return null;
-
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    score && (
-      <ContentsItemContainer>
-        <ContentsItemTitle>
-          {STOCK_COUNTRY_TYPE[country]} 개미
-          <LogoSVG />
-          <InfoSVG className="btn_info" onClick={togglePopup} />
-        </ContentsItemTitle>
-        <ContentsItemContent>
-          <ScoreSlotMachine stockScore={score.score} />
-        </ContentsItemContent>
-        {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
-      </ContentsItemContainer>
-    )
+    <ContentsItemContainer>
+      <ContentsItemTitle>
+        {STOCK_COUNTRY_TYPE[country]} 개미
+        <LogoSVG />
+        <InfoSVG className="btn_info" onClick={togglePopup} />
+      </ContentsItemTitle>
+      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} />)}</ContentsItemContent>
+      {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
+    </ContentsItemContainer>
   );
 };
 
@@ -83,13 +80,12 @@ const Search = () => {
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  if (suspend) return null;
-
   const toggleResultMode = () => setResultMode((prev) => (prev === 'indicator' ? 'chart' : 'indicator'));
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    stockInfo && (
+    suspend ||
+    (stockInfo && (
       <>
         <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
         <SearchResultContainer>
@@ -121,7 +117,7 @@ const Search = () => {
           </SearchResultContents>
         </SearchResultContainer>
       </>
-    )
+    ))
   );
 };
 

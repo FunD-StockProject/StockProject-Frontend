@@ -12,7 +12,7 @@ const Headers = { 'content-type': 'application/json' };
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
-const enableMock = true;
+const enableMock = false;
 
 const fetchData = async (path: string) => {
   try {
@@ -44,6 +44,7 @@ const fetchStockChart = async (id: number) => {
 };
 
 const fetchHotStocks = async (country: string) => {
+  // return fetchScoreCardMock;
   return fetchData(`/stock/hot/${country}`);
 };
 

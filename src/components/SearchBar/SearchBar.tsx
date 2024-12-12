@@ -47,7 +47,9 @@ const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRec
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
           <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch(stock)}>{stock.symbolName}</span>
+            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
+              {stock.symbolName}
+            </span>
             <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
           </RecentSearchItemContainer>
         ))}
@@ -59,15 +61,15 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
   return (
     <AutoCompleteListContainer>
       {searchedResult.length ? (
-        searchedResult.map((e: StockInfo, idx: number) => (
+        searchedResult.map((stock: StockInfo, idx: number) => (
           <AutoCompleteItemContainer
-            key={`${e.symbolName}_${e.stockId}`}
+            key={`${stock.symbolName}_${stock.stockId}`}
             focus={idx == focusIdx}
-            onClick={() => handleSearch({ symbolName: e.symbolName, country: e.country })}
+            onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}
           >
-            {STOCK_COUNTRY_TYPE[e.country]} 종목
-            <AutoCompleteItemText key={`${e.symbolName}_${e.stockId}`}>
-              {getCommonString({ from: value, to: e.symbolName }).map((e) =>
+            {STOCK_COUNTRY_TYPE[stock.country]} 종목
+            <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
+              {getCommonString({ from: value, to: stock.symbolName }).map((e) =>
                 e.check ? <span>{e.char}</span> : e.char,
               )}
             </AutoCompleteItemText>
@@ -143,6 +145,7 @@ const SearchBar = () => {
   };
 
   const handleSearch = (curStockSearchInfo: StockSearchInfo) => {
+    debugger;
     if (!curStockSearchInfo.symbolName) {
       return;
     }
@@ -179,6 +182,7 @@ const SearchBar = () => {
 
   return (
     <>
+      {/* <div onClick={() => navigate(webPath.search(), { state: { symbolName: '테슬라' } })}>{'테스트'}</div> */}
       <SearchBarLayout>
         <SearchBarLayer>
           <SearchBarContainer active={activeSearchBar}>

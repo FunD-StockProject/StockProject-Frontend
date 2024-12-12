@@ -69,7 +69,7 @@ const SlotMachineItemMotionDiv = styled(motion.div)(
         ? {
             fontSize: '96px',
             [media[0]]: {
-              fontSize: '42px',
+              fontSize: '32px',
             },
           }
         : {},

@@ -17,17 +17,16 @@ export const fetchRelevantMock = [
 ];
 
 export const fetchSearchSymbolNameMock = {
-  stockId: 1,
-  symbol: 1,
-  symbolName: '삼성전자',
-  securityName: '삼성전자',
-  exchangeNum: 1,
-  country: 'OVERSEA',
-
-  price: 1,
-  priceDiff: 1,
-  priceDiffPerCent: 1,
-  priceSign: 2,
+  stockId: 0,
+  symbolName: 'string',
+  securityName: 'string',
+  symbol: 'string',
+  exchangeNum: '512',
+  country: 'KOREA',
+  price: 0,
+  priceDiff: 0,
+  priceDiffPerCent: 0,
+  priceSign: 0,
 };
 
 export const fetchScoreMock = {
