@@ -25,7 +25,7 @@ const Home = () => {
 
     const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
     const refsCheck = refs.some((ref) => !ref.current || Object.keys(ref.current).length === 0);
-    if (!refsCheck) refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('1')));
+    if (!refsCheck) refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('0')));
 
     window.scrollTo(0, currentScrollPosition);
   };
