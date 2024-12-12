@@ -65,10 +65,10 @@ const ArrowButton = styled.img(
       backgroundColor: theme.colors.primary50, // 버튼 색상
     },
   },
-  (props: { disabled: boolean }) => ({
-    cursor: props.disabled ? 'not-allowed' : 'pointer',
-    display: props.disabled ? 'none' : '',
-  }),
+  // (props: { disabled: boolean }) => ({
+  //   cursor: props.disabled ? 'not-allowed' : 'pointer',
+  //   display: props.disabled ? 'none' : '',
+  // }),
 );
 
 const ItemButtonContainer = styled.div({

@@ -4,7 +4,6 @@ import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
-import LoadingComponent from '@components/LoadingComponent';
 import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
@@ -79,6 +78,7 @@ const CardList = ({
       setActiveIndex(visibleItems[0][0]);
     }
   };
+  const indicatorArray = isMobile || isHot ? [0, 1, 2] : [0, 3, 6];
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -86,7 +86,7 @@ const CardList = ({
         (curStocks && width !== 0 && (
           <>
             <IndicatorContainer>
-              {[0, 1, 2].map((el) => (
+              {indicatorArray.map((el) => (
                 <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
               ))}
             </IndicatorContainer>
@@ -105,12 +105,29 @@ const CardList = ({
 };
 
 const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
-  const visibility = useContext<publicApiType>(VisibilityContext);
-  const isDisabled = direction === 'left' ? visibility.useLeftArrowVisible() : visibility.useRightArrowVisible();
-  const onClick = direction === 'left' ? visibility.scrollPrev : visibility.scrollNext;
+  const { getItemByIndex, items, scrollPrev, scrollNext, scrollToItem, useIsVisible } = useContext(VisibilityContext);
+  const isFirstItemVisible = useIsVisible('first', true);
+  const isLastItemVisible = useIsVisible('last', false);
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  return <ArrowButton src={imgLink} disabled={isDisabled} onClick={() => onClick()} className={`arrow-${direction}`} />;
+  const onClick =
+    direction === 'left'
+      ? () => {
+          if (isFirstItemVisible) {
+            scrollToItem(getItemByIndex(items.size - 1));
+          } else {
+            scrollPrev();
+          }
+        }
+      : () => {
+          if (isLastItemVisible) {
+            scrollToItem(getItemByIndex(0));
+          } else {
+            scrollNext();
+          }
+        };
+
+  return <ArrowButton src={imgLink} onClick={() => onClick()} className={`arrow-${direction}`} />;
 };
 
 export default CardList;
