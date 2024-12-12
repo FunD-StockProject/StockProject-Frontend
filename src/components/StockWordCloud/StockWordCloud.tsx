@@ -57,7 +57,6 @@ const StockWordCloud = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const getWordCloud = async (symbol: string, country: string) => {
-    console.log(symbol);
     const res = await fetchSearchWordCloud(symbol, country);
 
     if (window.Worker) {
