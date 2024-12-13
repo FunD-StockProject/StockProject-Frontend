@@ -12,15 +12,7 @@ import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({
-  apiRef,
-  name,
-  index,
-}: {
-  apiRef: React.MutableRefObject<publicApiType>;
-  name: StockType;
-  index: number;
-}) => {
+const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
@@ -90,12 +82,7 @@ const CardList = ({
                 <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
               ))}
             </IndicatorContainer>
-            <ScrollMenu
-              LeftArrow={<ScrollArrow direction="left" />}
-              RightArrow={<ScrollArrow direction="right" />}
-              apiRef={apiRef}
-              onUpdate={handleUpdate}
-            >
+            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
               {renderStocks()}
             </ScrollMenu>
           </>
@@ -110,24 +97,11 @@ const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
   const isLastItemVisible = useIsVisible('last', false);
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  const onClick =
-    direction === 'left'
-      ? () => {
-          if (isFirstItemVisible) {
-            scrollToItem(getItemByIndex(items.size - 1));
-          } else {
-            scrollPrev();
-          }
-        }
-      : () => {
-          if (isLastItemVisible) {
-            scrollToItem(getItemByIndex(0));
-          } else {
-            scrollNext();
-          }
-        };
+  const onLeftClick = () => (isFirstItemVisible ? scrollToItem(getItemByIndex(items.size - 1)) : scrollPrev());
+  const onRightClick = () => (isLastItemVisible ? scrollToItem(getItemByIndex(0)) : scrollNext());
+  const onClick = direction === 'left' ? onLeftClick : onRightClick;
 
-  return <ArrowButton src={imgLink} onClick={() => onClick()} className={`arrow-${direction}`} />;
+  return <ArrowButton src={imgLink} onClick={onClick} className={`arrow-${direction}`} />;
 };
 
 export default CardList;
