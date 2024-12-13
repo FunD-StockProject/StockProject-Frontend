@@ -1,9 +1,12 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import Usage from '@pages/Usage/Usage';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
+
 export const webPath = {
   search: () => '/search',
+  usage: () => '/usage',
 };
 
 const Root = () => {
@@ -30,6 +33,10 @@ const routes = [
         children: [{ path: '', element: <Search /> }],
       },
     ],
+  },
+  {
+    path: webPath.usage(),
+    element: <Usage />,
   },
 ];
 
