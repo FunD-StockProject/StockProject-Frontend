@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
+import { webPath } from '@router/index';
 import { ImgDiv } from '@components/Common/Common';
 import PWAPNG from '@assets/PWA.png';
 import {
@@ -18,6 +20,7 @@ import {
 const PWAInfoPopUp = ({}: {}) => {
   const [showPopUp, setShowPopUp] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const today = new Date();
@@ -37,7 +40,7 @@ const PWAInfoPopUp = ({}: {}) => {
       setShowPopUp(true);
     };
 
-    window.setTimeout(handleMainPop, 1000); // 1초 뒤 실행
+    handleMainPop();
   }, []);
 
   const closePopUp24Hours = () => {
@@ -48,6 +51,11 @@ const PWAInfoPopUp = ({}: {}) => {
 
   const closePopUp = () => {
     setShowPopUp(false);
+  };
+
+  const confirmClick = () => {
+    setShowPopUp(false);
+    navigate(webPath.usage());
   };
 
   return (
@@ -73,7 +81,7 @@ const PWAInfoPopUp = ({}: {}) => {
           </DetailContainer>
           <ButtonContainer>
             <Close24HourButton onClick={closePopUp24Hours}>24시간 동안 안보기</Close24HourButton>
-            <ConfirmButton>사용법 보기</ConfirmButton>
+            <ConfirmButton onClick={confirmClick}>사용법 보기</ConfirmButton>
           </ButtonContainer>
         </PWAInfoContainer>
       </>
