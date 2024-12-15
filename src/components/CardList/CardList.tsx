@@ -19,6 +19,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const [activeIndex, setActiveIndex] = useState(`${name}_0`);
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
   const isHot = name === 'HOT';
+  const country = index === 0 ? 'KOREA' : 'OVERSEA';
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -37,7 +38,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderHotStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} />
+        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
       </CardListItemContainer>
     ));
   };
@@ -45,7 +46,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderWebStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} />
+        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
       </CardListItemContainer>
     ));
   };
@@ -57,7 +58,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
     return verticalStocks.map((verticalStock, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
         {verticalStock.map((stock: CardInterface, idx: number) => (
-          <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} />
+          <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
         ))}
       </CardListItemContainer>
     ));
