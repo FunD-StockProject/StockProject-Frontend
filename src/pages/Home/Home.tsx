@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { detectPWA } from '@utils/Detector';
 // import { useStocks } from '@hooks/useStocks';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
@@ -35,11 +36,7 @@ const Home = () => {
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li
-              key={index}
-              className={index === tabIndex ? 'submenu focused' : 'submenu'}
-              onClick={() => handleTab(index)}
-            >
+            <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
               {el}
             </li>
           ))}
@@ -77,7 +74,7 @@ const Home = () => {
           </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
-      <PWAInfoPopUp />
+      {!detectPWA() && <PWAInfoPopUp />}
     </HomeContainer>
   );
 };
