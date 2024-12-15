@@ -47,9 +47,7 @@ const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRec
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
           <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
-              {stock.symbolName}
-            </span>
+            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>{stock.symbolName}</span>
             <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
           </RecentSearchItemContainer>
         ))}
@@ -69,9 +67,7 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
           >
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
             <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
-              {getCommonString({ from: value, to: stock.symbolName }).map((e) =>
-                e.check ? <span>{e.char}</span> : e.char,
-              )}
+              {getCommonString({ from: value, to: stock.symbolName }).map((e) => (e.check ? <span>{e.char}</span> : e.char))}
             </AutoCompleteItemText>
           </AutoCompleteItemContainer>
         ))
@@ -117,9 +113,7 @@ const SearchBar = () => {
   const searchBarInputKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'ArrowDown') {
       e.preventDefault();
-      setFocusIdx((prev) =>
-        stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length,
-      );
+      setFocusIdx((prev) => (stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length));
     } else if (e.key == 'ArrowUp') {
       e.preventDefault();
       setFocusIdx((prev) =>
@@ -131,11 +125,11 @@ const SearchBar = () => {
       (document.activeElement as HTMLElement).blur();
       setFocusIdx(-1);
     } else if (e.key === 'Enter') {
-      let name = stockName;
-      if (focusIdx != -1) {
-        name = stockName == '' ? stockSearchInfo[focusIdx].symbolName : searchedResult[focusIdx].symbolName;
-      }
-      const result = await fetchSearchSymbolName(name);
+      if (focusIdx === -1) return;
+
+      const name = stockName == '' ? stockSearchInfo[focusIdx].symbolName : searchedResult[focusIdx].symbolName;
+      const country = stockName == '' ? stockSearchInfo[focusIdx].country : searchedResult[focusIdx].country;
+      const result = await fetchSearchSymbolName(name, country);
 
       if (result) {
         const curStockSearchInfo: StockSearchInfo = { symbolName: result.symbolName, country: result.country };
@@ -145,14 +139,15 @@ const SearchBar = () => {
   };
 
   const handleSearch = (curStockSearchInfo: StockSearchInfo) => {
-    debugger;
     if (!curStockSearchInfo.symbolName) {
       return;
     }
-    const symbolName = curStockSearchInfo.symbolName;
 
+    const symbolName = curStockSearchInfo.symbolName;
+    const country = curStockSearchInfo.country;
+    debugger;
     addRecentSearch(curStockSearchInfo);
-    navigate(webPath.search(), { state: { symbolName: symbolName } });
+    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
     setStockName('');
     setSearchValue('');
     (document.activeElement as HTMLElement).blur();
@@ -182,7 +177,6 @@ const SearchBar = () => {
 
   return (
     <>
-      {/* <div onClick={() => navigate(webPath.search(), { state: { symbolName: '테슬라' } })}>{'테스트'}</div> */}
       <SearchBarLayout>
         <SearchBarLayer>
           <SearchBarContainer active={activeSearchBar}>
@@ -216,12 +210,7 @@ const SearchBar = () => {
                     deleteRecentSearch={deleteRecentSearch}
                   />
                 ) : (
-                  <AutoCompleteList
-                    value={stockName}
-                    focusIdx={focusIdx}
-                    searchedResult={searchedResult}
-                    handleSearch={handleSearch}
-                  />
+                  <AutoCompleteList value={stockName} focusIdx={focusIdx} searchedResult={searchedResult} handleSearch={handleSearch} />
                 ))}
             </SearchBarContents>
           </SearchBarContainer>

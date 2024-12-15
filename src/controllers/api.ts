@@ -1,10 +1,4 @@
-import {
-  fetchRelevantMock,
-  fetchScoreCardMock,
-  fetchScoreMock,
-  fetchSearchSymbolNameMock,
-  fetchSearchWordCloudMock,
-} from './mock';
+import { fetchRelevantMock, fetchScoreCardMock, fetchScoreMock, fetchSearchSymbolNameMock, fetchSearchWordCloudMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -62,8 +56,9 @@ const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
-const fetchSearchSymbolName = (symbolname: string) => {
+const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
+  console.log(country);
   return fetchData(`/stock/search/${symbolname}`);
 };
 
