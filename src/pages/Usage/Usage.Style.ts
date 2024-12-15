@@ -5,6 +5,8 @@ const UsageContainer = styled('div')({
   position: 'relative',
   height: '100vh',
   padding: '30px',
+  boxSizing: 'border-box',
+  overflow: 'hidden',
   background: theme.colors.primary100,
 });
 
@@ -18,9 +20,4 @@ const BackButton = styled('img')({
   cursor: 'pointer',
 });
 
-const Content = styled('div')({
-  marginTop: '50px',
-  textAlign: 'center',
-});
-
-export { UsageContainer, BackButton, Content };
+export { UsageContainer, BackButton };
