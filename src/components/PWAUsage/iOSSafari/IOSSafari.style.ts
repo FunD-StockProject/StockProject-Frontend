@@ -24,11 +24,8 @@ const HeaderText = styled.h2({
 const DetailContainer = styled.div({
   display: 'flex',
   flexDirection: 'column', // 세로 정렬로 변경
-  gap: '20px', // 각 항목 간 간격
+  gap: '22px', // 각 항목 간 간격
   width: '100%', // 전체 너비 차지
-  // '& > :first-child': {
-  //   marginBottom: '-2px', // 첫 번째 자식 요소의 하단 간격 조정
-  // },
 });
 
 const DetailItem = styled.div({

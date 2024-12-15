@@ -14,7 +14,7 @@ const IOSSafari = () => (
         <DetailNumber>1</DetailNumber>
         <DetailText>하단 공유 버튼 탭</DetailText>
       </DetailItem>
-      <div style={{ marginTop: '-20px' }}>
+      <div style={{ margin: '-30px 0' }}>
         <DetailImage src={BottomShareButtonTab} alt="공유 버튼" />
       </div>
       <DetailItem>
