@@ -59,6 +59,7 @@ const StyleTabMenu = styled.ul({
     padding: '12px 24px',
     fontWeight: 'bold',
     backgroundColor: 'white',
+    cursor: 'pointer',
   },
 
   '.focused': {

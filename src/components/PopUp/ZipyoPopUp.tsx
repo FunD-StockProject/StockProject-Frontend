@@ -17,14 +17,13 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
   <>
     <Backdrop onClick={onClose} />
     <PopUpContainer>
-      <CloseButton onClick={onClose}>✖</CloseButton>
+      <CloseButton onClick={onClose}>✕</CloseButton>
       <PopUpTitle>
         <LogoSVG />
         점수란
       </PopUpTitle>
       <PopUpContent>
-        인간지표만의 알고리즘을 사용하여 주식 관련 커뮤니티의 댓글을 분석해 민심을 점수화했어요. 점수는 하루에 한 번씩
-        업데이트돼요.
+        인간지표만의 알고리즘을 사용하여 주식 관련 커뮤니티의 댓글을 분석해 민심을 점수화했어요. 점수는 하루에 한 번씩 업데이트돼요.
         <PopUpImage>
           <div>
             <PopUpDetailNumber color={'grayscale80'}>1</PopUpDetailNumber>
@@ -36,7 +35,7 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
           </div>
           <div>
             <PopUpDetailNumber color={'grayscale80'}>3</PopUpDetailNumber>
-            <p style={{ fontSize: '4em' }}>14</p>
+            <p style={{ fontSize: '3em' }}>14점</p>
           </div>
         </PopUpImage>
         <PopUpDetailContainer>

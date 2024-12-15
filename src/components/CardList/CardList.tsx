@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
+import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
@@ -9,121 +10,99 @@ import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, ItemButton, ItemButtonContainer, NoScrollbar } from './CardList.Style';
+import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({
-  isHot = false,
-  apiRef,
-  name,
-  index,
-}: {
-  isHot?: boolean;
-  apiRef: React.MutableRefObject<publicApiType>;
-  name: StockType;
-  index: number;
-}) => {
+const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [didMount, setDidMount] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(0);
+  const isMobile = useIsMobile();
+  const [activeIndex, setActiveIndex] = useState(`${name}_0`);
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
-  const isMobile = width < 768;
+  const isHot = name === 'HOT';
+  const country = index === 0 ? 'KOREA' : 'OVERSEA';
 
   useEffect(() => {
-    if (isMobile && curStocks?.length > 1) {
-      setTimeout(() => {
-        apiRef.current.scrollToItem(apiRef.current.getItemByIndex(1));
-        window.scrollTo(0, 0);
-      }, 1000);
-    }
-  }, [isMobile, curStocks]);
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    observer.observe(containerRef.current);
 
-  useEffect(() => {
-    setDidMount(true);
-    return () => {};
+    return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!didMount) return;
-    if (!containerRef.current) return;
-    observer.observe(containerRef.current);
-  }, [didMount]);
-
-  const observer = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-      const { width } = entry.contentRect;
-      setWidth(width);
-    });
-  });
-
-  const renderStocks = (stock: CardInterface) =>
-    isHot ? (
-      <CardListItemContainer key={`${name}_${stock.stockId}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={stock.symbolName} title={true} stockScore={stock.score} tabIndex={0} />
-      </CardListItemContainer>
-    ) : (
-      <CardListItemContainer key={`${name}_${stock.stockId}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} />
-      </CardListItemContainer>
-    );
-
-  const handleButtonClick = (idx: number) => {
-    apiRef.current.scrollToItem(apiRef.current.getItemByIndex(idx));
+  const renderStocks = () => {
+    if (isHot) return renderHotStocks();
+    if (isMobile) return renderMobileStocks();
+    return renderWebStocks();
   };
 
-  const renderMobileStocks = (curStocks: CardInterface[]) => {
-    if (isHot) {
-      return curStocks.map(renderStocks);
-    }
+  const renderHotStocks = () => {
+    return curStocks.map((stock: CardInterface, idx: number) => (
+      <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
+        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
+      </CardListItemContainer>
+    ));
+  };
 
+  const renderWebStocks = () => {
+    return curStocks.map((stock: CardInterface, idx: number) => (
+      <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
+        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
+      </CardListItemContainer>
+    ));
+  };
+
+  const renderMobileStocks = () => {
     const chunkCount = Math.ceil(curStocks.length / 3);
     const verticalStocks = Array.from({ length: chunkCount }, (_, idx) => curStocks.slice(idx * 3, idx * 3 + 3));
 
-    return verticalStocks.map((verticalStock) => (
-      <CardListItemContainer key={`${name}_${verticalStock[0].stockId}`} width={width ?? 0}>
-        {verticalStock.map((el) => (
-          <MobileStockCardItem key={`${name}_${el.stockId}`} score={el.score} name={el.symbolName} delta={el.diff} />
+    return verticalStocks.map((verticalStock, idx: number) => (
+      <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
+        {verticalStock.map((stock: CardInterface, idx: number) => (
+          <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
         ))}
       </CardListItemContainer>
     ));
   };
 
+  const handleUpdate = () => {
+    const visibleItems = apiRef.current.items.getVisible();
+
+    if (visibleItems.length > 0) {
+      setActiveIndex(visibleItems[0][0]);
+    }
+  };
+  const indicatorArray = isMobile || isHot ? [0, 1, 2] : [0, 3, 6];
+
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
-        (curStocks && width != 0 && (
-          <ScrollMenu
-            LeftArrow={<ScrollArrow direction="left" />}
-            RightArrow={<ScrollArrow direction="right" />}
-            apiRef={apiRef}
-          >
-            {isMobile ? renderMobileStocks(curStocks) : curStocks.map(renderStocks)}
-          </ScrollMenu>
+        (curStocks && width !== 0 && (
+          <>
+            <IndicatorContainer>
+              {indicatorArray.map((el) => (
+                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
+              ))}
+            </IndicatorContainer>
+            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
+              {renderStocks()}
+            </ScrollMenu>
+          </>
         ))}
-      {!isHot && (
-        <ItemButtonContainer>
-          {curStocks &&
-            curStocks.map((stock: CardInterface, idx: number) => {
-              if (isMobile && idx % 3) return;
-              return (
-                <ItemButton key={stock.stockId} onClick={() => handleButtonClick(idx)}>
-                  {stock.symbolName}
-                </ItemButton>
-              );
-            })}
-        </ItemButtonContainer>
-      )}
     </NoScrollbar>
   );
 };
 
-// Reusable Arrow component with better naming
 const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
-  const visibility = useContext<publicApiType>(VisibilityContext);
-  const isDisabled = direction === 'left' ? visibility.useLeftArrowVisible() : visibility.useRightArrowVisible();
-  const onClick = direction === 'left' ? visibility.scrollPrev : visibility.scrollNext;
+  const { getItemByIndex, items, scrollPrev, scrollNext, scrollToItem, useIsVisible } = useContext(VisibilityContext);
+  const isFirstItemVisible = useIsVisible('first', true);
+  const isLastItemVisible = useIsVisible('last', false);
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  return <ArrowButton src={imgLink} disabled={isDisabled} onClick={() => onClick()} className={`arrow-${direction}`} />;
+  const onLeftClick = () => (isFirstItemVisible ? scrollToItem(getItemByIndex(items.size - 1)) : scrollPrev());
+  const onRightClick = () => (isLastItemVisible ? scrollToItem(getItemByIndex(0)) : scrollNext());
+  const onClick = direction === 'left' ? onLeftClick : onRightClick;
+
+  return <ArrowButton src={imgLink} onClick={onClick} className={`arrow-${direction}`} />;
 };
 
 export default CardList;

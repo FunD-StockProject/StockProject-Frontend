@@ -12,13 +12,13 @@ import {
   MobileStockCardItemTitle,
 } from './MobileStockCard.Style';
 
-const MobileStockCardItem = ({ name, score, delta }: { name: string; score: number; delta: number }) => {
+const MobileStockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
   const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { stockName: name } });
+    navigate(webPath.search(), { state: { symbolName: name, country: country } });
   };
 
   return (
@@ -27,7 +27,7 @@ const MobileStockCardItem = ({ name, score, delta }: { name: string; score: numb
       <MobileStockCardItemTitle>
         <MobileStockCardItemText>{name}</MobileStockCardItemText>
         <MobileStockCardItemScore delta={delta}>
-          {score}점{' '}
+          {score}점
           <MobileStockCardItemDeltaScore delta={delta}>
             {Math.abs(delta)}
             {deltaSVG}

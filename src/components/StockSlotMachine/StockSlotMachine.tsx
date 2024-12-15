@@ -5,12 +5,7 @@ import { scoreToIndex } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
 import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/stockScore';
 import { ImgDiv } from '@components/Common/Common';
-import {
-  ScoreSlotMachineContainer,
-  ScoreSlotMachineContent,
-  SlotMachineItemContainer,
-  SlotMachineItemMotionDiv,
-} from './stockSlotMachine.Style';
+import { ScoreSlotMachineContainer, ScoreSlotMachineContent, SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
 
 const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
   const a = (3 * animationTime) / (lastIndex * lastIndex * lastIndex);
@@ -39,19 +34,13 @@ const variants: Variants = {
   }),
 };
 
-const ScoreSlotMachineItemCard = ({
-  slotMachineType,
-  idx,
-}: {
-  slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE';
-  idx: number;
-}) => {
+const ScoreSlotMachineItemCard = ({ slotMachineType, idx }: { slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE'; idx: number }) => {
   return slotMachineType == 'TITLE' ? (
     ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]
   ) : slotMachineType == 'IMAGE' ? (
     <ImgDiv src={ARRAY_STOCK_SCORE_IMAGE[idx % ARRAY_STOCK_SCORE_IMAGE.length]} />
   ) : (
-    idx % 101
+    `${idx % 101}점`
   );
 };
 
@@ -109,11 +98,7 @@ const ScoreSlotMachineItem = ({
               >
                 <ScoreSlotMachineItemCard
                   slotMachineType={slotMachineType}
-                  idx={
-                    slotMachineType != 'SCORE'
-                      ? lastIndex - currentIndex + scoreIndex
-                      : lastIndex - currentIndex + stockScore
-                  }
+                  idx={slotMachineType != 'SCORE' ? lastIndex - currentIndex + scoreIndex : lastIndex - currentIndex + stockScore}
                 />
               </SlotMachineItemMotionDiv>
             )
@@ -126,24 +111,26 @@ const ScoreSlotMachineItem = ({
 
 const ScoreSlotMachine = ({
   stockName,
-  title,
+  active,
   stockScore,
   tabIndex,
+  country,
 }: {
   stockName?: string;
-  title?: boolean;
+  active?: boolean;
   stockScore: number;
   tabIndex?: number;
+  country: string;
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { stockName: stockName } });
+    navigate(webPath.search(), { state: { symbolName: stockName, country: country } });
   };
 
   return (
-    <ScoreSlotMachineContainer tabIndex={tabIndex} onClick={title ? handleClick : () => {}}>
-      {title ? stockName : ''}
+    <ScoreSlotMachineContainer active={active} tabIndex={tabIndex} onClick={active ? handleClick : () => {}}>
+      {active ? stockName : ''}
       <ScoreSlotMachineContent>
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />

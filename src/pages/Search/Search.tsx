@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
+import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import MobileStockCardGrid from '@components/MobileStockCardGrid/MobileStockCardGrid';
 import AntVoicePopUp from '@components/PopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp';
 import SearchTitle from '@components/SearchTitle/SearchTitle';
@@ -17,21 +18,30 @@ import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
-const StockRelevant = ({ stockId }: { stockId: number }) => {
-  const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
+const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
+  <FlexDiv flexDirection="row" gap="24px" width="100%">
+    <MobileStockCardGrid curStocks={stocks} name="RELEVANT" country={country} />
+  </FlexDiv>
+);
 
-  if (suspend) return null;
+const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
+  <FlexDiv flexDirection="column" gap="24px" width="100%">
+    <StockRelevantContainer>
+      {stocks.map((stock) => (
+        <StockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
+      ))}
+    </StockRelevantContainer>
+  </FlexDiv>
+);
+
+const StockRelevant = ({ stockId, country }: { stockId: number; country: string }) => {
+  const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
+  const isMobile = useIsMobile();
 
   return (
-    stockRelevantList && (
-      <FlexDiv flexDirection="column" gap="24px" width="100%">
-        <StockRelevantContainer>
-          {stockRelevantList.map((stock: StockScore, index: number) => (
-            <StockCardItem key={index} name={stock.symbolName} score={stock.score} delta={stock.diff} />
-          ))}
-        </StockRelevantContainer>
-      </FlexDiv>
-    )
+    suspend ||
+    (stockRelevantList &&
+      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
   );
 };
 
@@ -39,40 +49,33 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
   const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  if (suspend) return null;
-
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    score && (
-      <ContentsItemContainer>
-        <ContentsItemTitle>
-          {STOCK_COUNTRY_TYPE[country]} 개미
-          <LogoSVG />
-          <InfoSVG className="btn_info" onClick={togglePopup} />
-        </ContentsItemTitle>
-        <ContentsItemContent>
-          <ScoreSlotMachine stockScore={score.score} />
-        </ContentsItemContent>
-        {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
-      </ContentsItemContainer>
-    )
+    <ContentsItemContainer>
+      <ContentsItemTitle>
+        개미
+        <LogoSVG />
+        <InfoSVG className="btn_info" onClick={togglePopup} />
+      </ContentsItemTitle>
+      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
+      {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
+    </ContentsItemContainer>
   );
 };
 
 const Search = () => {
   const { state } = useLocation();
-  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.stockName) });
+  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName, state?.country) });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
-
-  if (suspend) return null;
 
   const toggleResultMode = () => setResultMode((prev) => (prev === 'indicator' ? 'chart' : 'indicator'));
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    stockInfo && (
+    suspend ||
+    (stockInfo && (
       <>
         <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
         <SearchResultContainer>
@@ -82,7 +85,7 @@ const Search = () => {
                 <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
                 <ContentsItemContainer>
                   <ContentsItemTitle>
-                    {STOCK_COUNTRY_TYPE[stockInfo.country]} 개미들의 소리
+                    개미들의 목소리
                     <InfoSVG className="btn_info" onClick={togglePopup} />
                   </ContentsItemTitle>
 
@@ -98,13 +101,13 @@ const Search = () => {
             <ContentsItemContainer>
               <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
               <ContentsItemContent>
-                <StockRelevant stockId={stockInfo.stockId} />
+                <StockRelevant stockId={stockInfo.stockId} country={stockInfo.country} />
               </ContentsItemContent>
             </ContentsItemContainer>
           </SearchResultContents>
         </SearchResultContainer>
       </>
-    )
+    ))
   );
 };
 

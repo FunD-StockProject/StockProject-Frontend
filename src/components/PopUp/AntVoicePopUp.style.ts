@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Globals } from '@components/Common/Common.Type';
 import { media, theme, themeColor } from '@styles/themes';
 
 const PopUpContainer = styled('div')({
@@ -8,7 +9,7 @@ const PopUpContainer = styled('div')({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '568px',
+  width: '500px',
   height: 'auto',
   background: theme.colors.grayscale30,
   color: theme.colors.primary100,
@@ -69,66 +70,51 @@ const PopUpImage = styled('ul')({
     gap: '8px',
     flex: 1,
     height: '160px',
-
-    ['p']: {
-      textAlign: 'center',
-      fontWeight: '700',
-      fontSize: '16px',
-      margin: 0,
-      background: theme.colors.grayscale90,
-      color: theme.colors.primary0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-      width: '100%',
-    },
   },
   [media[0]]: {
     ['div']: {
       height: '120px',
-      ['img']: {
-        height: '100%',
-        width: '100%',
-        borderRadius: '8px',
-      },
     },
   },
 });
 
-const PopUpDetailWord = styled('p')({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  margin: 0,
-
-  ['span:first-of-type']: {
-    fontSize: '1.5em',
-    textAlign: 'center',
-    lineHeight: '1.4',
-  },
-
-  ['span:last-of-type']: {
-    color: theme.colors.grayscale60,
-    fontSize: '0.8em',
-    textAlign: 'center',
-    lineHeight: '1.2',
-  },
-  [media[0]]: {
-    ['span:first-of-type']: {
-      fontSize: '1em',
-      textAlign: 'center',
-      lineHeight: '1.4',
+const PopUpDetailWord = styled.p(
+  ({
+    color,
+    fontSize,
+    textAlign,
+  }: {
+    color?: themeColor;
+    fontSize?: number;
+    textAlign?:
+      | Globals
+      | '-webkit-match-parent'
+      | 'center'
+      | 'end'
+      | 'justify'
+      | 'left'
+      | 'match-parent'
+      | 'right'
+      | 'start';
+  }) => ({
+    textAlign: textAlign || 'left',
+    fontWeight: '700',
+    fontSize: fontSize ? `${fontSize}px` : '36px',
+    margin: 0,
+    padding: 0,
+    background: theme.colors.grayscale90,
+    color: color ? theme.colors[color] : theme.colors.primary0, // 색상이 없는 경우 기본값 사용
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+    lineHeight: 1.3,
+    [media[0]]: {
+      fontSize: fontSize ? `${(fontSize * 2) / 3}px` : '24px',
     },
-
-    ['span:last-of-type']: {
-      color: theme.colors.grayscale60,
-      fontSize: '0.6em',
-      textAlign: 'center',
-      lineHeight: '1.2',
-    },
-  },
-});
+  }),
+);
 
 const PopUpDetailContainer = styled('div')({
   display: 'flex',

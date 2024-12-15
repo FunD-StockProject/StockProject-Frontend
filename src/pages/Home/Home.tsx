@@ -3,6 +3,7 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 // import { useStocks } from '@hooks/useStocks';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
@@ -20,10 +21,11 @@ const Home = () => {
     }
 
     setTabIndex(index);
-
     const currentScrollPosition = window.scrollY;
+
     const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
-    refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('1')));
+    const refsCheck = refs.some((ref) => !ref.current || Object.keys(ref.current).length === 0);
+    if (!refsCheck) refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('0')));
 
     window.scrollTo(0, currentScrollPosition);
   };
@@ -51,7 +53,7 @@ const Home = () => {
             <ZipyoSVG />
           </ContentsItemTitle>
           <ContentsItemContent>
-            <CardList isHot={true} apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
+            <CardList apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
         </ContentsItemContainer>
 
@@ -75,6 +77,7 @@ const Home = () => {
           </ContentsItemContent>
         </ContentsItemContainer>
       </HomeContents>
+      <PWAInfoPopUp />
     </HomeContainer>
   );
 };
