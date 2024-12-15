@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { detectBrowser, detectPlatform } from '@utils/Detector';
 import leftArrow from '../../assets/leftArrow.svg';
-import { BackButton, Content, UsageContainer } from './Usage.Style';
+import IOSSafari from '../../components/PWAUsage/iOSSafari/IOSSafari';
+import { BackButton, UsageContainer } from './Usage.Style';
 
 const Usage = () => {
   const navigate = useNavigate();
@@ -19,10 +21,9 @@ const Usage = () => {
   return (
     <UsageContainer>
       <BackButton src={leftArrow} onClick={handleGoBack} />
-      <Content>
-        <h1>Usage 화면</h1>
-        <p>이곳에서 PWA 사용법을 안내합니다.</p>
-      </Content>
+      {detectPlatform() === 'iOS' && detectBrowser() === 'Safari' && <IOSSafari />}
+      {detectPlatform() === 'iOS' && detectBrowser() === 'Chrome' && <IOSSafari />}
+      {detectPlatform() === 'Android' && <IOSSafari />}
     </UsageContainer>
   );
 };
