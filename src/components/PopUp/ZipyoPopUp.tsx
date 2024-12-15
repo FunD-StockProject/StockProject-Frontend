@@ -17,7 +17,7 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
   <>
     <Backdrop onClick={onClose} />
     <PopUpContainer>
-      <CloseButton onClick={onClose}>✖</CloseButton>
+      <CloseButton onClick={onClose}>✕</CloseButton>
       <PopUpTitle>
         <LogoSVG />
         점수란
