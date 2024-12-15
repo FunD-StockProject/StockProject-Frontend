@@ -52,24 +52,18 @@ const NoScrollbar = styled.div({
   },
 });
 
-const ArrowButton = styled.img(
-  {
-    display: 'flex',
-    margin: '0 5px', // 좌우 간격 조정
-    userSelect: 'none',
-    padding: '5px', // 버튼 크기 조정
-    borderRadius: '6px',
-    backgroundColor: theme.colors.grayscale80, // 버튼 색상
-    color: 'white',
-    [':hover']: {
-      backgroundColor: theme.colors.primary50, // 버튼 색상
-    },
+const ArrowButton = styled.img({
+  display: 'flex',
+  margin: '0 5px', // 좌우 간격 조정
+  userSelect: 'none',
+  padding: '5px', // 버튼 크기 조정
+  borderRadius: '6px',
+  backgroundColor: theme.colors.grayscale80, // 버튼 색상
+  color: 'white',
+  [':hover']: {
+    backgroundColor: theme.colors.primary50, // 버튼 색상
   },
-  (props: { disabled: boolean }) => ({
-    cursor: props.disabled ? 'not-allowed' : 'pointer',
-    display: props.disabled ? 'none' : '',
-  }),
-);
+});
 
 const ItemButtonContainer = styled.div({
   display: 'flex',
@@ -122,12 +116,4 @@ const Indicator = styled.div(({ isActive, name }: { isActive: boolean; name: str
   },
 }));
 
-export {
-  NoScrollbar,
-  CardListItemContainer,
-  ArrowButton,
-  ItemButtonContainer,
-  ItemButton,
-  IndicatorContainer,
-  Indicator,
-};
+export { NoScrollbar, CardListItemContainer, ArrowButton, ItemButtonContainer, ItemButton, IndicatorContainer, Indicator };

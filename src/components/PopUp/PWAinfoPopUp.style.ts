@@ -23,7 +23,8 @@ const DetailContainer = styled('div')({
   flexDirection: 'row',
   alignContent: 'flex-start',
   alignItems: 'flex-start',
-  justifyContent: 'space-around',
+  justifyContent: 'center',
+  gap: '15px',
   padding: '30px',
 });
 
@@ -38,13 +39,14 @@ const NormalText = styled('div')({
 
 const ButtonContainer = styled('div')({
   display: 'flex',
-  padding: '10px 30px 45px 30px',
-  justifyContent: 'space-around',
+  padding: '0 30px 30px 30px',
+  justifyContent: 'center',
+  gap: '20px',
   fontStyle: 'normal',
 });
 
 const StyledButton = styled('button')({
-  fontSize: '16px',
+  fontSize: '15px',
   lineHeight: 1.5,
   width: '160px',
   borderRadius: '8px',
@@ -76,24 +78,13 @@ const Backdrop = styled('div')({
 
 const CloseButton = styled('button')({
   position: 'absolute',
-  top: '10px',
-  right: '0px',
+  top: '-40px',
+  right: '-20px',
   background: 'none',
   border: 'none',
-  fontSize: '18px',
+  fontSize: '30px',
   cursor: 'pointer',
-  color: theme.colors.grayscale90,
+  color: theme.colors.primary0,
 });
 
-export {
-  PWAInfoContainer,
-  DetailContainer,
-  HeaderText,
-  NormalText,
-  TextArea,
-  ButtonContainer,
-  Close24HourButton,
-  ConfirmButton,
-  Backdrop,
-  CloseButton,
-};
+export { PWAInfoContainer, DetailContainer, HeaderText, NormalText, TextArea, ButtonContainer, Close24HourButton, ConfirmButton, Backdrop, CloseButton };

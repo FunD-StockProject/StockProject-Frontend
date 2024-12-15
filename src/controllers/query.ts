@@ -19,8 +19,8 @@ export const queryOptions = {
   staleTime: 1000, // 다시 fetch 보내려 할때 해당 시간 이내이면 굳이 fetch 다시 하지 않음
 };
 
-export const SearchSymbolNameQuery = (name: string) => {
-  return useQuery<any>(['searchSymbolByName', name], () => fetchSearchSymbolName(name), queryOptions);
+export const SearchSymbolNameQuery = (name: string, country: string) => {
+  return useQuery<any>(['searchSymbolByName', name], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
 export const StockRelevantQuery = (id: number) => {
@@ -42,11 +42,7 @@ export const ScoreQuery = (id: number, country: string) => {
 };
 
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery<StockInfo>(
-    ['chartInfo', id, periodCode, startDate],
-    () => fetchStockChart(id, periodCode, startDate),
-    queryOptions,
-  );
+  return useQuery<StockInfo>(['chartInfo', id, periodCode, startDate], () => fetchStockChart(id, periodCode, startDate), queryOptions);
 };
 
 export const RealStockInfoQuery = (id: number, country: string) => {

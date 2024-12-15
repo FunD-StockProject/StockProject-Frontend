@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
@@ -19,39 +18,30 @@ import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
-const MobileRelevantStocks = ({ stocks }: { stocks: StockScore[] }) => (
+const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="row" gap="24px" width="100%">
-    <MobileStockCardGrid curStocks={stocks} name="RELEVANT" />
+    <MobileStockCardGrid curStocks={stocks} name="RELEVANT" country={country} />
   </FlexDiv>
 );
 
-const WebRelevantStocks = ({ stocks }: { stocks: StockScore[] }) => (
+const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="column" gap="24px" width="100%">
     <StockRelevantContainer>
       {stocks.map((stock) => (
-        <StockCardItem
-          key={`RELEVANT_${stock.stockId}`}
-          name={stock.symbolName}
-          score={stock.score}
-          delta={stock.diff}
-        />
+        <StockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
       ))}
     </StockRelevantContainer>
   </FlexDiv>
 );
 
-const StockRelevant = ({ stockId }: { stockId: number }) => {
+const StockRelevant = ({ stockId, country }: { stockId: number; country: string }) => {
   const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
   const isMobile = useIsMobile();
 
   return (
     suspend ||
     (stockRelevantList &&
-      (isMobile ? (
-        <MobileRelevantStocks stocks={stockRelevantList} />
-      ) : (
-        <WebRelevantStocks stocks={stockRelevantList} />
-      )))
+      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
   );
 };
 
@@ -64,11 +54,11 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
   return (
     <ContentsItemContainer>
       <ContentsItemTitle>
-        {STOCK_COUNTRY_TYPE[country]} 개미
+        개미
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} />)}</ContentsItemContent>
+      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
@@ -76,7 +66,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 
 const Search = () => {
   const { state } = useLocation();
-  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName) });
+  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName, state?.country) });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
@@ -95,7 +85,7 @@ const Search = () => {
                 <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
                 <ContentsItemContainer>
                   <ContentsItemTitle>
-                    {STOCK_COUNTRY_TYPE[stockInfo.country]} 개미들의 소리
+                    개미들의 목소리
                     <InfoSVG className="btn_info" onClick={togglePopup} />
                   </ContentsItemTitle>
 
@@ -111,7 +101,7 @@ const Search = () => {
             <ContentsItemContainer>
               <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
               <ContentsItemContent>
-                <StockRelevant stockId={stockInfo.stockId} />
+                <StockRelevant stockId={stockInfo.stockId} country={stockInfo.country} />
               </ContentsItemContent>
             </ContentsItemContainer>
           </SearchResultContents>
