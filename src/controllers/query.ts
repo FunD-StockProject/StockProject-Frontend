@@ -1,8 +1,17 @@
 import { useQuery } from 'react-query';
 import { KOREA, OVERSEA } from '@ts/Constants';
 import { StockType } from '@ts/Types';
-import { RevelantStockInfo } from '@controllers/api.Type';
-import { fetchDescentStocks, fetchHotStocks, fetchRealStockInfo, fetchRelevant, fetchRisingStocks, fetchScore, fetchSearchSymbolName } from './api';
+import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
+import {
+  fetchDescentStocks,
+  fetchHotStocks,
+  fetchRealStockInfo,
+  fetchRelevant,
+  fetchRisingStocks,
+  fetchScore,
+  fetchSearchSymbolName,
+  fetchStockChart,
+} from './api';
 import { StockInfo } from './api.Type';
 
 export const queryOptions = {
@@ -30,6 +39,10 @@ export const StockFetchQuery = (type: StockType, index: number) => {
 
 export const ScoreQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['searchSymbolByName', id, country], () => fetchScore(id, country), queryOptions);
+};
+
+export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
+  return useQuery<StockInfo>(['chartInfo', id, periodCode, startDate], () => fetchStockChart(id, periodCode, startDate), queryOptions);
 };
 
 export const RealStockInfoQuery = (id: number, country: string) => {
