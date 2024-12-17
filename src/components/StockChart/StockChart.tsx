@@ -1,567 +1,459 @@
 import styled from '@emotion/styled';
+import { M } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { PERIOD_CODE } from '@controllers/api.Type';
 import { ChartQuery } from '@controllers/query';
 import { theme } from '@styles/themes';
-
-const StockChartCanvas = styled.canvas({
-  width: '100%',
-  height: '100%',
-});
+import {
+  ChartLabel,
+  StockChartContainer,
+  StockChartHeader,
+  StockChartHeaderContents,
+  StockChartHeaderItem,
+} from './StockChart.Style';
+import StockChartCanvas from './StockChartCanvas';
 
 const START_BAR_SIZE = 60;
 
-type CanvasType = {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  width: number;
-  height: number;
-};
+const SCALE_RATIOS = [1, 2, 2.5, 4, 5];
 
-// const initCanvas = (canvasRef: React.RefObject<HTMLCanvasElement>, setCanvas: any) => {
-//   const canvas = canvasRef.current;
-//   if (!canvas) return;
-//   const width = canvas.offsetWidth;
-//   const height = canvas.offsetHeight;
-//   canvas.width = width;
-//   canvas.height = height;
-//   const ctx = canvas.getContext('2d');
-//   if (!ctx) return;
+const StockChartGrid = ({ priceInfos }: { priceInfos: any }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const priceLabelRef = useRef<HTMLDivElement>(null);
+  const scoreLabelRef = useRef<HTMLDivElement>(null);
 
-//   setCanvas({
-//     canvas: canvas,
-//     ctx: ctx,
-//     width: width,
-//     height: height,
-//   });
-// };
+  const [chartItemList, setChartItemList] = useState<any>([]);
+  const [scoreItemList, setScoreItemList] = useState<any>([]);
 
-const StockChartCanvasGrid = ({ priceInfos }: { priceInfos: any }) => {
-  const boxPlotChartCanvasRef = useRef<HTMLCanvasElement>(null);
-  const labelBoxPlotCanvasRef = useRef<HTMLCanvasElement>(null);
-  const dateLabelCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [gridDate, setGridDate] = useState<any>([]);
+  const [gridScore, setGridScore] = useState<any>([]);
+  const [gridPrice, setGridPrice] = useState<any>([]);
 
-  const [isMouseDown, _setIsMouseDown] = useState<boolean>(false);
-  const isMouseDownRef = useRef(isMouseDown);
-  const setIsMouseDown = (data: boolean) => {
-    isMouseDownRef.current = data;
-    _setIsMouseDown(data);
-  };
-
-  const [chartBoxPlot, _setChartBoxPlot] = useState<CanvasType>();
-  const chartBoxPlotRef = useRef(chartBoxPlot);
-  const setChartBoxPlot = (data: any) => {
-    chartBoxPlotRef.current = data;
-    _setChartBoxPlot(data);
-  };
-
-  const [labelBoxPlot, setLabelBoxPlot] = useState<CanvasType>();
-  const [dateLabel, setDateLabel] = useState<CanvasType>();
-
-  const [chartInfo, _setChartInfo] = useState<any>({
-    BarSize: START_BAR_SIZE,
-    BarGap: Math.floor(START_BAR_SIZE / 4),
-    PriceMax: 0,
-    PriceMin: 0,
-    width: 0,
-  });
-  const chartInfoRef = useRef(chartInfo);
-  const setChartInfo = (data: any) => {
-    Object.assign(chartInfo, data);
-    chartInfoRef.current = chartInfo;
-    _setChartInfo({ ...chartInfo });
-  };
-
-  const [mousePos, setMousePos] = useState<any>(null);
-
-  const [canvasPos, _setCanvasPos] = useState<any>({
-    PrevX: 900,
-    StartX: 0,
-    EndX: 0,
-    MaxX: 0,
-    MinX: 0,
-  });
-  const canvasPosRef = useRef(canvasPos);
-  const setCanvasPos = (data: any) => {
-    const canvasPos = canvasPosRef.current;
-    Object.assign(canvasPos, data);
-
-    if (canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX < canvasPos.MinX) {
-      canvasPos.EndX = canvasPos.StartX - canvasPos.PrevX + canvasPos.MinX;
-    } else if (canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX > canvasPos.MaxX) {
-      canvasPos.EndX = canvasPos.StartX - canvasPos.PrevX + canvasPos.MaxX;
-    }
-    canvasPosRef.current = canvasPos;
-    _setCanvasPos({ ...canvasPos });
-  };
-
-  useEffect(() => {
-    setCanvasPos({
-      MinX: (chartInfo.BarSize + chartInfo.BarGap) * (5 / 2),
-      MaxX: chartInfo.width + (chartInfo.BarSize + chartInfo.BarGap) * (priceInfos.length - 3 / 2),
-    });
-  }, [chartInfo]);
-
-  useEffect(() => {
-    const chartBoxPlotCanvas = boxPlotChartCanvasRef.current;
-    if (!chartBoxPlotCanvas) return;
-    chartBoxPlotCanvas.width = chartBoxPlotCanvas.offsetWidth;
-    chartBoxPlotCanvas.height = chartBoxPlotCanvas.offsetHeight;
-    const chartBoxPlotCtx = chartBoxPlotCanvas.getContext('2d');
-    setChartBoxPlot({
-      canvas: chartBoxPlotCanvas,
-      ctx: chartBoxPlotCtx,
-      width: chartBoxPlotCanvas.offsetWidth,
-      height: chartBoxPlotCanvas.offsetHeight,
-    });
-
-    setChartInfo({ width: chartBoxPlotCanvas.offsetWidth });
-
-    setCanvasPos({ PrevX: chartBoxPlotCanvas.offsetWidth - chartInfo.BarSize });
-
-    const labelBoxPlotCanvas = labelBoxPlotCanvasRef.current;
-    if (!labelBoxPlotCanvas) return;
-    labelBoxPlotCanvas.width = labelBoxPlotCanvas.offsetWidth;
-    labelBoxPlotCanvas.height = labelBoxPlotCanvas.offsetHeight;
-    const labelBoxPlotCtx = labelBoxPlotCanvas.getContext('2d');
-    if (!labelBoxPlotCtx) return;
-    setLabelBoxPlot({
-      canvas: labelBoxPlotCanvas,
-      ctx: labelBoxPlotCtx,
-      width: labelBoxPlotCanvas.offsetWidth,
-      height: labelBoxPlotCanvas.offsetHeight,
-    });
-
-    // const scoreLinechartCanvas = scoreLineChartCanvasRef.current;
-    // if (!scoreLinechartCanvas) return;
-    // scoreLinechartCanvas.width = scoreLinechartCanvas.offsetWidth;
-    // scoreLinechartCanvas.height = scoreLinechartCanvas.offsetHeight;
-
-    const dateLabelCanvas = dateLabelCanvasRef.current;
-    if (!dateLabelCanvas) return;
-    dateLabelCanvas.width = dateLabelCanvas.offsetWidth;
-    dateLabelCanvas.height = dateLabelCanvas.offsetHeight;
-    const dateLabelCtx = dateLabelCanvas.getContext('2d');
-    if (!dateLabelCtx) return;
-    setDateLabel({
-      canvas: dateLabelCanvas,
-      ctx: dateLabelCtx,
-      width: dateLabelCanvas.width,
-      height: dateLabelCanvas.height,
-    });
-
-    chartBoxPlotCanvas.addEventListener('wheel', handleWheel);
-    chartBoxPlotCanvas.addEventListener('mousedown', handleMouseDown);
-    chartBoxPlotCanvas.addEventListener('mousemove', handleMouseMoveCanvas);
-    chartBoxPlotCanvas.addEventListener('mouseenter', handleMouseEnter);
-    chartBoxPlotCanvas.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      chartBoxPlotCanvas.removeEventListener('wheel', handleWheel);
-      chartBoxPlotCanvas.removeEventListener('mousedown', handleMouseDown);
-      chartBoxPlotCanvas.removeEventListener('mousemove', handleMouseMoveCanvas);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+  const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
   const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
+  const [mousePosInfo, setMousePosInfo] = useState<any>(null);
+  const [recentPrice, setRecentPrice] = useState<any>(null);
+  const [extremePrice, setExtremePrice] = useState<any>(null);
 
-  const handleMouseEnter = () => {
-    setIsMouseEnter(true);
-  };
-  const handleMouseLeave = () => {
-    setIsMouseEnter(false);
-  };
+  const [chartInfo, setChartInfo] = useState<any>({
+    BarSize: START_BAR_SIZE,
+    width: 0,
+    height: 0,
+    priceScale: 5 / 4,
+    canvasX: 900,
+    prevX: 0,
+  });
 
-  useEffect(() => {
-    if (!chartBoxPlot) return;
-    if (!dateLabel) return;
-    if (!labelBoxPlot) return;
+  const [mousePos, setMousePos] = useState<any>({
+    x: 0,
+    y: 0,
+  });
 
-    // const scoreLinechartCanvas = scoreLineChartCanvasRef.current;
-    // if (!scoreLinechartCanvas) return;
-    // const scoreLinechartCtx = scoreLinechartCanvas.getContext('2d');
-    // if (!scoreLinechartCtx) return;
+  const [gridX, gridY] = [120, 50];
 
-    chartBoxPlot.ctx.clearRect(0, 0, chartBoxPlot.width, chartBoxPlot.height);
-    dateLabel.ctx.clearRect(0, 0, dateLabel.width, dateLabel.height);
-    chartBoxPlot.ctx.fillStyle = '#FFFFFF11';
-    dateLabel.ctx.textBaseline = 'middle';
-    dateLabel.ctx.textAlign = 'center';
-    dateLabel.ctx.fillStyle = '#FFFFFF11';
-    dateLabel.ctx.font = '15px Pretendard';
-
-    labelBoxPlot.ctx.clearRect(0, 0, labelBoxPlot.width, labelBoxPlot.height);
-    // scoreLinechartCtx.clearRect(0, 0, scoreLinechartCanvas.width, scoreLinechartCanvas.height);
-    // console.log(scoreLinechartCanvas.width, scoreLinechartCanvas.height);
-    labelBoxPlot.ctx.fillStyle = 'white';
-    labelBoxPlot.ctx.font = '15px Pretendard';
-    labelBoxPlot.ctx.textBaseline = 'middle';
-    // scoreLinechartCtx.fillStyle = '#FFFFFF33';
-
-    const canvasPosX = canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX;
-
-    const dateList: any = [];
-    let dayIdx = 0;
-    let monthIdx = 0;
-
-    const firstDay = new Date('1970-01-01');
-    const nowDay = new Date();
-
-    for (let i = 0; i < ~~((nowDay.getTime() - firstDay.getTime()) / (1000 * 60 * 60 * 24)); i++) {
-      const tmp = firstDay.getTime() + i * (1000 * 60 * 60 * 24);
-      const date = new Date(tmp);
-      if (date.getDay() == 0 || date.getDay() == 6) {
-        continue;
-      }
-
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      let str = day + '일';
-
-      if (day == 1 || ((day == 2 || day == 3) && date.getDay() == 1)) {
-        dayIdx = 0;
-        str = month + '월';
-        if (month == 1) {
-          monthIdx = 0;
-          str = year + '년';
-        } else {
-          monthIdx++;
-        }
-      } else {
-        dayIdx++;
-      }
-
-      dateList.push({ str: str, year: year, month: month, day: day, dayIdx: dayIdx, monthIdx: monthIdx, price: 0 });
-    }
-
-    for (let i = 0; i < priceInfos.length; i++) {
-      Object.assign(dateList[dateList.length - i - 1], priceInfos[i]);
-    }
-
-    let nowDateLength = dateList.length;
-
-    for (let i = 0; i < ~~((new Date('2030-01-01').getTime() - nowDay.getTime()) / (1000 * 60 * 60 * 24)); i++) {
-      const tmp = nowDay.getTime() + i * (1000 * 60 * 60 * 24);
-      const date = new Date(tmp);
-      if (date.getDay() == 0 || date.getDay() == 6) {
-        continue;
-      }
-
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      let str = day + '일';
-
-      if (day == 1 || ((day == 2 || day == 3) && date.getDay() == 1)) {
-        dayIdx = 0;
-        str = month + '월';
-        if (month == 1) {
-          monthIdx = 0;
-          str = year + '년';
-        } else {
-          monthIdx++;
-        }
-      } else {
-        dayIdx++;
-      }
-
-      dateList.push({ str: str, year: year, month: month, day: day, dayIdx: dayIdx, monthIdx: monthIdx, price: 0 });
-    }
-
-    let max = 0;
-    let min = 1e9;
-    let maxDate = '';
-    let minDate = '';
-    for (let i = 0; i < dateList.length; i++) {
-      const date = dateList[i];
-      const posX =
-        canvasPosX -
-        nowDateLength * (chartInfo.BarSize + chartInfo.BarGap) +
-        i * (chartInfo.BarSize + chartInfo.BarGap);
-      if (posX < -chartInfo.BarSize / 2 || posX > chartBoxPlot.width + chartInfo.BarSize / 2) continue;
-      if (date.highPrice == undefined) continue;
-
-      if (max < ~~date.highPrice) {
-        max = ~~date.highPrice;
-        maxDate = date.localDate;
-      }
-      if (min > ~~date.lowPrice) {
-        min = ~~date.lowPrice;
-        minDate = date.localDate;
-      }
-    }
-    const rMax = max + (max - min) * (1 / 4);
-    const rMin = min - (max - min) * (1 / 4);
-
-    let a = 1;
-    for (; a * 10 < (rMax - rMin) / 10; a *= 10);
-    let b = a;
-    for (; b <= (rMax - rMin) / 10; b += a);
-
-    for (let i = Math.ceil(rMin / b) * b; i <= Math.floor(rMax / b) * b; i += b) {
-      chartBoxPlot.ctx.fillRect(
-        0,
-        chartBoxPlot.height - ((i - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-        chartBoxPlot.width,
-        1,
-      );
-
-      labelBoxPlot.ctx.fillText(
-        i.toLocaleString(),
-        8,
-        labelBoxPlot.height - ((i - rMin) / (rMax - rMin)) * labelBoxPlot.height,
-      );
-    }
-
-    for (let i = 0; i < dateList.length; i++) {
-      const date = dateList[i];
-      const posX =
-        canvasPosX -
-        nowDateLength * (chartInfo.BarSize + chartInfo.BarGap) +
-        i * (chartInfo.BarSize + chartInfo.BarGap);
-      if (posX < -chartInfo.BarSize / 2 || posX > chartBoxPlot.width + chartInfo.BarSize / 2) continue;
-
-      if (chartInfo.BarSize > 7) {
-        if (chartInfo.BarSize > 70) {
-        } else if (chartInfo.BarSize > 50) {
-          if (date.dayIdx % 2 || (i + 1 < dateList.length && date.day >= dateList[i + 1].day)) continue;
-        } else if (chartInfo.BarSize > 30) {
-          if (date.dayIdx % 3 || (i + 2 < dateList.length && date.day >= dateList[i + 2].day)) continue;
-        } else if (chartInfo.BarSize > 20) {
-          if (date.dayIdx % 4 || (i + 2 < dateList.length && date.day >= dateList[i + 2].day)) continue;
-        } else if (chartInfo.BarSize > 15) {
-          if (date.dayIdx % 5 || (i + 3 < dateList.length && date.day >= dateList[i + 3].day)) continue;
-        } else if (chartInfo.BarSize > 11) {
-          if (date.dayIdx % 6 || (i + 3 < dateList.length && date.day >= dateList[i + 3].day)) continue;
-        } else if (chartInfo.BarSize > 10) {
-          if (date.dayIdx % 7 || (i + 4 < dateList.length && date.day >= dateList[i + 4].day)) continue;
-        } else if (chartInfo.BarSize > 9) {
-          if (date.dayIdx % 8 || (i + 5 < dateList.length && date.day >= dateList[i + 5].day)) continue;
-        } else if (chartInfo.BarSize > 8) {
-          if (date.dayIdx % 9 || (i + 6 < dateList.length && date.day >= dateList[i + 6].day)) continue;
-        } else if (chartInfo.BarSize > 7) {
-          if (date.dayIdx % 10 || (i + 7 < dateList.length && date.day >= dateList[i + 7].day)) continue;
-        }
-      } else if (chartInfo.BarSize > 0) {
-        if (date.dayIdx != 0) continue;
-        if (chartInfo.BarSize > 2) {
-        } else if (chartInfo.BarSize > 1) {
-          if (date.monthIdx % 2) continue;
-        } else if (chartInfo.BarSize > 0) {
-          if (date.monthIdx % 3) continue;
-        }
-      }
-
-      dateLabel.ctx.fillStyle = 'white';
-      dateLabel.ctx.textBaseline = 'top';
-      dateLabel.ctx.fillText(date.str, posX, 10);
-      chartBoxPlot.ctx.fillStyle = '#FFFFFF11';
-      chartBoxPlot.ctx.fillRect(posX, 0, 1, chartBoxPlot.height);
-      // scoreLinechartCtx.fillRect(posX, 0, 1, scoreLinechartCanvas.height);
-    }
-    drawCandleChart(dateList, nowDateLength, rMax, rMin, minDate, maxDate);
-    drawLineChart(dateList, nowDateLength);
-    drawRecentPrice(rMax, rMin);
-    drawMouseMove(dateList, nowDateLength, rMax, rMin);
-  }, [chartBoxPlot, dateLabel, canvasPos, mousePos, isMouseEnter]);
-
-  const drawRecentPrice = (rMax: number, rMin: number) => {
-    if (!chartBoxPlot) return;
-    if (!labelBoxPlot) return;
-
-    const y = (1 - (priceInfos[0].closePrice - rMin) / (rMax - rMin)) * chartBoxPlot.height;
-
-    chartBoxPlot.ctx.strokeStyle = theme.colors.red;
-    chartBoxPlot.ctx.lineWidth = 2;
-    chartBoxPlot.ctx.setLineDash([1, 4]);
-    chartBoxPlot.ctx.beginPath();
-    chartBoxPlot.ctx.moveTo(0, y);
-    chartBoxPlot.ctx.lineTo(chartBoxPlot.width, y);
-    chartBoxPlot.ctx.stroke();
-    chartBoxPlot.ctx.setLineDash([]);
-
-    const price = (~~priceInfos[0].closePrice).toLocaleString();
-    const textSize = labelBoxPlot.ctx.measureText(price);
-    const fontSize = 15;
-    const width = textSize.width + 20;
-    const height = fontSize + 10;
-    labelBoxPlot.ctx.fillStyle = theme.colors.red;
-    labelBoxPlot.ctx.fillRect(0, y - height / 2, width, height);
-
-    labelBoxPlot.ctx.fillStyle = 'white';
-    labelBoxPlot.ctx.textBaseline = 'middle';
-    labelBoxPlot.ctx.fillText(price, 20 / 2, y);
-  };
-
-  const drawMouseMove = (dateList: any, nowDateLength: number, rMax: number, rMin: number) => {
-    if (!chartBoxPlot) return;
-    if (!dateLabel) return;
-    if (!labelBoxPlot) return;
-
-    if (isMouseEnter) {
-      chartBoxPlot.ctx.strokeStyle = 'white';
-      chartBoxPlot.ctx.lineWidth = 1;
-      chartBoxPlot.ctx.setLineDash([10, 10]);
-      chartBoxPlot.ctx.beginPath();
-      chartBoxPlot.ctx.moveTo(0, mousePos.y);
-      chartBoxPlot.ctx.lineTo(chartBoxPlot.width, mousePos.y);
-      chartBoxPlot.ctx.stroke();
-
-      const price = (~~(
-        ((chartBoxPlot.height - mousePos.y) * (rMax - rMin)) / chartBoxPlot.height +
-        rMin
-      )).toLocaleString();
-      const textSize = labelBoxPlot.ctx.measureText(price);
-      const fontSize = 15;
-      const width = textSize.width + 20;
-      const height = fontSize + 10;
-      labelBoxPlot.ctx.fillStyle = theme.colors.blue;
-      labelBoxPlot.ctx.fillRect(0, mousePos.y - height / 2, width, height);
-      labelBoxPlot.ctx.fillStyle = 'white';
-      labelBoxPlot.ctx.textBaseline = 'middle';
-      labelBoxPlot.ctx.fillText(price, 20 / 2, mousePos.y);
-
-      const canvasPosX =
-        canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX - nowDateLength * (chartInfo.BarSize + chartInfo.BarGap);
-
-      for (let i = 0; i < dateList.length; i++) {
-        const date = dateList[i];
-        const posX = canvasPosX + i * (chartInfo.BarSize + chartInfo.BarGap);
-        if (posX <= -chartInfo.BarSize * (3 / 2) || posX >= chartBoxPlot.width + chartInfo.BarSize * (3 / 2)) continue;
-
-        if (Math.abs(mousePos.x - posX) <= (chartInfo.BarSize + chartInfo.BarGap) / 2) {
-          chartBoxPlot.ctx.beginPath();
-          chartBoxPlot.ctx.moveTo(posX, 0);
-          chartBoxPlot.ctx.lineTo(posX, chartBoxPlot.height);
-          chartBoxPlot.ctx.stroke();
-
-          const str = date.year + '-' + String(date.month).padStart(2, '0') + '-' + String(date.day).padStart(2, '0');
-          const textSize = dateLabel.ctx.measureText(str);
-          const fontSize = 15;
-          const width = textSize.width + 25;
-          const height = fontSize + 10;
-          dateLabel.ctx.font = fontSize + 'px Pretendard';
-          dateLabel.ctx.fillStyle = theme.colors.blue;
-          dateLabel.ctx.fillRect(posX - width / 2, 0, width, height);
-          dateLabel.ctx.fillStyle = 'white';
-          dateLabel.ctx.textBaseline = 'middle';
-          dateLabel.ctx.fillText(str, posX, height / 2);
-          break;
-        }
-      }
-      chartBoxPlot.ctx.setLineDash([]);
-    }
-  };
-
-  const drawCandleChart = (
-    dateList: any,
-    nowDateLength: number,
-    rMax: number,
-    rMin: number,
-    minDate: string,
-    maxDate: string,
-  ) => {
-    if (!chartBoxPlot) return;
-    const canvasPosX =
-      canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX - nowDateLength * (chartInfo.BarSize + chartInfo.BarGap);
-
-    for (let i = 0; i < dateList.length; i++) {
-      const date = dateList[i];
-      const posX = canvasPosX + i * (chartInfo.BarSize + chartInfo.BarGap);
-      if (posX < -chartInfo.BarSize / 2 || posX > chartBoxPlot.width + chartInfo.BarSize / 2) continue;
-
-      if (date.openPrice <= date.closePrice) {
-        chartBoxPlot.ctx.fillStyle = theme.colors.red;
-        chartBoxPlot.ctx.fillRect(
-          posX - Math.floor(chartInfo.BarSize / 2),
-          chartBoxPlot.height - ((date.closePrice - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-          chartInfo.BarSize,
-          ((date.closePrice - date.openPrice) / (rMax - rMin)) * chartBoxPlot.height + 1,
-        );
-      } else {
-        chartBoxPlot.ctx.fillStyle = theme.colors.blue;
-        chartBoxPlot.ctx.fillRect(
-          posX - Math.floor(chartInfo.BarSize / 2),
-          chartBoxPlot.height - ((date.openPrice - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-          chartInfo.BarSize,
-          ((date.openPrice - date.closePrice) / (rMax - rMin)) * chartBoxPlot.height + 1,
-        );
-      }
-
-      chartBoxPlot.ctx.fillRect(
-        posX,
-        chartBoxPlot.height - ((date.highPrice - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-        1,
-        ((date.highPrice - date.lowPrice) / (rMax - rMin)) * chartBoxPlot.height,
-      );
-
-      chartBoxPlot.ctx.font = '15px Pretendard';
-      chartBoxPlot.ctx.textAlign = 'center';
-      if (date.localDate == minDate) {
-        chartBoxPlot.ctx.textBaseline = 'top';
-        chartBoxPlot.ctx.fillStyle = theme.colors.blue;
-        chartBoxPlot.ctx.fillText(
-          '최저: ' + (~~date.lowPrice).toLocaleString() + '원',
-          posX,
-          10 + chartBoxPlot.height - ((date.lowPrice - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-        );
-      }
-      if (date.localDate == maxDate) {
-        chartBoxPlot.ctx.textBaseline = 'bottom';
-        chartBoxPlot.ctx.fillStyle = theme.colors.red;
-        chartBoxPlot.ctx.fillText(
-          '최고: ' + (~~date.highPrice).toLocaleString() + '원',
-          posX,
-          -10 + chartBoxPlot.height - ((date.highPrice - rMin) / (rMax - rMin)) * chartBoxPlot.height,
-        );
-      }
-    }
-  };
-
-  const drawLineChart = (dateList: any, nowDateLength: number) => {
-    if (!chartBoxPlot) return;
-    const canvasPosX =
-      canvasPos.PrevX + canvasPos.EndX - canvasPos.StartX - nowDateLength * (chartInfo.BarSize + chartInfo.BarGap);
-
-    chartBoxPlot.ctx.strokeStyle = theme.colors.cyan;
-    chartBoxPlot.ctx.lineWidth = 2;
-    chartBoxPlot.ctx.lineCap = 'round';
-    chartBoxPlot.ctx.lineJoin = 'round';
-
-    let dd = 0;
-    for (let i = 0; i < dateList.length; i++) {
-      const date = dateList[i];
-      const posX = canvasPosX + i * (chartInfo.BarSize + chartInfo.BarGap);
-      if (posX <= -chartInfo.BarSize * (3 / 2) || posX >= chartBoxPlot.width + chartInfo.BarSize * (3 / 2)) continue;
-
-      if (date.score == undefined) continue;
-      if (!dd) {
-        chartBoxPlot.ctx.beginPath();
-        chartBoxPlot.ctx.moveTo(posX, chartBoxPlot.height - (date.score * chartBoxPlot.height) / 100);
-        dd = 1;
-      } else chartBoxPlot.ctx.lineTo(posX, chartBoxPlot.height - (date.score * chartBoxPlot.height) / 100);
-    }
-    if (!dd) return;
-    chartBoxPlot.ctx.stroke();
-    chartBoxPlot.ctx.lineCap = 'square';
-    chartBoxPlot.ctx.lineJoin = 'round';
+  const zoomPrice = (a: number) => {
+    const delta = 5 / 4;
+    const priceScale = chartInfo.priceScale * (a > 0 ? delta : 1 / delta);
+    if (priceScale <= 0.3 || priceScale > 20) return;
+    console.log(chartInfo);
+    setChartInfo({ ...chartInfo, priceScale: priceScale });
   };
 
   const zoomChart = (a: number) => {
     const delta = Math.ceil(Math.log10(chartInfo.BarSize + 1));
     const barSize = chartInfo.BarSize + (a > 0 ? delta : -delta);
-    if (barSize < 1 || barSize > 200) return;
+    if (barSize <= 0 || barSize > 200) return;
+
+    const itemWidth = barSize * 1.5;
+    const MinX = itemWidth * (5 / 2);
+    const MaxX = chartInfo.width + itemWidth * (priceInfos.length - 3 / 2);
+
     setChartInfo({
+      ...chartInfo,
+      canvasX: chartInfo.canvasX < MinX ? MinX : chartInfo.canvasX > MaxX ? MaxX : chartInfo.canvasX,
       BarSize: barSize,
-      BarGap: Math.floor(barSize / 4),
     });
   };
+
+  useEffect(() => {
+    const canvasContainer = containerRef.current;
+    if (!canvasContainer) return;
+
+    setChartInfo({ ...chartInfo, width: canvasContainer.offsetWidth, height: canvasContainer.offsetHeight });
+  }, []);
+
+  useEffect(() => {
+    const canvasContainer = containerRef.current;
+    if (!canvasContainer) return;
+
+    const priceLabel = priceLabelRef.current;
+    if (!priceLabel) return;
+
+    const scoreLabel = scoreLabelRef.current;
+    if (!scoreLabel) return;
+
+    canvasContainer.addEventListener('wheel', handleWheel);
+    canvasContainer.addEventListener('mousedown', handleMouseDown);
+    canvasContainer.addEventListener('mousemove', handleMouseMoveCanvas);
+    canvasContainer.addEventListener('mouseenter', handleMouseEnter);
+    canvasContainer.addEventListener('mouseleave', handleMouseLeave);
+    canvasContainer.addEventListener('mouseleave', handleMouseLeave);
+
+    priceLabel.addEventListener('wheel', handleWheelPrice);
+
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      canvasContainer.removeEventListener('wheel', handleWheel);
+      canvasContainer.removeEventListener('mousedown', handleMouseDown);
+      canvasContainer.removeEventListener('mousemove', handleMouseMoveCanvas);
+      canvasContainer.removeEventListener('mouseenter', handleMouseEnter);
+      canvasContainer.removeEventListener('mouseleave', handleMouseLeave);
+
+      priceLabel.removeEventListener('wheel', handleWheelPrice);
+
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [chartInfo, isMouseDown]);
+
+  const handleWheelPrice = (e: WheelEvent) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      zoomPrice(2);
+    } else {
+      zoomPrice(-2);
+    }
+  };
+
+  useEffect(() => {
+    const chartItemList: any[] = [];
+    const scoreItemList: any[] = [];
+
+    const firstDay = new Date('1970-01-01');
+    const lastDay = new Date('2070-12-31');
+    const nowDay = new Date();
+
+    const itemWidth = chartInfo.BarSize * 1.5;
+
+    const { width, height } = chartInfo;
+
+    let nowDateIdx = 0;
+    let priceInfoIdx = 0;
+
+    for (let i = 0; i <= ~~((lastDay.getTime() - firstDay.getTime()) / (1000 * 60 * 60 * 24)); i++) {
+      const date = new Date(firstDay.getTime() + i * (1000 * 60 * 60 * 24));
+      if (date.getDay() == 0 || date.getDay() == 6) continue;
+
+      const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
+      const dateStr =
+        day == 1 || ([2, 3].includes(day) && date.getDay() == 1)
+          ? month == 1
+            ? year + '년'
+            : month + '월'
+          : day + '일';
+      const type = day == 1 || ([2, 3].includes(day) && date.getDay() == 1) ? (month == 1 ? 'Y' : 'M') : 'D';
+
+      const chartItem = {
+        dateStr: dateStr,
+        localDate: year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0'),
+        year: year,
+        month: month,
+        day: day,
+        type: type,
+        price: 0,
+      };
+
+      if (
+        priceInfoIdx &&
+        priceInfoIdx < priceInfos.length &&
+        priceInfos[priceInfos.length - priceInfoIdx - 1].localDate != chartItem.localDate
+      )
+        continue;
+
+      if (
+        priceInfoIdx < priceInfos.length &&
+        priceInfos[priceInfos.length - priceInfoIdx - 1].localDate == chartItem.localDate
+      ) {
+        Object.assign(chartItem, priceInfos[priceInfos.length - priceInfoIdx - 1]);
+        priceInfoIdx++;
+      }
+
+      chartItemList.push(chartItem);
+      if (nowDay.getTime() >= date.getTime()) nowDateIdx = chartItemList.length;
+    }
+
+    // dateGrid
+
+    const dateList: any = [];
+
+    let dayWidth = 0;
+    let beforeType = 'D';
+    let [l, r] = [1e9, 0];
+
+    chartItemList.map((e: any, i: number) => {
+      const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
+
+      dayWidth += itemWidth;
+
+      if (
+        dayWidth >= gridX ||
+        (e.type == 'M' && beforeType == 'D') ||
+        (e.type == 'Y' && ['D', 'M'].includes(beforeType))
+      ) {
+        if ((e.type == 'M' && beforeType == 'D') || (e.type == 'Y' && ['D', 'M'].includes(beforeType))) {
+          dateList.pop();
+        }
+        dayWidth = 0;
+        beforeType = e.type;
+        dateList.push({
+          dateStr: e.dateStr,
+          key: e.localDate,
+          pos: { x: posX, y: 0 },
+        });
+      }
+
+      if (posX < -gridX * 2 || posX > chartInfo.width + gridX * 2) return;
+      l = Math.min(l, dateList.length - 1);
+      r = Math.max(r, dateList.length - 1);
+    });
+
+    setGridDate(dateList.slice(l, r));
+
+    // chart cut;
+
+    // const chartItems = chartItemList.filter((_, i: number) => {
+    //   const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
+    //   if (posX < -itemWidth / 2 || posX > width + itemWidth / 2) return false;
+    //   return true;
+    // });
+
+    const chartItems: any[] = [];
+    chartItemList.map((e, i) => {
+      const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
+      if (posX < -itemWidth / 2 || posX > width + itemWidth / 2) return;
+      chartItems.push({ ...e, pos: { x: posX } });
+    });
+    console.log(chartItems);
+
+    // score chart cut;
+
+    const priceMaxIdx = chartItems.reduce(
+      (prevIdx: number, value: any, curIdx: number, arr: any) =>
+        value.highPrice != undefined &&
+        (arr[prevIdx].highPrice == undefined || ~~value.highPrice > ~~arr[prevIdx].highPrice)
+          ? curIdx
+          : prevIdx,
+      0,
+    );
+    const priceMinIdx = chartItems.reduce(
+      (prevIdx: number, value: any, curIdx: number, arr: any) =>
+        value.lowPrice != undefined &&
+        (arr[prevIdx].lowPrice == undefined || ~~value.lowPrice < ~~arr[prevIdx].lowPrice)
+          ? curIdx
+          : prevIdx,
+      0,
+    );
+
+    const [priceMaxItem, priceMinItem] = [chartItems[priceMaxIdx], chartItems[priceMinIdx]];
+    const [priceMaxPrice, priceMinPrice] = [~~priceMaxItem.highPrice, ~~priceMinItem.lowPrice];
+    const priceRangePrice = priceMaxPrice - priceMinPrice;
+
+    const [priceScaledMax, priceScaledMin] = [
+      priceMaxPrice - (1 - chartInfo.priceScale) * (priceRangePrice / 2) + 1,
+      priceMinPrice + (1 - chartInfo.priceScale) * (priceRangePrice / 2) - 1,
+    ];
+    const priceScaledRange = priceScaledMax - priceScaledMin;
+
+    // priceGrid
+
+    const priceStrList = [];
+
+    let priceAxisScale = 0;
+    for (let i = 1; i <= 1e9; i *= 10) {
+      SCALE_RATIOS.map((e) => {
+        if (priceAxisScale) return;
+        const scale = e * i;
+        if ((scale / priceScaledRange) * height >= gridY) {
+          priceAxisScale = scale;
+        }
+      });
+      if (priceAxisScale) break;
+    }
+
+    for (
+      let i = Math.ceil(priceScaledMin / priceAxisScale) * priceAxisScale;
+      i <= Math.floor(priceScaledMax);
+      i += priceAxisScale
+    ) {
+      priceStrList.push({
+        priceStr: i.toLocaleString(),
+        pos: { x: 0, y: height - ((i - priceScaledMin) / priceScaledRange) * height },
+      });
+    }
+
+    setGridPrice(priceStrList);
+
+    // recentPrice
+
+    setRecentPrice({
+      pos: {
+        x: 0,
+        y: height - ((~~priceInfos[0].closePrice - priceScaledMin) / priceScaledRange) * height,
+      },
+      delta: ~~priceInfos[0].closePrice - ~~priceInfos[0].openPrice,
+      priceStr: (~~priceInfos[0].closePrice).toLocaleString(),
+    });
+
+    const priceChartItems: any[] = [];
+    const extremePrice = {};
+
+    chartItemList.map((e, i) => {
+      const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
+      if (posX < -itemWidth / 2 || posX > width + itemWidth / 2) return;
+      // if (typeof e.openPrice != 'string') return;
+
+      const item = {
+        marketTop: height - ((Math.max(~~e.openPrice, ~~e.closePrice) - priceScaledMin) / priceScaledRange) * height,
+        marketBottom: (Math.abs(~~e.openPrice - ~~e.closePrice) / priceScaledRange) * height,
+        DailyTop: height - ((e.highPrice - priceScaledMin) / priceScaledRange) * height,
+        DailyBottom: ((e.highPrice - e.lowPrice) / priceScaledRange) * height,
+        delta: ~~e.closePrice >= ~~e.openPrice,
+        pos: {
+          x: chartInfo.canvasX + itemWidth * (i - nowDateIdx),
+        },
+      };
+
+      priceChartItems.push(item);
+      if (i == priceMinIdx) {
+        console.log(i, 'min');
+      } else if (i == priceMaxIdx) {
+        console.log(i, 'max');
+      }
+    });
+    console.log(priceMinIdx, priceMaxIdx);
+    console.log(priceChartItems.length);
+
+    setChartItemList(priceChartItems);
+
+    // extremePrice
+
+    setExtremePrice({
+      min: {
+        pos: {
+          x: priceChartItems[priceMinIdx].pos.x,
+          y: priceChartItems[priceMinIdx].DailyTop + priceChartItems[priceMinIdx].DailyBottom,
+        },
+        price: priceMinItem.lowPrice.toLocaleString(),
+      },
+      max: {
+        pos: {
+          x: priceChartItems[priceMaxIdx].pos.x,
+          y: priceChartItems[priceMaxIdx].DailyTop,
+        },
+        price: priceMaxItem.highPrice.toLocaleString(),
+      },
+    });
+
+    //
+
+    const maxIdx = chartItems.reduce(
+      (prevIdx: number, value: any, curIdx: number, arr: any) =>
+        value.highPrice != undefined &&
+        (arr[prevIdx].highPrice == undefined || ~~value.highPrice > ~~arr[prevIdx].highPrice)
+          ? curIdx
+          : prevIdx,
+      0,
+    );
+    const minIdx = chartItems.reduce(
+      (prevIdx: number, value: any, curIdx: number, arr: any) =>
+        value.highPrice != undefined &&
+        (arr[prevIdx].lowPrice == undefined || ~~value.lowPrice < ~~arr[prevIdx].lowPrice)
+          ? curIdx
+          : prevIdx,
+      0,
+    );
+
+    const [maxItem, minItem] = [chartItems[maxIdx], chartItems[minIdx]];
+
+    const [maxPrice, minPrice] = [~~maxItem.highPrice, ~~minItem.lowPrice];
+    const rangePrice = maxPrice - minPrice;
+
+    const [rMax, rMin] = [
+      maxPrice - (1 - chartInfo.priceScale) * (rangePrice / 2) + 1,
+      minPrice + (1 - chartInfo.priceScale) * (rangePrice / 2) - 1,
+    ];
+    const rRange = rMax - rMin;
+
+    //
+
+    chartItemList.map((e: any, i: number) => {
+      const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
+      if (posX < -gridX * 2 || posX > chartInfo.width + gridX * 2) return;
+
+      if (typeof e.score != 'number') return;
+      scoreItemList.push(
+        Object.assign(e, {
+          pos: {
+            x: posX,
+            y: chartInfo.height - (e.score * chartInfo.height) / 100,
+          },
+        }),
+      );
+    });
+
+    setScoreItemList(scoreItemList);
+
+    let scoreLabelRatio = 0;
+    for (let i = 1; i <= 1e9; i *= 10) {
+      const ratios = [1, 2, 2.5, 4, 5];
+      for (let j = 0; j < ratios.length; j++) {
+        const tmp = i * ratios[j];
+        if ((tmp / 100) * chartInfo.height >= gridY) {
+          scoreLabelRatio = tmp;
+          break;
+        }
+      }
+      if (scoreLabelRatio) break;
+    }
+
+    const scoreStrList = [];
+    for (
+      let i = Math.ceil(0 / scoreLabelRatio) * scoreLabelRatio;
+      i <= Math.floor(100 / scoreLabelRatio) * scoreLabelRatio;
+      i += scoreLabelRatio
+    ) {
+      scoreStrList.push({
+        str: i.toLocaleString(),
+        pos: { x: 0, y: chartInfo.height - ((i - 0) / 100) * chartInfo.height },
+      });
+    }
+    setGridScore(scoreStrList);
+
+    // mousePos
+
+    if (isMouseEnter) {
+      const priceStr = (~~(((height - mousePos.y) * priceScaledRange) / height + priceScaledMin)).toLocaleString();
+
+      chartItemList.map((e, i) => {
+        const posX = chartInfo.canvasX + (i - nowDateIdx) * itemWidth;
+        if (posX <= -itemWidth || posX >= width + itemWidth) return;
+        if (Math.abs(mousePos.x - posX) > itemWidth / 2) return;
+
+        setMousePosInfo({
+          pos: {
+            x: posX,
+            y: mousePos.y,
+          },
+          dateStr: e.year + '-' + String(e.month).padStart(2, '0') + '-' + String(e.day).padStart(2, '0'),
+          priceStr: priceStr,
+        });
+      });
+    }
+  }, [mousePos, chartInfo, isMouseEnter]);
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
@@ -574,27 +466,31 @@ const StockChartCanvasGrid = ({ priceInfos }: { priceInfos: any }) => {
 
   const handleMouseDown = (e: MouseEvent) => {
     setIsMouseDown(true);
-    setCanvasPos({
-      PrevX: canvasPosRef.current.PrevX + canvasPosRef.current.EndX - canvasPosRef.current.StartX,
-      StartX: e.clientX,
-      EndX: e.clientX,
-    });
+    setChartInfo({ ...chartInfo, prevX: e.clientX });
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: MouseEvent) => {
     setIsMouseDown(false);
-    setCanvasPos({
-      PrevX: canvasPosRef.current.PrevX + canvasPosRef.current.EndX - canvasPosRef.current.StartX,
-      StartX: 0,
-      EndX: 0,
+    setChartInfo({
+      ...chartInfo,
+      prevX: 0,
     });
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     e.preventDefault();
-    if (isMouseDownRef.current) {
-      setCanvasPos({
-        EndX: e.clientX,
+    if (isMouseDown) {
+      const deltaX = e.clientX - chartInfo.prevX;
+
+      const itemWidth = chartInfo.BarSize * 1.5;
+      const canvasX = chartInfo.canvasX + deltaX;
+      const MinX = itemWidth * (5 / 2);
+      const MaxX = chartInfo.width + itemWidth * (priceInfos.length - 3 / 2);
+
+      setChartInfo({
+        ...chartInfo,
+        canvasX: canvasX < MinX ? MinX : canvasX > MaxX ? MaxX : canvasX,
+        prevX: e.clientX,
       });
     }
   };
@@ -603,30 +499,89 @@ const StockChartCanvasGrid = ({ priceInfos }: { priceInfos: any }) => {
     setMousePos({ x: e.offsetX, y: e.offsetY });
   };
 
+  const handleMouseEnter = (e: MouseEvent) => {
+    setIsMouseEnter(true);
+    setMousePosInfo({
+      pos: {
+        x: e.offsetX,
+        y: e.offsetY,
+      },
+      dateStr: '',
+      priceStr: '',
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setIsMouseEnter(false);
+    setMousePosInfo(null);
+  };
+
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'auto 72px',
+        gridTemplateColumns: '72px auto 72px',
         gridTemplateRows: '400px 64px',
       }}
     >
-      <StockChartCanvas
-        ref={boxPlotChartCanvasRef}
-        style={{
-          borderRight: '2px solid #FFFFFF11',
-          borderBottom: '2px solid #FFFFFF11',
-        }}
-      />
-      <StockChartCanvas ref={labelBoxPlotCanvasRef} />
-      {/* <StockChartCanvas
-        style={{
-          borderRight: '2px solid #FFFFFF33',
-        }}
-        ref={scoreLineChartCanvasRef}
-      />
-      <StockChartCanvas style={{ background: 'yellow' }} /> */}
-      <StockChartCanvas ref={dateLabelCanvasRef} />
+      <div ref={scoreLabelRef} style={{ position: 'relative', overflow: 'hidden' }}>
+        {gridScore.map((e: any) => (
+          <ChartLabel key={e.str} y={e.pos.y}>
+            {e.str}
+          </ChartLabel>
+        ))}
+      </div>
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <StockChartCanvas
+          dateLabelItem={gridDate}
+          priceLabelItem={gridPrice}
+          chartItemList={chartItemList}
+          chartInfo={chartInfo}
+          recentPrice={recentPrice}
+          mousePosInfo={mousePosInfo}
+          scoreItemList={scoreItemList}
+        />
+        {extremePrice && (
+          <>
+            <ChartLabel x={extremePrice.min.pos.x} y={extremePrice.min.pos.y + 20} color={theme.colors.blue}>
+              {'최저: ' + extremePrice.min.price + '원'}
+            </ChartLabel>
+            <ChartLabel x={extremePrice.max.pos.x} y={extremePrice.max.pos.y - 20} color={theme.colors.red}>
+              {'최고: ' + extremePrice.max.price + '원'}
+            </ChartLabel>
+          </>
+        )}
+        <div ref={containerRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      </div>
+      <div ref={priceLabelRef} style={{ position: 'relative', overflow: 'hidden' }}>
+        {gridPrice.map((e: any) => (
+          <ChartLabel key={e.str} y={e.pos.y}>
+            {e.priceStr}
+          </ChartLabel>
+        ))}
+        {recentPrice && (
+          <ChartLabel y={recentPrice.pos.y} background={recentPrice.delta >= 0 ? 'red' : 'blue'}>
+            {recentPrice.priceStr}
+          </ChartLabel>
+        )}
+        {mousePosInfo && (
+          <ChartLabel y={mousePosInfo.pos.y} background="blue">
+            {mousePosInfo.priceStr}
+          </ChartLabel>
+        )}
+      </div>
+      <div style={{ position: 'relative', overflow: 'hidden', gridColumn: '2 / 3' }}>
+        {gridDate.map((e: any) => (
+          <ChartLabel key={e.key} x={e.pos.x}>
+            {e.dateStr}
+          </ChartLabel>
+        ))}
+        {mousePosInfo && (
+          <ChartLabel x={mousePosInfo.pos.x} background="blue">
+            {mousePosInfo.dateStr}
+          </ChartLabel>
+        )}
+      </div>
     </div>
   );
 };
@@ -662,40 +617,32 @@ const StockChart = ({ stockId }: { stockId: number }) => {
 
   useEffect(() => {
     if (!stockInfo) return;
-    console.log(stockInfo, chartPeriodIdx);
     setPriceInfos(stockInfo.priceInfos);
   }, [stockInfo]);
 
   return (
     suspend ||
     (priceInfos && (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <div>{stockInfo.symbolName}</div>
-            <div>새로고침</div>
-          </div>
-          <div style={{ display: 'flex', gap: '12px', padding: '0 12px' }}>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {chartPeriodList.map((e, i) => (
-                <span
-                  key={i}
-                  style={{
-                    padding: '4px 8px',
-                    background: e.periodCode == chartPeriodIdx ? 'gray' : '',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => setChartPeriodIdx(e.periodCode)}
-                >
-                  {e.periodTitle}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-        <StockChartCanvasGrid priceInfos={priceInfos} />
-      </div>
+      <StockChartContainer>
+        <StockChartHeader>
+          <StockChartHeaderContents>
+            <StockChartHeaderItem>{stockInfo.symbolName}</StockChartHeaderItem>
+            <StockChartHeaderItem>새로고침</StockChartHeaderItem>
+          </StockChartHeaderContents>
+          <StockChartHeaderContents>
+            {chartPeriodList.map((e, i) => (
+              <StockChartHeaderItem
+                key={i}
+                background={e.periodCode == chartPeriodIdx ? 'grayscale90' : 'transparent'}
+                onClick={() => setChartPeriodIdx(e.periodCode)}
+              >
+                {e.periodTitle}
+              </StockChartHeaderItem>
+            ))}
+          </StockChartHeaderContents>
+        </StockChartHeader>
+        <StockChartGrid priceInfos={priceInfos} />
+      </StockChartContainer>
     ))
   );
 };
