@@ -107,7 +107,7 @@ const StockChartCanvas = ({
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    scoreItemList.map((e: any, i: number) => {
+    scoreItemList.map((e: any) => {
       scoreList.push([e.pos.x, e.pos.y]);
     });
 

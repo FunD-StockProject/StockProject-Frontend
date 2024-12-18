@@ -1,5 +1,3 @@
-import styled from '@emotion/styled';
-import { M } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { PERIOD_CODE } from '@controllers/api.Type';
@@ -309,7 +307,7 @@ const StockChartGrid = ({ priceInfos }: { priceInfos: any }) => {
     });
 
     const priceChartItems: any[] = [];
-    const extremePrice = {};
+    // const extremePrice = {};
 
     chartItemList.map((e, i) => {
       const posX = chartInfo.canvasX + itemWidth * (i - nowDateIdx);
@@ -357,36 +355,6 @@ const StockChartGrid = ({ priceInfos }: { priceInfos: any }) => {
         price: priceMaxItem.highPrice.toLocaleString(),
       },
     });
-
-    //
-
-    const maxIdx = chartItems.reduce(
-      (prevIdx: number, value: any, curIdx: number, arr: any) =>
-        value.highPrice != undefined &&
-        (arr[prevIdx].highPrice == undefined || ~~value.highPrice > ~~arr[prevIdx].highPrice)
-          ? curIdx
-          : prevIdx,
-      0,
-    );
-    const minIdx = chartItems.reduce(
-      (prevIdx: number, value: any, curIdx: number, arr: any) =>
-        value.highPrice != undefined &&
-        (arr[prevIdx].lowPrice == undefined || ~~value.lowPrice < ~~arr[prevIdx].lowPrice)
-          ? curIdx
-          : prevIdx,
-      0,
-    );
-
-    const [maxItem, minItem] = [chartItems[maxIdx], chartItems[minIdx]];
-
-    const [maxPrice, minPrice] = [~~maxItem.highPrice, ~~minItem.lowPrice];
-    const rangePrice = maxPrice - minPrice;
-
-    const [rMax, rMin] = [
-      maxPrice - (1 - chartInfo.priceScale) * (rangePrice / 2) + 1,
-      minPrice + (1 - chartInfo.priceScale) * (rangePrice / 2) - 1,
-    ];
-    const rRange = rMax - rMin;
 
     //
 
@@ -469,7 +437,7 @@ const StockChartGrid = ({ priceInfos }: { priceInfos: any }) => {
     setChartInfo({ ...chartInfo, prevX: e.clientX });
   };
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = () => {
     setIsMouseDown(false);
     setChartInfo({
       ...chartInfo,
