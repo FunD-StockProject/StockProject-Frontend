@@ -62,11 +62,11 @@ const StockChartCanvas = ({
     chartItemList.map((e: any) => {
       ctx.fillStyle = e.delta ? theme.colors.red : theme.colors.blue;
       ctx.strokeStyle = e.delta ? theme.colors.red : theme.colors.blue;
-      ctx.fillRect(e.pos.x - BarSize / 2, e.marketTop, BarSize, e.marketBottom);
-      ctx.strokeRect(e.pos.x - BarSize / 2, e.marketTop, BarSize, e.marketBottom);
+      ctx.fillRect(e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
+      ctx.strokeRect(e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
       drawLine(ctx, [
-        [e.pos.x, e.DailyTop],
-        [e.pos.x, e.DailyTop + e.DailyBottom],
+        [e.pos.x, e.daily.y],
+        [e.pos.x, e.daily.y + e.daily.h],
       ]);
     });
   };
