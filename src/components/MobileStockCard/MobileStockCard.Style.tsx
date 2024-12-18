@@ -68,15 +68,14 @@ const KeywordContainer = styled.div({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-
-  gap: '1em', // 요소 간격 추가
+  gap: '0.5em',
 });
 
 const MobileStockCardKeyword = styled.div({
   display: 'flex',
   fontSize: '0.8em',
   color: theme.colors.primary0,
-  padding: '5px 10px',
+  padding: '0.4em 0.8em',
   borderRadius: '20px',
   border: '1px solid white',
 });
