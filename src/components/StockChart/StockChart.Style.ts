@@ -96,3 +96,27 @@ export const ChartLabel = styled.span(
     whiteSpace: 'nowrap',
   },
 );
+
+export const ExtremeLabel = styled.span(
+  ({ x, y, delta }: { x: number; y: number; delta: boolean }) => ({
+    left: x,
+    top: y,
+    transform: `translate(-50%, ${delta ? -100 : 0}%)`,
+    color: theme.colors[delta ? 'red' : 'blue'],
+
+    svg: {
+      fill: theme.colors[delta ? 'red' : 'blue'],
+    },
+  }),
+  {
+    position: 'absolute',
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
+    lineHeight: '1',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '16px',
+  },
+);
