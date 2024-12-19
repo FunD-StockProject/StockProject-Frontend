@@ -1,28 +1,27 @@
 import { useEffect, useRef } from 'react';
-import { theme } from '@styles/themes';
+import { theme, themeColor } from '@styles/themes';
 import { StockChartStyledCanvas } from './StockChart.Style';
 
 const StockChartCanvas = ({
-  dateLabelItem,
   priceLabelItem,
-  chartItemList,
   chartInfo,
   recentPrice,
   mousePosInfo,
-  scoreItemList,
+  tmpChartItems,
+  chartGridDate,
 }: {
-  dateLabelItem: any;
   priceLabelItem: any;
-  chartItemList: any;
   chartInfo: any;
   recentPrice: any;
   mousePosInfo: any;
-  scoreItemList: any;
+  tmpChartItems: any[];
+  chartGridDate: any;
 }) => {
   const boxPlotChartCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const { width, height } = chartInfo;
   const { BarSize } = chartInfo;
+  const { movingAverage } = chartInfo;
 
   const drawLine = (ctx: any, pathList: any) => {
     let str = '';
@@ -42,7 +41,7 @@ const StockChartCanvas = ({
       ]);
     });
 
-    dateLabelItem.map((e: any) => {
+    chartGridDate.map((e: any) => {
       drawLine(ctx, [
         [e.pos.x, 0],
         [e.pos.x, height],
@@ -57,9 +56,23 @@ const StockChartCanvas = ({
     ]);
   };
 
+  const drawMovingAverage = (ctx: any, { range, color }: { range: number; color: themeColor }) => {
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = theme.colors[color];
+    const pathList: any[] = tmpChartItems
+      .map((e) => {
+        if (!e.SMA[range]) return;
+        return [e.pos.x, e.SMA[range].y];
+      })
+      .filter((e) => e);
+
+    drawLine(ctx, pathList);
+  };
+
   const drawCandleChart = (ctx: any) => {
     ctx.lineWidth = 1;
-    chartItemList.map((e: any) => {
+
+    tmpChartItems.map((e: any) => {
       ctx.fillStyle = e.delta ? theme.colors.red : theme.colors.blue;
       ctx.strokeStyle = e.delta ? theme.colors.red : theme.colors.blue;
       ctx.fillRect(e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
@@ -99,19 +112,19 @@ const StockChartCanvas = ({
   };
 
   const drawLineChart = (ctx: any) => {
-    if (!scoreItemList) return;
-    const scoreList: any = [];
-
     ctx.strokeStyle = theme.colors.cyan;
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    scoreItemList.map((e: any) => {
-      scoreList.push([e.pos.x, e.pos.y]);
-    });
+    const pathList: any[] = tmpChartItems
+      .map((e) => {
+        if (!e.score.value) return;
+        return [e.pos.x, e.score.y];
+      })
+      .filter((e) => e);
 
-    drawLine(ctx, scoreList);
+    drawLine(ctx, pathList);
     ctx.lineCap = 'square';
     ctx.lineJoin = 'round';
   };
@@ -127,11 +140,14 @@ const StockChartCanvas = ({
     ctx.strokeStyle = theme.colors.grayscale100;
 
     drawChartGrid(ctx);
+    movingAverage.map((e: any) => {
+      drawMovingAverage(ctx, e);
+    });
     drawCandleChart(ctx);
     drawRecentPrice(ctx);
     drawMouseMove(ctx);
     drawLineChart(ctx);
-  }, [dateLabelItem, priceLabelItem]);
+  }, [chartGridDate, priceLabelItem, tmpChartItems]);
 
   return <StockChartStyledCanvas ref={boxPlotChartCanvasRef} />;
 };
