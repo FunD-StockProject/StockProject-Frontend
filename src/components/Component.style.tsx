@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 const Container = styled.div({
+  boxSizing: 'border-box',
   display: 'flex',
   width: '100%',
   height: '400px',

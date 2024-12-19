@@ -25,3 +25,5 @@ export interface RevelantStockInfo {
   score: number;
   diff: number;
 }
+
+export type PERIOD_CODE = 'D' | 'W' | 'M';

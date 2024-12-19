@@ -12,7 +12,15 @@ import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
+const CardList = ({
+  apiRef,
+  name,
+  index,
+}: {
+  apiRef: React.MutableRefObject<publicApiType>;
+  name: StockType;
+  index: number;
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
@@ -38,7 +46,13 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderHotStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
+        <ScoreSlotMachine
+          stockName={stock.symbolName}
+          active={true}
+          stockScore={stock.score}
+          tabIndex={0}
+          country={country}
+        />
       </CardListItemContainer>
     ));
   };
@@ -52,14 +66,15 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   };
 
   const renderMobileStocks = () => {
-    const chunkCount = Math.ceil(curStocks.length / 3);
-    const verticalStocks = Array.from({ length: chunkCount }, (_, idx) => curStocks.slice(idx * 3, idx * 3 + 3));
-
-    return verticalStocks.map((verticalStock, idx: number) => (
+    return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        {verticalStock.map((stock: CardInterface, idx: number) => (
-          <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
-        ))}
+        <MobileStockCardItem
+          key={`${name}_${idx}`}
+          score={stock.score}
+          name={stock.symbolName}
+          delta={stock.diff}
+          country={country}
+        />
       </CardListItemContainer>
     ));
   };
@@ -71,7 +86,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
       setActiveIndex(visibleItems[0][0]);
     }
   };
-  const indicatorArray = isMobile || isHot ? [0, 1, 2] : [0, 3, 6];
+  const indicatorArray = Array.from({ length: curStocks?.length }, (_, idx) => idx);
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -83,7 +98,12 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
                 <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
               ))}
             </IndicatorContainer>
-            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
+            <ScrollMenu
+              LeftArrow={<ScrollArrow direction="left" />}
+              RightArrow={<ScrollArrow direction="right" />}
+              apiRef={apiRef}
+              onUpdate={handleUpdate}
+            >
               {renderStocks()}
             </ScrollMenu>
           </>

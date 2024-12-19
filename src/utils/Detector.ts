@@ -19,5 +19,8 @@ const detectBrowser = () => {
   }
   return 'Other';
 };
+const detectPWA = () => {
+  return window.matchMedia('(display-mode: standalone)').matches;
+};
 
-export { detectBrowser, detectPlatform };
+export { detectBrowser, detectPlatform, detectPWA };

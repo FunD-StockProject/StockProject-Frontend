@@ -14,7 +14,7 @@ const Usage = () => {
     fiveMinAgo.setHours(now.getHours() - 23);
     fiveMinAgo.setMinutes(now.getMinutes() - 55);
     console.log(fiveMinAgo);
-    // localStorage.setItem('LAST_VISIT_POPUP', fiveMinAgo.toISOString());
+    localStorage.setItem('LAST_VISIT_POPUP', fiveMinAgo.toISOString());
     navigate(-1);
   };
 

@@ -1,4 +1,3 @@
-// queryClient.ts에서 설정한 queryClient를 임포트
 import { ThemeProvider } from '@emotion/react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
