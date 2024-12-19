@@ -64,7 +64,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
   return (
     <ContentsItemContainer>
       <ContentsItemTitle>
-        개미
+        개미들의
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
@@ -78,8 +78,10 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 
 const Search = () => {
   const { state } = useLocation();
-  console.log(state);
-  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName, state?.country) });
+
+  const [stockInfo, suspend] = useQueryComponent({
+    query: SearchSymbolNameQuery(state?.symbolName, state?.country),
+  });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
