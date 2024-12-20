@@ -93,6 +93,7 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
     scoreScale: 3 / 5,
     canvasX: 0,
     movingAverage: MOVING_AVERAGE.filter((e) => selectedRange.includes(e.range)),
+    DPR: 0,
   });
 
   const [mousePos, setMousePos] = useState<any>({
@@ -199,12 +200,14 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
 
     const { width, height } = canvasContainer.getBoundingClientRect();
     const itemWidth = chartInfo.BarSize * 1.5;
+    const DPR = window.devicePixelRatio;
 
     setChartInfo({
       ...chartInfo,
       width: width,
       height: height,
       canvasX: width - itemWidth * 2,
+      DPR: DPR,
     });
   }, []);
 
@@ -274,36 +277,33 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
     let nowDateIdx = -1;
     let priceInfoIdx = priceInfos.length - 1;
 
-    const chartDateList: any[] = Array.from(
-      { length: (LAST_DATE.getTime() - FIRST_DATE.getTime()) / DAY_TIME },
-      (_, i) => {
-        const date = new Date(FIRST_DATE.getTime() + i * DAY_TIME);
-        if ([0, 6].includes(date.getDay())) return;
+    const chartDateList: any[] = Array.from({ length: (LAST_DATE.getTime() - FIRST_DATE.getTime()) / DAY_TIME }, (_, i) => {
+      const date = new Date(FIRST_DATE.getTime() + i * DAY_TIME);
+      if ([0, 6].includes(date.getDay())) return;
 
-        const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
-        const type = day == 1 || ([2, 3].includes(day) && date.getDay() == 1) ? (month == 1 ? 'Y' : 'M') : 'D';
-        const dateStr = type == 'Y' ? year + '년' : type == 'M' ? month + '월' : day + '일';
-        const localDate = year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
+      const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
+      const type = day == 1 || ([2, 3].includes(day) && date.getDay() == 1) ? (month == 1 ? 'Y' : 'M') : 'D';
+      const dateStr = type == 'Y' ? year + '년' : type == 'M' ? month + '월' : day + '일';
+      const localDate = year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
 
-        if (priceInfoIdx >= 0) {
-          if (localDate == priceInfos[priceInfoIdx].localDate) {
-            priceInfoIdx--;
-          } else if (priceInfoIdx < priceInfos.length - 1) {
-            return;
-          }
+      if (priceInfoIdx >= 0) {
+        if (localDate == priceInfos[priceInfoIdx].localDate) {
+          priceInfoIdx--;
+        } else if (priceInfoIdx < priceInfos.length - 1) {
+          return;
         }
-        if (nowDate.getTime() >= date.getTime()) nowDateIdx++;
+      }
+      if (nowDate.getTime() >= date.getTime()) nowDateIdx++;
 
-        return {
-          day: day,
-          month: month,
-          year: year,
-          dateStr: dateStr,
-          type: type,
-          localDate: localDate,
-        };
-      },
-    ).filter((e) => e);
+      return {
+        day: day,
+        month: month,
+        year: year,
+        dateStr: dateStr,
+        type: type,
+        localDate: localDate,
+      };
+    }).filter((e) => e);
 
     let dayWidth = 0;
     let beforeType = 'D';
@@ -373,10 +373,7 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         (prev: number, e: any) =>
           Math.max(
             prev,
-            Object.entries(e.SMA).reduce(
-              (prev: number, [_, value]: [string, any]) => Math.max(prev, value.price),
-              e.price.high.value,
-            ),
+            Object.entries(e.SMA).reduce((prev: number, [_, value]: [string, any]) => Math.max(prev, value.price), e.price.high.value),
           ),
         0,
       ),
@@ -384,10 +381,7 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         (prev: number, e: any) =>
           Math.min(
             prev,
-            Object.entries(e.SMA).reduce(
-              (prev: number, [_, value]: [string, any]) => Math.min(prev, value.price),
-              e.price.low.value,
-            ),
+            Object.entries(e.SMA).reduce((prev: number, [_, value]: [string, any]) => Math.min(prev, value.price), e.price.low.value),
           ),
         1e9,
       ),
@@ -583,24 +577,13 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px' }}>
           <div style={{ background: '#00000088', display: 'flex', gap: '4px' }}>
             {Object.entries(PRICE_FIELD).map(([key, value]: [string, any]) => (
-              <ChartPriceInfo
-                key={value.key}
-                country={country}
-                label={value.label}
-                price={mousePosInfo?.price?.[key]}
-              />
+              <ChartPriceInfo key={value.key} country={country} label={value.label} price={mousePosInfo?.price?.[key]} />
             ))}
           </div>
           <div style={{ background: '#00000088', display: 'flex', gap: '4px', width: 'auto' }}>
             이동평균선{' '}
             {chartInfo.movingAverage.map((e: { range: number; color: themeColor }) => (
-              <ChartSMAInfo
-                key={'SMA_' + e.range}
-                country={country}
-                price={mousePosInfo?.SMA?.[e.range].price}
-                range={e.range}
-                color={e.color}
-              />
+              <ChartSMAInfo key={'SMA_' + e.range} country={country} price={mousePosInfo?.SMA?.[e.range].price} range={e.range} color={e.color} />
             ))}
           </div>
         </div>
@@ -645,24 +628,12 @@ const ChartPriceInfo = ({ label, price, country }: { label: string; price: any; 
     <>
       {label + ' '}
       {typeof price?.value == 'number' ? formatPriceStr(price.value, country, true) : ''}
-      <StockInfoDeltaLabel delta={price?.delta}>
-        {typeof price?.delta == 'number' ? formatDeltaStr(price?.delta) : ''}
-      </StockInfoDeltaLabel>
+      <StockInfoDeltaLabel delta={price?.delta}>{typeof price?.delta == 'number' ? formatDeltaStr(price?.delta) : ''}</StockInfoDeltaLabel>
     </>
   );
 };
 
-const ChartSMAInfo = ({
-  range,
-  price,
-  country,
-  color,
-}: {
-  range: number;
-  price?: number;
-  country: string;
-  color: themeColor;
-}) => {
+const ChartSMAInfo = ({ range, price, country, color }: { range: number; price?: number; country: string; color: themeColor }) => {
   return (
     <>
       <span style={{ color: theme.colors[color] }}>{range + ' '}</span>

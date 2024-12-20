@@ -22,33 +22,35 @@ const StockChartCanvas = ({
   const { width, height } = chartInfo;
   const { BarSize } = chartInfo;
   const { movingAverage } = chartInfo;
+  const { DPR } = chartInfo;
 
-  const drawLine = (ctx: any, pathList: any) => {
-    let str = '';
-    pathList.map((e: any, i: number) => {
-      str += `${i ? 'L' : 'M'} `;
-      str += `${e[0]} ${e[1]} `;
-    });
-
-    ctx.stroke(new Path2D(str));
+  const setLineWidth = (ctx: any, width: number) => (ctx.lineWidth = width * DPR);
+  const drawLine = (ctx: any, pathList: any) =>
+    ctx.stroke(new Path2D(pathList.reduce((acc: any, [x, y]: [number, number], i: number) => acc + `${i ? 'L' : 'M'} ${DPR * x} ${DPR * y} `, '')));
+  const drawRect = (ctx: any, x: number, y: number, w: number, h: number) => {
+    ctx.fillRect(x * DPR, y * DPR, w * DPR, h * DPR);
+    ctx.strokeRect(x * DPR, y * DPR, w * DPR, h * DPR);
   };
 
   const drawChartGrid = (ctx: any) => {
-    priceLabelItem.map((e: any) => {
+    setLineWidth(ctx, 1);
+    ctx.strokeStyle = theme.colors.grayscale100;
+
+    priceLabelItem.map((e: any) =>
       drawLine(ctx, [
         [0, e.pos.y],
         [width, e.pos.y],
-      ]);
-    });
+      ]),
+    );
 
-    chartGridDate.map((e: any) => {
+    chartGridDate.map((e: any) =>
       drawLine(ctx, [
         [e.pos.x, 0],
         [e.pos.x, height],
-      ]);
-    });
+      ]),
+    );
 
-    ctx.lineWidth = 4;
+    setLineWidth(ctx, 4);
     drawLine(ctx, [
       [0, height],
       [width, height],
@@ -57,26 +59,27 @@ const StockChartCanvas = ({
   };
 
   const drawMovingAverage = (ctx: any, { range, color }: { range: number; color: themeColor }) => {
-    ctx.lineWidth = 2;
+    setLineWidth(ctx, 2);
     ctx.strokeStyle = theme.colors[color];
-    const pathList: any[] = tmpChartItems
-      .map((e) => {
-        if (!e.SMA[range]) return;
-        return [e.pos.x, e.SMA[range].y];
-      })
-      .filter((e) => e);
 
-    drawLine(ctx, pathList);
+    drawLine(
+      ctx,
+      tmpChartItems
+        .map((e) => {
+          if (!e.SMA[range]) return;
+          return [e.pos.x, e.SMA[range].y];
+        })
+        .filter((e) => e),
+    );
   };
 
   const drawCandleChart = (ctx: any) => {
-    ctx.lineWidth = 1;
+    setLineWidth(ctx, 1);
 
     tmpChartItems.map((e: any) => {
       ctx.fillStyle = e.delta ? theme.colors.red : theme.colors.blue;
       ctx.strokeStyle = e.delta ? theme.colors.red : theme.colors.blue;
-      ctx.fillRect(e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
-      ctx.strokeRect(e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
+      drawRect(ctx, e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
       drawLine(ctx, [
         [e.pos.x, e.daily.y],
         [e.pos.x, e.daily.y + e.daily.h],
@@ -97,8 +100,9 @@ const StockChartCanvas = ({
 
   const drawMouseMove = (ctx: any) => {
     if (!mousePosInfo) return;
+    setLineWidth(ctx, 1);
+
     ctx.strokeStyle = theme.colors.primary0;
-    ctx.lineWidth = 1;
     ctx.setLineDash([10, 10]);
     drawLine(ctx, [
       [0, mousePosInfo.pos.y],
@@ -112,19 +116,20 @@ const StockChartCanvas = ({
   };
 
   const drawLineChart = (ctx: any) => {
+    setLineWidth(ctx, 2);
     ctx.strokeStyle = theme.colors.cyan;
-    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    const pathList: any[] = tmpChartItems
-      .map((e) => {
-        if (!e.score.value) return;
-        return [e.pos.x, e.score.y];
-      })
-      .filter((e) => e);
-
-    drawLine(ctx, pathList);
+    drawLine(
+      ctx,
+      tmpChartItems
+        .map((e) => {
+          if (!e.score.value) return;
+          return [e.pos.x, e.score.y];
+        })
+        .filter((e) => e),
+    );
     ctx.lineCap = 'square';
     ctx.lineJoin = 'round';
   };
@@ -132,12 +137,10 @@ const StockChartCanvas = ({
   useEffect(() => {
     const canvas = boxPlotChartCanvasRef.current;
     if (!canvas) return;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    ctx.strokeStyle = theme.colors.grayscale100;
 
     drawChartGrid(ctx);
     movingAverage.map((e: any) => {
