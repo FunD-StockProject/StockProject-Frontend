@@ -11,7 +11,6 @@ import {
   ChartLabel,
   ExtremeLabel,
   StockChartContainer,
-  StockChartGridContainer,
   StockChartHeader,
   StockChartHeaderContents,
   StockChartHeaderItem,
@@ -56,7 +55,17 @@ const formatDeltaStr = (delta: number) => {
   return `(${symbol + deltaStr}%) `;
 };
 
-const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: string }) => {
+const StockChartGrid = ({
+  priceInfos,
+  // oldestDate,
+  country,
+  // tmp,
+}: {
+  priceInfos: any[];
+  // oldestDate: any;
+  country: string;
+  // tmp: () => void;
+}) => {
   const selectedRange = [5, 20, 60, 120];
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +80,7 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
   const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
   const [mousePosInfo, setMousePosInfo] = useState<any>(null);
   const [recentPrice, setRecentPrice] = useState<any>(null);
+  const [lastPrice, setLastPrice] = useState<any>(null);
   const [extremePrice, setExtremePrice] = useState<any>(null);
 
   const [tmpChartItems, setTmpChartItems] = useState<any>([]);
@@ -87,12 +97,10 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
 
   const [chartInfo, setChartInfo] = useState<any>({
     BarSize: isMobile ? 8 : 24,
-    width: 0,
-    height: 0,
     priceScale: 4 / 5,
     scoreScale: 3 / 5,
-    canvasX: 0,
-    movingAverage: MOVING_AVERAGE.filter((e) => selectedRange.includes(e.range)),
+    canvasX: 200,
+    SMAInfo: MOVING_AVERAGE.filter((e) => selectedRange.includes(e.range)),
     DPR: 0,
   });
 
@@ -121,8 +129,8 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
     if (barSize <= 0 || barSize > 200) return;
 
     const itemWidth = barSize * 1.5;
-    const MinX = itemWidth * (5 / 2);
-    const MaxX = chartInfo.width + itemWidth * (priceInfos.length - 3 / 2);
+    const MinX = itemWidth * (3 / 2);
+    const MaxX = canvasSize.width + itemWidth * (priceInfos.length - 5 / 2);
 
     setChartInfo({
       ...chartInfo,
@@ -168,20 +176,20 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
   };
 
   const handlePointerMove = (e: MouseEvent | TouchEvent) => {
-    const ponterX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const pointerX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
     e.preventDefault();
     if (isMouseDown) {
-      const deltaX = ponterX - chartInfo.prevX;
+      const deltaX = pointerX - chartInfo.prevX;
 
       const itemWidth = chartInfo.BarSize * 1.5;
       const canvasX = chartInfo.canvasX + deltaX;
-      const MinX = itemWidth * (5 / 2);
-      const MaxX = chartInfo.width + itemWidth * (priceInfos.length - 3 / 2);
+      const MinX = itemWidth * (3 / 2);
+      const MaxX = canvasSize.width + itemWidth * (priceInfos.length - 5 / 2);
 
       setChartInfo({
         ...chartInfo,
         canvasX: canvasX < MinX ? MinX : canvasX > MaxX ? MaxX : canvasX,
-        prevX: ponterX,
+        prevX: pointerX,
       });
     }
   };
@@ -194,21 +202,47 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
     });
   };
 
+  const [canvasSize, setCanvasSize] = useState<any>({
+    width: 0,
+    height: 0,
+  });
+
+  const observerRef = useRef<ResizeObserver>(
+    new ResizeObserver(([entry]) =>
+      setCanvasSize({ width: entry.contentRect.width, height: entry.contentRect.height }),
+    ),
+  );
+
+  useEffect(() => {
+    const itemWidth = chartInfo.BarSize * 1.5;
+    if (chartInfo.prevX === undefined) {
+      setChartInfo({
+        ...chartInfo,
+        canvasX: canvasSize.width - itemWidth * 2,
+      });
+    }
+  }, [canvasSize]);
+
   useEffect(() => {
     const canvasContainer = containerRef.current;
     if (!canvasContainer) return;
 
-    const { width, height } = canvasContainer.getBoundingClientRect();
+    const { width } = canvasContainer.getBoundingClientRect();
     const itemWidth = chartInfo.BarSize * 1.5;
     const DPR = window.devicePixelRatio;
 
+    const observer = observerRef.current;
+    if (!observer) return;
+
+    observer.observe(canvasContainer);
+
     setChartInfo({
       ...chartInfo,
-      width: width,
-      height: height,
       canvasX: width - itemWidth * 2,
       DPR: DPR,
     });
+
+    return () => observer.unobserve(canvasContainer);
   }, []);
 
   useEffect(() => {
@@ -269,41 +303,44 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
 
   useEffect(() => {
     const nowDate = new Date();
-
     const itemWidth = chartInfo.BarSize * 1.5;
-
-    const { width, height, canvasX } = chartInfo;
+    const { canvasX } = chartInfo;
+    const { width, height } = canvasSize;
+    // console.log(canvasX, width, height);
 
     let nowDateIdx = -1;
     let priceInfoIdx = priceInfos.length - 1;
 
-    const chartDateList: any[] = Array.from({ length: (LAST_DATE.getTime() - FIRST_DATE.getTime()) / DAY_TIME }, (_, i) => {
-      const date = new Date(FIRST_DATE.getTime() + i * DAY_TIME);
-      if ([0, 6].includes(date.getDay())) return;
+    const chartDateList: any[] = Array.from(
+      { length: (LAST_DATE.getTime() - FIRST_DATE.getTime()) / DAY_TIME },
+      (_, i) => {
+        const date = new Date(FIRST_DATE.getTime() + i * DAY_TIME);
+        if ([0, 6].includes(date.getDay())) return;
 
-      const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
-      const type = day == 1 || ([2, 3].includes(day) && date.getDay() == 1) ? (month == 1 ? 'Y' : 'M') : 'D';
-      const dateStr = type == 'Y' ? year + '년' : type == 'M' ? month + '월' : day + '일';
-      const localDate = year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
+        const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
+        const type = day == 1 || ([2, 3].includes(day) && date.getDay() == 1) ? (month == 1 ? 'Y' : 'M') : 'D';
+        const dateStr = type == 'Y' ? year + '년' : type == 'M' ? month + '월' : day + '일';
+        const localDate = year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
 
-      if (priceInfoIdx >= 0) {
-        if (localDate == priceInfos[priceInfoIdx].localDate) {
-          priceInfoIdx--;
-        } else if (priceInfoIdx < priceInfos.length - 1) {
-          return;
+        if (priceInfoIdx >= 0) {
+          if (localDate == priceInfos[priceInfoIdx].localDate) {
+            priceInfoIdx--;
+          } else if (priceInfoIdx < priceInfos.length - 1) {
+            return;
+          }
         }
-      }
-      if (nowDate.getTime() >= date.getTime()) nowDateIdx++;
+        if (nowDate.getTime() >= date.getTime()) nowDateIdx++;
 
-      return {
-        day: day,
-        month: month,
-        year: year,
-        dateStr: dateStr,
-        type: type,
-        localDate: localDate,
-      };
-    }).filter((e) => e);
+        return {
+          day: day,
+          month: month,
+          year: year,
+          dateStr: dateStr,
+          type: type,
+          localDate: localDate,
+        };
+      },
+    ).filter((e) => e);
 
     let dayWidth = 0;
     let beforeType = 'D';
@@ -349,22 +386,27 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
               },
             };
           }, {}),
-          SMA: chartInfo.movingAverage.reduce((acc: any, e: any) => {
-            let sum = 0;
-            let j = 0;
-            for (j = i; j < i + e.range && j < priceInfos.length; j++) {
-              sum += Number(priceInfos[j].closePrice);
-            }
-
-            return { ...acc, [e.range]: { price: sum / (j - i) } };
-          }, {}),
+          SMA: chartInfo.SMAInfo.reduce(
+            (acc: any, e: any) => ({
+              ...acc,
+              [e.range]: {
+                price: Array.from(
+                  { length: Math.min(e.range, priceInfos.length - i) },
+                  (_, j) => priceInfos[i + j],
+                ).reduce((acc, e, _, arr) => {
+                  return (acc += e.closePrice / arr.length);
+                }, 0),
+              },
+            }),
+            {},
+          ),
           score: {
             value: e.score,
           },
           pos: { x: posX },
         };
       })
-      .filter((e: any) => e.pos.x >= -itemWidth / 2 && e.pos.x <= width + itemWidth / 2);
+      .filter((e: any) => e.pos.x > -itemWidth / 2 && e.pos.x < width + itemWidth / 2);
 
     // priceGrid
 
@@ -373,7 +415,10 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         (prev: number, e: any) =>
           Math.max(
             prev,
-            Object.entries(e.SMA).reduce((prev: number, [_, value]: [string, any]) => Math.max(prev, value.price), e.price.high.value),
+            Object.entries(e.SMA).reduce(
+              (prev: number, [_, value]: [string, any]) => Math.max(prev, value.price),
+              e.price.high.value,
+            ),
           ),
         0,
       ),
@@ -381,7 +426,10 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         (prev: number, e: any) =>
           Math.min(
             prev,
-            Object.entries(e.SMA).reduce((prev: number, [_, value]: [string, any]) => Math.min(prev, value.price), e.price.low.value),
+            Object.entries(e.SMA).reduce(
+              (prev: number, [_, value]: [string, any]) => Math.min(prev, value.price),
+              e.price.low.value,
+            ),
           ),
         1e9,
       ),
@@ -487,37 +535,50 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
       priceStr: formatPriceStr(recentPrice, country),
     });
 
-    // extremePrice
+    if (tmpChartItems.length) {
+      // lastPrice
 
-    const [priceMax, priceMin] = [
-      tmpChartItems.reduce((prev, value) => (prev.price.high.value < value.price.high.value ? value : prev)),
-      tmpChartItems.reduce((prev, value) => (prev.price.low.value > value.price.low.value ? value : prev)),
-    ];
+      setLastPrice({
+        pos: {
+          x: 0,
+          y: tmpChartItems && priceScaledY(tmpChartItems[0].price.close.value),
+        },
+        delta: tmpChartItems && tmpChartItems[0].price.close.value - tmpChartItems[0].price.open.value,
+        priceStr: formatPriceStr(tmpChartItems[0].price.close.value, country),
+      });
 
-    setExtremePrice({
-      max: {
-        pos: {
-          x: priceMax.pos.x,
-          y: priceScaledY(priceMax.price.high.value),
+      // extremePrice
+
+      const [priceMax, priceMin] = [
+        tmpChartItems.reduce((prev, value) => (prev.price.high.value < value.price.high.value ? value : prev)),
+        tmpChartItems.reduce((prev, value) => (prev.price.low.value > value.price.low.value ? value : prev)),
+      ];
+
+      setExtremePrice({
+        max: {
+          pos: {
+            x: priceMax.pos.x,
+            y: priceScaledY(priceMax.price.high.value),
+          },
+          price: {
+            value: priceMax.price.high.value,
+            delta: recentPrice / priceMax.price.high.value - 1,
+          },
+          label: EXTREME_FIELD.max.label,
         },
-        price: {
-          value: priceMax.price.high.value,
-          delta: recentPrice / priceMax.price.high.value - 1,
+        min: {
+          pos: {
+            x: priceMin.pos.x,
+            y: priceScaledY(priceMin.price.low.value),
+          },
+          price: {
+            value: priceMin.price.low.value,
+            delta: recentPrice / priceMin.price.low.value - 1,
+          },
+          label: EXTREME_FIELD.min.label,
         },
-        label: EXTREME_FIELD.max.label,
-      },
-      min: {
-        pos: {
-          x: priceMin.pos.x,
-          y: priceScaledY(priceMin.price.low.value),
-        },
-        price: {
-          value: priceMin.price.low.value,
-          delta: recentPrice / priceMin.price.low.value - 1,
-        },
-        label: EXTREME_FIELD.min.label,
-      },
-    });
+      });
+    }
 
     // mousePos
 
@@ -543,83 +604,135 @@ const StockChartGrid = ({ priceInfos, country }: { priceInfos: any; country: str
         });
       });
     }
+
+    // // reloading
+
+    // if (oldestDate.date == [...tmpChartItems].reverse()[0].localDate) {
+    //   console.log(123);
+    //   tmp();
+    // }
   }, [mousePos, chartInfo, isMouseEnter]);
 
+  const deltaColor = (delta: number): themeColor => (!delta ? 'grayscale50' : delta > 0 ? 'red' : 'blue');
+
   return (
-    <StockChartGridContainer>
-      <div ref={scoreLabelRef}>
-        {gridScore.map(
-          (e: any) =>
-            e.scoreStr !== '' && (
-              <ChartLabel align="right" key={'score' + e.scoreStr} y={e.pos.y}>
-                {e.scoreStr}
-              </ChartLabel>
-            ),
-        )}
-      </div>
-      <div>
-        <StockChartCanvas
-          priceLabelItem={gridPrice}
-          chartInfo={chartInfo}
-          recentPrice={recentPrice}
-          mousePosInfo={mousePosInfo}
-          tmpChartItems={tmpChartItems}
-          chartGridDate={chartGridDate}
-        />
-        {extremePrice &&
-          Object.entries(extremePrice).map(([key, value]: [string, any]) => (
-            <ExtremeLabel key={key} x={value.pos.x} y={value.pos.y} delta={key == 'max'}>
-              {key == 'min' && <UpSVG />}
-              {`${value.label} : ${formatPriceStr(value.price.value, country, true)} ${formatDeltaStr(value.price.delta)}`}
-              {key == 'max' && <DownSVG />}
-            </ExtremeLabel>
-          ))}
-        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px' }}>
-          <div style={{ background: '#00000088', display: 'flex', gap: '4px' }}>
-            {Object.entries(PRICE_FIELD).map(([key, value]: [string, any]) => (
-              <ChartPriceInfo key={value.key} country={country} label={value.label} price={mousePosInfo?.price?.[key]} />
-            ))}
+    <>
+      <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            position: 'relative',
+            marginBottom: '24px',
+            overflow: 'hidden',
+          }}
+          ref={scoreLabelRef}
+        >
+          <div style={{ padding: '8px', color: 'transparent' }}>100</div>
+          {gridScore.map(
+            (e: any) =>
+              e.scoreStr !== '' && (
+                <ChartLabel align="right" key={'score' + e.scoreStr} y={e.pos.y}>
+                  {e.scoreStr}
+                </ChartLabel>
+              ),
+          )}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <div
+            style={{
+              position: 'relative',
+              overflow: 'hidden',
+              height: '600px',
+            }}
+          >
+            <StockChartCanvas
+              priceLabelItem={gridPrice}
+              chartInfo={chartInfo}
+              canvasSize={canvasSize}
+              recentPrice={recentPrice}
+              mousePosInfo={mousePosInfo}
+              tmpChartItems={tmpChartItems}
+              chartGridDate={chartGridDate}
+            />
+            {extremePrice &&
+              Object.entries(extremePrice).map(([key, value]: [string, any]) => (
+                <ExtremeLabel key={key} x={value.pos.x} y={value.pos.y} delta={key == 'max'}>
+                  {`${value.label} : ${formatPriceStr(value.price.value, country, true)} ${formatDeltaStr(value.price.delta)}`}
+                  {key == 'max' ? <DownSVG /> : <UpSVG />}
+                </ExtremeLabel>
+              ))}
+            <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px' }}>
+              <div style={{ background: '#00000088', display: 'flex', gap: '4px' }}>
+                {Object.entries(PRICE_FIELD).map(([key, value]: [string, any]) => (
+                  <ChartPriceInfo
+                    key={value.key}
+                    country={country}
+                    label={value.label}
+                    price={mousePosInfo?.price?.[key]}
+                  />
+                ))}
+              </div>
+              <div style={{ background: '#00000088', display: 'flex', gap: '4px', width: 'auto' }}>
+                이동평균선{' '}
+                {chartInfo.SMAInfo.map((e: { range: number; color: themeColor }) => (
+                  <ChartSMAInfo
+                    key={'SMA_' + e.range}
+                    country={country}
+                    price={mousePosInfo?.SMA?.[e.range].price}
+                    range={e.range}
+                    color={e.color}
+                  />
+                ))}
+              </div>
+            </div>
+            <div ref={containerRef} style={{ top: 0, left: 0, height: '100%', width: '100%', position: 'absolute' }} />
           </div>
-          <div style={{ background: '#00000088', display: 'flex', gap: '4px', width: 'auto' }}>
-            이동평균선{' '}
-            {chartInfo.movingAverage.map((e: { range: number; color: themeColor }) => (
-              <ChartSMAInfo key={'SMA_' + e.range} country={country} price={mousePosInfo?.SMA?.[e.range].price} range={e.range} color={e.color} />
+          <div style={{ height: '24px', position: 'relative', overflow: 'hidden' }}>
+            {chartGridDate.map((e: any) => (
+              <ChartLabel key={e.key} x={e.pos.x}>
+                {e.dateStr}
+              </ChartLabel>
             ))}
+            {mousePosInfo && (
+              <ChartLabel fillRect x={mousePosInfo.pos.x} color="blue">
+                {mousePosInfo.dateStr}
+              </ChartLabel>
+            )}
           </div>
         </div>
-        <div ref={containerRef} style={{ top: 0, left: 0, height: '100%', width: '100%', position: 'absolute' }} />
+        <div
+          ref={priceLabelRef}
+          style={{
+            position: 'relative',
+            marginBottom: '24px',
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{ padding: '8px', color: 'transparent', whiteSpace: 'none' }}>
+            {[...gridPrice].reverse()[0]?.priceStr}
+          </div>
+          {gridPrice.map((e: any) => (
+            <ChartLabel key={e.priceStr} y={e.pos.y}>
+              {e.priceStr}
+            </ChartLabel>
+          ))}
+          {lastPrice && (
+            <ChartLabel strokeRect fillText y={lastPrice.pos.y} color={deltaColor(lastPrice.delta)}>
+              {lastPrice.priceStr}
+            </ChartLabel>
+          )}
+          {recentPrice && (
+            <ChartLabel fillRect y={recentPrice.pos.y} color={deltaColor(recentPrice.delta)}>
+              {recentPrice.priceStr}
+            </ChartLabel>
+          )}
+          {mousePosInfo && (
+            <ChartLabel fillRect y={mousePosInfo.pos.y} color="blue">
+              {mousePosInfo.priceStr}
+            </ChartLabel>
+          )}
+        </div>
       </div>
-      <div ref={priceLabelRef}>
-        {gridPrice.map((e: any) => (
-          <ChartLabel key={e.priceStr} y={e.pos.y}>
-            {e.priceStr}
-          </ChartLabel>
-        ))}
-        {recentPrice && (
-          <ChartLabel y={recentPrice.pos.y} background={recentPrice.delta >= 0 ? 'red' : 'blue'}>
-            {recentPrice.priceStr}
-          </ChartLabel>
-        )}
-        {mousePosInfo && (
-          <ChartLabel y={mousePosInfo.pos.y} background="blue">
-            {mousePosInfo.priceStr}
-          </ChartLabel>
-        )}
-      </div>
-      <div />
-      <div>
-        {chartGridDate.map((e: any) => (
-          <ChartLabel key={e.key} x={e.pos.x}>
-            {e.dateStr}
-          </ChartLabel>
-        ))}
-        {mousePosInfo && (
-          <ChartLabel x={mousePosInfo.pos.x} background="blue">
-            {mousePosInfo.dateStr}
-          </ChartLabel>
-        )}
-      </div>
-    </StockChartGridContainer>
+    </>
   );
 };
 
@@ -628,12 +741,24 @@ const ChartPriceInfo = ({ label, price, country }: { label: string; price: any; 
     <>
       {label + ' '}
       {typeof price?.value == 'number' ? formatPriceStr(price.value, country, true) : ''}
-      <StockInfoDeltaLabel delta={price?.delta}>{typeof price?.delta == 'number' ? formatDeltaStr(price?.delta) : ''}</StockInfoDeltaLabel>
+      <StockInfoDeltaLabel delta={price?.delta}>
+        {typeof price?.delta == 'number' ? formatDeltaStr(price?.delta) : ''}
+      </StockInfoDeltaLabel>
     </>
   );
 };
 
-const ChartSMAInfo = ({ range, price, country, color }: { range: number; price?: number; country: string; color: themeColor }) => {
+const ChartSMAInfo = ({
+  range,
+  price,
+  country,
+  color,
+}: {
+  range: number;
+  price?: number;
+  country: string;
+  color: themeColor;
+}) => {
   return (
     <>
       <span style={{ color: theme.colors[color] }}>{range + ' '}</span>
@@ -663,8 +788,11 @@ const StockChart = ({ stockId }: { stockId: number }) => {
     },
   ];
   const [chartPeriodIdx, setChartPeriodIdx] = useState<PERIOD_CODE>('D');
-  const [stockInfo, suspend] = useQueryComponent({ query: ChartQuery(stockId, chartPeriodIdx, '2020-08-01') });
-  const [priceInfos, setPriceInfos] = useState<any>();
+  const [stockInfo, suspend] = useQueryComponent({ query: ChartQuery(stockId, chartPeriodIdx, '1970-08-01') });
+  const [priceInfos, setPriceInfos] = useState<any>([]);
+  // const [oldestDate, setOldestDate] = useState<any>({
+  //   status: 'loading',
+  // });
 
   useEffect(() => {
     setDidMount(true);
@@ -677,12 +805,29 @@ const StockChart = ({ stockId }: { stockId: number }) => {
 
   useEffect(() => {
     if (!stockInfo) return;
-    setPriceInfos(stockInfo.priceInfos);
+    // setPriceInfos(stockInfo.priceInfos);
+    // console.log([...priceInfos, ...stockInfo.priceInfos]);
+    setPriceInfos([...priceInfos, ...stockInfo.priceInfos]);
+    // setOldestDate({ status: 'ok', date: [...stockInfo.priceInfos].reverse()[0].localDate });
   }, [stockInfo]);
+
+  // useEffect(() => {
+  //   if (oldestDate.status == 'loading') {
+  //     if (!stockInfo) return;
+  //     setPriceInfos([...priceInfos, ...stockInfo.priceInfos]);
+  //     console.log(12312312312);
+  //   }
+  //   console.log(oldestDate);
+  // }, [oldestDate]);
+
+  // const tmp = () => {
+  //   console.log('tmp');
+  //   setOldestDate({ status: 'loading' });
+  // };
 
   return (
     suspend ||
-    (priceInfos && (
+    (priceInfos.length != 0 && (
       <StockChartContainer>
         <StockChartHeader>
           <StockChartHeaderContents>
@@ -705,6 +850,8 @@ const StockChart = ({ stockId }: { stockId: number }) => {
       </StockChartContainer>
     ))
   );
+
+  //마지막 로딩 날짜
 };
 
 export default StockChart;
