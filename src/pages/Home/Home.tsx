@@ -6,15 +6,7 @@ import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@
 import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
 import InfoSVG from '@assets/info.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
-import {
-  HomeContainer,
-  HomeContents,
-  IndexItem,
-  IndicesContainer,
-  StyleTabMenu,
-  StyleTabMenuContainer,
-  StyledSpan,
-} from './Home.Style';
+import { HomeContainer, HomeContents, IndexItem, IndicesContainer, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -48,11 +40,7 @@ const Home = () => {
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li
-              key={index}
-              className={index === tabIndex ? 'submenu focused' : 'submenu'}
-              onClick={() => handleTab(index)}
-            >
+            <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
               {el}
             </li>
           ))}
@@ -61,14 +49,16 @@ const Home = () => {
 
       <HomeContents>
         {/* <InfoSVG className="btn_info" onClick={() => {}} /> */}
-        <IndicesContainer>
-          {stockIndices[tabIndex].map((stockIndex) => (
-            <IndexItem>
-              <div>{stockIndex}</div>
-              <div>25</div>
-            </IndexItem>
-          ))}
-        </IndicesContainer>
+        {false && (
+          <IndicesContainer>
+            {stockIndices[tabIndex].map((stockIndex) => (
+              <IndexItem>
+                <div>{stockIndex}</div>
+                <div>25</div>
+              </IndexItem>
+            ))}
+          </IndicesContainer>
+        )}
         <ContentsItemContainer>
           <ContentsItemTitle color="primary40">
             지금 가장<StyledSpan color="primary40">HOT</StyledSpan> 한
