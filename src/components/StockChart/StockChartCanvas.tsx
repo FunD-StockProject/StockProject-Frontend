@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { theme, themeColor } from '@styles/themes';
 import { StockChartStyledCanvas } from './StockChart.Style';
 
@@ -6,24 +6,18 @@ const StockChartCanvas = ({
   priceLabelItem,
   chartInfo,
   canvasSize,
-  recentPrice,
-  mousePosInfo,
   tmpChartItems,
   chartGridDate,
 }: {
   priceLabelItem: any;
   chartInfo: any;
   canvasSize: any;
-  recentPrice: any;
-  mousePosInfo: any;
   tmpChartItems: any[];
   chartGridDate: any;
 }) => {
   const boxPlotChartCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const { width, height } = canvasSize;
-  const { BarSize } = chartInfo;
-  const { SMAInfo } = chartInfo;
   const { DPR } = chartInfo;
 
   const setLineWidth = (ctx: any, width: number) => (ctx.lineWidth = width * DPR);
@@ -36,10 +30,6 @@ const StockChartCanvas = ({
         ),
       ),
     );
-  const drawRect = (ctx: any, x: number, y: number, w: number, h: number) => {
-    ctx.fillRect(x * DPR, y * DPR, w * DPR, h * DPR);
-    ctx.strokeRect(x * DPR, y * DPR, w * DPR, h * DPR);
-  };
 
   const drawChartGrid = (ctx: any) => {
     setLineWidth(ctx, 1);
@@ -67,51 +57,205 @@ const StockChartCanvas = ({
     ]);
   };
 
-  const drawMovingAverage = (ctx: any, { range, color }: { range: number; color: themeColor }) => {
-    setLineWidth(ctx, 2);
-    ctx.strokeStyle = theme.colors[color];
+  useEffect(() => {
+    const canvas = boxPlotChartCanvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    drawLine(
-      ctx,
-      tmpChartItems
-        .map((e) => {
-          if (!e.SMA[range]) return;
-          return [e.pos.x, e.SMA[range].y];
-        })
-        .filter((e) => e),
-    );
-  };
+    drawChartGrid(ctx);
+  }, [chartGridDate, priceLabelItem, tmpChartItems]);
 
-  const drawCandleChart = (ctx: any) => {
-    setLineWidth(ctx, 1);
+  return <StockChartStyledCanvas ref={boxPlotChartCanvasRef} />;
+};
+const DPR = window.devicePixelRatio;
 
-    tmpChartItems.map((e: any) => {
+const setLineWidth = (ctx: any, width: number) => (ctx.lineWidth = width * DPR);
+const drawLine = (ctx: any, pathList: any) =>
+  ctx.stroke(
+    new Path2D(
+      pathList.reduce(
+        (acc: any, [x, y]: [number, number], i: number) => acc + `${i ? 'L' : 'M'} ${DPR * x} ${DPR * y} `,
+        '',
+      ),
+    ),
+  );
+const drawRect = (ctx: any, x: number, y: number, w: number, h: number) => {
+  ctx.fillRect(x * DPR, y * DPR, w * DPR, h * DPR);
+  ctx.strokeRect(x * DPR, y * DPR, w * DPR, h * DPR);
+};
+
+const StockChartPriceCanvas = ({ priceChartList, canvasSize }: { priceChartList: any; canvasSize: any }) => {
+  const { width, height } = canvasSize;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!priceChartList) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+
+    priceChartList.map((e: any) => {
       ctx.fillStyle = e.delta ? theme.colors.red : theme.colors.blue;
       ctx.strokeStyle = e.delta ? theme.colors.red : theme.colors.blue;
-      drawRect(ctx, e.pos.x - BarSize / 2, e.market.y, BarSize, e.market.h);
+      drawRect(ctx, e.pos.x - e.barSize / 2, e.market.y, e.barSize, e.market.h);
       drawLine(ctx, [
         [e.pos.x, e.daily.y],
         [e.pos.x, e.daily.y + e.daily.h],
       ]);
     });
-  };
+  }, [priceChartList]);
 
-  const drawRecentPrice = (ctx: any) => {
-    if (!recentPrice) return;
-    ctx.strokeStyle = recentPrice.delta >= 0 ? theme.colors.red : theme.colors.blue;
-    ctx.setLineDash([2, 4]);
-    drawLine(ctx, [
-      [0, recentPrice.pos.y],
-      [width, recentPrice.pos.y],
-    ]);
-    ctx.setLineDash([]);
-  };
+  return <StockChartStyledCanvas ref={canvasRef} />;
+};
 
-  const drawMouseMove = (ctx: any) => {
-    if (!mousePosInfo) return;
+const StockChartScoreCanvas = ({ scoreChartList, canvasSize }: { scoreChartList: any; canvasSize: any }) => {
+  const { width, height } = canvasSize;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!scoreChartList) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+
+    setLineWidth(ctx, 2);
+    ctx.strokeStyle = theme.colors.cyan;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    drawLine(
+      ctx,
+      scoreChartList
+        .map((e: any) => {
+          if (!e.score.value) return;
+          return [e.pos.x, e.score.y];
+        })
+        .filter((e: any) => e),
+    );
+  }, [scoreChartList]);
+
+  return <StockChartStyledCanvas ref={canvasRef} />;
+};
+
+const StockChartSMACanvas = ({
+  SMAInfo,
+  canvasSize,
+}: {
+  SMAInfo: { color: themeColor; items: any[] };
+  canvasSize: any;
+}) => {
+  const { width, height } = canvasSize;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { color, items } = SMAInfo;
+
+  useEffect(() => {
+    if (!SMAInfo) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+
+    setLineWidth(ctx, 2);
+    ctx.strokeStyle = theme.colors[color];
+
+    drawLine(
+      ctx,
+      items.map((e) => [e.pos.x, e.pos.y]),
+    );
+  }, [SMAInfo]);
+
+  return <StockChartStyledCanvas ref={canvasRef} />;
+};
+
+const StockChartGridCanvas = ({
+  gridDate,
+  gridPrice,
+  gridScore,
+  canvasSize,
+}: {
+  gridDate: any[];
+  gridPrice: any[];
+  gridScore: any[];
+  canvasSize: any;
+}) => {
+  const { width, height } = canvasSize;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!gridPrice || !gridScore) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+
     setLineWidth(ctx, 1);
+    ctx.strokeStyle = theme.colors.grayscale100;
+
+    gridDate.map((e: any) =>
+      drawLine(ctx, [
+        [e.pos.x, 0],
+        [e.pos.x, height],
+      ]),
+    );
+
+    // gridScore.map((e: any) =>
+    //   drawLine(ctx, [
+    //     [0, e.pos.y],
+    //     [width, e.pos.y],
+    //   ]),
+    // );
+
+    gridPrice.map((e: any) =>
+      drawLine(ctx, [
+        [0, e.pos.y],
+        [width, e.pos.y],
+      ]),
+    );
+
+    setLineWidth(ctx, 4);
+    drawLine(ctx, [
+      [0, height],
+      [width, height],
+      [width, 0],
+    ]);
+  }, [gridPrice, gridScore]);
+
+  return <StockChartStyledCanvas ref={canvasRef} />;
+};
+
+const StockChartMouseCanvas = ({ mousePosInfo, canvasSize }: { mousePosInfo: any; canvasSize: any }) => {
+  const { width, height } = canvasSize;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!mousePosInfo) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width * DPR;
+    canvas.height = height * DPR;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
 
     ctx.strokeStyle = theme.colors.primary0;
+    ctx.lineWidth = 1;
     ctx.setLineDash([10, 10]);
     drawLine(ctx, [
       [0, mousePosInfo.pos.y],
@@ -122,46 +266,16 @@ const StockChartCanvas = ({
       [mousePosInfo.pos.x, height],
     ]);
     ctx.setLineDash([]);
-  };
+  }, [mousePosInfo]);
 
-  const drawLineChart = (ctx: any) => {
-    setLineWidth(ctx, 2);
-    ctx.strokeStyle = theme.colors.cyan;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    drawLine(
-      ctx,
-      tmpChartItems
-        .map((e) => {
-          if (!e.score.value) return;
-          return [e.pos.x, e.score.y];
-        })
-        .filter((e) => e),
-    );
-    ctx.lineCap = 'square';
-    ctx.lineJoin = 'round';
-  };
-
-  useEffect(() => {
-    const canvas = boxPlotChartCanvasRef.current;
-    if (!canvas) return;
-    canvas.width = width * DPR;
-    canvas.height = height * DPR;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    drawChartGrid(ctx);
-    SMAInfo.map((e: any) => {
-      drawMovingAverage(ctx, e);
-    });
-    drawCandleChart(ctx);
-    drawRecentPrice(ctx);
-    drawMouseMove(ctx);
-    drawLineChart(ctx);
-  }, [chartGridDate, priceLabelItem, tmpChartItems]);
-
-  return <StockChartStyledCanvas ref={boxPlotChartCanvasRef} />;
+  return <StockChartStyledCanvas ref={canvasRef} />;
 };
 
-export default StockChartCanvas;
+export {
+  StockChartCanvas,
+  StockChartPriceCanvas,
+  StockChartScoreCanvas,
+  StockChartSMACanvas,
+  StockChartGridCanvas,
+  StockChartMouseCanvas,
+};
