@@ -1,77 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { theme, themeColor } from '@styles/themes';
 import { StockChartStyledCanvas } from './StockChart.Style';
 
-const StockChartCanvas = ({
-  priceLabelItem,
-  chartInfo,
-  canvasSize,
-  tmpChartItems,
-  chartGridDate,
-}: {
-  priceLabelItem: any;
-  chartInfo: any;
-  canvasSize: any;
-  tmpChartItems: any[];
-  chartGridDate: any;
-}) => {
-  const boxPlotChartCanvasRef = useRef<HTMLCanvasElement>(null);
-
-  const { width, height } = canvasSize;
-  const { DPR } = chartInfo;
-
-  const setLineWidth = (ctx: any, width: number) => (ctx.lineWidth = width * DPR);
-  const drawLine = (ctx: any, pathList: any) =>
-    ctx.stroke(
-      new Path2D(
-        pathList.reduce(
-          (acc: any, [x, y]: [number, number], i: number) => acc + `${i ? 'L' : 'M'} ${DPR * x} ${DPR * y} `,
-          '',
-        ),
-      ),
-    );
-
-  const drawChartGrid = (ctx: any) => {
-    setLineWidth(ctx, 1);
-    ctx.strokeStyle = theme.colors.grayscale100;
-
-    priceLabelItem.map((e: any) =>
-      drawLine(ctx, [
-        [0, e.pos.y],
-        [width, e.pos.y],
-      ]),
-    );
-
-    chartGridDate.map((e: any) =>
-      drawLine(ctx, [
-        [e.pos.x, 0],
-        [e.pos.x, height],
-      ]),
-    );
-
-    setLineWidth(ctx, 4);
-    drawLine(ctx, [
-      [0, height],
-      [width, height],
-      [width, 0],
-    ]);
-  };
-
-  useEffect(() => {
-    const canvas = boxPlotChartCanvasRef.current;
-    if (!canvas) return;
-    canvas.width = width * DPR;
-    canvas.height = height * DPR;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    drawChartGrid(ctx);
-  }, [chartGridDate, priceLabelItem, tmpChartItems]);
-
-  return <StockChartStyledCanvas ref={boxPlotChartCanvasRef} />;
-};
 const DPR = window.devicePixelRatio;
-
 const setLineWidth = (ctx: any, width: number) => (ctx.lineWidth = width * DPR);
 const drawLine = (ctx: any, pathList: any) =>
   ctx.stroke(
@@ -245,7 +176,6 @@ const StockChartMouseCanvas = ({ mousePosInfo, canvasSize }: { mousePosInfo: any
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!mousePosInfo) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     canvas.width = width * DPR;
@@ -253,6 +183,7 @@ const StockChartMouseCanvas = ({ mousePosInfo, canvasSize }: { mousePosInfo: any
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, width, height);
+    if (!mousePosInfo) return;
 
     ctx.strokeStyle = theme.colors.primary0;
     ctx.lineWidth = 1;
@@ -272,7 +203,6 @@ const StockChartMouseCanvas = ({ mousePosInfo, canvasSize }: { mousePosInfo: any
 };
 
 export {
-  StockChartCanvas,
   StockChartPriceCanvas,
   StockChartScoreCanvas,
   StockChartSMACanvas,
