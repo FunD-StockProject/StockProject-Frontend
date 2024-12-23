@@ -1,4 +1,12 @@
-import { fetchRelevantMock, fetchScoreCardMock, fetchScoreMock, fetchSearchSymbolNameMock, fetchSearchWordCloudMock } from './mock';
+import { PERIOD_CODE } from './api.Type';
+import {
+  fetchChartMock,
+  fetchRelevantMock,
+  fetchScoreCardMock,
+  fetchScoreMock,
+  fetchSearchSymbolNameMock,
+  fetchSearchWordCloudMock,
+} from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -33,8 +41,9 @@ const fetchRelevant = async (id: number) => {
   return fetchData(`/stock/${id}/relevant`);
 };
 
-const fetchStockChart = async (id: number) => {
-  return fetchData(`/${id}/relevant`); // add
+const fetchStockChart = async (id: number, periodCode: PERIOD_CODE, startDate: string) => {
+  if (enableMock) return fetchChartMock;
+  return fetchData(`/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}`);
 };
 
 const fetchHotStocks = async (country: string) => {
@@ -59,7 +68,7 @@ const fetchAutoComplete = (name: string) => {
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
   console.log(country);
-  return fetchData(`/stock/search/${symbolname}`);
+  return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
 const fetchSearchWordCloud = (symbol: string, country: string) => {

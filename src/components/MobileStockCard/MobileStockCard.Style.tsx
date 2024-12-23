@@ -21,8 +21,8 @@ const MobileStockCardItemContainer = styled.div({
 const MobileStockCardItemTitle = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  gap: '2em',
+  alignItems: 'start',
+  gap: '1em',
   fontSize: '1.0em',
   fontWeight: '700',
   color: 'white',
@@ -39,21 +39,21 @@ const MobileStockCardItemText = styled.div({
   fontSize: '1.2em',
 });
 
-const MobileStockCardItemScore = styled.div(({ delta }: { delta: number }) => ({
+const MobileStockCardItemScore = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '0.4em',
-  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  color: theme.colors.primary0,
   fontSize: '1.6em',
-}));
+  marginTop: '-0.4em',
+});
 
 const MobileStockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '0.8em',
   gap: '4px',
-  background: 'white',
+  color: delta > 0 ? theme.colors.red : theme.colors.blue,
   padding: '0 0.4em',
   borderRadius: '35px',
 
@@ -63,6 +63,22 @@ const MobileStockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) 
     fill: delta > 0 ? theme.colors.red : theme.colors.blue,
   },
 }));
+
+const KeywordContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '0.5em',
+});
+
+const MobileStockCardKeyword = styled.div({
+  display: 'flex',
+  fontSize: '0.8em',
+  color: theme.colors.primary0,
+  padding: '0.4em 0.8em',
+  borderRadius: '20px',
+  border: '1px solid white',
+});
 
 const MobileScoreImage = styled(ImgDiv)({
   width: '40%', // 크기 조정
@@ -75,5 +91,7 @@ export {
   MobileStockCardItemText,
   MobileStockCardItemScore,
   MobileStockCardItemDeltaScore,
+  KeywordContainer,
+  MobileStockCardKeyword,
   MobileScoreImage,
 };

@@ -28,7 +28,13 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
   <FlexDiv flexDirection="column" gap="24px" width="100%">
     <StockRelevantContainer>
       {stocks.map((stock) => (
-        <StockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
+        <StockCardItem
+          key={`RELEVANT_${stock.stockId}`}
+          name={stock.symbolName}
+          score={stock.score}
+          delta={stock.diff}
+          country={country}
+        />
       ))}
     </StockRelevantContainer>
   </FlexDiv>
@@ -41,7 +47,11 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: string 
   return (
     suspend ||
     (stockRelevantList &&
-      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
+      (isMobile ? (
+        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
+      ) : (
+        <WebRelevantStocks stocks={stockRelevantList} country={country} />
+      )))
   );
 };
 
@@ -54,11 +64,13 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
   return (
     <ContentsItemContainer>
       <ContentsItemTitle>
-        개미
+        개미들의
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
+      <ContentsItemContent>
+        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
+      </ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
@@ -66,7 +78,10 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 
 const Search = () => {
   const { state } = useLocation();
-  const [stockInfo, suspend] = useQueryComponent({ query: SearchSymbolNameQuery(state?.symbolName, state?.country) });
+
+  const [stockInfo, suspend] = useQueryComponent({
+    query: SearchSymbolNameQuery(state?.symbolName, state?.country),
+  });
   const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
