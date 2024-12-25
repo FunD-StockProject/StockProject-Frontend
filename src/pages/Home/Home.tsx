@@ -8,7 +8,17 @@ import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
-import { HomeContainer, HomeContents, IndexDeltaScore, IndexItem, IndicesContainer, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
+import {
+  HomeContainer,
+  HomeContents,
+  IndexDeltaScore,
+  IndexInfoContainer,
+  IndexItem,
+  IndicesContainer,
+  StyleTabMenu,
+  StyleTabMenuContainer,
+  StyledSpan,
+} from './Home.Style';
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -52,14 +62,17 @@ const Home = () => {
       <HomeContents>
         {true && (
           <IndicesContainer>
-            {stockIndices[tabIndex].map((stockIndex) => {
+            {stockIndices[tabIndex].map((stockIndex, idx) => {
               const delta = Math.floor(Math.random() * 200) - 100;
               const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
               return (
                 <IndexItem key={stockIndex}>
-                  {stockIndex}
+                  <IndexInfoContainer>
+                    {stockIndex} {idx === 0 && <InfoSVG className="btn_info" onClick={() => {}} />}
+                  </IndexInfoContainer>
                   <IndexDeltaScore delta={delta}>
-                    {Math.abs(delta)}점{deltaSVG}
+                    {Math.abs(delta)}
+                    {deltaSVG}
                   </IndexDeltaScore>
                 </IndexItem>
               );
