@@ -141,4 +141,26 @@ const StyledSpan = styled.span((props: { color?: themeColor }) => ({
   color: props.color ? theme.colors[props.color] : '#000000',
 }));
 
-export { HomeContainer, IndicesContainer, IndexInfoContainer, IndexItem, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan, IndexDeltaScore };
+const StyledText = styled.div({
+  color: theme.colors.grayscale60,
+  fontFamily: 'Pretendard',
+  fontSize: '12px',
+  fontStyle: 'normal',
+  fontWeight: '500',
+  lineHeight: '1.5',
+
+  margin: '0 4px',
+});
+
+export {
+  HomeContainer,
+  IndicesContainer,
+  IndexInfoContainer,
+  IndexItem,
+  HomeContents,
+  StyleTabMenuContainer,
+  StyleTabMenu,
+  StyledSpan,
+  IndexDeltaScore,
+  StyledText,
+};

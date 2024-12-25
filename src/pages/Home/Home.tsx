@@ -18,6 +18,7 @@ import {
   StyleTabMenu,
   StyleTabMenuContainer,
   StyledSpan,
+  StyledText,
 } from './Home.Style';
 
 const Home = () => {
@@ -88,6 +89,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>전일 08:24 기준</StyledText>
         </ContentsItemContainer>
 
         <ContentsItemContainer>
@@ -99,6 +101,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={risingStocksApiRef} name={'RISING'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>전일 08:24 기준</StyledText>
         </ContentsItemContainer>
 
         <ContentsItemContainer>
@@ -110,6 +113,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={descentStocksApiRef} name={'DESCENT'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>전일 08:24 기준</StyledText>
         </ContentsItemContainer>
       </HomeContents>
       {!detectPWA() && <PWAInfoPopUp />}
