@@ -9,7 +9,7 @@ const MobileStockCardItemContainer = styled.div({
   flexDirection: 'row', // 가로 정렬로 변경
   alignItems: 'center',
   gap: '1em',
-  borderRadius: '18px',
+  borderRadius: '8px',
   padding: '12px',
   background: theme.colors.grayscale100,
   cursor: 'pointer',
@@ -54,7 +54,6 @@ const MobileStockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) 
   gap: '4px',
   color: delta > 0 ? theme.colors.red : theme.colors.blue,
   padding: '0 0.4em',
-  // borderRadius: '35px',
 
   ['svg']: {
     height: '0.5em',
