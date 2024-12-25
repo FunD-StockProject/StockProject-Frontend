@@ -8,10 +8,9 @@ const MobileStockCardItemContainer = styled.div({
   display: 'flex',
   flexDirection: 'row', // 가로 정렬로 변경
   alignItems: 'center',
-  // justifyContent: 'space-between', // 양쪽 정렬
   gap: '1em',
   borderRadius: '18px',
-  padding: '1.6em',
+  padding: '12px',
   background: theme.colors.grayscale100,
   cursor: 'pointer',
   width: '100%',
@@ -23,7 +22,7 @@ const MobileStockCardItemTitle = styled.div({
   flexDirection: 'column',
   alignItems: 'start',
   gap: '1em',
-  fontSize: '1.0em',
+  fontSize: '0.8em',
   fontWeight: '700',
   color: 'white',
   lineHeight: '1.2',
@@ -74,14 +73,14 @@ const KeywordContainer = styled.div({
 const MobileStockCardKeyword = styled.div({
   display: 'flex',
   fontSize: '0.8em',
+  backgroundColor: theme.colors.grayscale90,
   color: theme.colors.primary0,
   padding: '0.4em 0.8em',
-  borderRadius: '20px',
-  border: '1px solid white',
+  borderRadius: '24px',
 });
 
 const MobileScoreImage = styled(ImgDiv)({
-  width: '40%', // 크기 조정
+  width: '40%',
   borderRadius: '7px',
 });
 

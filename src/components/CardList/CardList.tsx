@@ -12,15 +12,7 @@ import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({
-  apiRef,
-  name,
-  index,
-}: {
-  apiRef: React.MutableRefObject<publicApiType>;
-  name: StockType;
-  index: number;
-}) => {
+const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
@@ -46,13 +38,7 @@ const CardList = ({
   const renderHotStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <ScoreSlotMachine
-          stockName={stock.symbolName}
-          active={true}
-          stockScore={stock.score}
-          tabIndex={0}
-          country={country}
-        />
+        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
       </CardListItemContainer>
     ));
   };
@@ -67,14 +53,8 @@ const CardList = ({
 
   const renderMobileStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
-      <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <MobileStockCardItem
-          key={`${name}_${idx}`}
-          score={stock.score}
-          name={stock.symbolName}
-          delta={stock.diff}
-          country={country}
-        />
+      <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.75}>
+        <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
       </CardListItemContainer>
     ));
   };
@@ -98,12 +78,7 @@ const CardList = ({
                 <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
               ))}
             </IndicatorContainer>
-            <ScrollMenu
-              LeftArrow={<ScrollArrow direction="left" />}
-              RightArrow={<ScrollArrow direction="right" />}
-              apiRef={apiRef}
-              onUpdate={handleUpdate}
-            >
+            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
               {renderStocks()}
             </ScrollMenu>
           </>

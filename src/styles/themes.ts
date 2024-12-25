@@ -82,13 +82,13 @@ const colors = {
   /** #3E3F40 */ grayscale80: '#3E3F40',
   /** #303033 */ grayscale90: '#303033',
   /** #1D1E1F */ grayscale100: '#1D1E1F',
-  /* fucntion */
+  /* function */
   /** #EB003B */ danger: '#EB003B',
   /** #FFB724 */ warning: '#FFB724',
   /** #008A1E */ success: '#008A1E',
   /** #2768FF */ information: '#2768FF',
   /* key */
-  /** #FD4821 */ red: '#FD4821',
+  /** #FD4821 */ red: '#EB4553',
   /** #2D92FF */ blue: '#2D92FF',
   /** #FFEA64 */ yellow: '#FFEA64',
   /** #64FFEA */ cyan: '#64FFEA',

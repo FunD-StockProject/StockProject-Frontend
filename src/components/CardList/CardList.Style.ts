@@ -105,7 +105,7 @@ const Indicator = styled.div(({ isActive, name }: { isActive: boolean; name: str
   width: '10px',
   height: '10px',
   borderRadius: '50%', // 완전한 원
-  backgroundColor: isActive ? (name === 'RISING' ? '#FD4821' : theme.colors.primary30) : theme.colors.primary5,
+  backgroundColor: isActive ? (name === 'RISING' ? theme.colors.red : theme.colors.primary30) : theme.colors.primary5,
   transition: 'background-color 0.3s ease',
   border: 'none',
   cursor: 'pointer',
