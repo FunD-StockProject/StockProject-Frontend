@@ -54,7 +54,7 @@ const MobileStockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) 
   gap: '4px',
   color: delta > 0 ? theme.colors.red : theme.colors.blue,
   padding: '0 0.4em',
-  borderRadius: '35px',
+  // borderRadius: '35px',
 
   ['svg']: {
     height: '0.5em',

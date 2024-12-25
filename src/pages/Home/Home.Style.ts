@@ -7,6 +7,7 @@ const HomeContainer = styled.div({
   width: '100%',
   marginBottom: 'auto',
 });
+
 const IndicesContainer = styled.div({
   display: 'flex',
   flexDirection: 'row',
@@ -18,15 +19,30 @@ const IndicesContainer = styled.div({
 const IndexItem = styled.div({
   flex: 1,
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'left',
+  flexDirection: 'column',
   justifyContent: 'space-around',
   background: theme.colors.grayscale80,
   height: '45px',
   borderRadius: '8px',
   fontWeight: 'bold',
   fontSize: '1em',
-  padding: '5px 10px',
+  padding: '16px',
 });
+
+const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  fontSize: '1.2em',
+
+  ['svg']: {
+    height: '0.5em',
+    width: 'auto',
+    fill: delta > 0 ? theme.colors.red : theme.colors.blue,
+  },
+}));
 
 const HomeContents = styled.div({
   boxSizing: 'border-box',
@@ -105,4 +121,4 @@ const StyledSpan = styled.span((props: { color?: themeColor }) => ({
   color: props.color ? theme.colors[props.color] : '#000000',
 }));
 
-export { HomeContainer, IndicesContainer, IndexItem, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan };
+export { HomeContainer, IndicesContainer, IndexItem, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan, IndexDeltaScore };

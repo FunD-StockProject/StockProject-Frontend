@@ -1,12 +1,5 @@
 import { PERIOD_CODE } from './api.Type';
-import {
-  fetchChartMock,
-  fetchRelevantMock,
-  fetchScoreCardMock,
-  fetchScoreMock,
-  fetchSearchSymbolNameMock,
-  fetchSearchWordCloudMock,
-} from './mock';
+import { fetchChartMock, fetchRelevantMock, fetchScoreCardMock, fetchScoreMock, fetchSearchSymbolNameMock, fetchSearchWordCloudMock } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -80,6 +73,10 @@ const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
+const fetchKeywords = (stockId: number) => {
+  return fetchData(`/${stockId}/keywords`);
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -91,4 +88,5 @@ export {
   fetchSearchSymbolName,
   fetchSearchWordCloud,
   fetchRealStockInfo,
+  fetchKeywords,
 };
