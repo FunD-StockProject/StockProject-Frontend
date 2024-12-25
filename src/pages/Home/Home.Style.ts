@@ -13,14 +13,15 @@ const IndicesContainer = styled.div({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '1em',
+  gap: '7px',
 });
 
 const IndexInfoContainer = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '4px',
-  fontSize: '0.6em',
+  fontSize: '12px',
+
   ['svg']: {
     height: '1.2em',
     width: 'auto',
@@ -28,17 +29,23 @@ const IndexInfoContainer = styled.div({
 });
 
 const IndexItem = styled.div({
+  boxSizing: 'border-box',
   flex: 1,
   display: 'flex',
   alignItems: 'flex-start',
   flexDirection: 'column',
   justifyContent: 'center',
   background: theme.colors.grayscale100,
-  height: '45px',
+  height: '72px',
   borderRadius: '8px',
-  fontWeight: 'bold',
-  fontSize: '1em',
-  padding: '16px',
+  padding: '5px 16px',
+  gap: '4px',
+
+  color: theme.colors.primary0,
+  fontFamily: 'Pretendard',
+  fontStyle: 'normal',
+  fontWeight: '900',
+  lineHeight: '1.5',
 });
 
 const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
@@ -46,7 +53,7 @@ const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   alignItems: 'center',
   gap: '4px',
   color: delta > 0 ? theme.colors.red : theme.colors.blue,
-  fontSize: '1.2em',
+  fontSize: '24px',
 
   ['svg']: {
     height: '0.5em',
