@@ -5,6 +5,7 @@ import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
+  fetchKeywords,
   fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
@@ -47,4 +48,8 @@ export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: strin
 
 export const RealStockInfoQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
+};
+
+export const KeywordsQuery = (id: number) => {
+  return useQuery<StockInfo>(['keywords', id], () => fetchKeywords(id), queryOptions);
 };

@@ -4,9 +4,11 @@ import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
+import DownSVG from '@assets/icons/down.svg?react';
+import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
-import { HomeContainer, HomeContents, IndexItem, IndicesContainer, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
+import { HomeContainer, HomeContents, IndexDeltaScore, IndexItem, IndicesContainer, StyleTabMenu, StyleTabMenuContainer, StyledSpan } from './Home.Style';
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -48,14 +50,20 @@ const Home = () => {
       </StyleTabMenuContainer>
 
       <HomeContents>
-        {false && (
+        {true && (
           <IndicesContainer>
-            {stockIndices[tabIndex].map((stockIndex) => (
-              <IndexItem>
-                <div>{stockIndex}</div>
-                <div>25</div>
-              </IndexItem>
-            ))}
+            {stockIndices[tabIndex].map((stockIndex) => {
+              const delta = Math.floor(Math.random() * 200) - 100;
+              const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
+              return (
+                <IndexItem key={stockIndex}>
+                  {stockIndex}
+                  <IndexDeltaScore delta={delta}>
+                    {Math.abs(delta)}점{deltaSVG}
+                  </IndexDeltaScore>
+                </IndexItem>
+              );
+            })}
           </IndicesContainer>
         )}
         <ContentsItemContainer>
