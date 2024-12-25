@@ -91,11 +91,4 @@ const ScoreImage = styled(ImgDiv)({
     width: '100%',
   },
 });
-export {
-  StockCardItemContainer,
-  StockCardItemTitle,
-  StockCardItemText,
-  StockCardItemScore,
-  StockCardItemDeltaScore,
-  ScoreImage,
-};
+export { StockCardItemContainer, StockCardItemTitle, StockCardItemText, StockCardItemScore, StockCardItemDeltaScore, ScoreImage };

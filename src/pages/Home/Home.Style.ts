@@ -78,12 +78,12 @@ const StyleTabMenu = styled.ul({
     justifyContent: 'center',
     padding: '12px 24px',
     fontWeight: 'bold',
-    backgroundColor: 'white',
+    color: theme.colors.primary0,
+    backgroundColor: theme.colors.grayscale100,
     cursor: 'pointer',
   },
 
   '.focused': {
-    color: 'white',
     backgroundColor: theme.colors.primary100,
   },
   [media[0]]: {

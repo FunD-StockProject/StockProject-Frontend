@@ -34,10 +34,10 @@ const MobileStockCardItem = ({ name, score, delta, country }: { name: string; sc
             {Math.abs(delta)}점{deltaSVG}
           </MobileStockCardItemDeltaScore>
         </MobileStockCardItemScore>
-        {false && (
+        {true && (
           <KeywordContainer>
-            <MobileStockCardKeyword># 이재명</MobileStockCardKeyword>
-            <MobileStockCardKeyword># 이재명</MobileStockCardKeyword>
+            <MobileStockCardKeyword>이재명</MobileStockCardKeyword>
+            <MobileStockCardKeyword>이재명</MobileStockCardKeyword>
           </KeywordContainer>
         )}
       </MobileStockCardItemTitle>

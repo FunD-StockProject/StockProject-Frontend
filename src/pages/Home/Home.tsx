@@ -48,7 +48,6 @@ const Home = () => {
       </StyleTabMenuContainer>
 
       <HomeContents>
-        {/* <InfoSVG className="btn_info" onClick={() => {}} /> */}
         {false && (
           <IndicesContainer>
             {stockIndices[tabIndex].map((stockIndex) => (
@@ -60,8 +59,8 @@ const Home = () => {
           </IndicesContainer>
         )}
         <ContentsItemContainer>
-          <ContentsItemTitle color="primary40">
-            지금 가장<StyledSpan color="primary40">HOT</StyledSpan> 한
+          <ContentsItemTitle color="primary50">
+            지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한
             <ZipyoSVG />
             <InfoSVG className="btn_info" onClick={() => {}} />
           </ContentsItemTitle>
