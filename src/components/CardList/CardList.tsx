@@ -73,11 +73,13 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
       {suspend ||
         (curStocks && width !== 0 && (
           <>
-            <IndicatorContainer>
-              {indicatorArray.map((el) => (
-                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
-              ))}
-            </IndicatorContainer>
+            {isMobile && (
+              <IndicatorContainer>
+                {indicatorArray.map((el) => (
+                  <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
+                ))}
+              </IndicatorContainer>
+            )}
             <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
               {renderStocks()}
             </ScrollMenu>
@@ -88,16 +90,31 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
 };
 
 const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
-  const { getItemByIndex, items, scrollPrev, scrollNext, scrollToItem, useIsVisible } = useContext(VisibilityContext);
+  const { scrollPrev, scrollNext, useIsVisible } = useContext(VisibilityContext);
+
+  // 첫 번째 및 마지막 아이템 여부 확인
   const isFirstItemVisible = useIsVisible('first', true);
   const isLastItemVisible = useIsVisible('last', false);
+
+  // 방향에 따른 비활성화 상태 결정
+  const isDisabled = direction === 'left' ? isFirstItemVisible : isLastItemVisible;
+
+  // 방향에 따른 클릭 핸들러
+  const onClick = () => {
+    if (isDisabled) return; // 비활성화 상태면 동작 안 함
+    direction === 'left' ? scrollPrev() : scrollNext();
+  };
+
+  // 이미지 링크 결정
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  const onLeftClick = () => (isFirstItemVisible ? scrollToItem(getItemByIndex(items.size - 1)) : scrollPrev());
-  const onRightClick = () => (isLastItemVisible ? scrollToItem(getItemByIndex(0)) : scrollNext());
-  const onClick = direction === 'left' ? onLeftClick : onRightClick;
-
-  return <ArrowButton src={imgLink} onClick={onClick} className={`arrow-${direction}`} />;
+  return (
+    <ArrowButton
+      src={imgLink}
+      onClick={onClick} // 직접 실행
+      className={`arrow-${direction} ${isDisabled ? 'disabled' : ''}`}
+      disabled={isDisabled}
+    />
+  );
 };
-
 export default CardList;
