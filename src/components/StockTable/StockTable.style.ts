@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
+import { media, theme } from '@styles/themes';
 
 const StockTableContainer = styled.div({
   width: '100%',
@@ -15,22 +15,32 @@ const StockTableTitle = styled.div({
   lineHeight: '1.5',
   justifyContent: 'space-between', // 제목과 기준 시간 오른쪽 정렬
   alignItems: 'center',
-  color: theme.colors.grayscale10,
+  color: theme.colors.grayscale60,
 
   ['svg']: {
-    height: '18px',
+    height: '25px',
     width: 'auto',
   },
 
   div: {
-    fontSize: '21px',
+    fontSize: '32px',
     color: theme.colors.primary0,
+  },
+
+  [media[0]]: {
+    div: {
+      fontSize: '21px',
+      color: theme.colors.primary0,
+    },
+    ['svg']: {
+      height: '18px',
+      width: 'auto',
+    },
   },
 });
 
 const StyledTabMenu = styled.ul({
   display: 'flex',
-  justifyContent: 'space-around',
   alignItems: 'center',
   padding: 0, // 기본 padding 제거
   backgroundColor: theme.colors.primary100,
@@ -50,6 +60,11 @@ const StyledTabMenu = styled.ul({
     backgroundColor: theme.colors.grayscale100,
     borderRadius: '10px',
     fontWeight: '700',
+  },
+
+  [media[0]]: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 
