@@ -151,7 +151,7 @@ const StyledSpan = styled.span((props: { color?: themeColor }) => ({
 const StyledText = styled.div({
   color: theme.colors.grayscale60,
   fontFamily: 'Pretendard',
-  fontSize: '24px',
+  fontSize: '15px',
   fontStyle: 'normal',
   fontWeight: '500',
   lineHeight: '1.5',
