@@ -4,6 +4,7 @@ import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
+import StockTable from '@components/StockTable/StockTable';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
@@ -28,6 +29,7 @@ const Home = () => {
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const tabMenu = ['국내주식', '해외주식'];
+
   const stockIndices = [
     ['공포 지수', '코스피', '코스닥'],
     ['공포 지수', 'S&P 500', '나스닥'],
@@ -115,6 +117,7 @@ const Home = () => {
           </ContentsItemContent>
           <StyledText>전일 08:24 기준</StyledText>
         </ContentsItemContainer>
+        <StockTable />
       </HomeContents>
       {!detectPWA() && <PWAInfoPopUp />}
     </HomeContainer>

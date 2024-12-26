@@ -20,6 +20,9 @@ const StockCardItemContainer = styled.div({
     padding: '0.4em 0.5em',
     gap: '0.5em',
   },
+  '&:hover': {
+    background: theme.colors.grayscale90,
+  },
 });
 
 const StockCardItemTitle = styled.div({
