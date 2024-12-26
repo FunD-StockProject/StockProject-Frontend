@@ -3,7 +3,16 @@ import { scoreToImage } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
-import { ScoreImage, StockCardItemContainer, StockCardItemDeltaScore, StockCardItemScore, StockCardItemText, StockCardItemTitle } from './StockCard.Style';
+import {
+  KeywordContainer,
+  ScoreImage,
+  StockCardItemContainer,
+  StockCardItemDeltaScore,
+  StockCardItemScore,
+  StockCardItemText,
+  StockCardItemTitle,
+  StockCardKeyword,
+} from './StockCard.Style';
 
 const StockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
   const navigate = useNavigate();
@@ -18,13 +27,17 @@ const StockCardItem = ({ name, score, delta, country }: { name: string; score: n
     <StockCardItemContainer onClick={handleClick}>
       <StockCardItemTitle>
         <StockCardItemText>{name}</StockCardItemText>
-        <StockCardItemScore delta={delta}>
+        <StockCardItemScore>
           {score}점
           <StockCardItemDeltaScore delta={delta}>
             {Math.abs(delta)}
             {deltaSVG}
           </StockCardItemDeltaScore>
         </StockCardItemScore>
+        <KeywordContainer>
+          <StockCardKeyword>이재명</StockCardKeyword>
+          <StockCardKeyword>이재명</StockCardKeyword>
+        </KeywordContainer>
       </StockCardItemTitle>
       <ScoreImage src={scoreImage} />
     </StockCardItemContainer>

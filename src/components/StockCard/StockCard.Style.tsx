@@ -9,7 +9,7 @@ const StockCardItemContainer = styled.div({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  gap: '4em',
+  gap: '2em',
   borderRadius: '18px',
   padding: '1.6em 2.0em',
   background: theme.colors.grayscale100,
@@ -51,11 +51,11 @@ const StockCardItemText = styled.div({
   width: '100%',
 });
 
-const StockCardItemScore = styled.div(({ delta }: { delta: number }) => ({
+const StockCardItemScore = styled.div(() => ({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5em',
-  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  color: theme.colors.primary0,
 
   fontSize: '1.0em',
   [media[0]]: {
@@ -66,22 +66,15 @@ const StockCardItemScore = styled.div(({ delta }: { delta: number }) => ({
 const StockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
   alignItems: 'center',
-  fontSize: '0.7em',
+  fontSize: '0.8em',
   gap: '4px',
-  background: 'white',
-  padding: '0.2em 0.4em',
-  borderRadius: '100px',
+  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  padding: '0 0.4em',
 
   ['svg']: {
     height: '0.5em',
     width: 'auto',
     fill: delta > 0 ? theme.colors.red : theme.colors.blue,
-  },
-  [media[0]]: {
-    gap: '2px',
-    ['svg']: {
-      // height: '6px',
-    },
   },
 }));
 
@@ -94,4 +87,30 @@ const ScoreImage = styled(ImgDiv)({
     width: '100%',
   },
 });
-export { StockCardItemContainer, StockCardItemTitle, StockCardItemText, StockCardItemScore, StockCardItemDeltaScore, ScoreImage };
+
+const KeywordContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '0.5em',
+});
+
+const StockCardKeyword = styled.div({
+  display: 'flex',
+  fontSize: '15px',
+  backgroundColor: theme.colors.grayscale90,
+  color: theme.colors.primary0,
+  padding: '0.4em 0.8em',
+  borderRadius: '24px',
+});
+
+export {
+  StockCardItemContainer,
+  StockCardItemTitle,
+  StockCardItemText,
+  StockCardItemScore,
+  StockCardItemDeltaScore,
+  ScoreImage,
+  KeywordContainer,
+  StockCardKeyword,
+};
