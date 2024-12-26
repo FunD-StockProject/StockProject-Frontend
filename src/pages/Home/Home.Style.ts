@@ -46,6 +46,8 @@ const IndexItem = styled.div({
   fontStyle: 'normal',
   fontWeight: '900',
   lineHeight: '1.5',
+
+  [media[0]]: {},
 });
 
 const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
@@ -144,12 +146,16 @@ const StyledSpan = styled.span((props: { color?: themeColor }) => ({
 const StyledText = styled.div({
   color: theme.colors.grayscale60,
   fontFamily: 'Pretendard',
-  fontSize: '12px',
+  fontSize: '24px',
   fontStyle: 'normal',
   fontWeight: '500',
   lineHeight: '1.5',
+  margin: '0px 4px',
 
-  margin: '0 4px',
+  [media[0]]: {
+    fontSize: '12px',
+    margin: '-10px 4px',
+  },
 });
 
 export {
