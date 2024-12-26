@@ -9,9 +9,9 @@ const StockTableContainer = styled.div({
 const StockTableTitle = styled.div({
   display: 'flex',
   fontFamily: 'Pretendard',
-  fontSize: '12px',
+  fontSize: '15px',
   fontStyle: 'normal',
-  fontWeight: '700',
+  fontWeight: '500',
   lineHeight: '1.5',
   justifyContent: 'space-between', // 제목과 기준 시간 오른쪽 정렬
   alignItems: 'center',
@@ -23,6 +23,7 @@ const StockTableTitle = styled.div({
   },
 
   div: {
+    fontWeight: '700',
     fontSize: '32px',
     color: theme.colors.primary0,
   },
