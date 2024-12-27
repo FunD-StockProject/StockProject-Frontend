@@ -3,6 +3,7 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import Keywords from '@components/Keywords/Keywords';
 import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
 import StockTable from '@components/StockTable/StockTable';
 import DownSVG from '@assets/icons/down.svg?react';
@@ -118,6 +119,7 @@ const Home = () => {
           <StyledText>전일 08:24 기준</StyledText>
         </ContentsItemContainer>
         <StockTable />
+        <Keywords />
       </HomeContents>
       {!detectPWA() && <PWAInfoPopUp />}
     </HomeContainer>

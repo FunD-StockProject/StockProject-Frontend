@@ -68,7 +68,7 @@ const StockTable = () => {
         <div>
           종목 차트별 <HumanIndexSVG />
         </div>
-        전일 08:24 기준
+        <span>어제 08:24 기준</span>
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
