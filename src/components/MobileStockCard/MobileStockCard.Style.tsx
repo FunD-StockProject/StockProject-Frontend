@@ -14,7 +14,6 @@ const MobileStockCardItemContainer = styled.div({
   background: theme.colors.grayscale100,
   cursor: 'pointer',
   width: '100%',
-  marginBottom: '12px',
 });
 
 const MobileStockCardItemTitle = styled.div({

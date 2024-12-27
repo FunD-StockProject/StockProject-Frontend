@@ -5,37 +5,40 @@ const StockTableContainer = styled.div({
   width: '100%',
   marginTop: '20px',
 });
-
 const StockTableTitle = styled.div({
-  display: 'flex',
-  fontFamily: 'Pretendard',
-  fontSize: '15px',
-  fontStyle: 'normal',
-  fontWeight: '500',
-  lineHeight: '1.5',
-  justifyContent: 'space-between', // 제목과 기준 시간 오른쪽 정렬
-  alignItems: 'center',
-  color: theme.colors.grayscale60,
+  display: 'flex', // 수평 정렬을 위해 flex 사용
+  justifyContent: 'space-between', // 좌측 제목과 우측 기준 날짜를 양쪽에 배치
+  alignItems: 'center', // 세로 중앙 정렬
+  padding: '12px 0', // 상하 여백 추가
+  fontFamily: 'Pretendard', // 통일된 폰트
+  fontSize: '32px', // 기본 글자 크기
+  fontWeight: '700', // 제목 강조
+  color: theme.colors.grayscale10, // 텍스트 색상
+  ['div']: {
+    display: 'flex', // "종목 차트별"과 "인간지표"를 수평 정렬
+    alignItems: 'center', // 세로축 중앙 정렬
+  },
+
+  ['span']: {
+    display: 'inline-block',
+    fontSize: '16px', // 기준 텍스트 크기
+    fontWeight: '500',
+    color: theme.colors.grayscale60, // 기준 텍스트 색상
+  },
 
   ['svg']: {
-    height: '25px',
+    marginLeft: '8px', // 아이콘과 텍스트 간격
+    height: '28px',
     width: 'auto',
   },
 
-  div: {
-    fontWeight: '700',
-    fontSize: '32px',
-    color: theme.colors.primary0,
-  },
-
   [media[0]]: {
-    div: {
-      fontSize: '21px',
-      color: theme.colors.primary0,
+    fontSize: '21px',
+    ['span']: {
+      fontSize: '14px',
     },
     ['svg']: {
       height: '18px',
-      width: 'auto',
     },
   },
 });
