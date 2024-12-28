@@ -73,13 +73,12 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
       {suspend ||
         (curStocks && width !== 0 && (
           <>
-            {isMobile && (
-              <IndicatorContainer>
-                {indicatorArray.map((el) => (
-                  <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
-                ))}
-              </IndicatorContainer>
-            )}
+            <IndicatorContainer>
+              {indicatorArray.map((el) => (
+                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
+              ))}
+            </IndicatorContainer>
+
             <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
               {renderStocks()}
             </ScrollMenu>

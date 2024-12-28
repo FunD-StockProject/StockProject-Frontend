@@ -105,21 +105,34 @@ const StockInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '4px',
+  gap: '8px',
 });
 
-const StockLogo = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '20px',
-  height: '20px',
+const StockLogo = styled.img({
+  width: '26px',
+  height: '26px',
+});
+
+const StockName = styled.div({
+  width: '200px',
+  alignItems: 'left',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  [media[0]]: {
+    width: '100px',
+  },
 });
 
 const StockData = styled.div({
   flex: 1,
   textAlign: 'center', // 텍스트 중앙 정렬
-  fontSize: '15px',
+  color: theme.colors.primary0,
+  fontFamily: 'Pretendard', // 폰트 설정
+  fontSize: '17px', // 글꼴 크기
+  fontStyle: 'normal', // 일반 스타일
+  fontWeight: 500, // 두께 설정
+  lineHeight: '1.5', // 줄 높이 설정 (19.5px)
 });
 
 const ChangeValue = styled.span<{ isPositive: boolean }>(({ isPositive }) => ({
@@ -127,4 +140,16 @@ const ChangeValue = styled.span<{ isPositive: boolean }>(({ isPositive }) => ({
   fontSize: '13px',
 }));
 
-export { StockTableContainer, StockInfo, StockTableTitle, StyledTabMenu, TableHeaderContainer, HeaderItem, TableRow, StockLogo, StockData, ChangeValue };
+export {
+  StockTableContainer,
+  StockInfo,
+  StockName,
+  StockTableTitle,
+  StyledTabMenu,
+  TableHeaderContainer,
+  HeaderItem,
+  TableRow,
+  StockLogo,
+  StockData,
+  ChangeValue,
+};
