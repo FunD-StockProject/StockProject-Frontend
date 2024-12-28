@@ -5,8 +5,8 @@ import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import MobileStockCardGrid from '@components/MobileStockCardGrid/MobileStockCardGrid';
-import AntVoicePopUp from '@components/PopUp/AntVoicePopUp';
-import ZipyoPopup from '@components/PopUp/ZipyoPopUp';
+import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
+import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/SearchTitle/SearchTitle';
 import StockCardItem from '@components/StockCard/StockCard';
 import StockChart from '@components/StockChart/StockChart';
@@ -28,13 +28,7 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
   <FlexDiv flexDirection="column" gap="24px" width="100%">
     <StockRelevantContainer>
       {stocks.map((stock) => (
-        <StockCardItem
-          key={`RELEVANT_${stock.stockId}`}
-          name={stock.symbolName}
-          score={stock.score}
-          delta={stock.diff}
-          country={country}
-        />
+        <StockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
       ))}
     </StockRelevantContainer>
   </FlexDiv>
@@ -47,11 +41,7 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: string 
   return (
     suspend ||
     (stockRelevantList &&
-      (isMobile ? (
-        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
-      ) : (
-        <WebRelevantStocks stocks={stockRelevantList} country={country} />
-      )))
+      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
   );
 };
 
@@ -68,9 +58,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>
-        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
-      </ContentsItemContent>
+      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
