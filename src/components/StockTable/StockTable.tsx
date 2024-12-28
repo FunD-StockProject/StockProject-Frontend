@@ -19,7 +19,7 @@ import {
 const StockTable = ({ country }: { country: string }) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const [stockTable] = useQueryComponent({ query: StockTableQuery(country) });
+  const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(country) });
   const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
   const handleTab = (index: number) => {
     if (tabIndex === index) {
@@ -48,32 +48,33 @@ const StockTable = ({ country }: { country: string }) => {
         <HeaderItem>주가</HeaderItem>
         <HeaderItem>인간지표</HeaderItem>
       </TableHeaderContainer>
-      {stockTable &&
-        stockTable[tabIndex].map((stock: StockTableData, index: number) => (
-          <TableRow key={index}>
-            <StockData>
-              <StockInfo>
-                <StockLogo>
-                  <img src={stock.logo}></img>
-                </StockLogo>
-                {stock.name}
-              </StockInfo>
-            </StockData>
-            <StockData>
-              <div>{stock.price.toLocaleString()}</div>
-              <ChangeValue isPositive={stock.change > 0}>
-                {stock.change.toLocaleString()} ({Math.abs(stock.changeRate)}%)
-              </ChangeValue>
-            </StockData>
-            <StockData>
-              <span>{stock.score}점 </span>
-              <ChangeValue isPositive={stock.delta > 0}>
-                ({stock.delta > 0 ? '+' : ''}
-                {stock.delta}% )
-              </ChangeValue>
-            </StockData>
-          </TableRow>
-        ))}
+      {suspend ||
+        (stockTable &&
+          stockTable[tabIndex].map((stock: StockTableData, index: number) => (
+            <TableRow key={index}>
+              <StockData>
+                <StockInfo>
+                  <StockLogo>
+                    <img src={stock.logo}></img>
+                  </StockLogo>
+                  {stock.name}
+                </StockInfo>
+              </StockData>
+              <StockData>
+                <div>{stock.price.toLocaleString()}</div>
+                <ChangeValue isPositive={stock.change > 0}>
+                  {stock.change.toLocaleString()} ({Math.abs(stock.changeRate)}%)
+                </ChangeValue>
+              </StockData>
+              <StockData>
+                <span>{stock.score}점 </span>
+                <ChangeValue isPositive={stock.delta > 0}>
+                  ({stock.delta > 0 ? '+' : ''}
+                  {stock.delta}% )
+                </ChangeValue>
+              </StockData>
+            </TableRow>
+          )))}
     </StockTableContainer>
   );
 };

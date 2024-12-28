@@ -6,7 +6,7 @@ import InfoSVG from '@assets/info.svg?react';
 import { KeywordItem, KeywordList, KeywordsContainer, Subtitle, Title, TitleWrapper } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
-  const [keywords] = useQueryComponent({ query: KeywordsQuery(country) });
+  const [keywords, suspend] = useQueryComponent({ query: KeywordsQuery(country) });
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -20,12 +20,13 @@ const Keywords = ({ country }: { country: string }) => {
         <Subtitle>어제 08:24 기준</Subtitle>
       </TitleWrapper>
       <KeywordList>
-        {keywords &&
-          keywords.map((keyword: string, index: number) => (
-            <KeywordItem key={index} onClick={() => {}}>
-              {keyword}
-            </KeywordItem>
-          ))}
+        {suspend ||
+          (keywords &&
+            keywords.map((keyword: string, index: number) => (
+              <KeywordItem key={index} onClick={() => {}}>
+                {keyword}
+              </KeywordItem>
+            )))}
       </KeywordList>
       {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}
     </KeywordsContainer>
