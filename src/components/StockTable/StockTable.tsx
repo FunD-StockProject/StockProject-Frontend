@@ -9,6 +9,7 @@ import {
   StockData,
   StockInfo,
   StockLogo,
+  StockName,
   StockTableContainer,
   StockTableTitle,
   StyledTabMenu,
@@ -34,7 +35,7 @@ const StockTable = ({ country }: { country: string }) => {
         <div>
           종목 차트별 <HumanIndexSVG />
         </div>
-        <span>어제 08:24 기준</span>
+        <span>전일 08:24 기준</span>
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
@@ -54,10 +55,8 @@ const StockTable = ({ country }: { country: string }) => {
             <TableRow key={index}>
               <StockData>
                 <StockInfo>
-                  <StockLogo>
-                    <img src={stock.logo}></img>
-                  </StockLogo>
-                  {stock.name}
+                  <StockLogo src={stock.logo} />
+                  <StockName>{stock.name}</StockName>
                 </StockInfo>
               </StockData>
               <StockData>

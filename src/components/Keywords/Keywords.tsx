@@ -3,7 +3,7 @@ import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
-import { KeywordItem, KeywordList, KeywordsContainer, Subtitle, Title, TitleWrapper } from './Keywords.style';
+import { KeywordItem, KeywordList, KeywordsContainer, Title, TitleWrapper } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
   const [keywords, suspend] = useQueryComponent({ query: KeywordsQuery(country) });
@@ -17,7 +17,7 @@ const Keywords = ({ country }: { country: string }) => {
           가장 많이 언급되는 키워드
           <InfoSVG onClick={togglePopup} />
         </Title>
-        <Subtitle>어제 08:24 기준</Subtitle>
+        <span>전일 08:24 기준</span>
       </TitleWrapper>
       <KeywordList>
         {suspend ||

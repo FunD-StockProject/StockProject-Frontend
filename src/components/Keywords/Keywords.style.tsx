@@ -11,11 +11,22 @@ const TitleWrapper = styled.div({
   display: 'flex',
   justifyContent: 'space-between', // 제목과 날짜 간 간격
   alignItems: 'center',
+  fontFamily: 'Pretendard', // 폰트 지정
+
+  ['span']: {
+    fontSize: '16px', // 기준 텍스트 크기
+    fontWeight: '500',
+    color: theme.colors.grayscale60, // 기준 텍스트 색상
+  },
+  [media[0]]: {
+    ['span']: {
+      fontSize: '12px',
+    },
+  },
 });
 
 const Title = styled.div({
   color: theme.colors.grayscale10, // 제목 텍스트 색상
-  fontFamily: 'Pretendard', // 폰트 지정
   fontSize: '32px', // 글자 크기
   fontStyle: 'normal',
   fontWeight: 700,
@@ -30,23 +41,11 @@ const Title = styled.div({
   },
 
   [media[0]]: {
-    fontSize: '16px', // 작은 화면에서 글자 크기 조정
+    fontSize: '20px', // 작은 화면에서 글자 크기 조정
+
     ['svg']: {
       width: '20px', // 아이콘 크기 조정
     },
-  },
-});
-const Subtitle = styled.span({
-  color: theme.colors.grayscale60,
-  textAlign: 'right',
-  fontFamily: 'Pretendard', // Corrected camelCase syntax
-  fontSize: '15px', // Corrected camelCase syntax
-  fontStyle: 'normal',
-  fontWeight: 700,
-  lineHeight: '150%', // Proper percentage format
-
-  [media[0]]: {
-    fontSize: '12px',
   },
 });
 
@@ -77,4 +76,4 @@ const KeywordItem = styled.div({
   },
 });
 
-export { KeywordsContainer, TitleWrapper, Title, Subtitle, KeywordList, KeywordItem };
+export { KeywordsContainer, TitleWrapper, Title, KeywordList, KeywordItem };
