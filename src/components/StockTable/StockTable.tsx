@@ -16,10 +16,10 @@ import {
   TableRow,
 } from './StockTable.style';
 
-const StockTable = () => {
+const StockTable = ({ country }: { country: string }) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const [stockTable] = useQueryComponent({ query: StockTableQuery() });
+  const [stockTable] = useQueryComponent({ query: StockTableQuery(country) });
   const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
   const handleTab = (index: number) => {
     if (tabIndex === index) {

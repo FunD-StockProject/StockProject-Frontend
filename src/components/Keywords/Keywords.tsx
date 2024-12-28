@@ -5,8 +5,8 @@ import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import { KeywordItem, KeywordList, KeywordsContainer, Subtitle, Title, TitleWrapper } from './Keywords.style';
 
-const Keywords = () => {
-  const [keywords] = useQueryComponent({ query: KeywordsQuery() });
+const Keywords = ({ country }: { country: string }) => {
+  const [keywords] = useQueryComponent({ query: KeywordsQuery(country) });
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);

@@ -82,13 +82,13 @@ const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
-const fetchKeywords = () => {
+const fetchKeywords = (country: string) => {
   if (enableMock2) return fetchKeywordsMock;
-  return fetchData(`/keywords`);
+  return fetchData(`/keywords${country}`);
 };
-const fetchStockTable = () => {
+const fetchStockTable = (country: string) => {
   if (enableMock2) return fetchStockTableMock;
-  return fetchData(`/stockTable`);
+  return fetchData(`/stockTable/${country}`);
 };
 
 export {
