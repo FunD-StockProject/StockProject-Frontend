@@ -66,7 +66,11 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
       setActiveIndex(visibleItems[0][0]);
     }
   };
-  const indicatorArray = Array.from({ length: curStocks?.length }, (_, idx) => idx);
+
+  const indicatorArray =
+    !isMobile && !isHot
+      ? Array.from({ length: curStocks?.length }, (_, idx) => idx).filter((_, idx) => idx % 3 === 0)
+      : Array.from({ length: curStocks?.length }, (_, idx) => idx);
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -75,7 +79,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
           <>
             <IndicatorContainer>
               {indicatorArray.map((el) => (
-                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
+                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name} />
               ))}
             </IndicatorContainer>
 
