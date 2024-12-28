@@ -62,5 +62,5 @@ export const StockTableQuery = (country: string) => {
 };
 
 export const IndexScoreQuery = (country: string) => {
-  return useQuery<number[]>(['keywords', country], () => fetchIndexScore(country), queryOptions);
+  return useQuery<number[]>(['indexScore', country], () => fetchIndexScore(country), queryOptions);
 };
