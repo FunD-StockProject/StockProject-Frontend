@@ -20,7 +20,6 @@ const StockTableTitle = styled.div({
   },
 
   ['span']: {
-    display: 'inline-block',
     fontSize: '16px', // 기준 텍스트 크기
     fontWeight: '500',
     color: theme.colors.grayscale60, // 기준 텍스트 색상
@@ -35,7 +34,7 @@ const StockTableTitle = styled.div({
   [media[0]]: {
     fontSize: '21px',
     ['span']: {
-      fontSize: '14px',
+      fontSize: '12px',
     },
     ['svg']: {
       height: '18px',
