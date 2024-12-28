@@ -26,4 +26,14 @@ export interface RevelantStockInfo {
   diff: number;
 }
 
+export interface StockTableData {
+  logo: string;
+  name: string;
+  price: number;
+  change: number;
+  changeRate: number;
+  score: number;
+  delta: number;
+}
+
 export type PERIOD_CODE = 'D' | 'W' | 'M';
