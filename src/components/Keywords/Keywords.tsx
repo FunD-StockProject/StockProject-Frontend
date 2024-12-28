@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
+import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import { KeywordItem, KeywordList, KeywordsContainer, Subtitle, Title, TitleWrapper } from './Keywords.style';
 
 const Keywords = () => {
-  const keywords = ['이재명', '더불어민주당', '항공사', '탄소저감', '신용평가', '가스에너지', '원유정제', '조선사', '섬유'];
+  const [keywords] = useQueryComponent({ query: KeywordsQuery() });
+
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
   return (
@@ -17,11 +20,12 @@ const Keywords = () => {
         <Subtitle>어제 08:24 기준</Subtitle>
       </TitleWrapper>
       <KeywordList>
-        {keywords.map((keyword, index) => (
-          <KeywordItem key={index} onClick={() => {}}>
-            {keyword}
-          </KeywordItem>
-        ))}
+        {keywords &&
+          keywords.map((keyword: string, index: number) => (
+            <KeywordItem key={index} onClick={() => {}}>
+              {keyword}
+            </KeywordItem>
+          ))}
       </KeywordList>
       {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}
     </KeywordsContainer>

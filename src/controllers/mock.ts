@@ -1,3 +1,39 @@
+export const fetchKeywordsMock = ['이재명', '더불어민주당', '항공사', '탄소저감', '신용평가', '가스에너지', '원유정제', '조선사', '섬유'];
+
+export const fetchStockTableMock = [
+  [
+    { logo: null, name: '삼성전자1', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자1', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자1', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자1', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자1', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자1', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+];
 export const fetchScoreCardMock = [
   { stockId: 1, symbolName: '삼성전자', score: 81, diff: 18 },
   { stockId: 2, symbolName: '한화솔루션', score: 11, diff: -18 },

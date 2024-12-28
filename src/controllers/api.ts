@@ -1,5 +1,14 @@
 import { PERIOD_CODE } from './api.Type';
-import { fetchChartMock, fetchRelevantMock, fetchScoreCardMock, fetchScoreMock, fetchSearchSymbolNameMock, fetchSearchWordCloudMock } from './mock';
+import {
+  fetchChartMock,
+  fetchKeywordsMock,
+  fetchRelevantMock,
+  fetchScoreCardMock,
+  fetchScoreMock,
+  fetchSearchSymbolNameMock,
+  fetchSearchWordCloudMock,
+  fetchStockTableMock,
+} from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -8,7 +17,7 @@ const Headers = { 'content-type': 'application/json' };
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
 const enableMock = false;
-
+const enableMock2 = true;
 const fetchData = async (path: string) => {
   try {
     const url = `${baseURL}${path}`;
@@ -73,8 +82,13 @@ const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
-const fetchKeywords = (stockId: number) => {
-  return fetchData(`/${stockId}/keywords`);
+const fetchKeywords = () => {
+  if (enableMock2) return fetchKeywordsMock;
+  return fetchData(`/keywords`);
+};
+const fetchStockTable = () => {
+  if (enableMock2) return fetchStockTableMock;
+  return fetchData(`/stockTable`);
 };
 
 export {
@@ -89,4 +103,5 @@ export {
   fetchSearchWordCloud,
   fetchRealStockInfo,
   fetchKeywords,
+  fetchStockTable,
 };

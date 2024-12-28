@@ -12,6 +12,7 @@ import {
   fetchScore,
   fetchSearchSymbolName,
   fetchStockChart,
+  fetchStockTable,
 } from './api';
 import { StockInfo } from './api.Type';
 
@@ -21,7 +22,7 @@ export const queryOptions = {
 };
 
 export const SearchSymbolNameQuery = (name: string, country: string) => {
-  return useQuery<any>(['searchSymbolByName', name], () => fetchSearchSymbolName(name, country), queryOptions);
+  return useQuery<StockInfo>(['searchSymbolByName', name], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
 export const StockRelevantQuery = (id: number) => {
@@ -50,6 +51,11 @@ export const RealStockInfoQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
 
-export const KeywordsQuery = (id: number) => {
-  return useQuery<StockInfo>(['keywords', id], () => fetchKeywords(id), queryOptions);
+export const KeywordsQuery = () => {
+  return useQuery<string[]>(['keywords'], () => fetchKeywords(), queryOptions);
+};
+
+export const StockTableQuery = () => {
+  return useQuery<any>(['stockTable'], () => fetchStockTable(), queryOptions);
+  // 추후 타입 픽스되면 수정 필요
 };
