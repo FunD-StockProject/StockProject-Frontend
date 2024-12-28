@@ -132,8 +132,8 @@ const Home = () => {
           <StyledText>전일 08:24 기준</StyledText>
           {isPopupOpen[3] && <DescentPopUp onClose={() => togglePopup(3)} />}
         </ContentsItemContainer>
-        <StockTable />
-        <Keywords />
+        <StockTable country={tabIndex === 0 ? 'KOREA' : 'OVERSEA'} />
+        <Keywords country={tabIndex === 0 ? 'KOREA' : 'OVERSEA'} />
       </HomeContents>
       {!detectPWA() && <PWAInfoPopUp />}
     </HomeContainer>

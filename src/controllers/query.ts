@@ -51,11 +51,11 @@ export const RealStockInfoQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
 
-export const KeywordsQuery = () => {
-  return useQuery<string[]>(['keywords'], () => fetchKeywords(), queryOptions);
+export const KeywordsQuery = (country: string) => {
+  return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
 };
 
-export const StockTableQuery = () => {
-  return useQuery<any>(['stockTable'], () => fetchStockTable(), queryOptions);
+export const StockTableQuery = (country: string) => {
+  return useQuery<any>(['stockTable', country], () => fetchStockTable(country), queryOptions);
   // 추후 타입 픽스되면 수정 필요
 };
