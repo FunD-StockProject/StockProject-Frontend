@@ -5,6 +5,7 @@ import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
+  fetchIndexScore,
   fetchKeywords,
   fetchRealStockInfo,
   fetchRelevant,
@@ -58,4 +59,8 @@ export const KeywordsQuery = (country: string) => {
 export const StockTableQuery = (country: string) => {
   return useQuery<any>(['stockTable', country], () => fetchStockTable(country), queryOptions);
   // 추후 타입 픽스되면 수정 필요
+};
+
+export const IndexScoreQuery = (country: string) => {
+  return useQuery<number[]>(['keywords', country], () => fetchIndexScore(country), queryOptions);
 };

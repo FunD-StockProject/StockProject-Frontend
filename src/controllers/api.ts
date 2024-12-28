@@ -1,6 +1,7 @@
 import { PERIOD_CODE } from './api.Type';
 import {
   fetchChartMock,
+  fetchIndexScoreMock,
   fetchKeywordsMock,
   fetchRelevantMock,
   fetchScoreCardMock,
@@ -90,6 +91,10 @@ const fetchStockTable = (country: string) => {
   if (enableMock2) return fetchStockTableMock;
   return fetchData(`/stockTable/${country}`);
 };
+const fetchIndexScore = (country: string) => {
+  if (enableMock2) return fetchIndexScoreMock;
+  return fetchData(`/indexSCore/${country}`);
+};
 
 export {
   fetchScore,
@@ -104,4 +109,5 @@ export {
   fetchRealStockInfo,
   fetchKeywords,
   fetchStockTable,
+  fetchIndexScore,
 };

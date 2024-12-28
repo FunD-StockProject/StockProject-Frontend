@@ -1,3 +1,4 @@
+export const fetchIndexScoreMock = [30, -45, 70];
 export const fetchKeywordsMock = ['이재명', '더불어민주당', '항공사', '탄소저감', '신용평가', '가스에너지', '원유정제', '조선사', '섬유'];
 
 export const fetchStockTableMock = [
