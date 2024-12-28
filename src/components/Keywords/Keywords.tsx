@@ -15,7 +15,9 @@ const Keywords = () => {
       </TitleWrapper>
       <KeywordList>
         {keywords.map((keyword, index) => (
-          <KeywordItem key={index}>{keyword}</KeywordItem>
+          <KeywordItem key={index} onClick={() => {}}>
+            {keyword}
+          </KeywordItem>
         ))}
       </KeywordList>
     </KeywordsContainer>
