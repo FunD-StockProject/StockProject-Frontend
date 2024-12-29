@@ -10,13 +10,16 @@ const StockTableTitle = styled.div({
   justifyContent: 'space-between', // 좌측 제목과 우측 기준 날짜를 양쪽에 배치
   alignItems: 'center', // 세로 중앙 정렬
   padding: '12px 0', // 상하 여백 추가
+  margin: 0,
   fontFamily: 'Pretendard', // 통일된 폰트
   fontSize: '32px', // 기본 글자 크기
   fontWeight: '700', // 제목 강조
+  lineHeight: '1.5',
   color: theme.colors.grayscale10, // 텍스트 색상
+
   ['div']: {
-    display: 'flex', // "종목 차트별"과 "인간지표"를 수평 정렬
-    alignItems: 'center', // 세로축 중앙 정렬
+    display: 'flex',
+    alignItems: 'center',
   },
 
   ['span']: {
@@ -32,7 +35,7 @@ const StockTableTitle = styled.div({
   },
 
   [media[0]]: {
-    fontSize: '21px',
+    fontSize: '20px',
     ['span']: {
       fontSize: '12px',
     },
