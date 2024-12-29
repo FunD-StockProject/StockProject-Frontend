@@ -23,7 +23,7 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
         </div>
         <div>
           <PopUpDetailNumber color={'grayscale80'}>3</PopUpDetailNumber>
-          <p style={{ fontSize: '3em' }}>14점</p>
+          <p style={{ fontSize: '2em' }}>14점</p>
         </div>
       </PopUpImage>
       <PopUpDetailContainer>
