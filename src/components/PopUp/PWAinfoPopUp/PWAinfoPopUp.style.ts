@@ -64,6 +64,7 @@ const Close24HourButton = styled(StyledButton)({
 const ConfirmButton = styled(StyledButton)({
   backgroundColor: theme.colors.primary50,
   color: theme.colors.grayscale5,
+  border: 'none',
 });
 
 const Backdrop = styled('div')({
