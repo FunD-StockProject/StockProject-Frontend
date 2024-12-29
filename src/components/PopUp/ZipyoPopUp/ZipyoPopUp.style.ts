@@ -103,7 +103,7 @@ const PopUpDetail = styled('div')({
 
   [media[0]]: {
     ['span']: {
-      fontSize: '11px',
+      fontSize: '9px',
     },
   },
 });
