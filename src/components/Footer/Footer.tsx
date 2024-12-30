@@ -1,10 +1,10 @@
 import { ImgDiv } from '@components/Common/Common';
-import businessSVG from '@assets/footer_business.svg';
-import commentSVG from '@assets/footer_comment.svg';
-import developerSVG from '@assets/footer_developer.svg';
-import dictSVG from '@assets/footer_dict.svg';
-import InstagramSVG from '@assets/footer_instagram.svg';
-import LinkedinSVG from '@assets/footer_linkedin.svg';
+import businessSVG from '@assets/footer/footer_business.svg';
+import commentSVG from '@assets/footer/footer_comment.svg';
+import developerSVG from '@assets/footer/footer_developer.svg';
+import dictSVG from '@assets/footer/footer_dict.svg';
+import InstagramSVG from '@assets/footer/footer_instagram.svg';
+import LinkedinSVG from '@assets/footer/footer_linkedin.svg';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { FooterButtonContainer, FooterButtonItemContainer, FooterContainer, FooterContents, FooterTitle } from './Footer.Style';
 
