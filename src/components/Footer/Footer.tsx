@@ -28,7 +28,7 @@ const openInstagram = () => {
   window.open('https://www.instagram.com/humanzipyo/');
 };
 const openLinkedin = () => {
-  window.open('https://www.linkedin.com/company/humanzipyo');
+  // window.open('https://www.linkedin.com/company/humanzipyo');
 };
 const Footer = () => {
   return (
