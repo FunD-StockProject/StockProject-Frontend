@@ -27,6 +27,7 @@ const Home = () => {
     setPopupOpen((prev) => prev.map((value, idx) => (idx === index ? !value : value)));
   };
   const tabMenu = ['국내주식', '해외주식'];
+  const updateTime = ['17', '06'];
 
   const handleTab = (index: number) => {
     if (tabIndex === index) {
@@ -66,7 +67,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
-          <StyledText>전일 08:24 기준</StyledText>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[0] && <HotPopUp onClose={() => togglePopup(0)} />}
         </ContentsItemContainer>
         <ContentsItemContainer>
@@ -78,7 +79,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={risingStocksApiRef} name={'RISING'} index={tabIndex} />
           </ContentsItemContent>
-          <StyledText>전일 08:24 기준</StyledText>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[1] && <RisingPopUp onClose={() => togglePopup(1)} />}
         </ContentsItemContainer>
         <ContentsItemContainer>
@@ -90,7 +91,7 @@ const Home = () => {
           <ContentsItemContent>
             <CardList apiRef={descentStocksApiRef} name={'DESCENT'} index={tabIndex} />
           </ContentsItemContent>
-          <StyledText>전일 08:24 기준</StyledText>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[2] && <DescentPopUp onClose={() => togglePopup(2)} />}
         </ContentsItemContainer>
         <StockTable country={tabIndex === 0 ? 'KOREA' : 'OVERSEA'} />
