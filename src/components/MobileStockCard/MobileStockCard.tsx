@@ -31,7 +31,8 @@ const MobileStockCardItem = ({ name, score, delta, country }: { name: string; sc
         <MobileStockCardItemScore>
           {score}점
           <MobileStockCardItemDeltaScore delta={delta}>
-            {Math.abs(delta)}점{deltaSVG}
+            {Math.abs(delta)}
+            {deltaSVG}
           </MobileStockCardItemDeltaScore>
         </MobileStockCardItemScore>
         {true && (

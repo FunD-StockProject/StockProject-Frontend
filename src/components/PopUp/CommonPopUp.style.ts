@@ -29,7 +29,7 @@ const PopUpTitle = styled('div')({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  fontSize: '40px',
+  fontSize: '36px',
   fontWeight: '700',
   padding: '48px 32px 0 32px',
 
