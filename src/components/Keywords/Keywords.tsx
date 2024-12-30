@@ -10,6 +10,8 @@ const Keywords = ({ country }: { country: string }) => {
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
+
+  const updateTime = country === 'KOREA' ? '17' : '06';
   return (
     <KeywordsContainer>
       <TitleWrapper>
@@ -17,7 +19,7 @@ const Keywords = ({ country }: { country: string }) => {
           가장 많이 언급되는 키워드
           <InfoSVG onClick={togglePopup} />
         </Title>
-        <span>전일 08:24 기준</span>
+        <span>매일 {updateTime}시 업데이트됩니다.</span>
       </TitleWrapper>
       <KeywordList>
         {suspend ||

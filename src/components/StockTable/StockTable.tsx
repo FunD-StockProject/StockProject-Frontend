@@ -20,6 +20,7 @@ import {
 const StockTable = ({ country }: { country: string }) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
+  const updateTime = country === 'KOREA' ? '17' : '06';
   const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(country) });
   const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
   const handleTab = (index: number) => {
@@ -35,7 +36,7 @@ const StockTable = ({ country }: { country: string }) => {
         <div>
           종목 차트별 <HumanIndexSVG />
         </div>
-        <span>전일 08:24 기준</span>
+        <span>매일 {updateTime}시 업데이트됩니다.</span>
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
