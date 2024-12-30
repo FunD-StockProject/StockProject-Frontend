@@ -33,7 +33,7 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
                   {stockIndex} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
                 </IndexInfoContainer>
                 <IndexDeltaScore delta={delta}>
-                  {Math.abs(delta)}점{deltaSVG}
+                  {Math.abs(delta)}점 {deltaSVG}
                 </IndexDeltaScore>
               </IndexItem>
             );

@@ -4,7 +4,7 @@ import { StockTableData } from '@controllers/api.Type';
 import { StockTableQuery } from '@controllers/query';
 import HumanIndexSVG from '@assets/HumanIndex.svg?react';
 import {
-  ChangeValue,
+  DeltaScore,
   HeaderItem,
   StockData,
   StockInfo,
@@ -52,29 +52,32 @@ const StockTable = ({ country }: { country: string }) => {
       </TableHeaderContainer>
       {suspend ||
         (stockTable &&
-          stockTable[tabIndex].map((stock: StockTableData, index: number) => (
-            <TableRow key={index}>
-              <StockData>
-                <StockInfo>
-                  <StockLogo src={stock.logo} />
-                  <StockName>{stock.name}</StockName>
-                </StockInfo>
-              </StockData>
-              <StockData>
-                <div>{stock.price.toLocaleString()}</div>
-                <ChangeValue isPositive={stock.change > 0}>
-                  {stock.change.toLocaleString()} ({Math.abs(stock.changeRate)}%)
-                </ChangeValue>
-              </StockData>
-              <StockData>
-                <span>{stock.score}점 </span>
-                <ChangeValue isPositive={stock.delta > 0}>
-                  ({stock.delta > 0 ? '+' : ''}
-                  {stock.delta}% )
-                </ChangeValue>
-              </StockData>
-            </TableRow>
-          )))}
+          stockTable[tabIndex].map((stock: StockTableData, index: number) => {
+            return (
+              <TableRow key={index}>
+                <StockData>
+                  <StockInfo>
+                    <StockLogo src={stock.logo} />
+                    <StockName>{stock.name}</StockName>
+                  </StockInfo>
+                </StockData>
+                <StockData>
+                  <span>{stock.price.toLocaleString()}</span>
+                  <DeltaScore delta={stock.change}>
+                    {stock.change > 0 ? '+' : ''}
+                    {stock.change.toLocaleString()}({Math.abs(stock.changeRate)}%)
+                  </DeltaScore>
+                </StockData>
+                <StockData>
+                  <span>{stock.score}점 </span>
+                  <DeltaScore delta={stock.delta}>
+                    {stock.delta > 0 ? '+' : ''}
+                    {stock.delta}
+                  </DeltaScore>
+                </StockData>
+              </TableRow>
+            );
+          }))}
     </StockTableContainer>
   );
 };

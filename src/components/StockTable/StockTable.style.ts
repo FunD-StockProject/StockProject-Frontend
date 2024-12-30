@@ -128,19 +128,33 @@ const StockName = styled.div({
 });
 
 const StockData = styled.div({
+  display: 'flex',
   flex: 1,
-  textAlign: 'center', // 텍스트 중앙 정렬
+  flexDirection: 'row',
+  justifyContent: 'center',
+  textAlign: 'center',
   color: theme.colors.primary0,
-  fontFamily: 'Pretendard', // 폰트 설정
-  fontSize: '17px', // 글꼴 크기
-  fontStyle: 'normal', // 일반 스타일
-  fontWeight: 500, // 두께 설정
-  lineHeight: '1.5', // 줄 높이 설정 (19.5px)
+  fontFamily: 'Pretendard',
+  fontSize: '17px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  lineHeight: '1.5',
+  gap: '8px',
+
+  [media[0]]: {
+    flexDirection: 'column',
+  },
 });
 
-const ChangeValue = styled.span<{ isPositive: boolean }>(({ isPositive }) => ({
-  color: isPositive ? theme.colors.red : theme.colors.blue,
+const DeltaScore = styled.span(({ delta }: { delta: number }) => ({
+  gap: '8px',
+  color: delta > 0 ? theme.colors.red : theme.colors.blue,
   fontSize: '13px',
+  ['svg']: {
+    height: '0.5em',
+    width: 'auto',
+    fill: delta > 0 ? theme.colors.red : theme.colors.blue,
+  },
 }));
 
 export {
@@ -154,5 +168,5 @@ export {
   TableRow,
   StockLogo,
   StockData,
-  ChangeValue,
+  DeltaScore,
 };
