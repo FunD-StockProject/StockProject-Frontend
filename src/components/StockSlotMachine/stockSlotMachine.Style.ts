@@ -13,6 +13,7 @@ const ScoreSlotMachineContainer = styled.div(
     fontWeight: '700',
     lineHeight: '1',
     gap: '21px',
+    marginBottom: '0.5em',
 
     [media[0]]: {
       fontSize: '17px',
@@ -24,29 +25,24 @@ const ScoreSlotMachineContainer = styled.div(
   ({ active }: { active?: boolean }) => active && { cursor: 'pointer' },
 );
 
-const SlotMachineItemContainer = styled.div(
-  // (props) => ({
-  //   backgroundColor: props.theme.colors.grayscale90,
-  // }),
-  {
-    backgroundColor: theme.colors.grayscale90,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxHeight: '240px',
-    border: `1px solid ${theme.colors.grayscale40}`,
-    borderRadius: '16px',
-    width: '100%',
-    overflow: 'hidden',
-    position: 'relative',
-    height: '240px',
+const SlotMachineItemContainer = styled.div({
+  backgroundColor: theme.colors.grayscale90,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  maxHeight: '240px',
+  border: `1px solid ${theme.colors.grayscale40}`,
+  borderRadius: '16px',
+  width: '100%',
+  overflow: 'hidden',
+  position: 'relative',
+  height: '240px',
 
-    [media[0]]: {
-      height: '80px',
-      borderRadius: '8px',
-    },
+  [media[0]]: {
+    height: '80px',
+    borderRadius: '8px',
   },
-);
+});
 
 const ScoreSlotMachineContent = styled.div({
   display: 'flex',
