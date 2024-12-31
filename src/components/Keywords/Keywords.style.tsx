@@ -41,7 +41,7 @@ const Title = styled.div({
   },
 
   [media[0]]: {
-    fontSize: '20px', // 작은 화면에서 글자 크기 조정
+    fontSize: '16px', // 작은 화면에서 글자 크기 조정
 
     ['svg']: {
       width: '20px', // 아이콘 크기 조정
