@@ -71,8 +71,8 @@ const StockTable = ({ country }: { country: string }) => {
                 <StockData>
                   <span>{stock.score}점 </span>
                   <DeltaScore delta={stock.delta}>
-                    {stock.delta > 0 ? '+' : ''}
-                    {stock.delta}
+                    ({stock.delta > 0 ? '+' : ''}
+                    {stock.delta})
                   </DeltaScore>
                 </StockData>
               </TableRow>

@@ -130,7 +130,7 @@ const StockName = styled.div({
 const StockData = styled.div({
   display: 'flex',
   flex: 1,
-  flexDirection: 'row',
+  flexDirection: 'column',
   justifyContent: 'center',
   textAlign: 'center',
   color: theme.colors.primary0,
@@ -142,7 +142,7 @@ const StockData = styled.div({
   gap: '8px',
 
   [media[0]]: {
-    flexDirection: 'column',
+    gap: '0',
   },
 });
 
