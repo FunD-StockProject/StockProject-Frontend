@@ -13,13 +13,13 @@ const ScoreSlotMachineContainer = styled.div(
     fontWeight: '700',
     lineHeight: '1',
     gap: '21px',
-    marginBottom: '0.5em',
 
     [media[0]]: {
       fontSize: '17px',
       padding: '12px',
       borderRadius: '12px',
       gap: '13px',
+      marginBottom: '0.5em',
     },
   },
   ({ active }: { active?: boolean }) => active && { cursor: 'pointer' },
