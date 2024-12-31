@@ -19,25 +19,26 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
+  if (suspend) return null;
+
   return (
     <IndicesContainer>
-      {suspend ||
-        (indexScores &&
-          stockIndices[tabIndex].map((stockIndex, idx) => {
-            const delta = indexScores[idx];
-            const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
+      {indexScores &&
+        stockIndices[tabIndex].map((stockIndex, idx) => {
+          const delta = indexScores[idx];
+          const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
 
-            return (
-              <IndexItem key={stockIndex}>
-                <IndexInfoContainer>
-                  {stockIndex} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
-                </IndexInfoContainer>
-                <IndexDeltaScore delta={delta}>
-                  {Math.abs(delta)}점 {deltaSVG}
-                </IndexDeltaScore>
-              </IndexItem>
-            );
-          }))}
+          return (
+            <IndexItem key={stockIndex}>
+              <IndexInfoContainer>
+                {stockIndex} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
+              </IndexInfoContainer>
+              <IndexDeltaScore delta={delta}>
+                {Math.abs(delta)}점 {deltaSVG}
+              </IndexDeltaScore>
+            </IndexItem>
+          );
+        })}
       {isPopupOpen && <FearPopUp onClose={togglePopup} />}
     </IndicesContainer>
   );
