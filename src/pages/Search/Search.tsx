@@ -19,7 +19,7 @@ import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
-  <FlexDiv flexDirection="row" gap="24px" width="100%">
+  <FlexDiv flexDirection="row" width="100%">
     <MobileStockCardGrid curStocks={stocks} name="RELEVANT" country={country} />
   </FlexDiv>
 );
