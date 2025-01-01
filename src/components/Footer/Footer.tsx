@@ -6,7 +6,7 @@ import dictSVG from '@assets/footer/footer_dict.svg';
 import InstagramSVG from '@assets/footer/footer_instagram.svg';
 import LinkedinSVG from '@assets/footer/footer_linkedin.svg';
 import LogoSVG from '@assets/logo_white.svg?react';
-import { FooterButtonContainer, FooterButtonItemContainer, FooterContainer, FooterContents, FooterTitle } from './Footer.Style';
+import { FooterButtonContainer, FooterButtonItemContainer, FooterContainer, FooterContents, FooterIconsContainer, FooterTitle } from './Footer.Style';
 
 const FooterButton = ({ img, str, onClick }: { img: string; str: string; onClick: (event: React.MouseEvent<HTMLDivElement>) => void }) => {
   return (
@@ -47,11 +47,11 @@ const Footer = () => {
             <FooterButton img={commentSVG} str="서비스 의견 남기기" onClick={openSurveyWindow} />
             <FooterButton img={businessSVG} str="비즈니스 제안" onClick={openBusinessProposal} />
             <FooterButton img={developerSVG} str="만든이들" onClick={openCreatorsInfoModal} />
-            <div>
-              <ImgDiv alt={'인스타그램'} src={InstagramSVG} objectFit="fill" onClick={openInstagram} />
-              <ImgDiv alt={'링크드인'} src={LinkedinSVG} objectFit="fill" onClick={openLinkedin} />
-            </div>
           </FooterButtonContainer>
+          <FooterIconsContainer>
+            <ImgDiv alt={'인스타그램'} src={InstagramSVG} objectFit="fill" onClick={openInstagram} />
+            <ImgDiv alt={'링크드인'} src={LinkedinSVG} objectFit="fill" onClick={openLinkedin} />
+          </FooterIconsContainer>
         </FooterContents>
       </FooterContainer>
     </>
