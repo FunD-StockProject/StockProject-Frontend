@@ -70,7 +70,6 @@ const fetchAutoComplete = (name: string) => {
 
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
-  console.log(country);
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 

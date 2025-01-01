@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { KOREA, OVERSEA } from '@ts/Constants';
 import { StockType } from '@ts/Types';
 import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
 import {
@@ -37,7 +36,7 @@ const StockFetchers = {
 };
 
 export const StockFetchQuery = (type: StockType, index: number) => {
-  return useQuery<any>([type + ' ' + index], () => StockFetchers[type](!index ? KOREA : OVERSEA), queryOptions);
+  return useQuery<any>([type + ' ' + index], () => StockFetchers[type](!index ? 'KOREA' : 'OVERSEA'), queryOptions);
 };
 
 export const ScoreQuery = (id: number, country: string) => {
