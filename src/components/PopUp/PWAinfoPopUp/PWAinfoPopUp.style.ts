@@ -32,7 +32,9 @@ const TextArea = styled('div')({
   flexDirection: 'row',
   gap: '15px',
 });
+
 const HeaderText = styled('h2')({});
+
 const NormalText = styled('div')({
   fontWeight: 500,
 });
