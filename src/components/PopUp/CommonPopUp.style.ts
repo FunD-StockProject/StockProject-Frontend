@@ -65,10 +65,12 @@ const StyledSpan = styled('span')({
   color: theme.colors.primary50,
   fontWeight: '700',
 });
+
 const ConfirmButton = styled('div')({
   textAlign: 'center',
-  fontWeight: '500',
-  fontSize: '16px',
+  fontWeight: '700',
+  lineHeight: '1.5',
+  fontSize: '24px',
   cursor: 'pointer',
   background: theme.colors.primary50,
   color: theme.colors.primary0,
@@ -76,7 +78,7 @@ const ConfirmButton = styled('div')({
   padding: '27px 0',
 
   [media[0]]: {
-    fontSize: '14px', // 모바일 글자 크기 축소
+    fontSize: '16px', // 모바일 글자 크기 축소
     padding: '16px 0', // 모바일 패딩 축소
   },
 });

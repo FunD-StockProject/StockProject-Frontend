@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
@@ -15,19 +16,19 @@ import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan, StyledText } from './Home.Style';
 
 const Home = () => {
+  const tabMenu = ['국내주식', '해외주식'];
+  const updateTime = [STOCK_UPDATE_TIME.KOREA, STOCK_UPDATE_TIME.OVERSEA];
+
   const [tabIndex, setTabIndex] = useState<number>(0);
 
+  const [isPopupOpen, setPopupOpen] = useState([false, false, false]);
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
 
-  const [isPopupOpen, setPopupOpen] = useState([false, false, false]);
-
   const togglePopup = (index: number) => {
     setPopupOpen((prev) => prev.map((value, idx) => (idx === index ? !value : value)));
   };
-  const tabMenu = ['국내주식', '해외주식'];
-  const updateTime = ['17', '06'];
 
   const handleTab = (index: number) => {
     if (tabIndex === index) {
