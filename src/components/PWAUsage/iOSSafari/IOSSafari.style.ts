@@ -73,10 +73,4 @@ const DetailText = styled.div({
   flex: 1, // 텍스트 영역 확장
 });
 
-const DetailImage = styled.img({
-  width: '100%', // 이미지 크기 조정
-  marginBottom: '32px',
-  display: 'block',
-});
-
-export { OrderContainer, HeaderText, DetailContainer, DetailItem, DetailNumber, DetailText, DetailImage };
+export { OrderContainer, HeaderText, DetailContainer, DetailItem, DetailNumber, DetailText };
