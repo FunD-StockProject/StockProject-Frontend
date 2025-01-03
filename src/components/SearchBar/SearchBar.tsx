@@ -67,7 +67,7 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
           >
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
             <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
-              {getCommonString({ from: value, to: stock.symbolName }).map((e) => (e.check ? <span>{e.char}</span> : e.char))}
+              {getCommonString({ from: value.toLocaleUpperCase(), to: stock.symbolName }).map((e) => (e.check ? <span>{e.char}</span> : e.char))}
             </AutoCompleteItemText>
           </AutoCompleteItemContainer>
         ))
