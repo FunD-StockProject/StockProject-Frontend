@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { marquee } from '@styles/keyframes';
 import { media, theme } from '@styles/themes';
 
@@ -60,14 +61,11 @@ const SearchTitleText = styled.div({
   color: theme.colors.transparent,
 });
 
-const SearchTitleAnimatedText = styled.div(
-  ({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' },
-  {
-    top: '0',
-    position: 'absolute',
-    color: theme.colors.primary0,
-  },
-);
+const SearchTitleAnimatedText = styled.div(({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' }, {
+  top: '0',
+  position: 'absolute',
+  color: theme.colors.primary0,
+});
 
 const SearchTitleSVG = styled.div({
   display: 'flex',
@@ -114,10 +112,10 @@ const SearchTitleLabelContainer = styled.div({
 });
 
 const SearchTitleLabelItem = styled.div(
-  ({ delta, bold }: { delta?: boolean; bold?: boolean }) => ({
+  ({ delta, bold }: { delta?: number; bold?: boolean }) => ({
     fontWeight: bold ? '700' : '400',
     span: {
-      color: delta ? theme.colors.red : theme.colors.blue,
+      color: deltaScoreToColor(delta ?? 0),
     },
   }),
   {

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { media, theme } from '@styles/themes';
 
 const StockTableContainer = styled.div({
@@ -152,7 +153,7 @@ const StockData = styled.div({
 
 const DeltaScore = styled.span(({ delta }: { delta: number }) => ({
   gap: '8px',
-  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  color: deltaScoreToColor(delta),
   fontSize: '13px',
 }));
 
