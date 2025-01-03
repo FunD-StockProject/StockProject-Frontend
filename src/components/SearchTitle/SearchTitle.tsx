@@ -16,15 +16,7 @@ import {
   SearchTitleText,
 } from './SearchTitle.Style';
 
-const SearchTitle = ({
-  stockInfo,
-  resultMode,
-  onClick,
-}: {
-  stockInfo: StockInfo;
-  resultMode: 'indicator' | 'chart';
-  onClick: (e: any) => void;
-}) => {
+const SearchTitle = ({ stockInfo, resultMode, onClick }: { stockInfo: StockInfo; resultMode: 'indicator' | 'chart'; onClick: (e: any) => void }) => {
   const { state } = useLocation();
   const titleTextRef = useRef<HTMLDivElement>(null);
   const [animated, setAnimated] = useState<boolean>(false);
@@ -52,14 +44,12 @@ const SearchTitle = ({
             <SearchTitleSVG>
               <ZipyoSVG />
             </SearchTitleSVG>
-            <SearchTitleButton onClick={onClick}>
-              {resultMode == 'indicator' ? '차트' : '인간지표'} 보기
-            </SearchTitleButton>
+            <SearchTitleButton onClick={onClick}>{resultMode == 'indicator' ? '차트' : '인간지표'} 보기</SearchTitleButton>
           </SearchTitleContent>
           <SearchTitleLabelContainer>
             <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
             <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
-            <SearchTitleLabelItem bold={true} delta={stockInfo.priceDiff > 0}>
+            <SearchTitleLabelItem bold={true} delta={stockInfo.priceDiff}>
               {money} {stockInfo.price.toLocaleString()}
               <span>
                 {`

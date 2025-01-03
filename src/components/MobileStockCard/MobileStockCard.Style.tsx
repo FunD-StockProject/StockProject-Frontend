@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { ImgDiv } from '@components/Common/Common';
 import { theme } from '@styles/themes';
 
@@ -52,13 +53,13 @@ const MobileStockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) 
   alignItems: 'center',
   fontSize: '0.8em',
   gap: '4px',
-  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  color: deltaScoreToColor(delta),
   padding: '0 0.4em',
 
   ['svg']: {
     height: '0.5em',
     width: 'auto',
-    fill: delta > 0 ? theme.colors.red : theme.colors.blue,
+    fill: deltaScoreToColor(delta),
   },
 }));
 

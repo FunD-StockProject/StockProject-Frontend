@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { media, theme } from '@styles/themes';
 
 const IndicesContainer = styled.div({
@@ -52,13 +53,13 @@ const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '4px',
-  color: delta > 0 ? theme.colors.red : theme.colors.blue,
+  color: deltaScoreToColor(delta),
   fontSize: '24px',
 
   ['svg']: {
     height: '0.5em',
     width: 'auto',
-    fill: delta > 0 ? theme.colors.red : theme.colors.blue,
+    fill: deltaScoreToColor(delta),
   },
 }));
 
