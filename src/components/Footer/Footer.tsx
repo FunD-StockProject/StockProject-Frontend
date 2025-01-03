@@ -22,13 +22,13 @@ const openSurveyWindow = () => {
 };
 const openCreatorsInfoModal = () => {};
 const openBusinessProposal = () => {
-  window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com&subject=인간지표 비즈니스 제안');
+  window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
 };
 const openInstagram = () => {
   window.open('https://www.instagram.com/humanzipyo/');
 };
 const openLinkedin = () => {
-  // window.open('https://www.linkedin.com/company/humanzipyo');
+  window.open('https://www.linkedin.com/company/humanzipyo');
 };
 const Footer = () => {
   return (
