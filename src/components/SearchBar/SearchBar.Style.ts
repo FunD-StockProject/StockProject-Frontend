@@ -69,6 +69,7 @@ const SearchBarInput = styled.div(
       width: '100%',
       border: 'none',
       background: theme.colors.transparent,
+      color: theme.colors.primary0,
       outline: 'none',
     },
     ['svg']: {
