@@ -3,25 +3,21 @@ import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { marquee } from '@styles/keyframes';
 import { media, theme } from '@styles/themes';
 
-const SearchTitleLayout = styled.div({
-  background: theme.colors.grayscale100,
-  width: '100%',
-});
-
 const SearchTitleContainer = styled.div({
+  background: theme.colors.primary100,
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
   maxWidth: '1280px',
   boxSizing: 'border-box',
   margin: '0 auto',
-  padding: '60px 60px',
+  // padding: '60px 60px',
   height: '100%',
   gap: '24px',
   fontSize: '19px',
   color: theme.colors.grayscale30,
   [media[0]]: {
-    padding: '30px 24px',
+    // padding: '30px 24px',
     gap: '12px',
     fontSize: '13px',
   },
@@ -138,8 +134,29 @@ const SearchTitleLabelItem = styled.div(
   },
 );
 
+const SearchInfo = styled.div({
+  display: 'flex',
+  height: '50px',
+  padding: '10px 8px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '4px',
+  borderRadius: '10px',
+  backgroundColor: theme.colors.grayscale100,
+
+  margin: '0px 18px',
+  color: theme.colors.grayscale20,
+  fontSize: '20px',
+  fontWeight: '500',
+  lineHeight: '1.5',
+
+  [media[0]]: {
+    height: '25px',
+    fontSize: '12px',
+    margin: '0 0px',
+  },
+});
 export {
-  SearchTitleLayout,
   SearchTitleContainer,
   SearchTitleCountryButton,
   SearchTitleContent,
@@ -149,4 +166,5 @@ export {
   SearchTitleButton,
   SearchTitleLabelContainer,
   SearchTitleLabelItem,
+  SearchInfo,
 };

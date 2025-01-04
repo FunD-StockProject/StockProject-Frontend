@@ -79,37 +79,35 @@ const Search = () => {
   return (
     suspend ||
     (stockInfo && (
-      <>
-        <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
-        <SearchResultContainer>
-          <SearchResultContents>
-            {resultMode === 'indicator' ? (
-              <>
-                <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
-                <ContentsItemContainer>
-                  <ContentsItemTitle>
-                    개미들의 목소리
-                    <InfoSVG className="btn_info" onClick={togglePopup} />
-                  </ContentsItemTitle>
+      <SearchResultContainer>
+        <SearchResultContents>
+          <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
+          {resultMode === 'indicator' ? (
+            <>
+              <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
+              <ContentsItemContainer>
+                <ContentsItemTitle>
+                  개미들의 목소리
+                  <InfoSVG className="btn_info" onClick={togglePopup} />
+                </ContentsItemTitle>
 
-                  <ContentsItemContent>
-                    <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
-                  </ContentsItemContent>
-                  {isPopupOpen && <AntVoicePopUp onClose={togglePopup} />}
-                </ContentsItemContainer>
-              </>
-            ) : (
-              <StockChart stockId={stockInfo.stockId} />
-            )}
-            <ContentsItemContainer>
-              <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
-              <ContentsItemContent>
-                <StockRelevant stockId={stockInfo.stockId} country={stockInfo.country} />
-              </ContentsItemContent>
-            </ContentsItemContainer>
-          </SearchResultContents>
-        </SearchResultContainer>
-      </>
+                <ContentsItemContent>
+                  <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
+                </ContentsItemContent>
+                {isPopupOpen && <AntVoicePopUp onClose={togglePopup} />}
+              </ContentsItemContainer>
+            </>
+          ) : (
+            <StockChart stockId={stockInfo.stockId} />
+          )}
+          <ContentsItemContainer>
+            <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
+            <ContentsItemContent>
+              <StockRelevant stockId={stockInfo.stockId} country={stockInfo.country} />
+            </ContentsItemContent>
+          </ContentsItemContainer>
+        </SearchResultContents>
+      </SearchResultContainer>
     ))
   );
 };
