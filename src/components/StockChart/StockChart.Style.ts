@@ -65,20 +65,37 @@ export const StockChartGridContainer = styled.div({
   },
 });
 
+export const ChartLabelBase = styled.span({
+  lineHeight: 1,
+  padding: '4px 12px',
+  color: 'transparent',
+  borderWidth: '2px',
+  borderStyle: 'solid',
+  borderColor: 'transparent',
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  [media[0]]: {
+    padding: '4px 8px',
+  },
+});
+
 export const ChartLabel = styled.span(
   {
-    padding: '6px',
-    lineHeight: '1',
+    lineHeight: 1,
+    padding: '4px 12px',
     position: 'absolute',
-    whiteSpace: 'nowrap',
     borderWidth: '2px',
     borderStyle: 'solid',
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    [media[0]]: {
+      padding: '4px 8px',
+    },
   },
   ({
     x,
     y,
     color,
-    align,
     fillText,
     fillRect,
     strokeRect,
@@ -87,17 +104,13 @@ export const ChartLabel = styled.span(
     y?: number;
     color?: themeColor;
     background?: themeColor;
-    align?: 'left' | 'right';
     fillText?: true;
     fillRect?: true;
     strokeRect?: true;
   }) => ({
     top: y ?? '0px',
-    left: typeof x == 'number' ? x : align == 'left' ? '0px' : 'auto',
-    right: typeof x == 'number' ? 'auto' : align == 'right' ? '0px' : 'auto',
+    left: x ?? '0px',
     width: typeof x == 'number' ? 'auto' : '100%',
-    boxSizing: 'border-box',
-    textAlign: align ?? 'left',
     transform:
       'translate(' + (typeof x == 'number' ? '-50%' : '0') + ', ' + (typeof y == 'number' ? '-50%' : '0') + ')',
 
