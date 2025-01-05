@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { StockSearchInfo } from '@ts/Types';
@@ -6,8 +7,11 @@ import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } fro
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
 import { StockInfo } from '@controllers/api.Type';
+import { theme } from '@styles/themes';
 import CancelSVG from '@assets/icons/cancel.svg?react';
+import DownSVG from '@assets/icons/down.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
+import UpSVG from '@assets/icons/up.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
 import { AutoCompleteListProps, RecentSearchListProps } from './SearchBar.Props';
 import {
@@ -18,10 +22,10 @@ import {
   RecentSearchListContainer,
   SearchBarContainer,
   SearchBarContents,
-  SearchBarDesignPart,
   SearchBarInput,
   SearchBarLayer,
   SearchBarLayout,
+  SearchBarSelectBox,
 } from './SearchBar.Style';
 
 const getCommonString = ({ from, to }: { from: string; to: string }) => {
@@ -47,7 +51,9 @@ const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRec
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
           <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>{stock.symbolName}</span>
+            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
+              {stock.symbolName}
+            </span>
             <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
           </RecentSearchItemContainer>
         ))}
@@ -67,7 +73,9 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
           >
             {STOCK_COUNTRY_TYPE[stock.country]} 종목
             <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
-              {getCommonString({ from: value.toLocaleUpperCase(), to: stock.symbolName }).map((e) => (e.check ? <span>{e.char}</span> : e.char))}
+              {getCommonString({ from: value.toLocaleUpperCase(), to: stock.symbolName }).map((e) =>
+                e.check ? <span>{e.char}</span> : e.char,
+              )}
             </AutoCompleteItemText>
           </AutoCompleteItemContainer>
         ))
@@ -94,6 +102,8 @@ const SearchBar = () => {
     current?.focus();
   }, []);
 
+  const selectRef = useRef<HTMLDivElement>(null);
+
   const updateSearchedResult = async (name: string) => {
     if (name.length == 0) {
       setSearchedResult([]);
@@ -113,7 +123,9 @@ const SearchBar = () => {
   const searchBarInputKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'ArrowDown') {
       e.preventDefault();
-      setFocusIdx((prev) => (stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length));
+      setFocusIdx((prev) =>
+        stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length,
+      );
     } else if (e.key == 'ArrowUp') {
       e.preventDefault();
       setFocusIdx((prev) =>
@@ -175,12 +187,26 @@ const SearchBar = () => {
     setItemLocalStorage('stockSearchInfo', stockSearchInfo);
   }, [stockSearchInfo]);
 
+  const [selectStatus, setSelectStatus] = useState<boolean>(false);
+  const [selectedIdx, setSelectedIdx] = useState<number>(0);
+
+  useEffect(() => {
+    const select = selectRef.current;
+    if (!select) return;
+    if (!selectStatus) {
+      select.blur();
+    } else {
+      select.focus();
+    }
+  }, [selectStatus]);
+
+  const category = ['종목', '키워드'];
+
   return (
     <>
       <SearchBarLayout>
         <SearchBarLayer>
           <SearchBarContainer active={activeSearchBar}>
-            Search
             <SearchBarContents
               active={activeSearchBar}
               ref={callbackRef}
@@ -188,9 +214,37 @@ const SearchBar = () => {
               onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => {
                 !e.relatedTarget && setActiveSearchBar(false);
                 setFocusIdx(-1);
+                setSelectStatus(false);
               }}
             >
-              <SearchBarInput active={activeSearchBar}>
+              {/* <select
+                ref={selectRef}
+                onClick={() => setSelectStatus(!selectStatus)}
+                onBlur={() => setSelectStatus(false)}
+              >
+                {['종목', '키워드'].map((e) => (
+                  <option>{e}</option>
+                ))}
+              </select> */}
+              <SearchBarSelectBox ref={selectRef} focus={selectStatus}>
+                <label onClick={() => setSelectStatus(!selectStatus)}>
+                  {category[selectedIdx]}
+                  {selectStatus ? <UpSVG /> : <DownSVG />}
+                </label>
+                <SearchBarSelectBoxItems select={selectedIdx}>
+                  {category.map((e, i) => (
+                    <li
+                      onClick={() => {
+                        setSelectedIdx(i);
+                        setSelectStatus(false);
+                      }}
+                    >
+                      {e}
+                    </li>
+                  ))}
+                </SearchBarSelectBoxItems>
+              </SearchBarSelectBox>
+              <SearchBarInput>
                 <input
                   type="text"
                   value={searchValue}
@@ -201,24 +255,58 @@ const SearchBar = () => {
                 />
                 <SearchSVG />
               </SearchBarInput>
-              {activeSearchBar &&
-                (stockName == '' ? (
-                  <RecentSearchList
-                    stockSearchedInfo={stockSearchInfo}
-                    focusIdx={focusIdx}
-                    handleSearch={handleSearch}
-                    deleteRecentSearch={deleteRecentSearch}
-                  />
-                ) : (
-                  <AutoCompleteList value={stockName} focusIdx={focusIdx} searchedResult={searchedResult} handleSearch={handleSearch} />
-                ))}
             </SearchBarContents>
+            {activeSearchBar &&
+              (stockName == '' ? (
+                <RecentSearchList
+                  stockSearchedInfo={stockSearchInfo}
+                  focusIdx={focusIdx}
+                  handleSearch={handleSearch}
+                  deleteRecentSearch={deleteRecentSearch}
+                />
+              ) : (
+                <AutoCompleteList
+                  value={stockName}
+                  focusIdx={focusIdx}
+                  searchedResult={searchedResult}
+                  handleSearch={handleSearch}
+                />
+              ))}
           </SearchBarContainer>
-          <SearchBarDesignPart active={activeSearchBar} />
         </SearchBarLayer>
       </SearchBarLayout>
     </>
   );
 };
+
+const SearchBarSelectBoxItems = styled.ul(
+  {
+    position: 'absolute',
+    top: '100%',
+    listStyle: 'none',
+    padding: '0',
+    margin: '0',
+    width: '100%',
+    display: 'none',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: '0 0 8px 8px',
+    overflow: 'hidden',
+
+    li: {
+      width: '100%',
+      background: theme.colors.grayscale90,
+      textAlign: 'center',
+      fontSize: '15px',
+      padding: '18px 0',
+      borderTop: `2px solid ${theme.colors.grayscale100}`,
+    },
+  },
+  ({ select }: { select: number }) => ({
+    [`li:nth-of-type(${select + 1})`]: {
+      background: theme.colors.grayscale100,
+    },
+  }),
+);
 
 export default SearchBar;

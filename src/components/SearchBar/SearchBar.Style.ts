@@ -20,7 +20,7 @@ const SearchBarLayer = styled.div({
 const SearchBarContainer = styled.div(
   {
     display: 'flex',
-    padding: '24px 48px',
+    padding: '12px',
     gap: '12px',
     fontWeight: '700',
     fontSize: '32px',
@@ -36,62 +36,97 @@ const SearchBarContainer = styled.div(
     },
   },
   (props: SearchBarActiveProps) => ({
-    borderRadius: `12px 12px ${props.active ? '12px' : '0px'} 12px`,
+    borderRadius: '8px',
     [media[0]]: {
-      borderRadius: `8px 8px ${props.active ? '8px' : '0px'} 8px`,
+      borderRadius: '8px',
     },
   }),
+);
+
+const SearchBarSelectBox = styled.div(
+  {
+    position: 'relative',
+    display: 'flex',
+    width: '50%',
+    label: {
+      fontSize: '17px',
+      borderRadius: '8px',
+      padding: '18px',
+      alignContent: 'center',
+      width: '100%',
+      background: theme.colors.grayscale100,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      ['svg']: {
+        fill: theme.colors.grayscale10,
+        height: '16px',
+        width: 'auto',
+      },
+    },
+  },
+  ({ focus }: { focus: boolean }) =>
+    focus && {
+      label: {
+        background: theme.colors.grayscale90,
+        borderRadius: '8px 8px 0 0',
+      },
+      ul: {
+        display: 'flex',
+      },
+    },
 );
 
 const SearchBarContents = styled.div(
   {
     display: 'flex',
-    flexDirection: 'column',
     width: '100%',
     outline: 'none',
+    gap: '12px',
   },
   (props: SearchBarActiveProps) => ({
-    borderRadius: '10px',
-    overflow: 'hidden',
-    border: '1px solid ' + (props.active ? theme.colors.primary5 : theme.colors.transparent),
+    // borderRadius: '10px',
+    // overflow: 'hidden',
+    // border: '1px solid ' + (props.active ? theme.colors.primary5 : theme.colors.transparent),
   }),
 );
 
-const SearchBarInput = styled.div(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    background: theme.colors.grayscale100,
-    padding: '0 18px',
-    ['input']: {
-      padding: '18px 0',
-      boxSizing: 'border-box',
-      width: '100%',
-      border: 'none',
-      background: theme.colors.transparent,
-      color: theme.colors.primary0,
-      outline: 'none',
-    },
-    ['svg']: {
-      height: '24px',
-      width: 'auto',
-      stroke: theme.colors.primary0,
-      cursor: 'pointer',
-    },
-    [media[0]]: {
-      padding: '0 12px',
-      ['input']: {
-        padding: '12px 0',
-      },
-      ['svg']: {
-        height: '18px',
-      },
+const SearchBarInput = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  background: theme.colors.grayscale100,
+  padding: '18px',
+  borderRadius: '12px',
+  width: '100%',
+  ['input']: {
+    boxSizing: 'border-box',
+    width: '100%',
+    border: 'none',
+    background: theme.colors.transparent,
+    color: theme.colors.primary0,
+    outline: 'none',
+    fontFamily: 'Pretendard',
+
+    '::placeholder': {
+      color: theme.colors.grayscale50,
     },
   },
-  (props: SearchBarActiveProps) => ({
-    borderRadius: props.active ? '12px 12px 0px 0px' : '12px',
-  }),
-);
+  ['svg']: {
+    height: '24px',
+    width: 'auto',
+    stroke: theme.colors.primary0,
+    cursor: 'pointer',
+  },
+  [media[0]]: {
+    padding: '0 12px',
+    ['input']: {
+      padding: '12px 0',
+    },
+    ['svg']: {
+      height: '18px',
+    },
+  },
+});
 
 const RecentSearchListContainer = styled.div(
   {
@@ -231,19 +266,6 @@ const AutoCompleteItemText = styled.div({
   },
 });
 
-const SearchBarDesignPart = styled.div((props: SearchBarActiveProps) => ({
-  width: 0,
-  height: 0,
-  marginLeft: 'auto',
-  borderStyle: 'solid',
-  borderWidth: '50px 50px 0 0',
-  borderColor: `${theme.colors.primary70} transparent`,
-  display: props.active ? 'none' : 'block',
-  [media[0]]: {
-    borderWidth: '40px 40px 0 0',
-  },
-}));
-
 export {
   SearchBarLayout,
   SearchBarLayer,
@@ -255,5 +277,5 @@ export {
   AutoCompleteListContainer,
   AutoCompleteItemContainer,
   AutoCompleteItemText,
-  SearchBarDesignPart,
+  SearchBarSelectBox,
 };
