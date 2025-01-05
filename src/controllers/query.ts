@@ -5,6 +5,7 @@ import {
   fetchDescentStocks,
   fetchHotStocks,
   fetchIndexScore,
+  fetchKeyowordsStocks,
   fetchKeywords,
   fetchRealStockInfo,
   fetchRelevant,
@@ -44,7 +45,11 @@ export const ScoreQuery = (id: number, country: string) => {
 };
 
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery<StockInfo>(['chartInfo', id, periodCode, startDate], () => fetchStockChart(id, periodCode, startDate), queryOptions);
+  return useQuery<StockInfo>(
+    ['chartInfo', id, periodCode, startDate],
+    () => fetchStockChart(id, periodCode, startDate),
+    queryOptions,
+  );
 };
 
 export const RealStockInfoQuery = (id: number, country: string) => {
@@ -62,4 +67,8 @@ export const StockTableQuery = (category: string, country: string) => {
 
 export const IndexScoreQuery = () => {
   return useQuery<indexData>(['indexScore'], () => fetchIndexScore(), queryOptions);
+};
+
+export const KeywordsStocksQuery = (keywordName: string) => {
+  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchKeyowordsStocks(keywordName), queryOptions);
 };

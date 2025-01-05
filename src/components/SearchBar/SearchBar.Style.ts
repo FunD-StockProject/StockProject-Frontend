@@ -28,6 +28,7 @@ const SearchBarContainer = styled.div(
     flexDirection: 'column',
     lineHeight: '1',
     background: theme.colors.primary100,
+    outline: 'none',
 
     [media[0]]: {
       gap: '12px',
@@ -81,7 +82,6 @@ const SearchBarContents = styled.div(
   {
     display: 'flex',
     width: '100%',
-    outline: 'none',
     gap: '12px',
   },
   (props: SearchBarActiveProps) => ({
@@ -133,9 +133,12 @@ const RecentSearchListContainer = styled.div(
     display: 'flex',
     flexDirection: 'column',
     paddingRight: '12px',
+    width: '50%',
+    overflow: 'hidden;',
+
     ['> span']: {
-      margin: '6px 18px',
-      fontSize: '15px',
+      margin: '6px 6px 18px',
+      fontSize: '24px',
     },
     [media[0]]: {
       paddingRight: '6px',
@@ -144,10 +147,20 @@ const RecentSearchListContainer = styled.div(
         fontSize: '13px',
       },
     },
+
+    ['> div']: {
+      padding: '8px 0',
+      borderBottom: `1px solid ${theme.colors.grayscale80}`,
+
+      ':last-child': {
+        border: 'none',
+      },
+    },
   },
   (props: { isEmpty: boolean }) =>
-    !props.isEmpty && {
-      margin: '6px 0',
+    !props.isEmpty &&
+    {
+      // margin: '6px 0',
     },
 );
 
@@ -221,8 +234,42 @@ const AutoCompleteListContainer = styled.div({
   padding: '6px 0',
   paddingRight: '12px',
   ['svg']: {
+    height: '192px',
+    width: 'auto',
     margin: 'auto',
-    padding: '32px 0',
+    padding: '64px 0',
+  },
+
+  width: '100%',
+  overflow: 'hidden;',
+
+  ['> span']: {
+    margin: '6px 6px 18px',
+    fontSize: '24px',
+  },
+  [media[0]]: {
+    paddingRight: '6px',
+    ['> span']: {
+      margin: '6px 12px',
+      fontSize: '13px',
+    },
+  },
+
+  ['> div']: {
+    display: 'grid',
+    gridTemplateRows: 'repeat(5, 1fr)',
+    gridTemplateColumns: 'repeat(3, 33%)',
+    gridAutoFlow: 'column',
+    columnGap: '32px',
+
+    ['> div']: {
+      padding: '8px 0',
+      borderBottom: `1px solid ${theme.colors.grayscale80}`,
+
+      ':last-child, :nth-of-type(5), :nth-of-type(10)': {
+        border: 'none',
+      },
+    },
   },
 });
 

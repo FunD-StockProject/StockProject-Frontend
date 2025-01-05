@@ -97,6 +97,10 @@ const fetchIndexScore = () => {
   return fetchData(`/score/index`);
 };
 
+const fetchKeyowordsStocks = (keywordName: string) => {
+  return fetchData(`/keyword/${keywordName}/stocks`);
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -111,4 +115,5 @@ export {
   fetchKeywords,
   fetchStockTable,
   fetchIndexScore,
+  fetchKeyowordsStocks,
 };

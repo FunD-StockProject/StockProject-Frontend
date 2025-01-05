@@ -5,9 +5,9 @@ import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
 import { StockSearchInfo } from '@ts/Types';
 import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
-import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
+import { fetchAutoComplete, fetchKeyowordsStocks, fetchSearchSymbolName } from '@controllers/api';
 import { StockInfo } from '@controllers/api.Type';
-import { theme } from '@styles/themes';
+import { media, theme } from '@styles/themes';
 import CancelSVG from '@assets/icons/cancel.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -46,16 +46,18 @@ const getCommonString = ({ from, to }: { from: string; to: string }) => {
 const RecentSearchList = ({ stockSearchedInfo, focusIdx, handleSearch, deleteRecentSearch }: RecentSearchListProps) => {
   return (
     <RecentSearchListContainer isEmpty={stockSearchedInfo.length == 0}>
-      {stockSearchedInfo.length != 0 && <span>최근검색어</span>}
+      {stockSearchedInfo.length != 0 && <span>최근 검색 종목</span>}
       {stockSearchedInfo &&
         stockSearchedInfo.map((stock: StockSearchInfo, idx: number) => (
-          <RecentSearchItemContainer key={`recent_search_${idx}`} focus={idx == focusIdx}>
-            {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
-              {stock.symbolName}
-            </span>
-            <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
-          </RecentSearchItemContainer>
+          <div key={`recent_search_${idx}`}>
+            <RecentSearchItemContainer focus={idx == focusIdx}>
+              {STOCK_COUNTRY_TYPE[stock.country]} 종목
+              <span onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}>
+                {stock.symbolName}
+              </span>
+              <CancelSVG onClick={() => deleteRecentSearch(stock.symbolName)} />
+            </RecentSearchItemContainer>
+          </div>
         ))}
     </RecentSearchListContainer>
   );
@@ -65,20 +67,26 @@ const AutoCompleteList = ({ value, focusIdx, searchedResult, handleSearch }: Aut
   return (
     <AutoCompleteListContainer>
       {searchedResult.length ? (
-        searchedResult.map((stock: StockInfo, idx: number) => (
-          <AutoCompleteItemContainer
-            key={`${stock.symbolName}_${stock.stockId}`}
-            focus={idx == focusIdx}
-            onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}
-          >
-            {STOCK_COUNTRY_TYPE[stock.country]} 종목
-            <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
-              {getCommonString({ from: value.toLocaleUpperCase(), to: stock.symbolName }).map((e) =>
-                e.check ? <span>{e.char}</span> : e.char,
-              )}
-            </AutoCompleteItemText>
-          </AutoCompleteItemContainer>
-        ))
+        <>
+          <span>검색 결과</span>
+          <div>
+            {searchedResult.map((stock: StockInfo, idx: number) => (
+              <div key={`${stock.symbolName}_${stock.stockId}`}>
+                <AutoCompleteItemContainer
+                  focus={idx == focusIdx}
+                  onClick={() => handleSearch({ symbolName: stock.symbolName, country: stock.country })}
+                >
+                  {STOCK_COUNTRY_TYPE[stock.country]} 종목
+                  <AutoCompleteItemText key={`${stock.symbolName}_${stock.stockId}`}>
+                    {getCommonString({ from: value.toLocaleUpperCase(), to: stock.symbolName }).map((e) =>
+                      e.check ? <span>{e.char}</span> : e.char,
+                    )}
+                  </AutoCompleteItemText>
+                </AutoCompleteItemContainer>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         <NoResultSVG />
       )}
@@ -113,10 +121,24 @@ const SearchBar = () => {
     if (result) setSearchedResult(result);
   };
 
+  const [searchedKeywords, setSearchedKeywords] = useState<StockInfo[]>([]);
+  const updateSearchedKeywords = async (keywordName: string) => {
+    if (keywordName.length == 0) {
+      setSearchedKeywords([]);
+      return;
+    }
+    const result = await fetchKeyowordsStocks(keywordName);
+    console.log(result);
+    if (result) setSearchedKeywords(result);
+  };
+
   const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     setStockName(e.target.value.trim());
     updateSearchedResult(e.target.value.trim());
+    if (category[selectedIdx] == '키워드') {
+      updateSearchedKeywords(e.target.value.trim());
+    }
     setFocusIdx(-1);
   };
 
@@ -206,26 +228,17 @@ const SearchBar = () => {
     <>
       <SearchBarLayout>
         <SearchBarLayer>
-          <SearchBarContainer active={activeSearchBar}>
-            <SearchBarContents
-              active={activeSearchBar}
-              ref={callbackRef}
-              tabIndex={-1}
-              onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => {
-                !e.relatedTarget && setActiveSearchBar(false);
-                setFocusIdx(-1);
-                setSelectStatus(false);
-              }}
-            >
-              {/* <select
-                ref={selectRef}
-                onClick={() => setSelectStatus(!selectStatus)}
-                onBlur={() => setSelectStatus(false)}
-              >
-                {['종목', '키워드'].map((e) => (
-                  <option>{e}</option>
-                ))}
-              </select> */}
+          <SearchBarContainer
+            active={activeSearchBar}
+            ref={callbackRef}
+            tabIndex={-1}
+            onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => {
+              !e.relatedTarget && setActiveSearchBar(false);
+              setFocusIdx(-1);
+              setSelectStatus(false);
+            }}
+          >
+            <SearchBarContents active={activeSearchBar}>
               <SearchBarSelectBox ref={selectRef} focus={selectStatus}>
                 <label onClick={() => setSelectStatus(!selectStatus)}>
                   {category[selectedIdx]}
@@ -234,6 +247,7 @@ const SearchBar = () => {
                 <SearchBarSelectBoxItems select={selectedIdx}>
                   {category.map((e, i) => (
                     <li
+                      key={'CATEGORY_' + i}
                       onClick={() => {
                         setSelectedIdx(i);
                         setSelectStatus(false);
@@ -256,28 +270,149 @@ const SearchBar = () => {
                 <SearchSVG />
               </SearchBarInput>
             </SearchBarContents>
-            {activeSearchBar &&
-              (stockName == '' ? (
-                <RecentSearchList
-                  stockSearchedInfo={stockSearchInfo}
-                  focusIdx={focusIdx}
-                  handleSearch={handleSearch}
-                  deleteRecentSearch={deleteRecentSearch}
-                />
-              ) : (
-                <AutoCompleteList
-                  value={stockName}
-                  focusIdx={focusIdx}
-                  searchedResult={searchedResult}
-                  handleSearch={handleSearch}
-                />
-              ))}
+            {activeSearchBar && (
+              <div style={{ display: 'flex', padding: '32px', fontSize: '24px', gap: '24px' }}>
+                {stockName == '' ? (
+                  <>
+                    <RecentSearchList
+                      stockSearchedInfo={stockSearchInfo.slice(0, 5)}
+                      focusIdx={focusIdx}
+                      handleSearch={handleSearch}
+                      deleteRecentSearch={deleteRecentSearch}
+                    />
+                    <PopularSearchListContainer>
+                      <span>인기 검색 종목</span>
+                      <div>
+                        {[
+                          '삼성전자',
+                          '카카오',
+                          '카카오게임즈',
+                          'LG화학',
+                          '삼성SDI',
+                          'SK하이닉스',
+                          '아티스트유나이티드',
+                          'LG에너지솔루션',
+                          'POSCO홀딩스',
+                          '신성델타테크',
+                        ].map((e, i) => {
+                          return (
+                            <div key={'POPULAR_' + i}>
+                              <PopularSearchItemContainer>
+                                {i + 1}
+                                <span>{e}</span>
+                              </PopularSearchItemContainer>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </PopularSearchListContainer>
+                  </>
+                ) : (
+                  <AutoCompleteList
+                    value={stockName}
+                    focusIdx={focusIdx}
+                    searchedResult={searchedResult.slice(0, 15)}
+                    handleSearch={handleSearch}
+                  />
+                )}
+              </div>
+            )}
           </SearchBarContainer>
         </SearchBarLayer>
       </SearchBarLayout>
     </>
   );
 };
+
+const PopularSearchListContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  paddingRight: '12px',
+  width: '100%',
+  overflow: 'hidden;',
+
+  ['> span']: {
+    margin: '6px 6px 18px',
+    fontSize: '24px',
+  },
+  [media[0]]: {
+    paddingRight: '6px',
+    ['> span']: {
+      margin: '6px 12px',
+      fontSize: '13px',
+    },
+  },
+
+  ['> div']: {
+    display: 'grid',
+    gridTemplateRows: 'repeat(5, 1fr)',
+    gridAutoFlow: 'column',
+    columnGap: '32px',
+
+    ['> div']: {
+      padding: '8px 0',
+      borderBottom: `1px solid ${theme.colors.grayscale80}`,
+
+      ':last-child, :nth-of-type(5)': {
+        border: 'none',
+      },
+    },
+  },
+
+  // ['> div']: {
+  //   padding: '8px 0',
+  //   borderBottom: `1px solid ${theme.colors.grayscale80}`,
+
+  //   ':last-child': {
+  //     border: 'none',
+  //   },
+  // },
+});
+
+const PopularSearchItemContainer = styled.div(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    color: theme.colors.grayscale40,
+    fontSize: '15px',
+    gap: '12px',
+    padding: '9px 18px',
+    borderRadius: '0 24px 24px 0',
+    whiteSpace: 'nowrap',
+    ['> span']: {
+      color: theme.colors.primary0,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      width: '100%',
+      fontSize: '19px',
+      marginRight: 'auto',
+      cursor: 'pointer',
+      height: '24px',
+      alignContent: 'center',
+    },
+    [':hover']: {
+      background: theme.colors.grayscale100,
+    },
+    [media[0]]: {
+      fontSize: '11px',
+      gap: '8px',
+      padding: '6px 12px',
+      ['> span']: {
+        fontSize: '15px',
+      },
+      [':hover']: {
+        background: theme.colors.transparent,
+      },
+    },
+  },
+  // (props: { focus: boolean }) =>
+  //   props.focus && {
+  //     background: theme.colors.grayscale100,
+  //     ['> svg']: {
+  //       fill: theme.colors.primary5,
+  //     },
+  //   },
+);
 
 const SearchBarSelectBoxItems = styled.ul(
   {
