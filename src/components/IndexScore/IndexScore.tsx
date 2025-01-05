@@ -23,15 +23,17 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
-  // 키를 쌍으로 그룹화하여 변환
   const entries = Object.entries(indexScores ?? []);
 
-  const transformed = entries
-    .filter((_, i) => i % 2 === 0) // 짝수 인덱스만 필터링
-    .map((_, i) => ({
-      score: (entries[i * 2][1] as number) ?? 0, // 짝수 인덱스의 score 값
-      delta: (entries[i * 2 + 1]?.[1] as number) ?? 0, // 다음 인덱스의 delta 값
-    }));
+  const transformed = entries.reduce<{ score: number; delta: number }[]>((acc, _, i) => {
+    if (i % 2 === 0) {
+      acc.push({
+        score: entries[i][1] as number,
+        delta: entries[i + 1]?.[1] as number,
+      });
+    }
+    return acc;
+  }, []);
 
   const splitIndex = transformed.length / 2;
   const result = tabIndex === 0 ? transformed.slice(0, splitIndex) : transformed.slice(splitIndex);
@@ -40,23 +42,16 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
 
   return (
     <IndicesContainer>
-      {result &&
-        result.map((el, idx) => {
-          const score = el.score;
-          const delta = el.delta;
-          const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
-
-          return (
-            <IndexItem key={stockIndices[tabIndex][idx]}>
-              <IndexInfoContainer>
-                {stockIndices[tabIndex][idx]} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
-              </IndexInfoContainer>
-              <IndexDeltaScore delta={delta}>
-                {Math.abs(score)}점 {deltaSVG}
-              </IndexDeltaScore>
-            </IndexItem>
-          );
-        })}
+      {result.map(({ score, delta }, idx) => (
+        <IndexItem key={stockIndices[tabIndex][idx]}>
+          <IndexInfoContainer>
+            {stockIndices[tabIndex][idx]} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
+          </IndexInfoContainer>
+          <IndexDeltaScore delta={delta}>
+            {Math.abs(score)}점 {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
+          </IndexDeltaScore>
+        </IndexItem>
+      ))}
       {isPopupOpen && <FearPopUp onClose={togglePopup} />}
     </IndicesContainer>
   );
