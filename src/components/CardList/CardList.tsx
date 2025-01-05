@@ -46,7 +46,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderWebStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
+        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} keywords={stock.keywords} />
       </CardListItemContainer>
     ));
   };
@@ -54,7 +54,14 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderMobileStocks = () => {
     return curStocks.map((stock: CardInterface, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.75}>
-        <MobileStockCardItem key={`${name}_${idx}`} score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
+        <MobileStockCardItem
+          key={`${name}_${idx}`}
+          score={stock.score}
+          name={stock.symbolName}
+          delta={stock.diff}
+          country={country}
+          keywords={stock.keywords}
+        />
       </CardListItemContainer>
     ));
   };

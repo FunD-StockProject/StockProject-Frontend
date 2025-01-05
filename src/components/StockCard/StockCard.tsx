@@ -14,7 +14,7 @@ import {
   StockCardKeyword,
 } from './StockCard.Style';
 
-const StockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
+const StockCardItem = ({ name, score, delta, country, keywords }: { name: string; score: number; delta: number; country: string; keywords: string[] }) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
   const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
@@ -34,8 +34,8 @@ const StockCardItem = ({ name, score, delta, country }: { name: string; score: n
           </StockCardItemDeltaScore>
         </StockCardItemScore>
         <KeywordContainer>
-          <StockCardKeyword>이재명</StockCardKeyword>
-          <StockCardKeyword>이재명</StockCardKeyword>
+          <StockCardKeyword>{keywords[0]}</StockCardKeyword>
+          <StockCardKeyword>{keywords[1]}</StockCardKeyword>
         </KeywordContainer>
       </StockCardItemTitle>
       <ScoreImage src={scoreImage} />
