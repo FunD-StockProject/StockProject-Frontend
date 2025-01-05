@@ -65,11 +65,8 @@ const formatDeltaStr = (delta: number) => {
   return `(${symbol + deltaStr}%) `;
 };
 
-const formatLocalDate = (date: Date) => {
-  const [day, month, year] = [date.getDate(), date.getMonth() + 1, date.getFullYear()];
-  const localDate = year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
-  return localDate;
-};
+const formatLocalDate = (day: number, month: number, year: number) =>
+  year + month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
 
 const scaledValue = (rangedValue: any, scale: number, height: number) => {
   const { max, min } = rangedValue;
@@ -93,14 +90,17 @@ const scaledValue = (rangedValue: any, scale: number, height: number) => {
 };
 
 const isBetween = (x: number, width: number, gap: number) => x >= -gap && x <= width + gap;
+const BAR_GAP = 1.25;
 
 const StockChartView = ({
+  selectedRange,
   priceInfos,
   // oldestDate,
   country,
   period,
   // tmp,
 }: {
+  selectedRange: any[];
   priceInfos: any[];
   // oldestDate: any;
   country: string;
@@ -108,10 +108,6 @@ const StockChartView = ({
   // tmp: () => void;
 }) => {
   const isMobile = useIsMobile();
-
-  const selectedRange = [5, 20, 60, 120];
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const priceCanvasRef = useRef<HTMLDivElement>(null);
@@ -134,9 +130,11 @@ const StockChartView = ({
   const [chartItemList, setChartItemList] = useState<any[]>();
   const [scaledPrice, setScaledPrice] = useState<any>();
   const [scaledScore, setScaledScore] = useState<any>();
+  const [scaledVolume, setScaledVolume] = useState<any>();
 
   const [priceScale, setPriceScale] = useState<any>(4 / 5);
   const [scoreScale, setScoreScale] = useState<any>(3 / 5);
+  const [volumeScale, setVolumeScale] = useState<any>(4 / 5);
 
   const [gridDate, setGridDate] = useState<any>([]);
   const [gridScore, setGridScore] = useState<any>([]);
@@ -177,12 +175,19 @@ const StockChartView = ({
     setScoreScale(scale);
   };
 
+  const zoomVolume = (a: number) => {
+    const delta = 4 / 5;
+    const scale = volumeScale * (a > 0 ? delta : 1 / delta);
+    if (scale <= 0.1 || scale > 20) return;
+    setVolumeScale(scale);
+  };
+
   const zoomChart = (a: number, x: number) => {
     const delta = Math.ceil(chartInfo.BarSize * 0.125);
     const barSize = chartInfo.BarSize + (a > 0 ? delta : -delta);
     if (barSize <= 0 || barSize > 200) return;
 
-    const itemWidth = barSize * 1.5;
+    const itemWidth = barSize * BAR_GAP;
     const MinX = itemWidth * (3 / 2);
     const MaxX = canvasSize.width + itemWidth * (priceInfos.length - 5 / 2);
     const canvasX = x + (chartInfo.canvasX - x) * (barSize / chartInfo.BarSize);
@@ -203,8 +208,12 @@ const StockChartView = ({
     }
   };
 
-  const handleMouseMoveCanvas = (e: MouseEvent) => {
-    setMousePos({ x: e.offsetX, y: e.offsetY });
+  const handleMouseMovePriceCanvas = (e: MouseEvent) => {
+    setMousePos({ canvas: 'price', x: e.offsetX, y: e.offsetY });
+  };
+
+  const handleMouseMoveScoreCanvas = (e: MouseEvent) => {
+    setMousePos({ canvas: 'score', x: e.offsetX, y: e.offsetY });
   };
 
   const handleMouseEnter = () => {
@@ -259,7 +268,7 @@ const StockChartView = ({
       e.preventDefault();
       const deltaX = pointerX - chartInfo.prevX;
 
-      const itemWidth = chartInfo.BarSize * 1.5;
+      const itemWidth = chartInfo.BarSize * BAR_GAP;
       const canvasX = chartInfo.canvasX + deltaX;
       const MinX = itemWidth * (3 / 2);
       const MaxX = canvasSize.width + itemWidth * (priceInfos.length - 5 / 2);
@@ -295,8 +304,10 @@ const StockChartView = ({
     e.preventDefault();
     if (e.deltaY < 0) {
       zoomScore(1);
+      zoomVolume(1);
     } else {
       zoomScore(-1);
+      zoomVolume(-1);
     }
   };
 
@@ -323,7 +334,7 @@ const StockChartView = ({
     if (!canvasContainer) return;
 
     const { width } = canvasContainer.getBoundingClientRect();
-    const itemWidth = chartInfo.BarSize * 1.5;
+    const itemWidth = chartInfo.BarSize * BAR_GAP;
     const DPR = window.devicePixelRatio;
 
     const observer = observerRef.current;
@@ -342,7 +353,7 @@ const StockChartView = ({
 
   useEffect(() => {
     console.log(canvasSize);
-    const itemWidth = chartInfo.BarSize * 1.5;
+    const itemWidth = chartInfo.BarSize * BAR_GAP;
     if (chartInfo.prevX === undefined) {
       setChartInfo({
         ...chartInfo,
@@ -352,7 +363,7 @@ const StockChartView = ({
   }, [canvasSize]);
 
   useEffect(() => {
-    const itemWidth = chartInfo.BarSize * 1.5;
+    const itemWidth = chartInfo.BarSize * BAR_GAP;
     const { canvasX } = chartInfo;
     const { width } = canvasSize;
     if (!width) return;
@@ -393,7 +404,7 @@ const StockChartView = ({
       const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
 
       dateList.push({
-        localDate: `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`,
+        localDate: formatLocalDate(day, month, year),
         year: year,
         month: month,
         day: day,
@@ -579,6 +590,14 @@ const StockChartView = ({
     const scaledScore: any = scaledValue(rangedScore, scoreScale, scoreHeight);
     setScaledScore(scaledScore);
 
+    const rangedVolume = {
+      min: 0,
+      max: chartItemList.reduce((prev, { trading: { volume } }) => Math.max(prev, volume), 0),
+    };
+
+    const scaledVolume: any = scaledValue(rangedVolume, volumeScale, scoreHeight);
+    setScaledVolume(scaledVolume);
+
     setGridScore(
       Array.from({ length: Math.ceil(scaledScore.range / scaledScore.axisScale) + 1 }, (_, i) => {
         const score = (i + Math.floor(scaledScore.min / scaledScore.axisScale)) * scaledScore.axisScale;
@@ -590,16 +609,25 @@ const StockChartView = ({
     );
 
     setScoreChartList(
-      chartItemList.map(({ pos, score }) => ({
+      chartItemList.map(({ pos, score, trading: { volume, delta } }) => ({
         pos: pos,
         score: { ...score, y: scaledScore.Y(score.value) },
+        trading: {
+          y: scaledVolume.Y(volume),
+          h: scaledVolume.H(volume),
+          delta: delta,
+        },
+        barSize: chartInfo.BarSize,
       })),
     );
   }, [chartItemList, scoreScale]);
 
   useEffect(() => {
-    const canvasContainer = containerRef.current;
-    if (!canvasContainer) return;
+    const priceCanvas = priceCanvasRef.current;
+    if (!priceCanvas) return;
+
+    const scoreCanvas = scoreCanvasRef.current;
+    if (!scoreCanvas) return;
 
     const priceLabel = priceLabelRef.current;
     if (!priceLabel) return;
@@ -608,34 +636,49 @@ const StockChartView = ({
     if (!scoreLabel) return;
 
     if (!isMobile) {
-      canvasContainer.addEventListener('mousedown', handlePointerDown);
+      priceCanvas.addEventListener('mousedown', handlePointerDown);
+      scoreCanvas.addEventListener('mousedown', handlePointerDown);
       window.addEventListener('mousemove', handlePointerMove);
       window.addEventListener('mouseup', handlePointerUp);
 
-      canvasContainer.addEventListener('mouseenter', handleMouseEnter);
-      canvasContainer.addEventListener('mouseleave', handleMouseLeave);
-      canvasContainer.addEventListener('mousemove', handleMouseMoveCanvas);
+      priceCanvas.addEventListener('mouseenter', handleMouseEnter);
+      priceCanvas.addEventListener('mouseleave', handleMouseLeave);
+      priceCanvas.addEventListener('mousemove', handleMouseMovePriceCanvas);
 
-      canvasContainer.addEventListener('wheel', handleWheel);
+      scoreCanvas.addEventListener('mouseenter', handleMouseEnter);
+      scoreCanvas.addEventListener('mouseleave', handleMouseLeave);
+      scoreCanvas.addEventListener('mousemove', handleMouseMoveScoreCanvas);
+
+      priceCanvas.addEventListener('wheel', handleWheel);
+      scoreCanvas.addEventListener('wheel', handleWheel);
+
       priceLabel.addEventListener('wheel', handleWheelPrice);
       scoreLabel.addEventListener('wheel', handleWheelScore);
     } else {
-      canvasContainer.ontouchstart = handlePointerDown;
+      priceCanvas.ontouchstart = handlePointerDown;
+      scoreCanvas.ontouchstart = handlePointerDown;
       window.addEventListener('touchmove', handlePointerMove, { passive: false });
       window.ontouchend = handlePointerUp;
     }
 
     return () => {
       if (!isMobile) {
-        canvasContainer.removeEventListener('mousedown', handlePointerDown);
+        priceCanvas.removeEventListener('mousedown', handlePointerDown);
+        scoreCanvas.removeEventListener('mousedown', handlePointerDown);
         window.removeEventListener('mousemove', handlePointerMove);
         window.removeEventListener('mouseup', handlePointerUp);
 
-        canvasContainer.removeEventListener('mouseenter', handleMouseEnter);
-        canvasContainer.removeEventListener('mouseleave', handleMouseLeave);
-        canvasContainer.removeEventListener('mousemove', handleMouseMoveCanvas);
+        priceCanvas.removeEventListener('mouseenter', handleMouseEnter);
+        priceCanvas.removeEventListener('mouseleave', handleMouseLeave);
+        priceCanvas.removeEventListener('mousemove', handleMouseMovePriceCanvas);
 
-        canvasContainer.removeEventListener('wheel', handleWheel);
+        scoreCanvas.removeEventListener('mouseenter', handleMouseEnter);
+        scoreCanvas.removeEventListener('mouseleave', handleMouseLeave);
+        scoreCanvas.removeEventListener('mousemove', handleMouseMoveScoreCanvas);
+
+        priceCanvas.removeEventListener('wheel', handleWheel);
+        scoreCanvas.removeEventListener('wheel', handleWheel);
+
         priceLabel.removeEventListener('wheel', handleWheelPrice);
         scoreLabel.removeEventListener('wheel', handleWheelScore);
       } else {
@@ -645,7 +688,7 @@ const StockChartView = ({
   }, [chartInfo, isMouseDown, isZoom, scoreScale, priceScale]);
 
   useEffect(() => {
-    const itemWidth = chartInfo.BarSize * 1.5;
+    const itemWidth = chartInfo.BarSize * BAR_GAP;
     const { width, priceHeight, scoreHeight } = canvasSize;
 
     // mousePos
@@ -654,7 +697,8 @@ const StockChartView = ({
         ((priceHeight - mousePos.y) * scaledPrice.range) / priceHeight + scaledPrice.min,
         country,
       );
-      const scoreStr = ((scoreHeight - mousePos.y) * scaledPrice.range) / scoreHeight + scaledPrice.min;
+      const scoreStr = ~~(((scoreHeight - mousePos.y) * scaledScore.range) / scoreHeight + scaledScore.min);
+      const volumeStr = ~~(((scoreHeight - mousePos.y) * scaledVolume.range) / scoreHeight + scaledVolume.min);
 
       dateList
         .filter(({ pos }: any) => isBetween(pos.x, width, itemWidth))
@@ -669,8 +713,9 @@ const StockChartView = ({
                   : ''
               }`
             : '';
-          const selectedPrice = priceInfos.find(({ localDate }) => e.localDate <= localDate);
+          const selectedPrice = priceInfos.find(({ localDate }) => e.localDate >= localDate);
           setMousePosInfo({
+            canvas: mousePos.canvas,
             pos: {
               x: pos.x,
               y: mousePos.y,
@@ -678,9 +723,11 @@ const StockChartView = ({
             dateStr: dateStr,
             priceStr: priceStr,
             scoreStr: scoreStr,
+            volumeStr: volumeStr,
             price: selectedPrice?.price,
             SMA: selectedPrice?.SMA,
             score: selectedPrice?.score,
+            trading: selectedPrice?.trading,
           });
           return true;
         });
@@ -693,7 +740,7 @@ const StockChartView = ({
     <>
       <StockChartViewContainer>
         <StockChartItemContainer grow ref={canvasContainerRef}>
-          <StockChartItemContent type="price" ref={priceCanvasRef}>
+          <StockChartItemContent type="price">
             <StockChartPriceCanvas
               gridDate={gridDate}
               gridPrice={gridPrice}
@@ -729,15 +776,23 @@ const StockChartView = ({
                 ))}
               </StockChartInfoHeaderItem>
             </StockChartInfoHeader>
-            <StockChartCanvasRefContainer ref={containerRef} />
+            <StockChartCanvasRefContainer ref={priceCanvasRef} />
           </StockChartItemContent>
-          <StockChartItemContent type="score" ref={scoreCanvasRef}>
+          <StockChartItemContent type="score">
             <StockChartScoreCanvas
               gridDate={gridDate}
               gridScore={gridScore}
               scoreChartList={scoreChartList}
               mousePosInfo={mousePosInfo}
             />
+            <StockChartInfoHeader>
+              {!isMobile && (
+                <StockChartInfoHeaderItem>
+                  <ChartBottomInfo trading={mousePosInfo?.trading} score={mousePosInfo?.score} />
+                </StockChartInfoHeaderItem>
+              )}
+            </StockChartInfoHeader>
+            <StockChartCanvasRefContainer ref={scoreCanvasRef} />
           </StockChartItemContent>
           <StockChartItemContent>
             <ChartLabelBase>0000</ChartLabelBase>
@@ -771,11 +826,11 @@ const StockChartView = ({
                 {recentPrice.priceStr}
               </ChartLabel>
             )}
-            {mousePosInfo && (
+            {mousePosInfo && mousePosInfo.canvas == 'price' && (
               <ChartLabel fillRect y={mousePosInfo.pos.y} color="blue">
                 {mousePosInfo.priceStr}
               </ChartLabel>
-            )}{' '}
+            )}
           </StockChartItemContent>
           <StockChartItemContent type="score" ref={scoreLabelRef}>
             <ChartLabelBase>100</ChartLabelBase>
@@ -786,6 +841,11 @@ const StockChartView = ({
                     {e.scoreStr}
                   </ChartLabel>
                 ),
+            )}
+            {mousePosInfo && mousePosInfo.canvas == 'score' && (
+              <ChartLabel fillRect y={mousePosInfo.pos.y} color="blue">
+                {mousePosInfo.scoreStr}
+              </ChartLabel>
             )}
           </StockChartItemContent>
         </StockChartItemContainer>
@@ -809,9 +869,9 @@ const StockChartItemContent = styled.div(
   },
   ({ type }: { type?: 'price' | 'score' }) => ({
     borderBottom: type ? `2px solid ${theme.colors.grayscale90}` : '',
-    height: !type ? 'auto' : type == 'price' ? '400px' : '200px',
+    height: !type ? 'auto' : type == 'price' ? '500px' : '200px',
     [media[0]]: {
-      height: !type ? 'auto' : type == 'price' ? '400px' : '200px',
+      height: !type ? 'auto' : type == 'price' ? '300px' : '100px',
     },
   }),
 );
@@ -857,6 +917,42 @@ const StockChartViewContainer = styled.div({
     fontSize: '11px',
   },
 });
+
+const formatSymbol = (delta: number) => (!delta ? '' : delta > 0 ? '+' : '-');
+const formatVolume = (volume: number) => {
+  const unit = [
+    { type: 'B', num: 1e9 },
+    { type: 'M', num: 1e6 },
+    { type: 'K', num: 1e3 },
+    { type: '', num: 1 },
+  ];
+  const a = unit.find(({ num }) => volume >= num);
+
+  return a && (volume / a.num).toFixed(2) + a.type;
+};
+
+const ChartBottomInfo = ({ trading, score }: { trading: any; score: any }) => {
+  return (
+    <>
+      거래량{' '}
+      {trading && (
+        <>
+          {formatVolume(trading.volume)}{' '}
+          <StockInfoDeltaLabel delta={trading.delta}>{formatDeltaStr(trading.delta)}</StockInfoDeltaLabel>
+        </>
+      )}
+      인간지표{' '}
+      {score?.value && (
+        <>
+          {score.value}점{' '}
+          <StockInfoDeltaLabel delta={score.delta}>
+            ({formatSymbol(score.delta) + Math.abs(score.delta)}점)
+          </StockInfoDeltaLabel>
+        </>
+      )}
+    </>
+  );
+};
 
 const ChartPriceInfo = ({ label, price, country }: { label: string; price: any; country: string }) => {
   return (
@@ -942,7 +1038,7 @@ const StockChart = ({ stockId }: { stockId: number }) => {
               ...acc,
               [key]: {
                 value: Number(e[value.key]),
-                delta: i < arr.length - 1 ? (Number(e[value.key]) / Number(arr[i + 1].closePrice) - 1) * 100 : 0,
+                delta: i < arr.length - 1 ? Number(e[value.key]) / Number(arr[i + 1].closePrice) - 1 : 0,
               },
             }),
             {},
@@ -961,6 +1057,14 @@ const StockChart = ({ stockId }: { stockId: number }) => {
           score: {
             value: e.score,
             delta: e.diff,
+          },
+          trading: {
+            value: e.accumulatedTradingValue,
+            volume: e.accumulatedTradingVolume,
+            delta:
+              i < arr.length - 1
+                ? Number(e.accumulatedTradingVolume) / Number(arr[i + 1].accumulatedTradingVolume) - 1
+                : 0,
           },
         };
       }),
@@ -990,7 +1094,7 @@ const StockChart = ({ stockId }: { stockId: number }) => {
         <StockChartHeader>
           <StockChartHeaderContents>
             <StockChartHeaderItem>{stockInfo.symbolName}</StockChartHeaderItem>
-            <StockChartHeaderItem>새로고침</StockChartHeaderItem>
+            {/* <StockChartHeaderItem>새로고침</StockChartHeaderItem> */}
           </StockChartHeaderContents>
           <StockChartHeaderContents>
             {chartPeriodList.map((e, i) => (
@@ -1004,7 +1108,12 @@ const StockChart = ({ stockId }: { stockId: number }) => {
             ))}
           </StockChartHeaderContents>
         </StockChartHeader>
-        <StockChartView priceInfos={priceInfos} period={chartPeriodIdx} country={stockInfo.country} />
+        <StockChartView
+          selectedRange={selectedRange}
+          priceInfos={priceInfos}
+          period={chartPeriodIdx}
+          country={stockInfo.country}
+        />
       </StockChartContainer>
     ))
   );

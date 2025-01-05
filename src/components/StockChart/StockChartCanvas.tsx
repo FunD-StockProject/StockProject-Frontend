@@ -64,17 +64,19 @@ const drawGrid = (ctx: any, colList: any[], rowList: any[], size: any) => {
   );
 };
 
-const drawMousePos = (ctx: any, mousePosInfo: any, size: any) => {
+const drawMousePos = (ctx: any, mousePosInfo: any, canvas: 'price' | 'score', size: any) => {
   const { x, y } = mousePosInfo.pos;
   const { width, height } = size;
 
   ctx.strokeStyle = theme.colors.primary0;
   setLineWidth(ctx, 1);
   ctx.setLineDash([10, 5]);
-  drawLine(ctx, [
-    [0, y],
-    [width, y],
-  ]);
+  if (mousePosInfo.canvas == canvas) {
+    drawLine(ctx, [
+      [0, y],
+      [width, y],
+    ]);
+  }
   drawLine(ctx, [
     [x, 0],
     [x, height],
@@ -114,7 +116,7 @@ const StockChartPriceCanvas = ({
     drawPriceChart(ctx, priceChartList);
 
     if (!mousePosInfo) return;
-    drawMousePos(ctx, mousePosInfo, size);
+    drawMousePos(ctx, mousePosInfo, 'price', size);
   }, [priceChartList, mousePosInfo]);
 
   return <StockChartStyledCanvas ref={canvasRef} />;
@@ -147,45 +149,36 @@ const StockChartScoreCanvas = ({
 
     drawGrid(ctx, gridDate, gridScore, size);
     // drawPriceChart(ctx, scoreChartList);
+    ctx.globalAlpha = 0.5;
+    scoreChartList.map(({ pos, trading, barSize }: any) => {
+      ctx.fillStyle = theme.colors[deltaColor(trading.delta)];
+      ctx.strokeStyle = theme.colors[deltaColor(trading.delta)];
+
+      drawRect(ctx, pos.x - barSize / 2, trading.y, barSize, trading.h);
+    });
+    ctx.globalAlpha = 1;
+    setLineWidth(ctx, 2);
+    ctx.strokeStyle = theme.colors.cyan;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    drawLine(
+      ctx,
+      scoreChartList
+        .map((e: any) => {
+          if (!e.score.value) return;
+          return [e.pos.x, e.score.y];
+        })
+        .filter((e: any) => e),
+    );
 
     if (!mousePosInfo) return;
-    drawMousePos(ctx, mousePosInfo, size);
+    drawMousePos(ctx, mousePosInfo, 'score', size);
   }, [scoreChartList, mousePosInfo]);
 
   return <StockChartStyledCanvas ref={canvasRef} />;
 };
 
-// const StockChartScoreCanvas = ({ scoreChartList, canvasSize }: { scoreChartList: any; canvasSize: any }) => {
-//   const { width, height } = canvasSize;
-//   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-//   useEffect(() => {
-//     if (!scoreChartList) return;
-//     const canvas = canvasRef.current;
-//     if (!canvas) return;
-//     canvas.width = width * DPR;
-//     canvas.height = height * DPR;
-//     const ctx = canvas.getContext('2d');
-//     if (!ctx) return;
-//     ctx.clearRect(0, 0, width, height);
-
-//     setLineWidth(ctx, 2);
-//     ctx.strokeStyle = theme.colors.cyan;
-//     ctx.lineCap = 'round';
-//     ctx.lineJoin = 'round';
-
-//     drawLine(
-//       ctx,
-//       scoreChartList
-//         .map((e: any) => {
-//           if (!e.score.value) return;
-//           return [e.pos.x, e.score.y];
-//         })
-//         .filter((e: any) => e),
-//     );
-//   }, [scoreChartList]);
-
-//   return <StockChartStyledCanvas ref={canvasRef} />;
-// };
+const deltaColor = (delta: number): themeColor => (!delta ? 'grayscale50' : delta > 0 ? 'red' : 'blue');
 
 export { StockChartPriceCanvas, StockChartScoreCanvas };
