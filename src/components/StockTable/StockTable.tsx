@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQueryComponent } from '@hooks/useQueryComponent';
+import { webPath } from '@router/index';
 import { StockTableData } from '@controllers/api.Type';
 import { StockTableQuery } from '@controllers/query';
 import HumanIndexSVG from '@assets/HumanIndex.svg?react';
@@ -17,12 +19,17 @@ import {
 } from './StockTable.style';
 
 const StockTable = ({ country }: { country: string }) => {
+  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const updateTime = country === 'KOREA' ? '17' : '06';
   const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
   const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
   const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(categories[tabIndex], country) });
+
+  const handleClick = (name: string) => {
+    navigate(webPath.search(), { state: { symbolName: name, country: country } });
+  };
 
   const handleTab = (index: number) => {
     if (tabIndex === index) {
@@ -56,7 +63,7 @@ const StockTable = ({ country }: { country: string }) => {
         (stockTable &&
           stockTable.map((stock: StockTableData, index: number) => {
             return (
-              <TableRow key={index}>
+              <TableRow key={index} onClick={() => handleClick(stock.symbolName)}>
                 <StockData>
                   <StockInfo>
                     {/* <StockLogo src={stock.logo} /> */}

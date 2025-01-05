@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
-import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { StockScore } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
@@ -36,7 +36,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   };
 
   const renderHotStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
+    return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
         <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
       </CardListItemContainer>
@@ -44,7 +44,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   };
 
   const renderWebStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
+    return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
         <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} keywords={stock.keywords} />
       </CardListItemContainer>
@@ -52,7 +52,7 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   };
 
   const renderMobileStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
+    return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.75}>
         <MobileStockCardItem
           key={`${name}_${idx}`}

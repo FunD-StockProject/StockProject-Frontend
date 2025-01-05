@@ -27,7 +27,7 @@ const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; count
         score={stock.score}
         delta={stock.diff}
         country={country}
-        keywords={stocks.keywords ?? []}
+        keywords={stock.keywords ?? []}
       />
     ))}
   </FlexDiv>
@@ -43,7 +43,7 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
           score={stock.score}
           delta={stock.diff}
           country={country}
-          keywords={stocks.keywords ?? []}
+          keywords={stock.keywords ?? []}
         />
       ))}
     </StockRelevantContainer>
