@@ -1,26 +1,18 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
-import { CardInterface } from '@ts/Interfaces';
 import { StockType } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { StockScore } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
 import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({
-  apiRef,
-  name,
-  index,
-}: {
-  apiRef: React.MutableRefObject<publicApiType>;
-  name: StockType;
-  index: number;
-}) => {
+const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
@@ -44,36 +36,31 @@ const CardList = ({
   };
 
   const renderHotStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
+    return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <ScoreSlotMachine
-          stockName={stock.symbolName}
-          active={true}
-          stockScore={stock.score}
-          tabIndex={0}
-          country={country}
-        />
+        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
       </CardListItemContainer>
     ));
   };
 
   const renderWebStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
+    return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} />
+        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} keywords={stock.keywords} />
       </CardListItemContainer>
     ));
   };
 
   const renderMobileStocks = () => {
-    return curStocks.map((stock: CardInterface, idx: number) => (
-      <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
+    return curStocks.map((stock: StockScore, idx: number) => (
+      <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.75}>
         <MobileStockCardItem
           key={`${name}_${idx}`}
           score={stock.score}
           name={stock.symbolName}
           delta={stock.diff}
           country={country}
+          keywords={stock.keywords}
         />
       </CardListItemContainer>
     ));
@@ -86,7 +73,11 @@ const CardList = ({
       setActiveIndex(visibleItems[0][0]);
     }
   };
-  const indicatorArray = Array.from({ length: curStocks?.length }, (_, idx) => idx);
+
+  const indicatorArray =
+    !isMobile && !isHot
+      ? Array.from({ length: curStocks?.length }, (_, idx) => idx).filter((_, idx) => idx % 3 === 0)
+      : Array.from({ length: curStocks?.length }, (_, idx) => idx);
 
   return (
     <NoScrollbar ref={containerRef}>
@@ -95,15 +86,11 @@ const CardList = ({
           <>
             <IndicatorContainer>
               {indicatorArray.map((el) => (
-                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name}></Indicator>
+                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name} />
               ))}
             </IndicatorContainer>
-            <ScrollMenu
-              LeftArrow={<ScrollArrow direction="left" />}
-              RightArrow={<ScrollArrow direction="right" />}
-              apiRef={apiRef}
-              onUpdate={handleUpdate}
-            >
+
+            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
               {renderStocks()}
             </ScrollMenu>
           </>
@@ -113,16 +100,31 @@ const CardList = ({
 };
 
 const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
-  const { getItemByIndex, items, scrollPrev, scrollNext, scrollToItem, useIsVisible } = useContext(VisibilityContext);
+  const { scrollPrev, scrollNext, useIsVisible } = useContext(VisibilityContext);
+
+  // 첫 번째 및 마지막 아이템 여부 확인
   const isFirstItemVisible = useIsVisible('first', true);
   const isLastItemVisible = useIsVisible('last', false);
+
+  // 방향에 따른 비활성화 상태 결정
+  const isDisabled = direction === 'left' ? isFirstItemVisible : isLastItemVisible;
+
+  // 방향에 따른 클릭 핸들러
+  const onClick = () => {
+    if (isDisabled) return; // 비활성화 상태면 동작 안 함
+    direction === 'left' ? scrollPrev() : scrollNext();
+  };
+
+  // 이미지 링크 결정
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
-  const onLeftClick = () => (isFirstItemVisible ? scrollToItem(getItemByIndex(items.size - 1)) : scrollPrev());
-  const onRightClick = () => (isLastItemVisible ? scrollToItem(getItemByIndex(0)) : scrollNext());
-  const onClick = direction === 'left' ? onLeftClick : onRightClick;
-
-  return <ArrowButton src={imgLink} onClick={onClick} className={`arrow-${direction}`} />;
+  return (
+    <ArrowButton
+      src={imgLink}
+      onClick={onClick} // 직접 실행
+      className={`arrow-${direction} ${isDisabled ? 'disabled' : ''}`}
+      disabled={isDisabled}
+    />
+  );
 };
-
 export default CardList;

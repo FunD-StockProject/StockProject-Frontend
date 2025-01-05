@@ -1,32 +1,34 @@
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import PWAInfoPopUp from '@components/PopUp/PWAInfoPopUp';
+import IndexScore from '@components/IndexScore/IndexScore';
+import Keywords from '@components/Keywords/Keywords';
+import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
+import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
+import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
+import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
+import StockTable from '@components/StockTable/StockTable';
 import InfoSVG from '@assets/info.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
-import {
-  HomeContainer,
-  HomeContents,
-  IndexItem,
-  IndicesContainer,
-  StyleTabMenu,
-  StyleTabMenuContainer,
-  StyledSpan,
-} from './Home.Style';
+import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan, StyledText } from './Home.Style';
 
 const Home = () => {
+  const tabMenu = ['국내주식', '해외주식'];
+  const updateTime = [STOCK_UPDATE_TIME.KOREA, STOCK_UPDATE_TIME.OVERSEA];
+
   const [tabIndex, setTabIndex] = useState<number>(0);
 
+  const [isPopupOpen, setPopupOpen] = useState([false, false, false]);
   const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
   const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
-  const tabMenu = ['국내주식', '해외주식'];
-  const stockIndices = [
-    ['공포 지수', '코스피', '코스닥'],
-    ['공포 지수', 'S&P 500', '나스닥'],
-  ];
+
+  const togglePopup = (index: number) => {
+    setPopupOpen((prev) => prev.map((value, idx) => (idx === index ? !value : value)));
+  };
 
   const handleTab = (index: number) => {
     if (tabIndex === index) {
@@ -48,11 +50,7 @@ const Home = () => {
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li
-              key={index}
-              className={index === tabIndex ? 'submenu focused' : 'submenu'}
-              onClick={() => handleTab(index)}
-            >
+            <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
               {el}
             </li>
           ))}
@@ -60,47 +58,45 @@ const Home = () => {
       </StyleTabMenuContainer>
 
       <HomeContents>
-        {/* <InfoSVG className="btn_info" onClick={() => {}} /> */}
-        <IndicesContainer>
-          {stockIndices[tabIndex].map((stockIndex) => (
-            <IndexItem>
-              <div>{stockIndex}</div>
-              <div>25</div>
-            </IndexItem>
-          ))}
-        </IndicesContainer>
+        <IndexScore tabIndex={tabIndex} />
         <ContentsItemContainer>
-          <ContentsItemTitle color="primary40">
-            지금 가장<StyledSpan color="primary40">HOT</StyledSpan> 한
+          <ContentsItemTitle color="primary50">
+            지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한
             <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => {}} />
+            <InfoSVG className="btn_info" onClick={() => togglePopup(0)} />
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={hotStocksApiRef} name={'HOT'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
+          {isPopupOpen[0] && <HotPopUp onClose={() => togglePopup(0)} />}
         </ContentsItemContainer>
-
         <ContentsItemContainer>
           <ContentsItemTitle color="red">
             지금 민심 <StyledSpan color="red">떡상</StyledSpan> 중인
             <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => {}} />
+            <InfoSVG className="btn_info" onClick={() => togglePopup(1)} />
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={risingStocksApiRef} name={'RISING'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
+          {isPopupOpen[1] && <RisingPopUp onClose={() => togglePopup(1)} />}
         </ContentsItemContainer>
-
         <ContentsItemContainer>
           <ContentsItemTitle color="blue">
             지금 민심 <StyledSpan color="blue">떡락</StyledSpan> 중인
             <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => {}} />
+            <InfoSVG className="btn_info" onClick={() => togglePopup(2)} />
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={descentStocksApiRef} name={'DESCENT'} index={tabIndex} />
           </ContentsItemContent>
+          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
+          {isPopupOpen[2] && <DescentPopUp onClose={() => togglePopup(2)} />}
         </ContentsItemContainer>
+        <StockTable country={tabIndex === 0 ? 'KOREA' : 'OVERSEA'} />
+        <Keywords country={tabIndex === 0 ? 'KOREA' : 'OVERSEA'} />
       </HomeContents>
       {!detectPWA() && <PWAInfoPopUp />}
     </HomeContainer>

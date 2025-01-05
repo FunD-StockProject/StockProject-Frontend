@@ -32,7 +32,9 @@ const TextArea = styled('div')({
   flexDirection: 'row',
   gap: '15px',
 });
+
 const HeaderText = styled('h2')({});
+
 const NormalText = styled('div')({
   fontWeight: 500,
 });
@@ -64,6 +66,7 @@ const Close24HourButton = styled(StyledButton)({
 const ConfirmButton = styled(StyledButton)({
   backgroundColor: theme.colors.primary50,
   color: theme.colors.grayscale5,
+  border: 'none',
 });
 
 const Backdrop = styled('div')({

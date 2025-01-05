@@ -3,12 +3,21 @@ import { scoreToImage } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
-import { ScoreImage, StockCardItemContainer, StockCardItemDeltaScore, StockCardItemScore, StockCardItemText, StockCardItemTitle } from './StockCard.Style';
+import {
+  KeywordContainer,
+  ScoreImage,
+  StockCardItemContainer,
+  StockCardItemDeltaScore,
+  StockCardItemScore,
+  StockCardItemText,
+  StockCardItemTitle,
+  StockCardKeyword,
+} from './StockCard.Style';
 
-const StockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
+const StockCardItem = ({ name, score, delta, country, keywords }: { name: string; score: number; delta: number; country: string; keywords: string[] }) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
-  const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
+  const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
     navigate(webPath.search(), { state: { symbolName: name, country: country } });
@@ -18,13 +27,16 @@ const StockCardItem = ({ name, score, delta, country }: { name: string; score: n
     <StockCardItemContainer onClick={handleClick}>
       <StockCardItemTitle>
         <StockCardItemText>{name}</StockCardItemText>
-        <StockCardItemScore delta={delta}>
+        <StockCardItemScore>
           {score}점
           <StockCardItemDeltaScore delta={delta}>
-            {Math.abs(delta)}
-            {deltaSVG}
+            {Math.abs(delta)}점{deltaSVG}
           </StockCardItemDeltaScore>
         </StockCardItemScore>
+        <KeywordContainer>
+          <StockCardKeyword>{keywords[0]}</StockCardKeyword>
+          <StockCardKeyword>{keywords[1]}</StockCardKeyword>
+        </KeywordContainer>
       </StockCardItemTitle>
       <ScoreImage src={scoreImage} />
     </StockCardItemContainer>

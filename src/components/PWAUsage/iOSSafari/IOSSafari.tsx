@@ -1,7 +1,7 @@
-import AddToHome from '@assets/AddToHome.svg';
-import BottomShareButtonTab from '@assets/BottomShareButtonTab.png';
-import RunApp from '@assets/RunApp.png';
-import { DetailContainer, DetailImage, DetailItem, DetailNumber, DetailText, HeaderText, OrderContainer } from './IOSSafari.style';
+import AddToHomeSVG from '@assets/PWA/AddToHome.svg?react';
+import RunAppSVG from '@assets/PWA/RunApp.svg?react';
+import ShareButtonSVG from '@assets/PWA/ShareButton.svg?react';
+import { DetailContainer, DetailItem, DetailNumber, DetailText, HeaderText, OrderContainer } from './IOSSafari.style';
 
 const IOSSafari = () => (
   <OrderContainer>
@@ -11,22 +11,26 @@ const IOSSafari = () => (
     </HeaderText>
     <DetailContainer>
       <DetailItem>
-        <DetailNumber>1</DetailNumber>
-        <DetailText>하단 공유 버튼 탭</DetailText>
+        <div>
+          <DetailNumber>1</DetailNumber>
+          <DetailText>하단 공유 버튼 탭</DetailText>
+        </div>
+        <ShareButtonSVG style={{ margin: '-20px 0' }} />
       </DetailItem>
-      <div style={{ margin: '-30px 0' }}>
-        <DetailImage src={BottomShareButtonTab} alt="공유 버튼" />
-      </div>
       <DetailItem>
-        <DetailNumber>2</DetailNumber>
-        <DetailText>홈 화면에 추가</DetailText>
+        <div>
+          <DetailNumber>2</DetailNumber>
+          <DetailText>홈 화면에 추가</DetailText>
+        </div>
+        <AddToHomeSVG />
       </DetailItem>
-      <DetailImage src={AddToHome} alt="홈 화면 추가" />
       <DetailItem>
-        <DetailNumber>3</DetailNumber>
-        <DetailText>생성된 앱 실행</DetailText>
+        <div>
+          <DetailNumber>3</DetailNumber>
+          <DetailText>생성된 앱 실행</DetailText>
+        </div>
+        <RunAppSVG />
       </DetailItem>
-      <DetailImage src={RunApp} alt="앱 실행" />
     </DetailContainer>
   </OrderContainer>
 );
