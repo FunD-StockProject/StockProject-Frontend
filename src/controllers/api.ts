@@ -86,13 +86,15 @@ const fetchKeywords = (country: string) => {
   if (enableMock2) return fetchKeywordsMock;
   return fetchData(`/keywords${country}`);
 };
+
 const fetchStockTable = (country: string) => {
   if (enableMock2) return fetchStockTableMock;
   return fetchData(`/stockTable/${country}`);
 };
-const fetchIndexScore = (country: string) => {
+
+const fetchIndexScore = () => {
   if (enableMock2) return fetchIndexScoreMock;
-  return fetchData(`/indexSCore/${country}`);
+  return fetchData(`/index/score`);
 };
 
 export {
