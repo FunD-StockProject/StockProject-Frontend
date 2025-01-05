@@ -7,8 +7,7 @@ import {
   DeltaScore,
   HeaderItem,
   StockData,
-  StockInfo,
-  StockLogo,
+  StockInfo, // StockLogo,
   StockName,
   StockTableContainer,
   StockTableTitle,
@@ -22,7 +21,8 @@ const StockTable = ({ country }: { country: string }) => {
 
   const updateTime = country === 'KOREA' ? '17' : '06';
   const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
-  const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(country) });
+  const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
+  const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(categories[tabIndex], country) });
 
   const handleTab = (index: number) => {
     if (tabIndex === index) {
@@ -54,27 +54,27 @@ const StockTable = ({ country }: { country: string }) => {
       </TableHeaderContainer>
       {suspend ||
         (stockTable &&
-          stockTable[tabIndex].map((stock: StockTableData, index: number) => {
+          stockTable.map((stock: StockTableData, index: number) => {
             return (
               <TableRow key={index}>
                 <StockData>
                   <StockInfo>
-                    <StockLogo src={stock.logo} />
-                    <StockName>{stock.name}</StockName>
+                    {/* <StockLogo src={stock.logo} /> */}
+                    <StockName>{stock.symbolName}</StockName>
                   </StockInfo>
                 </StockData>
                 <StockData>
                   <span>{stock.price.toLocaleString()}</span>
-                  <DeltaScore delta={stock.change}>
-                    {stock.change > 0 ? '+' : ''}
-                    {stock.change.toLocaleString()}({Math.abs(stock.changeRate)}%)
+                  <DeltaScore delta={stock.priceDiff}>
+                    {stock.priceDiff > 0 ? '+' : ''}
+                    {stock.priceDiff.toLocaleString()}({Math.abs(stock.priceDiffPerCent)}%)
                   </DeltaScore>
                 </StockData>
                 <StockData>
                   <span>{stock.score}점 </span>
-                  <DeltaScore delta={stock.delta}>
-                    ({stock.delta > 0 ? '+' : ''}
-                    {stock.delta})
+                  <DeltaScore delta={stock.scoreDiff}>
+                    ({stock.scoreDiff > 0 ? '+' : ''}
+                    {stock.scoreDiff})
                   </DeltaScore>
                 </StockData>
               </TableRow>

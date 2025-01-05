@@ -18,7 +18,7 @@ const Headers = { 'content-type': 'application/json' };
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
 const enableMock = false;
-const enableMock2 = true;
+
 const fetchData = async (path: string) => {
   try {
     const url = `${baseURL}${path}`;
@@ -83,18 +83,18 @@ const fetchRealStockInfo = (stockId: number, country: string) => {
 };
 
 const fetchKeywords = (country: string) => {
-  if (enableMock2) return fetchKeywordsMock;
-  return fetchData(`/keywords${country}`);
+  if (enableMock) return fetchKeywordsMock;
+  return fetchData(`/keyword/popular/${country}`);
 };
 
-const fetchStockTable = (country: string) => {
-  if (enableMock2) return fetchStockTableMock;
-  return fetchData(`/stockTable/${country}`);
+const fetchStockTable = (category: string, country: string) => {
+  if (enableMock) return fetchStockTableMock;
+  return fetchData(`/stock/category/${category}/${country}`);
 };
 
 const fetchIndexScore = () => {
-  if (enableMock2) return fetchIndexScoreMock;
-  return fetchData(`/index/score`);
+  if (enableMock) return fetchIndexScoreMock;
+  return fetchData(`/score/index`);
 };
 
 export {

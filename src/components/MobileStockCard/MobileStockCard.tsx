@@ -14,7 +14,19 @@ import {
   MobileStockCardKeyword,
 } from './MobileStockCard.Style';
 
-const MobileStockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
+const MobileStockCardItem = ({
+  name,
+  score,
+  delta,
+  country,
+  keywords,
+}: {
+  name: string;
+  score: number;
+  delta: number;
+  country: string;
+  keywords: string[];
+}) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
   const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
@@ -34,12 +46,10 @@ const MobileStockCardItem = ({ name, score, delta, country }: { name: string; sc
             {Math.abs(delta)}점{deltaSVG}
           </MobileStockCardItemDeltaScore>
         </MobileStockCardItemScore>
-        {true && (
-          <KeywordContainer>
-            <MobileStockCardKeyword>이재명</MobileStockCardKeyword>
-            <MobileStockCardKeyword>이재명</MobileStockCardKeyword>
-          </KeywordContainer>
-        )}
+        <KeywordContainer>
+          <MobileStockCardKeyword>{keywords[0]}</MobileStockCardKeyword>
+          <MobileStockCardKeyword>{keywords[1]}</MobileStockCardKeyword>
+        </KeywordContainer>
       </MobileStockCardItemTitle>
     </MobileStockCardItemContainer>
   );

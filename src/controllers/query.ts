@@ -55,8 +55,8 @@ export const KeywordsQuery = (country: string) => {
   return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
 };
 
-export const StockTableQuery = (country: string) => {
-  return useQuery<any>(['stockTable', country], () => fetchStockTable(country), queryOptions);
+export const StockTableQuery = (category: string, country: string) => {
+  return useQuery<any>(['stockTable', category, country], () => fetchStockTable(category, country), queryOptions);
   // 추후 타입 픽스되면 수정 필요
 };
 

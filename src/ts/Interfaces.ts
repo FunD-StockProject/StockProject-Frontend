@@ -3,6 +3,7 @@ interface CardInterface {
   symbolName: string;
   score: number;
   diff: number;
+  keywords: string[];
 }
 
 export type { CardInterface };

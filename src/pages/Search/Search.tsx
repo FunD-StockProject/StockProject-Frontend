@@ -21,7 +21,14 @@ import { SearchResultContainer, SearchResultContents, StockRelevantContainer } f
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="column" width="100%">
     {stocks.map((stock) => (
-      <MobileStockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
+      <MobileStockCardItem
+        key={`RELEVANT_${stock.stockId}`}
+        name={stock.symbolName}
+        score={stock.score}
+        delta={stock.diff}
+        country={country}
+        keywords={stocks.keywords ?? []}
+      />
     ))}
   </FlexDiv>
 );
@@ -30,7 +37,14 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
   <FlexDiv flexDirection="column" gap="24px" width="100%">
     <StockRelevantContainer>
       {stocks.map((stock) => (
-        <StockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
+        <StockCardItem
+          key={`RELEVANT_${stock.stockId}`}
+          name={stock.symbolName}
+          score={stock.score}
+          delta={stock.diff}
+          country={country}
+          keywords={stocks.keywords ?? []}
+        />
       ))}
     </StockRelevantContainer>
   </FlexDiv>

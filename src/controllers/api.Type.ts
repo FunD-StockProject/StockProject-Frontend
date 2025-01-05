@@ -17,6 +17,7 @@ export interface StockScore {
   symbolName: string;
   score: number;
   diff: number;
+  keywords: string[];
 }
 
 export interface RevelantStockInfo {
@@ -27,13 +28,14 @@ export interface RevelantStockInfo {
 }
 
 export interface StockTableData {
-  logo: string;
-  name: string;
+  stockId: string;
+  symbolName: string;
+  country: string;
   price: number;
-  change: number;
-  changeRate: number;
+  priceDiff: number;
+  priceDiffPerCent: number;
   score: number;
-  delta: number;
+  scoreDiff: number;
 }
 
 export interface indexData {
