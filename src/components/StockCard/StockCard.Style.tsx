@@ -55,13 +55,10 @@ const StockCardItemText = styled.div({
 const StockCardItemScore = styled.div(() => ({
   display: 'flex',
   alignItems: 'center',
-  gap: '0.5em',
+
   color: theme.colors.primary0,
 
   fontSize: '1.0em',
-  [media[0]]: {
-    // gap: '8px',
-  },
 }));
 
 const StockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({

@@ -61,7 +61,7 @@ const deltaScoreToColor = (deltaScore: number): string => {
   } else if (deltaScore < 0) {
     return theme.colors.blue;
   } else {
-    return theme.colors.primary0;
+    return theme.colors.grayscale20;
   }
 };
 

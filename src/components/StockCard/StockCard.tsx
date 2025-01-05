@@ -17,7 +17,7 @@ import {
 const StockCardItem = ({ name, score, delta, country }: { name: string; score: number; delta: number; country: string }) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
-  const deltaSVG = delta > 0 ? <UpSVG /> : <DownSVG />;
+  const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
     navigate(webPath.search(), { state: { symbolName: name, country: country } });
@@ -30,8 +30,7 @@ const StockCardItem = ({ name, score, delta, country }: { name: string; score: n
         <StockCardItemScore>
           {score}점
           <StockCardItemDeltaScore delta={delta}>
-            {Math.abs(delta)}
-            {deltaSVG}
+            {Math.abs(delta)}점{deltaSVG}
           </StockCardItemDeltaScore>
         </StockCardItemScore>
         <KeywordContainer>
