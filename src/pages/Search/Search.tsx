@@ -4,7 +4,7 @@ import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import MobileStockCardGrid from '@components/MobileStockCardGrid/MobileStockCardGrid';
+import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/SearchTitle/SearchTitle';
@@ -19,8 +19,10 @@ import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
 
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
-  <FlexDiv flexDirection="row" width="100%">
-    <MobileStockCardGrid curStocks={stocks} name="RELEVANT" country={country} />
+  <FlexDiv flexDirection="column" width="100%">
+    {stocks.map((stock) => (
+      <MobileStockCardItem key={`RELEVANT_${stock.stockId}`} name={stock.symbolName} score={stock.score} delta={stock.diff} country={country} />
+    ))}
   </FlexDiv>
 );
 
