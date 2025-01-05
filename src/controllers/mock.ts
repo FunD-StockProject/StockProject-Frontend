@@ -1,6 +1,20 @@
 import test from '@assets/sangsung.svg';
 
-export const fetchIndexScoreMock = [30, -45, 70];
+export const fetchIndexScoreMock = {
+  kospiVix: 50,
+  kospiVixDiff: 5,
+  kospiIndex: 64,
+  kospiIndexDiff: 23,
+  kosdaqIndex: 49,
+  kosdaqIndexDiff: 7,
+  snpVix: 32,
+  snpVixDiff: 2,
+  snpIndex: 47,
+  snpIndexDiff: -18,
+  nasdaqIndex: 43,
+  nasdaqIndexDiff: -3,
+};
+
 export const fetchKeywordsMock = ['이재명', '더불어민주당', '항공사', '탄소저감', '신용평가', '가스에너지', '원유정제', '조선사', '섬유'];
 
 export const fetchStockTableMock = [

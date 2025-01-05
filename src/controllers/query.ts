@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { StockType } from '@ts/Types';
-import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
+import { PERIOD_CODE, RevelantStockInfo, indexData } from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
@@ -60,6 +60,6 @@ export const StockTableQuery = (country: string) => {
   // 추후 타입 픽스되면 수정 필요
 };
 
-export const IndexScoreQuery = (country: string) => {
-  return useQuery<number[]>(['indexScore', country], () => fetchIndexScore(country), queryOptions);
+export const IndexScoreQuery = () => {
+  return useQuery<indexData>(['indexScore'], () => fetchIndexScore(), queryOptions);
 };
