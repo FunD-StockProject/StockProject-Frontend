@@ -95,4 +95,9 @@ const FooterButtonItemContainer = styled.div({
   },
 });
 
-export { FooterContainer, FooterContents, FooterTitle, FooterButtonContainer, FooterButtonItemContainer };
+const FooterIconsContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center; // 아이콘 세로 정렬
+`;
+export { FooterContainer, FooterContents, FooterTitle, FooterButtonContainer, FooterButtonItemContainer, FooterIconsContainer };

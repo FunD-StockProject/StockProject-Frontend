@@ -25,35 +25,6 @@ const PopUpContainer = styled('div')({
   },
 });
 
-const PopUpTitle = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  fontSize: '40px',
-  fontWeight: '700',
-  padding: '48px 32px 0 32px',
-
-  ['svg']: {
-    height: '36px',
-    width: 'auto',
-  },
-
-  [media[0]]: {
-    fontSize: '24px', // 모바일에서는 작은 글자 크기
-    padding: '32px 32px 0 32px',
-  },
-});
-
-const PopUpContent = styled('div')({
-  padding: '0 32px 32px 32px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  fontSize: '16px',
-  lineHeight: '1.5',
-  color: theme.colors.grayscale100,
-});
-
 const PopUpImage = styled('ul')({
   display: 'flex',
   justifyContent: 'space-between',
@@ -132,7 +103,7 @@ const PopUpDetail = styled('div')({
 
   [media[0]]: {
     ['span']: {
-      fontSize: '11px',
+      fontSize: '9px',
     },
   },
 });
@@ -198,15 +169,4 @@ const CloseButton = styled('button')({
   },
 });
 
-export {
-  PopUpContainer,
-  PopUpTitle,
-  PopUpContent,
-  PopUpImage,
-  PopUpDetailContainer,
-  PopUpDetail,
-  PopUpDetailNumber,
-  ConfirmButton,
-  Backdrop,
-  CloseButton,
-};
+export { PopUpContainer, PopUpImage, PopUpDetailContainer, PopUpDetail, PopUpDetailNumber, ConfirmButton, Backdrop, CloseButton };

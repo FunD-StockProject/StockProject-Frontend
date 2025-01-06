@@ -7,26 +7,6 @@ const HomeContainer = styled.div({
   width: '100%',
   marginBottom: 'auto',
 });
-const IndicesContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '1em',
-});
-
-const IndexItem = styled.div({
-  flex: 1,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-  background: theme.colors.grayscale80,
-  height: '45px',
-  borderRadius: '8px',
-  fontWeight: 'bold',
-  fontSize: '1em',
-  padding: '5px 10px',
-});
 
 const HomeContents = styled.div({
   boxSizing: 'border-box',
@@ -78,14 +58,16 @@ const StyleTabMenu = styled.ul({
     justifyContent: 'center',
     padding: '12px 24px',
     fontWeight: 'bold',
-    backgroundColor: 'white',
+    color: theme.colors.grayscale50,
+    backgroundColor: theme.colors.grayscale100,
     cursor: 'pointer',
   },
 
   '.focused': {
-    color: 'white',
     backgroundColor: theme.colors.primary100,
+    color: theme.colors.primary0,
   },
+
   [media[0]]: {
     position: 'static',
     fontSize: '17px',
@@ -105,4 +87,19 @@ const StyledSpan = styled.span((props: { color?: themeColor }) => ({
   color: props.color ? theme.colors[props.color] : '#000000',
 }));
 
-export { HomeContainer, IndicesContainer, IndexItem, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan };
+const StyledText = styled.div({
+  color: theme.colors.grayscale60,
+  fontFamily: 'Pretendard',
+  fontSize: '15px',
+  fontStyle: 'normal',
+  fontWeight: '500',
+  lineHeight: '1.5',
+  margin: '0px 4px',
+
+  [media[0]]: {
+    fontSize: '12px',
+    margin: '-10px 4px',
+  },
+});
+
+export { HomeContainer, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan, StyledText };

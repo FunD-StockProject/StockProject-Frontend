@@ -33,9 +33,9 @@ const NoScrollbar = styled.div({
 
   '& .react-horizontal-scrolling-menu--arrow-left': {
     position: 'absolute',
-    top: '50%',
-    left: '-50px',
-    transform: 'translateY(-50%)',
+    bottom: '-50px', // 컨테이너의 하단에서 20px 위로 배치
+    right: '30px', // 오른쪽에서 왼쪽으로 60px 간격
+    transform: 'none', // 중앙 정렬 보정 제거
     [media[0]]: {
       display: 'none',
     },
@@ -43,27 +43,25 @@ const NoScrollbar = styled.div({
 
   '& .react-horizontal-scrolling-menu--arrow-right': {
     position: 'absolute',
-    top: '50%',
-    right: '-50px',
-    transform: 'translateY(-50%)',
+    bottom: '-50px', // 컨테이너의 하단에서 20px 위로 배치
+    right: '0px', // 오른쪽에서 왼쪽으로 60px 간격
+    transform: 'none', // 중앙 정렬 보정 제거
     [media[0]]: {
       display: 'none',
     },
   },
 });
 
-const ArrowButton = styled.img({
+const ArrowButton = styled.img<{ disabled?: boolean }>(({ disabled }) => ({
   display: 'flex',
-  margin: '0 5px', // 좌우 간격 조정
   userSelect: 'none',
-  padding: '5px', // 버튼 크기 조정
   borderRadius: '6px',
-  backgroundColor: theme.colors.grayscale80, // 버튼 색상
   color: 'white',
-  [':hover']: {
-    backgroundColor: theme.colors.primary50, // 버튼 색상
-  },
-});
+  cursor: disabled ? 'not-allowed' : 'pointer', // 비활성화 시 커서 변경
+  opacity: disabled ? 0.5 : 1, // 비활성화 시 투명도 낮춤
+  filter: disabled ? 'grayscale(100%)' : 'none', // 비활성화 시 회색 필터 적용
+  transition: 'opacity 0.2s, filter 0.2s', // 스타일 변경 시 애니메이션 추가
+}));
 
 const ItemButtonContainer = styled.div({
   display: 'flex',
@@ -105,7 +103,7 @@ const Indicator = styled.div(({ isActive, name }: { isActive: boolean; name: str
   width: '10px',
   height: '10px',
   borderRadius: '50%', // 완전한 원
-  backgroundColor: isActive ? (name === 'RISING' ? '#FD4821' : theme.colors.primary30) : theme.colors.primary5,
+  backgroundColor: isActive ? (name === 'RISING' ? theme.colors.red : theme.colors.primary30) : theme.colors.primary5,
   transition: 'background-color 0.3s ease',
   border: 'none',
   cursor: 'pointer',

@@ -1,15 +1,21 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
+import { media } from '@styles/themes';
 
 const Container = styled.div({
-  boxSizing: 'border-box',
   display: 'flex',
+  boxSizing: 'border-box',
   width: '100%',
   height: '400px',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '16px',
-  backgroundColor: theme.colors.grayscale100,
+
+  [media[0]]: {
+    height: '200px',
+    ['svg']: {
+      width: '30%',
+    },
+  },
 });
 
 export { Container };

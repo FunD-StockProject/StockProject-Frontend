@@ -43,7 +43,7 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
 const ContentsItemContent = styled.div({
   margin: '0 18px',
   [media[0]]: {
-    margin: '0 8px',
+    margin: '0 0px',
   },
 });
 

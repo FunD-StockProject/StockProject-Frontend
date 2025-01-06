@@ -1,12 +1,13 @@
-import { WordCloud, WordFrequency } from '../../components/StockWordCloud/StockWordCloud.Type';
+import { WordFrequency } from '../../components/StockWordCloud/StockWordCloud.Type';
 
 const GetnerateWordCloud = ({
   frequencies,
   height = 300,
   width = 300,
+  adjust,
   minFontSize = 4,
-  margin = 2,
-  maxWords = 200,
+  margin = 4,
+  maxWords = 400,
   relativeScaling = 0.5,
   randomState = ~~(Math.random() * 1e9),
   maxFontSize,
@@ -14,13 +15,14 @@ const GetnerateWordCloud = ({
   frequencies: WordFrequency[];
   height?: number;
   width: number;
+  adjust: number;
   minFontSize?: number;
   margin?: number;
   maxWords?: number;
   relativeScaling?: number;
   randomState?: number;
   maxFontSize?: number;
-}): WordCloud[] | null => {
+}): any => {
   const isEmptyArea = (x: number, y: number, w: number, h: number) => {
     return (
       prefixSum[(y + h) * (width + 1) + (x + w)] -
@@ -31,15 +33,15 @@ const GetnerateWordCloud = ({
   };
 
   const getPosition = (
-    textMetrics: TextMetrics,
+    textWidth: number,
     fontSize: number,
     margin: number,
     orientation: boolean,
     randomState: number,
   ) => {
     const [sizeX, sizeY] = [
-      margin + ~~(!orientation ? textMetrics.width * fontSize : fontSize),
-      margin + ~~(!orientation ? fontSize : textMetrics.width * fontSize),
+      margin + ~~(!orientation ? textWidth * fontSize : fontSize),
+      margin + ~~(!orientation ? fontSize : textWidth * fontSize),
     ];
 
     let [i, j] = [0, 0];
@@ -128,6 +130,7 @@ const GetnerateWordCloud = ({
         frequencies: frequencies.slice(0, 2),
         height: height,
         width: width,
+        adjust: adjust,
         minFontSize: minFontSize,
         margin: margin,
         maxWords: maxWords,
@@ -138,10 +141,13 @@ const GetnerateWordCloud = ({
 
       if (!ret) return null;
 
-      if (ret.length >= 2) {
-        fontSize = ~~((2 * ret[0].fontSize * ret[1].fontSize) / (ret[0].fontSize + ret[1].fontSize));
-      } else if (ret.length == 1) {
-        fontSize = ret[0].fontSize;
+      if (ret.layout.length >= 2) {
+        fontSize = ~~(
+          (2 * ret.layout[0].fontSize * ret.layout[1].fontSize) /
+          (ret.layout[0].fontSize + ret.layout[1].fontSize)
+        );
+      } else if (ret.layout.length == 1) {
+        fontSize = ret.layout[0].fontSize;
       } else {
         return null;
       }
@@ -152,9 +158,10 @@ const GetnerateWordCloud = ({
 
   fontSizes = new Array(fontSize + 1);
   for (let i = 0; i <= fontSize; i++) {
-    fontSizes[i] = `900 ${i}px "Pretendard"`;
+    fontSizes[i] = `${i}px "Pretendard"`;
   }
-  FontOffCtx.font = fontSizes[1];
+  // FontOffCtx.font = fontSizes[128];
+  FontOffCtx.font = `${128}px "Pretendard"`;
 
   for (const e of frequencies) {
     const word = e.word;
@@ -169,23 +176,23 @@ const GetnerateWordCloud = ({
     let tried_other_orientation: boolean = false;
 
     const textMetrics = FontOffCtx.measureText(word);
+    const textWidth = textMetrics.width / 128;
+    // console.log(orientation, word, textMetrics.actualBoundingBoxLeft, textMetrics.actualBoundingBoxRight, fontSize);
 
     while (true) {
       if (fontSize < minFontSize) break;
 
-      const pos = getPosition(textMetrics, fontSize, margin, orientation, randomState);
+      const pos = getPosition(textWidth, fontSize, margin, orientation, randomState);
 
       if (pos != null) {
         textPosition = {
           posX: pos % width,
           posY: ~~(pos / width),
-          sizeX: margin + ~~(!orientation ? textMetrics.width * fontSize : fontSize),
-          sizeY: margin + ~~(!orientation ? fontSize : textMetrics.width * fontSize),
+          sizeX: margin + ~~(!orientation ? textWidth * fontSize : fontSize),
+          sizeY: margin + ~~(!orientation ? fontSize : textWidth * fontSize),
 
           spanX: (pos % width) + margin / 2,
           spanY: ~~(pos / width) + margin / 2,
-          textX: (pos % width) + margin / 2 - (!orientation ? 0 : fontSize * 0.055),
-          textY: ~~(pos / width) + margin / 2 + (!orientation ? fontSize * 0.055 : 0),
         };
         break;
       }
@@ -207,16 +214,17 @@ const GetnerateWordCloud = ({
     if (!offCtx) return null;
 
     offCtx.font = fontSizes[fontSize];
+    offCtx.textBaseline = 'top';
 
-    const textX = margin / 2 - (!orientation ? 0 : fontSize * 0.055);
-    const textY = margin / 2 + (!orientation ? fontSize * 0.055 : 0);
+    // const textX = margin / 2 - (!orientation ? 0 : fontSize * -0.1);
+    // const textY = margin / 2 + (!orientation ? fontSize * -0.1 : 0);
+    const textX = margin / 2;
+    const textY = ((orientation ? -1 : 1) * margin) / 2 + (!orientation ? fontSize * adjust : fontSize * -(1 - adjust));
     if (orientation) {
-      offCtx.textBaseline = 'bottom';
       offCtx.rotate((90 * Math.PI) / 180);
-      offCtx.fillText(e.word, textY, -textX);
+      offCtx.fillText(e.word, textX, textY);
       offCtx.rotate((-90 * Math.PI) / 180);
     } else {
-      offCtx.textBaseline = 'top';
       offCtx.fillText(e.word, textX, textY);
     }
 
@@ -230,13 +238,16 @@ const GetnerateWordCloud = ({
       color: ~~Math.floor(Math.random() * 6),
     };
     layouts.push(layout);
+    // rects.push({
+    //   x:
+    // })
 
     const imageData = offCtx.getImageData(0, 0, textPosition.sizeX, textPosition.sizeY);
 
     Update(imageData.data, ~~textPosition.posX, ~~textPosition.posY, ~~textPosition.sizeX, ~~textPosition.sizeY);
   }
 
-  return layouts;
+  return { layout: layouts, grid: grid };
 };
 
 self.onmessage = (e) => {
@@ -255,6 +266,7 @@ self.onmessage = (e) => {
       frequencies: e.data.data,
       height: e.data.height,
       width: e.data.width,
+      adjust: e.data.adjust,
     });
     postMessage(ret);
   });

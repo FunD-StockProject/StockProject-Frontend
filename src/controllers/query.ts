@@ -1,16 +1,18 @@
 import { useQuery } from 'react-query';
-import { KOREA, OVERSEA } from '@ts/Constants';
 import { StockType } from '@ts/Types';
-import { PERIOD_CODE, RevelantStockInfo } from '@controllers/api.Type';
+import { PERIOD_CODE, RevelantStockInfo, indexData } from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
+  fetchIndexScore,
+  fetchKeywords,
   fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
   fetchSearchSymbolName,
   fetchStockChart,
+  fetchStockTable,
 } from './api';
 import { StockInfo } from './api.Type';
 
@@ -20,7 +22,7 @@ export const queryOptions = {
 };
 
 export const SearchSymbolNameQuery = (name: string, country: string) => {
-  return useQuery<any>(['searchSymbolByName', name], () => fetchSearchSymbolName(name, country), queryOptions);
+  return useQuery<StockInfo>(['searchSymbolByName', name], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
 export const StockRelevantQuery = (id: number) => {
@@ -34,7 +36,7 @@ const StockFetchers = {
 };
 
 export const StockFetchQuery = (type: StockType, index: number) => {
-  return useQuery<any>([type + ' ' + index], () => StockFetchers[type](!index ? KOREA : OVERSEA), queryOptions);
+  return useQuery<any>([type + ' ' + index], () => StockFetchers[type](!index ? 'KOREA' : 'OVERSEA'), queryOptions);
 };
 
 export const ScoreQuery = (id: number, country: string) => {
@@ -47,4 +49,17 @@ export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: strin
 
 export const RealStockInfoQuery = (id: number, country: string) => {
   return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
+};
+
+export const KeywordsQuery = (country: string) => {
+  return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
+};
+
+export const StockTableQuery = (category: string, country: string) => {
+  return useQuery<any>(['stockTable', category, country], () => fetchStockTable(category, country), queryOptions);
+  // 추후 타입 픽스되면 수정 필요
+};
+
+export const IndexScoreQuery = () => {
+  return useQuery<indexData>(['indexScore'], () => fetchIndexScore(), queryOptions);
 };

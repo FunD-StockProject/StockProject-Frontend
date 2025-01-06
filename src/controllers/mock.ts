@@ -1,3 +1,56 @@
+import test from '@assets/sangsung.svg';
+
+export const fetchIndexScoreMock = {
+  kospiVix: 50,
+  kospiVixDiff: 5,
+  kospiIndex: 64,
+  kospiIndexDiff: 23,
+  kosdaqIndex: 49,
+  kosdaqIndexDiff: 7,
+  snpVix: 32,
+  snpVixDiff: 2,
+  snpIndex: 47,
+  snpIndexDiff: -18,
+  nasdaqIndex: 43,
+  nasdaqIndexDiff: -3,
+};
+
+export const fetchKeywordsMock = ['이재명', '더불어민주당', '항공사', '탄소저감', '신용평가', '가스에너지', '원유정제', '조선사', '섬유'];
+
+export const fetchStockTableMock = [
+  [
+    { logo: test, name: '토닉스 파머슈티컬스 홀딩', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: test, name: '짭삼전자1', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: test, name: '한국가스공사', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: test, name: '신세계 I&C', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: test, name: 'ADVISORSHARES TRUST ADVISORSHARES DORSEY WRIGHT ADR ETF', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: test, name: 'HD현대중공업', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자2', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자2', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자3', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자3', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+  [
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+    { logo: null, name: '삼성전자4', price: 56000, change: 200, changeRate: 0.36, score: 65, delta: 6 },
+    { logo: null, name: '짭삼전자4', price: 13875, change: -2754, changeRate: -0.36, score: 16, delta: -6 },
+  ],
+];
 export const fetchScoreCardMock = [
   { stockId: 1, symbolName: '삼성전자', score: 81, diff: 18 },
   { stockId: 2, symbolName: '한화솔루션', score: 11, diff: -18 },

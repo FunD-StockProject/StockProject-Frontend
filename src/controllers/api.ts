@@ -1,11 +1,14 @@
 import { PERIOD_CODE } from './api.Type';
 import {
   fetchChartMock,
+  fetchIndexScoreMock,
+  fetchKeywordsMock,
   fetchRelevantMock,
   fetchScoreCardMock,
   fetchScoreMock,
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
+  fetchStockTableMock,
 } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -67,7 +70,6 @@ const fetchAutoComplete = (name: string) => {
 
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
-  console.log(country);
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
@@ -78,6 +80,21 @@ const fetchSearchWordCloud = (symbol: string, country: string) => {
 
 const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
+};
+
+const fetchKeywords = (country: string) => {
+  if (enableMock) return fetchKeywordsMock;
+  return fetchData(`/keyword/popular/${country}`);
+};
+
+const fetchStockTable = (category: string, country: string) => {
+  if (enableMock) return fetchStockTableMock;
+  return fetchData(`/stock/category/${category}/${country}`);
+};
+
+const fetchIndexScore = () => {
+  if (enableMock) return fetchIndexScoreMock;
+  return fetchData(`/score/index`);
 };
 
 export {
@@ -91,4 +108,7 @@ export {
   fetchSearchSymbolName,
   fetchSearchWordCloud,
   fetchRealStockInfo,
+  fetchKeywords,
+  fetchStockTable,
+  fetchIndexScore,
 };

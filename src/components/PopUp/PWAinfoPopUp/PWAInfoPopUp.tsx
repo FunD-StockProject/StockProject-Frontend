@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
 import { ImgDiv } from '@components/Common/Common';
-import PWAPNG from '@assets/PWA.png';
+import PWAPNG from '@assets/PWA/PWA.png';
 import {
   Backdrop,
   ButtonContainer,
