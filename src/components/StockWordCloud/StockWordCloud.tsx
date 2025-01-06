@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import LoadingComponent from '@components/LoadingComponent';
 import { fetchSearchWordCloud } from '@controllers/api';
 import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import { WordCloud } from './StockWordCloud.Type';
@@ -62,7 +63,7 @@ const StockWordCloud = ({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const getWordCloud = async (symbol: string, country: string) => {
     const res = await fetchSearchWordCloud(symbol, country);
@@ -127,13 +128,13 @@ const StockWordCloud = ({
     setCurrentIndex(0);
     console.log(wordCloud);
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    if (!containerRef.current) return;
-    canvas.width = containerRef.current.offsetWidth;
-    canvas.height = containerRef.current.offsetHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // const canvas = canvasRef.current;
+    // if (!canvas) return;
+    // if (!containerRef.current) return;
+    // canvas.width = containerRef.current.offsetWidth;
+    // canvas.height = containerRef.current.offsetHeight;
+    // const ctx = canvas.getContext('2d');
+    // if (!ctx) return;
     // ctx.fillStyle = '#FF0000AA';
     // ctx.strokeStyle = 'cyan';
     // if (wordCloud?.grid)
@@ -178,15 +179,18 @@ const StockWordCloud = ({
 
   return (
     <StockWordCloudContainer ref={containerRef}>
-      <canvas style={{ position: 'absolute', width: '100%', height: '100%' }} ref={canvasRef}></canvas>
+      {/* <canvas style={{ position: 'absolute', width: '100%', height: '100%' }} ref={canvasRef}></canvas> */}
 
-      {wordCloud?.layout &&
+      {wordCloud?.layout ? (
         wordCloud.layout.map(
           (e: WordCloud, i: number) =>
             i <= currentIndex && (
               <StockWordCloudContents key={i} animationState={animationState} wordCloutItem={e} index={i} />
             ),
-        )}
+        )
+      ) : (
+        <LoadingComponent />
+      )}
 
       {/* <div
         style={{
