@@ -50,27 +50,27 @@ const GetnerateWordCloud = ({
 
     for (i = 0; i < height - sizeY; i++) {
       for (j = 0; j < width - sizeX; j++) {
-        if (grid[i * width + (j + sizeX - 1)]) {
-          j += sizeX - 1;
-          continue;
-        }
-        if (grid[i * width + j]) continue;
+        // if (grid[i * width + (j + sizeX - 1)]) {
+        //   j += sizeX - 1;
+        //   continue;
+        // }
+        // if (grid[i * width + j]) continue;
 
-        while (j < width - sizeX && !isEmptyArea(j, i, sizeX, 1)) {
-          l = j;
-          r = j + sizeX;
-          m = 0;
+        // while (j < width - sizeX && !isEmptyArea(j, i, sizeX, 1)) {
+        //   l = j;
+        //   r = j + sizeX;
+        //   m = 0;
 
-          while (l + 1 < r) {
-            m = (l + r) >> 1;
-            if (isEmptyArea(m, i, j + sizeX - m, 1)) {
-              r = m;
-            } else {
-              l = m;
-            }
-          }
-          j = m;
-        }
+        //   while (l + 1 < r) {
+        //     m = (l + r) >> 1;
+        //     if (isEmptyArea(m, i, j + sizeX - m, 1)) {
+        //       r = m;
+        //     } else {
+        //       l = m;
+        //     }
+        //   }
+        //   j = m;
+        // }
         if (isEmptyArea(j, i, sizeX, sizeY)) {
           hits.push(i * width + j);
         }
