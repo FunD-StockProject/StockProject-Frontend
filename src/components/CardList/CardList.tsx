@@ -10,13 +10,21 @@ import { StockScore } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
 import leftArrowImgLink from '../../assets/leftArrow.svg';
 import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, Indicator, IndicatorContainer, NoScrollbar } from './CardList.Style';
+import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publicApiType>; name: StockType; index: number }) => {
+const CardList = ({
+  apiRef,
+  name,
+  index,
+}: {
+  apiRef: React.MutableRefObject<publicApiType>;
+  name: StockType;
+  index: number;
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
-  const [activeIndex, setActiveIndex] = useState(`${name}_0`);
+  // const [activeIndex, setActiveIndex] = useState(`${name}_0`);
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
   const isHot = name === 'HOT';
   const country = index === 0 ? 'KOREA' : 'OVERSEA';
@@ -38,7 +46,13 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderHotStocks = () => {
     return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
-        <ScoreSlotMachine stockName={stock.symbolName} active={true} stockScore={stock.score} tabIndex={0} country={country} />
+        <ScoreSlotMachine
+          stockName={stock.symbolName}
+          active={true}
+          stockScore={stock.score}
+          tabIndex={0}
+          country={country}
+        />
       </CardListItemContainer>
     ));
   };
@@ -46,7 +60,13 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
   const renderWebStocks = () => {
     return curStocks.map((stock: StockScore, idx: number) => (
       <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * 0.3}>
-        <StockCardItem score={stock.score} name={stock.symbolName} delta={stock.diff} country={country} keywords={stock.keywords} />
+        <StockCardItem
+          score={stock.score}
+          name={stock.symbolName}
+          delta={stock.diff}
+          country={country}
+          keywords={stock.keywords}
+        />
       </CardListItemContainer>
     ));
   };
@@ -66,34 +86,31 @@ const CardList = ({ apiRef, name, index }: { apiRef: React.MutableRefObject<publ
     ));
   };
 
-  const handleUpdate = () => {
-    const visibleItems = apiRef.current.items.getVisible();
+  // const handleUpdate = () => {
+  //   const visibleItems = apiRef.current.items.getVisible();
 
-    if (visibleItems.length > 0) {
-      setActiveIndex(visibleItems[0][0]);
-    }
-  };
+  //   // if (visibleItems.length > 0) {
+  //   //   setActiveIndex(visibleItems[0][0]);
+  //   // }
+  // };
 
-  const indicatorArray =
-    !isMobile && !isHot
-      ? Array.from({ length: curStocks?.length }, (_, idx) => idx).filter((_, idx) => idx % 3 === 0)
-      : Array.from({ length: curStocks?.length }, (_, idx) => idx);
+  // const indicatorArray =
+  //   !isMobile && !isHot
+  //     ? Array.from({ length: curStocks?.length }, (_, idx) => idx).filter((_, idx) => idx % 3 === 0)
+  //     : Array.from({ length: curStocks?.length }, (_, idx) => idx);
 
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
         (curStocks && width !== 0 && (
-          <>
-            <IndicatorContainer>
-              {indicatorArray.map((el) => (
-                <Indicator key={el} isActive={`${name}_${el}` === activeIndex} name={name} />
-              ))}
-            </IndicatorContainer>
-
-            <ScrollMenu LeftArrow={<ScrollArrow direction="left" />} RightArrow={<ScrollArrow direction="right" />} apiRef={apiRef} onUpdate={handleUpdate}>
-              {renderStocks()}
-            </ScrollMenu>
-          </>
+          <ScrollMenu
+            LeftArrow={<ScrollArrow direction="left" />}
+            RightArrow={<ScrollArrow direction="right" />}
+            apiRef={apiRef}
+            // onUpdate={handleUpdate}
+          >
+            {renderStocks()}
+          </ScrollMenu>
         ))}
     </NoScrollbar>
   );
