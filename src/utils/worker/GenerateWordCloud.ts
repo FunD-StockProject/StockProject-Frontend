@@ -160,7 +160,8 @@ const GetnerateWordCloud = ({
   for (let i = 0; i <= fontSize; i++) {
     fontSizes[i] = `${i}px "Pretendard"`;
   }
-  FontOffCtx.font = fontSizes[128];
+  // FontOffCtx.font = fontSizes[128];
+  FontOffCtx.font = `${128}px "Pretendard"`;
 
   for (const e of frequencies) {
     const word = e.word;
