@@ -23,7 +23,7 @@ const StockTable = ({ country }: { country: string }) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const updateTime = country === 'KOREA' ? '17' : '06';
-  const tabMenu = ['거래대금', '거래량', '급상승', '급하락'];
+  const tabMenu = ['시가총액', '거래량', '급상승', '급하락'];
   const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
   const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(categories[tabIndex], country) });
 
@@ -49,7 +49,11 @@ const StockTable = ({ country }: { country: string }) => {
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
-          <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
+          <li
+            key={index}
+            className={index === tabIndex ? 'submenu focused' : 'submenu'}
+            onClick={() => handleTab(index)}
+          >
             {el}
           </li>
         ))}
