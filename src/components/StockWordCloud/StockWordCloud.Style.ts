@@ -4,15 +4,13 @@ import { media, theme } from '@styles/themes';
 
 const StockWordCloudContainer = styled.div({
   // background: theme.colors.grayscale90,
-  height: '640px',
+  height: '720px',
   overflow: 'hidden',
   position: 'relative',
-  padding: '32px',
   borderRadius: '24px',
   [media[0]]: {
     gap: '12px',
     height: '480px',
-    padding: '12px',
     borderRadius: '12px',
   },
 });
