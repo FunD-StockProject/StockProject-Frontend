@@ -1,6 +1,12 @@
 import CommonPopUp from '../CommonPopUp';
 import { PopUpContent, PopUpTitle } from '../CommonPopUp.style';
-import { PopUpDetail, PopUpDetailContainer, PopUpDetailNumber, PopUpDetailWord, PopUpImage } from './AntVoicePopUp.style';
+import {
+  PopUpDetail,
+  PopUpDetailContainer,
+  PopUpDetailNumber,
+  PopUpDetailWord,
+  PopUpImage,
+} from './AntVoicePopUp.style';
 
 const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
   <CommonPopUp onClose={onClose}>
@@ -18,7 +24,7 @@ const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
 
         <div>
           <PopUpDetailNumber color={'grayscale80'}>2</PopUpDetailNumber>
-          <PopUpDetailWord color={'grayscale60'} fontSize={30} textAlign={'right'}>
+          <PopUpDetailWord color={'grayscale60'} fontSize={24} textAlign={'right'}>
             상대적으로 적게
             <br /> 언급된 단어
           </PopUpDetailWord>
@@ -27,11 +33,17 @@ const AntiVoicePopUp = ({ onClose }: { onClose: () => void }) => (
       <PopUpDetailContainer>
         <PopUpDetail>
           <PopUpDetailNumber>1</PopUpDetailNumber>
-          <span>단어의 색이 ‘파란색’이면 긍정적으로 언급된 단어예요.</span>
+          <span>
+            크기가 클수록 각종 커뮤니티에서
+            <br /> 가장 많이 언급된 단어예요.
+          </span>
         </PopUpDetail>
         <PopUpDetail>
           <PopUpDetailNumber>2</PopUpDetailNumber>
-          <span>크기가 클수록 각종 커뮤니티에서 가장 많이 언급된 단어예요.</span>
+          <span>
+            크기가 작을수록 각종 커뮤니티에서
+            <br /> 상대적으로 적게 언급된 단어에요
+          </span>
         </PopUpDetail>
       </PopUpDetailContainer>
     </PopUpContent>
