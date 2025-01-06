@@ -63,7 +63,7 @@ const StockWordCloud = ({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const getWordCloud = async (symbol: string, country: string) => {
     const res = await fetchSearchWordCloud(symbol, country);
@@ -128,26 +128,26 @@ const StockWordCloud = ({
     setCurrentIndex(0);
     console.log(wordCloud);
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    if (!containerRef.current) return;
-    canvas.width = containerRef.current.offsetWidth;
-    canvas.height = containerRef.current.offsetHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.fillStyle = '#FF0000AA';
-    ctx.strokeStyle = 'cyan';
-    if (wordCloud?.grid)
-      wordCloud.grid.map((e: any, i: number) => {
-        const x = i % canvas.width;
-        const y = ~~(i / canvas.width);
-        if (e) ctx.fillRect(x, y, 1, 1);
-      });
-    if (wordCloud?.layout) {
-      wordCloud.layout.map(({ position: { x, y }, size: { w, h } }: any) => {
-        ctx.strokeRect(x, y, w, h);
-      });
-    }
+    // const canvas = canvasRef.current;
+    // if (!canvas) return;
+    // if (!containerRef.current) return;
+    // canvas.width = containerRef.current.offsetWidth;
+    // canvas.height = containerRef.current.offsetHeight;
+    // const ctx = canvas.getContext('2d');
+    // if (!ctx) return;
+    // ctx.fillStyle = '#FF0000AA';
+    // ctx.strokeStyle = 'cyan';
+    // if (wordCloud?.grid)
+    //   wordCloud.grid.map((e: any, i: number) => {
+    //     const x = i % canvas.width;
+    //     const y = ~~(i / canvas.width);
+    //     if (e) ctx.fillRect(x, y, 1, 1);
+    //   });
+    // if (wordCloud?.layout) {
+    //   wordCloud.layout.map(({ position: { x, y }, size: { w, h } }: any) => {
+    //     ctx.strokeRect(x, y, w, h);
+    //   });
+    // }
     // ctx.textBaseline = 'top';
     // ctx.font = `900 ${fontSize}px "Pretendard"`;
     // // ctx.fillRect(0, 0, 100, 100);
@@ -179,9 +179,9 @@ const StockWordCloud = ({
 
   return (
     <StockWordCloudContainer ref={containerRef}>
-      <canvas style={{ position: 'absolute', width: '100%', height: '100%' }} ref={canvasRef}></canvas>
+      {/* <canvas style={{ position: 'absolute', width: '100%', height: '100%' }} ref={canvasRef}></canvas> */}
 
-      {/* {wordCloud?.layout ? (
+      {wordCloud?.layout ? (
         wordCloud.layout.map(
           (e: WordCloud, i: number) =>
             i <= currentIndex && (
@@ -190,7 +190,7 @@ const StockWordCloud = ({
         )
       ) : (
         <LoadingComponent />
-      )} */}
+      )}
 
       {/* <div
         style={{
