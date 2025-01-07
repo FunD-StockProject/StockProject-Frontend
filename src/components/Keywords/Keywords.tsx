@@ -16,7 +16,7 @@ const Keywords = ({ country }: { country: string }) => {
     <KeywordsContainer>
       <TitleWrapper>
         <Title>
-          가장 많이 언급되는 키워드
+          오늘 가장 많이 언급된 키워드
           <InfoSVG onClick={togglePopup} />
         </Title>
         <span>매일 {updateTime}시 업데이트됩니다.</span>

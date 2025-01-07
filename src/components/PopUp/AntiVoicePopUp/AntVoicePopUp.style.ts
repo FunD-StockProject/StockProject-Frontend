@@ -33,7 +33,16 @@ const PopUpDetailWord = styled.p(
   }: {
     color?: themeColor;
     fontSize?: number;
-    textAlign?: Globals | '-webkit-match-parent' | 'center' | 'end' | 'justify' | 'left' | 'match-parent' | 'right' | 'start';
+    textAlign?:
+      | Globals
+      | '-webkit-match-parent'
+      | 'center'
+      | 'end'
+      | 'justify'
+      | 'left'
+      | 'match-parent'
+      | 'right'
+      | 'start';
   }) => ({
     textAlign: textAlign || 'left',
     fontWeight: '700',
@@ -78,6 +87,10 @@ const PopUpDetail = styled('div')({
     fontSize: '14px',
     color: theme.colors.grayscale100,
   },
+
+  [media[0]]: {
+    gap: 'px',
+  },
 });
 
 const PopUpDetailNumber = styled.div(({ color }: { color?: themeColor }) => ({
@@ -91,6 +104,7 @@ const PopUpDetailNumber = styled.div(({ color }: { color?: themeColor }) => ({
   borderRadius: '4px',
   background: color ? theme.colors[color] : theme.colors.primary40,
   color: theme.colors.primary0,
+
   [media[0]]: {
     width: '20px', // 모바일 크기 축소
     height: '20px',

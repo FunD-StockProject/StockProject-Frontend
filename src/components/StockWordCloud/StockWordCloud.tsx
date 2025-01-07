@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import LoadingComponent from '@components/LoadingComponent';
 import { fetchSearchWordCloud } from '@controllers/api';
 import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import { WordCloud } from './StockWordCloud.Type';
 import { generateWordCloud, testWorker } from './StockWordCloud.Worker';
 
+const agent = window.navigator.userAgent.toLowerCase();
 const StockWordCloudContents = ({
   wordCloutItem,
   index,
@@ -26,7 +28,7 @@ const StockWordCloudContents = ({
       <Word
         animationState={animationState}
         orientation={wordCloutItem.orientation ? 1 : 0}
-        fontSize={wordCloutItem.fontSize}
+        fontSize={wordCloutItem.fontSize / (agent.indexOf('instagram') > -1 ? 1.1 : 1)}
         colors={wordCloutItem.color}
         delay={0}
       >
@@ -36,20 +38,15 @@ const StockWordCloudContents = ({
   );
 };
 
-const StockWordCloud = ({
-  symbol,
-  country,
-  // stockName,
-  // stockId,
-}: {
-  symbol: string;
-  country: string;
-  // stockName: string;
-  // stockId: number;
-}) => {
+const TEXT_SIZE_ADJUST = {
+  chrome: 0.055,
+  safari: -0.095,
+};
+
+const StockWordCloud = ({ symbol, country }: { symbol: string; country: string }) => {
   const { state } = useLocation();
 
-  const [wordCloud, setWordCloud] = useState<WordCloud[] | null>(null);
+  const [wordCloud, setWordCloud] = useState<any>(null);
   const [didMount, setDidMount] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [animationState, setAnimationState] = useState<boolean>(false);
@@ -61,10 +58,20 @@ const StockWordCloud = ({
 
     if (window.Worker) {
       if (!containerRef.current) return;
+
+      //chrome and safari only
+      const adjust =
+        agent.indexOf('chrome') > -1
+          ? TEXT_SIZE_ADJUST.chrome
+          : agent.indexOf('instagram') > -1
+            ? TEXT_SIZE_ADJUST.chrome
+            : TEXT_SIZE_ADJUST.safari;
+
       generateWordCloud({
         data: res,
         width: containerRef.current.offsetWidth,
         height: containerRef.current.offsetHeight,
+        adjust: adjust,
       });
     }
   };
@@ -72,9 +79,7 @@ const StockWordCloud = ({
   useEffect(() => {
     setDidMount(true);
 
-    testWorker.onmessage = ({ data }: { data: WordCloud[] }) => {
-      setWordCloud(Array.from(data, (x) => x));
-    };
+    testWorker.onmessage = ({ data }: { data: WordCloud[] }) => setWordCloud(data);
 
     return () => {};
   }, []);
@@ -120,13 +125,16 @@ const StockWordCloud = ({
 
   return (
     <StockWordCloudContainer ref={containerRef}>
-      {wordCloud &&
+      {wordCloud ? (
         wordCloud.map(
           (e: WordCloud, i: number) =>
             i <= currentIndex && (
               <StockWordCloudContents key={i} animationState={animationState} wordCloutItem={e} index={i} />
             ),
-        )}
+        )
+      ) : (
+        <LoadingComponent />
+      )}
     </StockWordCloudContainer>
   );
 };
