@@ -57,7 +57,11 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: string 
   return (
     suspend ||
     (stockRelevantList &&
-      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
+      (isMobile ? (
+        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
+      ) : (
+        <WebRelevantStocks stocks={stockRelevantList} country={country} />
+      )))
   );
 };
 
@@ -74,7 +78,9 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
+      <ContentsItemContent>
+        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
+      </ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
