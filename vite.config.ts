@@ -3,11 +3,13 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { VitePluginRadar } from 'vite-plugin-radar';
 import svgr from 'vite-plugin-svgr';
+import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
   plugins: [
     react(),
     svgr(),
+    wasm(),
     VitePluginRadar({
       analytics: {
         id: 'G-EZPQMV95QJ',
