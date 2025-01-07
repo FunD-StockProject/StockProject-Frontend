@@ -1,4 +1,4 @@
-export const testWorker = new Worker(new URL('../../utils/worker/GenerateWordCloud.ts', import.meta.url), {
+export const testWorker = new Worker(new URL('../../../utils/worker/GenerateWordCloud.ts', import.meta.url), {
   type: 'module',
 });
 
