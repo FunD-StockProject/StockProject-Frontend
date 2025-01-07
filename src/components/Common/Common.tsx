@@ -95,4 +95,19 @@ const StyledSVG = ({
   return <SVG />;
 };
 
-export { FlexDiv, ButtonDiv, RelativeDiv, AbsoluteDiv, ImgDiv, StyledSVG };
+const Container = styled.div({
+  display: 'flex',
+  boxSizing: 'border-box',
+  width: '100%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '16px',
+  padding: '15%',
+
+  ['svg']: {
+    width: '100%',
+  },
+});
+
+export { FlexDiv, ButtonDiv, RelativeDiv, AbsoluteDiv, ImgDiv, StyledSVG, Container };

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { KeywordsQuery } from '@controllers/query';
@@ -11,7 +12,7 @@ const Keywords = ({ country }: { country: string }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
-  const updateTime = country === 'KOREA' ? '17' : '06';
+  const updateTime = STOCK_UPDATE_TIME[country];
   return (
     <KeywordsContainer>
       <TitleWrapper>

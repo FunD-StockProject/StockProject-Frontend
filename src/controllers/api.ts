@@ -8,7 +8,6 @@ import {
   fetchScoreMock,
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
-  fetchStockTableMock,
 } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -88,7 +87,6 @@ const fetchKeywords = (country: string) => {
 };
 
 const fetchStockTable = (category: string, country: string) => {
-  if (enableMock) return fetchStockTableMock;
   return fetchData(`/stock/category/${category}/${country}`);
 };
 

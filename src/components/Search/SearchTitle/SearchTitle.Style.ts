@@ -11,13 +11,11 @@ const SearchTitleContainer = styled.div({
   maxWidth: '1280px',
   boxSizing: 'border-box',
   margin: '0 auto',
-  // padding: '60px 60px',
   height: '100%',
   gap: '24px',
   fontSize: '19px',
   color: theme.colors.grayscale30,
   [media[0]]: {
-    // padding: '30px 24px',
     gap: '12px',
     fontSize: '13px',
   },
@@ -57,11 +55,14 @@ const SearchTitleText = styled.div({
   color: theme.colors.transparent,
 });
 
-const SearchTitleAnimatedText = styled.div(({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' }, {
-  top: '0',
-  position: 'absolute',
-  color: theme.colors.primary0,
-});
+const SearchTitleAnimatedText = styled.div(
+  ({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' },
+  {
+    top: '0',
+    position: 'absolute',
+    color: theme.colors.primary0,
+  },
+);
 
 const SearchTitleSVG = styled.div({
   display: 'flex',

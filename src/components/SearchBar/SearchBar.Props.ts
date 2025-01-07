@@ -1,4 +1,3 @@
-import { StockSearchInfo } from '@ts/Types';
 import { StockInfo } from '@controllers/api.Type';
 
 export interface SearchBarActiveProps {
@@ -17,4 +16,9 @@ export interface AutoCompleteListProps {
   focusIdx: number;
   searchedResult: StockInfo[];
   handleSearch: (StockSearchInfo: StockSearchInfo) => void;
+}
+
+export interface StockSearchInfo {
+  symbolName: string;
+  country: string;
 }

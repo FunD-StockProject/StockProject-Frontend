@@ -27,7 +27,7 @@ void initSize(int w, int h) {
   width = w;
   height = h;
 
-  sum_width = width + 1;
+  sum_width = width + 1;π
   sum_height = height + 1;
 
   prefix_sum = (int*)malloc(sizeof(int)*sum_width*sum_height);
