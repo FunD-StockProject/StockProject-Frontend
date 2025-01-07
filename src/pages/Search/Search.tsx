@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
+import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
+import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { FlexDiv } from '@components/Common/Common';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
-import SearchTitle from '@components/SearchTitle/SearchTitle';
-import StockCardItem from '@components/StockCard/StockCard';
-import StockChart from '@components/StockChart/StockChart';
+import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
+import StockChart from '@components/Search/StockChart/StockChart';
+import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import StockWordCloud from '@components/StockWordCloud/StockWordCloud';
 import { StockScore } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
@@ -57,7 +57,11 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: string 
   return (
     suspend ||
     (stockRelevantList &&
-      (isMobile ? <MobileRelevantStocks stocks={stockRelevantList} country={country} /> : <WebRelevantStocks stocks={stockRelevantList} country={country} />))
+      (isMobile ? (
+        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
+      ) : (
+        <WebRelevantStocks stocks={stockRelevantList} country={country} />
+      )))
   );
 };
 
@@ -74,7 +78,9 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>{suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}</ContentsItemContent>
+      <ContentsItemContent>
+        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
+      </ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );

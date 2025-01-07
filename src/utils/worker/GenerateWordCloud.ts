@@ -1,5 +1,5 @@
 import { LoadWordCloudWASM } from '@utils/wasm/WordCloudWasm';
-import { WordFrequency } from '@components/StockWordCloud/StockWordCloud.Type';
+import { WordFrequency } from '@components/Search/StockWordCloud/StockWordCloud.Type';
 
 const GetnerateWordCloud = (params: {
   frequencies: WordFrequency[];

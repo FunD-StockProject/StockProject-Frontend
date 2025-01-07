@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { StockType } from '@ts/Types';
+import { StockType } from '@components/Common/Common.Type';
 import { StockScore } from '@controllers/api.Type';
 import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../controllers/api';
 

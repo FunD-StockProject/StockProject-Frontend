@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
-import { StockSearchInfo } from '@ts/Types';
 import { getItemLocalStorage, isExistItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchSymbolName } from '@controllers/api';
@@ -9,7 +8,7 @@ import { StockInfo } from '@controllers/api.Type';
 import CancelSVG from '@assets/icons/cancel.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
-import { AutoCompleteListProps, RecentSearchListProps } from './SearchBar.Props';
+import { AutoCompleteListProps, RecentSearchListProps, StockSearchInfo } from './SearchBar.Props';
 import {
   AutoCompleteItemContainer,
   AutoCompleteItemText,

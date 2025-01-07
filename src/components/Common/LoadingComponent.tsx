@@ -1,5 +1,5 @@
 import LoadingSVG from '@assets/loading.svg?react';
-import { Container } from './Component.style';
+import { Container } from './Common';
 
 const LoadingComponent = () => {
   return (

@@ -1,5 +1,5 @@
 import ErrorSVG from '@assets/error.svg?react';
-import { Container } from './Component.style';
+import { Container } from './Common';
 
 const ErrorComponent = () => {
   return (

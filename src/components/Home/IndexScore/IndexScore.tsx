@@ -7,11 +7,6 @@ import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import { IndexDeltaScore, IndexInfoContainer, IndexItem, IndicesContainer } from './IndexScore.style';
 
-// interface TransformedData {
-//   score: number;
-//   delta: number;
-// }
-
 const stockIndices = [
   ['공포 지수', '코스피', '코스닥'],
   ['공포 지수', 'S&P 500', '나스닥'],

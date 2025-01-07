@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
-import { StockTableData } from '@controllers/api.Type';
+import { StockTableInfo } from '@controllers/api.Type';
 import { StockTableQuery } from '@controllers/query';
 import HumanIndexSVG from '@assets/HumanIndex.svg?react';
 import {
@@ -18,13 +19,14 @@ import {
   TableRow,
 } from './StockTable.style';
 
+const tabMenu = ['시가총액', '거래량', '급상승', '급하락'];
+const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
+
 const StockTable = ({ country }: { country: string }) => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const updateTime = country === 'KOREA' ? '17' : '06';
-  const tabMenu = ['시가총액', '거래량', '급상승', '급하락'];
-  const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
+  const updateTime = STOCK_UPDATE_TIME[country];
   const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(categories[tabIndex], country) });
 
   const handleClick = (name: string) => {
@@ -49,11 +51,7 @@ const StockTable = ({ country }: { country: string }) => {
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
-          <li
-            key={index}
-            className={index === tabIndex ? 'submenu focused' : 'submenu'}
-            onClick={() => handleTab(index)}
-          >
+          <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
             {el}
           </li>
         ))}
@@ -65,7 +63,7 @@ const StockTable = ({ country }: { country: string }) => {
       </TableHeaderContainer>
       {suspend ||
         (stockTable &&
-          stockTable.map((stock: StockTableData, index: number) => {
+          stockTable.map((stock: StockTableInfo, index: number) => {
             return (
               <TableRow key={index} onClick={() => handleClick(stock.symbolName)}>
                 <StockData>

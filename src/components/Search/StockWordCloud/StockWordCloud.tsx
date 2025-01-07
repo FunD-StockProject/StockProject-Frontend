@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import LoadingComponent from '@components/LoadingComponent';
+import LoadingComponent from '@components/Common/LoadingComponent';
 import { fetchSearchWordCloud } from '@controllers/api';
 import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
 import { WordCloud } from './StockWordCloud.Type';
