@@ -18,7 +18,7 @@ import {
 } from './StockChart.Style';
 import { StockChartPriceCanvas, StockChartScoreCanvas } from './StockChartCanvas';
 
-const [gridX, gridY] = [120, 50];
+const [gridX, gridY] = [120, 40];
 
 const SCALE_RATIOS = [1, 2, 2.5, 4, 5];
 const PRICE_FIELD = {
@@ -786,11 +786,9 @@ const StockChartView = ({
               mousePosInfo={mousePosInfo}
             />
             <StockChartInfoHeader>
-              {!isMobile && (
-                <StockChartInfoHeaderItem>
-                  <ChartBottomInfo trading={mousePosInfo?.trading} score={mousePosInfo?.score} />
-                </StockChartInfoHeaderItem>
-              )}
+              <StockChartInfoHeaderItem>
+                <ChartBottomInfo trading={mousePosInfo?.trading} score={mousePosInfo?.score} isMobile={isMobile} />
+              </StockChartInfoHeaderItem>
             </StockChartInfoHeader>
             <StockChartCanvasRefContainer ref={scoreCanvasRef} />
           </StockChartItemContent>
@@ -899,6 +897,7 @@ const StockChartCanvasRefContainer = styled.div({
 const StockChartInfoHeaderItem = styled.div({
   background: '#00000088',
   display: 'flex',
+  width: 'auto',
   gap: '4px',
 });
 
@@ -906,6 +905,7 @@ const StockChartInfoHeader = styled.div({
   position: 'absolute',
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'start',
   gap: '8px',
   padding: '8px',
 });
@@ -931,18 +931,18 @@ const formatVolume = (volume: number) => {
   return a && (volume / a.num).toFixed(2) + a.type;
 };
 
-const ChartBottomInfo = ({ trading, score }: { trading: any; score: any }) => {
+const ChartBottomInfo = ({ trading, score, isMobile }: { trading: any; score: any; isMobile: boolean }) => {
   return (
     <>
       거래량{' '}
-      {trading && (
+      {!isMobile && trading && (
         <>
           {formatVolume(trading.volume)}{' '}
           <StockInfoDeltaLabel delta={trading.delta}>{formatDeltaStr(trading.delta)}</StockInfoDeltaLabel>
         </>
       )}
-      인간지표{' '}
-      {score?.value && (
+      / 인간지표{' '}
+      {!isMobile && score?.value && (
         <>
           {score.value}점{' '}
           <StockInfoDeltaLabel delta={score.delta}>
