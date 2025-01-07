@@ -10,7 +10,12 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "gen-pwa": "pwa-assets-generator --preset minimal public/appLogo.svg"
+    "gen-pwa": "pwa-assets-generator --preset minimal public/appLogo.svg",
+    "asbuild:debug": "asc assembly/index.ts --target debug",
+    "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
+    "test": "node tests",
+    "start": "npx serve ."
   },
   "homepage": "https://humanzipyo.com",
   "dependencies": {
@@ -30,6 +35,7 @@
     "@eslint/js": "^9.13.0",
     "@svgr/rollup": "^8.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/emscripten": "^1.39.13",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
@@ -37,6 +43,7 @@
     "@typescript-eslint/parser": "^8.12.2",
     "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react-swc": "^3.7.1",
+    "assemblyscript": "^0.27.31",
     "concurrently": "^9.1.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
@@ -57,6 +64,13 @@
     "vite": "^5.4.11",
     "vite-plugin": "^0.0.0",
     "vite-plugin-pwa": "^0.21.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "vite-plugin-wasm": "^3.4.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/release.js",
+      "types": "./build/release.d.ts"
+    }
   }
 }
