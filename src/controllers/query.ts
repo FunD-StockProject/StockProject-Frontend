@@ -127,28 +127,44 @@ export const PopularKeywordQuery = () => {
 };
 
 export const useAutoComplete = (query: any, param: string) => {
-  const [result, setResult] = useState<any>([]);
+  const [{ result }, setResult] = useState<any>({
+    value: '',
+    result: [],
+  });
 
-  const fetchData = (value: string) => {
-    if (!value.length) {
-      setResult([]);
+  // const queryClient = useQueryClient();
+  // const { data } = useQuery<any>(['AutoComplete', param, tmp[0]], () => tmp[1], {
+  //   placeholderData: [],
+  // });
+
+  const fetchData = (searchValue: string) => {
+    // const queryData = queryClient.getQueryData(['AutoComplete', param, value]);
+    // console.log('eeee');
+    // if (queryData) {
+    //   setTmp([value, queryData]);
+    //   return queryData;
+    // }
+
+    if (!searchValue.length) {
+      setResult({ value: searchValue, result: [] });
       return [];
     }
 
-    query(value)
+    query(searchValue)
       .then((res: any) => {
         if (res.length) {
           const ret = res.map((e: any) => ({
             ...e,
             value: e[param].toUpperCase(),
           }));
-          setResult(ret);
+          setResult({ value: searchValue, result: ret });
           return ret;
         } else {
           throw new Error();
         }
       })
       .catch(() => {
+        setResult({ value: searchValue, result: result });
         return result;
       });
   };

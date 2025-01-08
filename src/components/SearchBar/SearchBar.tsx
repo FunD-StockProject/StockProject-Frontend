@@ -276,8 +276,11 @@ const SearchBar = () => {
     setSearchValue(trimmedValue);
     setFocusedItem((prev: any) => ({ ...prev, idx: -1 }));
 
-    setSearchedStocks(selectedCategory == 'STOCK' ? trimmedValue : '');
-    setSearchedKeywords(selectedCategory == 'KEYWORD' ? trimmedValue : '');
+    if (selectedCategory == 'STOCK') {
+      setSearchedStocks(trimmedValue);
+    } else {
+      setSearchedKeywords(trimmedValue);
+    }
   };
 
   // LocalStorage
@@ -341,8 +344,11 @@ const SearchBar = () => {
     setSelectedCategory(category);
     setSelectStatus(false);
 
-    setSearchedStocks(category == 'STOCK' ? searchValue : '');
-    setSearchedKeywords(category == 'KEYWORD' ? searchValue : '');
+    if (category == 'STOCK') {
+      setSearchedStocks(searchValue);
+    } else {
+      setSearchedKeywords(searchValue);
+    }
   };
 
   useBlocker(activeSearchBarRef.current, () => {
