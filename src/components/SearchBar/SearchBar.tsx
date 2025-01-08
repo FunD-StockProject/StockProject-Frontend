@@ -72,11 +72,6 @@ const categoryInfo = {
   },
 };
 
-const SEARCHED_RESULT_MAX_LENGTH = {
-  STOCK: 15,
-  KEYWORD: 10,
-};
-
 const popularMock = [
   {
     country: 'KOREA',
@@ -156,6 +151,11 @@ const useBlocker = (blockCondition: any, callback: any) => {
 const SearchBar = () => {
   const navigate = useNavigate();
   // const location = useLocation();
+  const isMobile = useIsMobile();
+  const SEARCHED_RESULT_MAX_LENGTH = {
+    STOCK: 15,
+    KEYWORD: isMobile ? 15 : 10,
+  };
 
   const [inputValue, setInputValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
@@ -489,16 +489,15 @@ const SearchBar = () => {
                           )
                         : e.symbolName}
                     </SearchBarResultItemTitle>
-                    {category == 'KEYWORD' && (
-                      <>
-                        <SearchBarResultItemKeyword matched={true}>
-                          이재명
+                    {category == 'KEYWORD' &&
+                      e.keywordNames.map((keywordName: string[], idx: number) => (
+                        <SearchBarResultItemKeyword
+                          key={`keywords_${e.symbolName}_${idx}`}
+                          matched={keywordName == e.keyword}
+                        >
+                          {keywordName}
                         </SearchBarResultItemKeyword>
-                        <SearchBarResultItemKeyword matched={false}>
-                          윤석열
-                        </SearchBarResultItemKeyword>
-                      </>
-                    )}
+                      ))}
                   </SearchBarResultItemContainer>
                 </div>
               ))}
@@ -512,8 +511,6 @@ const SearchBar = () => {
       </SearchBarResultContent>
     );
   };
-
-  const isMobile = useIsMobile();
 
   return (
     <>
