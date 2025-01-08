@@ -13,18 +13,21 @@ const HeaderContents = styled.div({
   maxWidth: '1280px',
   boxSizing: 'border-box',
   margin: '0 auto',
-  padding: '32px 60px',
   height: '100%',
   gap: '32px',
 
   [media[0]]: {
     gap: '18px',
-    padding: '24px 20px',
   },
 });
 
 const HeaderLogo = styled.div({
   margin: '0 auto',
+  padding: '32px',
+
+  [media[0]]: {
+    padding: '24px',
+  },
 
   ['svg']: {
     cursor: 'pointer',

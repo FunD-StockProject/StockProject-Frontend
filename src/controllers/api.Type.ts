@@ -27,7 +27,7 @@ export interface RevelantStockInfo {
   diff: number;
 }
 
-export interface StockTableData {
+export interface StockTableInfo {
   stockId: string;
   symbolName: string;
   country: string;
@@ -38,7 +38,7 @@ export interface StockTableData {
   scoreDiff: number;
 }
 
-export interface indexData {
+export interface IndexInfo {
   kospiVix: number;
   kospiVixDiff: number;
   kospiIndex: number;

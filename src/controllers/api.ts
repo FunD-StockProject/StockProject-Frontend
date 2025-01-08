@@ -8,7 +8,6 @@ import {
   fetchScoreMock,
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
-  fetchStockTableMock,
 } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -29,7 +28,7 @@ const fetchData = async (path: string) => {
     await wait(0);
     return await res.json();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     throw error;
   }
 };
@@ -63,10 +62,6 @@ const fetchDescentStocks = async (country: string) => {
   if (enableMock) return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
-// Additional stock-related API calls
-const fetchAutoComplete = (name: string) => {
-  return fetchData(`/stock/autocomplete?keyword=${name}`);
-};
 
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
@@ -88,13 +83,19 @@ const fetchKeywords = (country: string) => {
 };
 
 const fetchStockTable = (category: string, country: string) => {
-  if (enableMock) return fetchStockTableMock;
   return fetchData(`/stock/category/${category}/${country}`);
 };
 
 const fetchIndexScore = () => {
   if (enableMock) return fetchIndexScoreMock;
   return fetchData(`/score/index`);
+};
+
+// SearchBar
+
+// Additional stock-related API calls
+const fetchAutoComplete = (name: string) => {
+  return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
 const fetchKeyowordsStocks = (keywordName: string) => {

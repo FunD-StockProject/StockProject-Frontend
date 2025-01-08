@@ -6,9 +6,24 @@ import dictSVG from '@assets/footer/footer_dict.svg';
 import InstagramSVG from '@assets/footer/footer_instagram.svg';
 import LinkedinSVG from '@assets/footer/footer_linkedin.svg';
 import LogoSVG from '@assets/logo_white.svg?react';
-import { FooterButtonContainer, FooterButtonItemContainer, FooterContainer, FooterContents, FooterIconsContainer, FooterTitle } from './Footer.Style';
+import {
+  FooterButtonContainer,
+  FooterButtonItemContainer,
+  FooterContainer,
+  FooterContents,
+  FooterIconsContainer,
+  FooterTitle,
+} from './Footer.Style';
 
-const FooterButton = ({ img, str, onClick }: { img: string; str: string; onClick: (event: React.MouseEvent<HTMLDivElement>) => void }) => {
+const FooterButton = ({
+  img,
+  str,
+  onClick,
+}: {
+  img: string;
+  str: string;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
   return (
     <FooterButtonItemContainer onClick={onClick}>
       <ImgDiv alt={str} src={img} objectFit="cover" />
@@ -16,20 +31,30 @@ const FooterButton = ({ img, str, onClick }: { img: string; str: string; onClick
     </FooterButtonItemContainer>
   );
 };
-const openDictionaryModel = () => {};
+const openDictionaryModel = () => {
+  window.open('https://balanced-bun-351.notion.site/17412e0c80b880259849c17228046794?pvs=4');
+};
+
 const openSurveyWindow = () => {
   window.open('https://forms.gle/G8cvb7RqtPjGhxvK7');
 };
-const openCreatorsInfoModal = () => {};
+
 const openBusinessProposal = () => {
   window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
 };
+
+const openCreatorsInfoModal = () => {
+  window.open('https://balanced-bun-351.notion.site/crew-17412e0c80b8807ab157fb40648f33dd?pvs=4');
+};
+
 const openInstagram = () => {
   window.open('https://www.instagram.com/humanzipyo/');
 };
+
 const openLinkedin = () => {
   window.open('https://www.linkedin.com/company/humanzipyo');
 };
+
 const Footer = () => {
   return (
     <>

@@ -4,13 +4,13 @@ import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { detectPWA } from '@utils/Detector';
 import CardList from '@components/CardList/CardList';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
-import IndexScore from '@components/IndexScore/IndexScore';
-import Keywords from '@components/Keywords/Keywords';
+import IndexScore from '@components/Home/IndexScore/IndexScore';
+import Keywords from '@components/Home/Keywords/Keywords';
+import StockTable from '@components/Home/StockTable/StockTable';
 import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
 import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
 import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
 import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
-import StockTable from '@components/StockTable/StockTable';
 import InfoSVG from '@assets/info.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import { HomeContainer, HomeContents, StyleTabMenu, StyleTabMenuContainer, StyledSpan, StyledText } from './Home.Style';
@@ -50,7 +50,11 @@ const Home = () => {
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
+            <li
+              key={index}
+              className={index === tabIndex ? 'submenu focused' : 'submenu'}
+              onClick={() => handleTab(index)}
+            >
               {el}
             </li>
           ))}

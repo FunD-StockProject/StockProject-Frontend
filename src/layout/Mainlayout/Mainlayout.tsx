@@ -1,6 +1,6 @@
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
-import { LayoutProps } from '../../ts/Types';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
+import { LayoutProps } from './Mainlayout.Props';
 import { StyledMainlayout } from './Mainlayout.Style';
 
 const Mainlayout = ({ children }: LayoutProps) => {
