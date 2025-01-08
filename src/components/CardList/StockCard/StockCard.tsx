@@ -14,7 +14,19 @@ import {
   StockCardKeyword,
 } from './StockCard.Style';
 
-const StockCardItem = ({ name, score, delta, country, keywords }: { name: string; score: number; delta: number; country: string; keywords: string[] }) => {
+const StockCardItem = ({
+  name,
+  score,
+  delta,
+  country,
+  keywords,
+}: {
+  name: string;
+  score: number;
+  delta: number;
+  country: string;
+  keywords: string[];
+}) => {
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
   const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;

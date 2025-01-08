@@ -28,7 +28,7 @@ const fetchData = async (path: string) => {
     await wait(0);
     return await res.json();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     throw error;
   }
 };
@@ -62,10 +62,6 @@ const fetchDescentStocks = async (country: string) => {
   if (enableMock) return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
-// Additional stock-related API calls
-const fetchAutoComplete = (name: string) => {
-  return fetchData(`/stock/autocomplete?keyword=${name}`);
-};
 
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
@@ -95,6 +91,17 @@ const fetchIndexScore = () => {
   return fetchData(`/score/index`);
 };
 
+// SearchBar
+
+// Additional stock-related API calls
+const fetchAutoComplete = (name: string) => {
+  return fetchData(`/stock/autocomplete?keyword=${name}`);
+};
+
+const fetchKeyowordsStocks = (keywordName: string) => {
+  return fetchData(`/keyword/${keywordName}/stocks`);
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -109,4 +116,5 @@ export {
   fetchKeywords,
   fetchStockTable,
   fetchIndexScore,
+  fetchKeyowordsStocks,
 };

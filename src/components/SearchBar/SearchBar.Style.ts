@@ -1,259 +1,421 @@
+// SearchBar
 import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 import { SearchBarActiveProps } from './SearchBar.Props';
 
-const SearchBarLayout = styled.div({
-  position: 'relative',
-  height: '200px',
+export const SearchBarLayout = styled.div({
+  padding: '0 60px 80px',
+  // textTransform: 'uppercase',
   [media[0]]: {
-    height: '150px',
+    position: 'relative',
+    padding: '0 20px 40px',
+    // marginBottom: '60px',
   },
 });
 
-const SearchBarLayer = styled.div({
-  position: 'absolute',
-  zIndex: '10',
-  width: '100%',
-  top: '0px',
-});
-
-const SearchBarContainer = styled.div(
+export const SearchBarContainer = styled.div(
   {
     display: 'flex',
-    padding: '24px 48px',
+    padding: '12px',
     gap: '12px',
     fontWeight: '700',
-    fontSize: '32px',
     color: theme.colors.primary5,
-    flexDirection: 'column',
     lineHeight: '1',
     background: theme.colors.primary100,
-
-    [media[0]]: {
-      gap: '12px',
-      padding: '18px 24px',
-      fontSize: '25px',
-    },
-  },
-  (props: SearchBarActiveProps) => ({
-    borderRadius: `12px 12px ${props.active ? '12px' : '0px'} 12px`,
-    [media[0]]: {
-      borderRadius: `8px 8px ${props.active ? '8px' : '0px'} 8px`,
-    },
-  }),
-);
-
-const SearchBarContents = styled.div(
-  {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
     outline: 'none',
+    position: 'relative',
+
+    [media[0]]: {
+      position: 'static',
+      gap: '12px',
+      padding: '12px 12px',
+    },
   },
   (props: SearchBarActiveProps) => ({
-    borderRadius: '10px',
-    overflow: 'hidden',
-    border: '1px solid ' + (props.active ? theme.colors.primary5 : theme.colors.transparent),
+    borderRadius: !props.active ? '8px' : '8px 8px 0 0',
+    [media[0]]: {
+      borderRadius: '8px',
+    },
   }),
 );
 
-const SearchBarInput = styled.div(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    background: theme.colors.grayscale100,
-    padding: '0 18px',
+export const SearchBarInput = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  background: theme.colors.grayscale100,
+  padding: '18px',
+  borderRadius: '12px',
+  width: '100%',
+  ['input']: {
+    boxSizing: 'border-box',
+    width: '100%',
+    border: 'none',
+    background: theme.colors.transparent,
+    color: theme.colors.primary0,
+    outline: 'none',
+    fontFamily: 'Pretendard',
+
+    '::placeholder': {
+      color: theme.colors.grayscale50,
+    },
+  },
+  ['svg']: {
+    height: '24px',
+    width: 'auto',
+    stroke: theme.colors.primary0,
+    cursor: 'pointer',
+  },
+  [media[0]]: {
+    padding: '0 12px',
     ['input']: {
-      padding: '18px 0',
-      boxSizing: 'border-box',
-      width: '100%',
-      border: 'none',
-      background: theme.colors.transparent,
-      color: theme.colors.primary0,
-      outline: 'none',
+      padding: '12px 0',
     },
     ['svg']: {
-      height: '24px',
-      width: 'auto',
-      stroke: theme.colors.primary0,
-      cursor: 'pointer',
+      height: '18px',
     },
-    [media[0]]: {
-      padding: '0 12px',
-      ['input']: {
-        padding: '12px 0',
+  },
+});
+
+export const SearchBarSelectBox = styled.div(
+  {
+    position: 'relative',
+    display: 'flex',
+    width: '50%',
+    ['label']: {
+      fontSize: '17px',
+      borderRadius: '8px',
+      padding: '18px',
+      alignContent: 'center',
+      width: '100%',
+      background: theme.colors.grayscale100,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      ['span']: {
+        transition: 'all 0.25s ease-in-out',
       },
       ['svg']: {
-        height: '18px',
+        fill: theme.colors.grayscale10,
+        height: '16px',
+        width: 'auto',
       },
-    },
-  },
-  (props: SearchBarActiveProps) => ({
-    borderRadius: props.active ? '12px 12px 0px 0px' : '12px',
-  }),
-);
-
-const RecentSearchListContainer = styled.div(
-  {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingRight: '12px',
-    ['> span']: {
-      margin: '6px 18px',
-      fontSize: '15px',
     },
     [media[0]]: {
-      paddingRight: '6px',
-      ['> span']: {
-        margin: '6px 12px',
-        fontSize: '13px',
-      },
-    },
-  },
-  (props: { isEmpty: boolean }) =>
-    !props.isEmpty && {
-      margin: '6px 0',
-    },
-);
-
-const RecentSearchItemContainer = styled.div(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    color: theme.colors.grayscale40,
-    fontSize: '15px',
-    gap: '12px',
-    padding: '9px 18px',
-    borderRadius: '0 24px 24px 0',
-    whiteSpace: 'nowrap',
-    ['> span']: {
-      color: theme.colors.primary0,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      width: '100%',
-      fontSize: '19px',
-      marginRight: 'auto',
-      cursor: 'pointer',
-    },
-    ['> svg']: {
       width: 'auto',
-      height: '12px',
-      cursor: 'pointer',
-      padding: '6px',
-      borderRadius: '12px',
-      [':hover']: {
-        background: theme.colors.grayscale70,
-      },
-    },
-    [':hover']: {
-      background: theme.colors.grayscale100,
-      ['> svg']: {
-        fill: theme.colors.primary5,
-      },
-    },
-    [media[0]]: {
-      fontSize: '11px',
-      gap: '8px',
-      padding: '6px 12px',
-      ['> span']: {
+      ['label']: {
+        ['span']: {
+          width: '75px',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        },
         fontSize: '15px',
-      },
-      ['> svg']: {
-        height: '12px',
-        padding: '0',
-        fill: theme.colors.primary5,
-      },
-      [':hover']: {
-        background: theme.colors.transparent,
-        ['> svg']: {
-          background: theme.colors.transparent,
+        padding: '12px',
+        borderRadius: '8px',
+        ['svg']: {
+          height: '12px',
+          width: '12px',
         },
       },
     },
   },
-  (props: { focus: boolean }) =>
-    props.focus && {
-      background: theme.colors.grayscale100,
-      ['> svg']: {
-        fill: theme.colors.primary5,
+  ({ focus, minimize }: { focus: boolean; minimize?: boolean }) => ({
+    ...(focus && {
+      ['label']: {
+        background: theme.colors.grayscale90,
+        borderRadius: '8px 8px 0 0',
+        [media[0]]: {
+          borderRadius: '4px 4px 0 0',
+        },
       },
-    },
+      ul: {
+        maxHeight: '150px',
+      },
+    }),
+    ...(minimize && {
+      [media[0]]: {
+        ['label']: {
+          ['span']: {
+            width: '0px',
+          },
+        },
+      },
+    }),
+  }),
 );
 
-const AutoCompleteListContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '6px 0',
-  paddingRight: '12px',
-  ['svg']: {
-    margin: 'auto',
-    padding: '32px 0',
+export const SearchBarSelectBoxItems = styled.ul(
+  {
+    position: 'absolute',
+    zIndex: '20',
+    top: '100%',
+    listStyle: 'none',
+    padding: '0',
+    margin: '0',
+    width: '100%',
+    display: 'flex',
+    maxHeight: '0',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: '0 0 8px 8px',
+    overflow: 'hidden',
+    transition: 'max-height .25s ease-in-out',
+
+    li: {
+      width: '100%',
+      background: theme.colors.grayscale90,
+      textAlign: 'center',
+      fontSize: '15px',
+      padding: '18px 0',
+      borderTop: `2px solid ${theme.colors.grayscale100}`,
+    },
+
+    [media[0]]: {
+      borderRadius: '0 0 4px 4px',
+      li: {
+        fontSize: '13px',
+        padding: '12px 0',
+      },
+    },
+  },
+  ({ select }: { select: number }) => ({
+    [`li:nth-of-type(${select + 1})`]: {
+      background: theme.colors.grayscale100,
+    },
+  }),
+);
+
+// SearchBarResult
+
+export const SearchBarResultLayoutContainer = styled.div(
+  {
+    position: 'absolute',
+    zIndex: '10',
+    left: '0',
+    right: '0',
+    top: '100%',
+    overflow: 'hidden',
+
+    transition: 'max-height .25s ease-in-out',
+    background: theme.colors.primary100,
+
+    [media[0]]: {
+      overflow: 'scroll',
+    },
+  },
+  ({ height }: { height?: number }) => ({
+    maxHeight: height ?? '500px',
+    height: height == undefined ? 'auto' : '100vh',
+  }),
+);
+
+export const SearchBarResultLayout = styled.div({
+  boxSizing: 'border-box',
+  width: '100%',
+  padding: '32px',
+
+  [media[0]]: {
+    padding: '32px 20px',
   },
 });
 
-const AutoCompleteItemContainer = styled.div(
+export const SearchBarResultContainer = styled.div({
+  display: 'flex',
+  gap: '24px',
+  width: '100%',
+  height: '100%',
+
+  [media[0]]: {
+    flexDirection: 'column',
+  },
+});
+
+export const SearchBarResultContent = styled.div(
   {
-    cursor: 'pointer',
     display: 'flex',
-    gap: '12px',
-    alignItems: 'center',
-    color: theme.colors.grayscale40,
-    fontSize: '15px',
-    padding: '9px 18px',
-    borderRadius: '0 24px 24px 0',
-    whiteSpace: 'nowrap',
+    flexDirection: 'column',
+    gap: '18px',
+    boxSizing: 'content-box',
+    height: '100%',
+    textTransform: 'uppercase',
     [media[0]]: {
-      gap: '8px',
-      padding: '6px 12px',
-      fontSize: '11px',
-    },
-    [':hover']: {
-      background: theme.colors.grayscale100,
+      gap: '12px',
     },
   },
-  (props: { focus: boolean }) =>
-    props.focus && {
-      background: theme.colors.grayscale100,
+  (props: { width: string }) => ({
+    width: props.width,
+    [media[0]]: {
+      width: '100%',
     },
+  }),
 );
 
-const AutoCompleteItemText = styled.div({
+export const SearchBarResultSVG = styled.div({
+  width: '100%',
+  height: '100%',
+  boxSizing: 'border-box',
+  padding: '64px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  ['svg']: {
+    boxSizing: 'content-box',
+    minHeight: '220px',
+    width: 'auto',
+    height: '100%',
+  },
+
+  [media[0]]: {
+    padding: '32px',
+  },
+});
+
+// SearchBarResultTitle
+
+export const SearchBarResultTitle = styled.div({
+  fontSize: '24px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  [media[0]]: {
+    fontSize: '21px',
+    gap: '8px',
+  },
+});
+
+export const SearchBarResultSubtitle = styled.span({
+  color: theme.colors.grayscale30,
+  fontSize: '15px',
+  whiteSpace: 'nowrap',
+  fontWeight: '500',
+  ['b']: {
+    fontWeight: '900',
+  },
+  [media[0]]: {
+    fontSize: '13px',
+  },
+});
+
+export const SearchBarResultTitleCountry = styled.span({
+  background: theme.colors.grayscale80,
+  padding: '8px 16px',
+  borderRadius: '24px',
+  fontSize: '19px',
+
+  [media[0]]: {
+    padding: '8px 12px',
+    fontSize: '15px',
+  },
+});
+
+// SearchBarResultItem
+
+export const SearchBarResultGridContainer = styled.div(
+  {
+    display: 'grid',
+    gridAutoFlow: 'column',
+    columnGap: '32px',
+
+    ['> div']: {
+      padding: '8px 0',
+      borderBottom: `1px solid ${theme.colors.grayscale80}`,
+      overflow: 'hidden',
+
+      ':last-child, :nth-of-type(5n)': {
+        border: 'none',
+      },
+    },
+
+    [media[0]]: {
+      display: 'flex',
+      flexDirection: 'column',
+      ['> div:nth-of-type(5n):not(:last-child)']: {
+        borderBottom: `1px solid ${theme.colors.grayscale80}`,
+      },
+    },
+  },
+  (props: { column: number }) => ({
+    gridTemplateColumns: `repeat(${props.column}, 1fr)`,
+    gridTemplateRows: `repeat(5, ${props.column}fr)`,
+  }),
+);
+
+export const SearchBarResultItemContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  padding: '9px 18px',
+  borderRadius: '0 24px 24px 0',
+  cursor: 'pointer',
+  height: '24px',
+
+  ['> svg']: {
+    width: 'auto',
+    height: '12px',
+    cursor: 'pointer',
+    padding: '6px',
+    borderRadius: '12px',
+    [':hover']: {
+      background: theme.colors.grayscale70,
+    },
+  },
+
+  [':hover']: {
+    background: theme.colors.grayscale100,
+    ['> svg']: {
+      fill: theme.colors.primary5,
+    },
+  },
+
+  [media[0]]: {
+    padding: '6px 12px',
+    height: '18px',
+    gap: '8px',
+    ['> svg']: {
+      padding: '0px',
+      height: '16px',
+      fill: theme.colors.primary5,
+    },
+  },
+});
+
+export const SearchBarResultItemKeyword = styled.span(
+  {
+    padding: '8px 16px',
+    fontSize: '15px',
+    textWrap: 'nowrap',
+    borderRadius: '24px',
+    [media[0]]: {
+      padding: '6px 12px',
+      fontSize: '13px',
+    },
+  },
+  (props: { matched: boolean }) => ({
+    background: props.matched ? theme.colors.primary50 : theme.colors.grayscale80,
+  }),
+);
+
+export const SearchBarResultItemSubtitle = styled.span({
+  color: theme.colors.grayscale40,
+  fontSize: '15px',
+  whiteSpace: 'nowrap',
+  [media[0]]: {
+    fontSize: '11px',
+  },
+});
+
+export const SearchBarResultItemTitle = styled.span({
   color: theme.colors.primary0,
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   width: '100%',
   fontSize: '19px',
+  marginRight: 'auto',
+  whiteSpace: 'nowrap',
   ['span']: {
-    color: theme.colors.red,
+    color: theme.colors.primary40,
   },
+
   [media[0]]: {
     fontSize: '15px',
   },
 });
-
-const SearchBarDesignPart = styled.div((props: SearchBarActiveProps) => ({
-  width: 0,
-  height: 0,
-  marginLeft: 'auto',
-  borderStyle: 'solid',
-  borderWidth: '50px 50px 0 0',
-  borderColor: `${theme.colors.primary70} transparent`,
-  display: props.active ? 'none' : 'block',
-  [media[0]]: {
-    borderWidth: '40px 40px 0 0',
-  },
-}));
-
-export {
-  SearchBarLayout,
-  SearchBarLayer,
-  SearchBarContainer,
-  SearchBarContents,
-  SearchBarInput,
-  RecentSearchListContainer,
-  RecentSearchItemContainer,
-  AutoCompleteListContainer,
-  AutoCompleteItemContainer,
-  AutoCompleteItemText,
-  SearchBarDesignPart,
-};
