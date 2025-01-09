@@ -77,8 +77,8 @@ const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
-const fetchKeywords = (country: string) => {
-  if (enableMock) return fetchKeywordsMock;
+const fetchKeywords = (country: string): Promise<string[]> => {
+  if (enableMock) return Promise.resolve(fetchKeywordsMock);
   return fetchData(`/keyword/popular/${country}`);
 };
 

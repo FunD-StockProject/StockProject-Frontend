@@ -5,11 +5,9 @@ import { SearchBarActiveProps } from './SearchBar.Props';
 
 export const SearchBarLayout = styled.div({
   padding: '0 60px 80px',
-  // textTransform: 'uppercase',
   [media[0]]: {
     position: 'relative',
     padding: '0 20px 40px',
-    // marginBottom: '60px',
   },
 });
 
@@ -32,7 +30,7 @@ export const SearchBarContainer = styled.div(
     },
   },
   (props: SearchBarActiveProps) => ({
-    borderRadius: !props.active ? '8px' : '8px 8px 0 0',
+    borderRadius: !props.active ? '12px' : '12px 12px 0 0',
     [media[0]]: {
       borderRadius: '8px',
     },
@@ -62,7 +60,7 @@ export const SearchBarInput = styled.div({
   ['svg']: {
     height: '24px',
     width: 'auto',
-    stroke: theme.colors.primary0,
+    stroke: theme.colors.grayscale30,
     cursor: 'pointer',
   },
   [media[0]]: {
@@ -162,7 +160,7 @@ export const SearchBarSelectBoxItems = styled.ul(
 
     li: {
       width: '100%',
-      background: theme.colors.grayscale90,
+      background: theme.colors.grayscale100,
       textAlign: 'center',
       fontSize: '15px',
       padding: '18px 0',
@@ -179,7 +177,7 @@ export const SearchBarSelectBoxItems = styled.ul(
   },
   ({ select }: { select: number }) => ({
     [`li:nth-of-type(${select + 1})`]: {
-      background: theme.colors.grayscale100,
+      background: theme.colors.grayscale90,
     },
   }),
 );
@@ -202,9 +200,12 @@ export const SearchBarResultLayoutContainer = styled.div(
       overflow: 'scroll',
     },
   },
-  ({ height }: { height?: number }) => ({
-    maxHeight: height ?? '500px',
-    height: height == undefined ? 'auto' : '100vh',
+  ({ height }: { height: number }) => ({
+    maxHeight: height,
+    height: 'auto',
+    [media[0]]: {
+      height: '100vh',
+    },
   }),
 );
 
@@ -275,6 +276,7 @@ export const SearchBarResultTitle = styled.div({
   fontSize: '24px',
   display: 'flex',
   alignItems: 'center',
+
   gap: '12px',
   [media[0]]: {
     fontSize: '21px',
@@ -295,17 +297,56 @@ export const SearchBarResultSubtitle = styled.span({
   },
 });
 
-export const SearchBarResultTitleCountry = styled.span({
+// SearchBarCountryTitle
+
+export const SearchBarCountryTitleContainer = styled.div({
   background: theme.colors.grayscale80,
-  padding: '8px 16px',
-  borderRadius: '24px',
-  fontSize: '19px',
+  padding: '4px',
+  borderRadius: '8px',
+  ['input']: {
+    display: 'none',
+  },
+});
+
+export const SearchBarCountryTitleContents = styled.label({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  gap: '4px',
+});
+
+export const SearchBarCountryTitle = styled.span({
+  position: 'relative',
+  fontSize: '17px',
+  padding: '6px 8px',
 
   [media[0]]: {
-    padding: '8px 12px',
     fontSize: '15px',
   },
 });
+
+export const SearchBarCountryTitleShape = styled.span(
+  {
+    position: 'absolute',
+
+    width: '48px',
+    height: '100%',
+    background: theme.colors.primary50,
+    borderRadius: '6px',
+
+    transition: `left 0.25s ease-in-out,
+    transform 0.25s ease-in-out`,
+
+    [media[0]]: {
+      width: '44px',
+    },
+  },
+  ({ current }: { current: boolean }) => ({
+    left: current ? '100%' : 0,
+    transform: current ? 'translateX(-100%)' : 'translateX(0%)',
+  }),
+);
 
 // SearchBarResultItem
 
@@ -343,17 +384,17 @@ export const SearchBarResultItemContainer = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
-  padding: '9px 18px',
+  padding: '9px 12px 9px 18px',
   borderRadius: '0 24px 24px 0',
   cursor: 'pointer',
   height: '24px',
 
   ['> svg']: {
-    width: 'auto',
-    height: '12px',
+    width: '16px',
+    height: '16px',
     cursor: 'pointer',
+    borderRadius: '24px',
     padding: '6px',
-    borderRadius: '12px',
     [':hover']: {
       background: theme.colors.grayscale70,
     },
@@ -362,18 +403,18 @@ export const SearchBarResultItemContainer = styled.div({
   [':hover']: {
     background: theme.colors.grayscale100,
     ['> svg']: {
-      fill: theme.colors.primary5,
+      stroke: theme.colors.primary5,
     },
   },
 
   [media[0]]: {
-    padding: '6px 12px',
+    padding: '6px 9px 6px 12px',
     height: '18px',
     gap: '8px',
     ['> svg']: {
-      padding: '0px',
+      padding: '2px',
       height: '16px',
-      fill: theme.colors.primary5,
+      stroke: theme.colors.primary5,
     },
   },
 });
@@ -407,7 +448,8 @@ export const SearchBarResultItemTitle = styled.span({
   color: theme.colors.primary0,
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-  width: '100%',
+  // width: '100%',
+
   fontSize: '19px',
   marginRight: 'auto',
   whiteSpace: 'nowrap',

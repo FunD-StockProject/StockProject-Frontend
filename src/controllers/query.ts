@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { StockType } from '@components/Common/Common.Type';
 import { IndexInfo, PERIOD_CODE, RevelantStockInfo, StockTableInfo } from '@controllers/api.Type';
 import {
@@ -108,17 +108,16 @@ const COUNTRY = ['KOREA', 'OVERSEA'];
 export const PopularKeywordQuery = () => {
   return useQuery(
     ['PopularKeywordQuery'],
-    async () =>
-      Object.fromEntries(
-        await Promise.all(
-          COUNTRY.map(async (country: string) => [
-            country,
-            (await fetchKeywords(country)).map((e: any) => ({
-              value: e,
-            })),
-          ]),
-        ),
-      ),
+    async () => {
+      const keywordEntries = await Promise.all(
+        COUNTRY.map(async (country) => {
+          const keywords = await fetchKeywords(country);
+          return [country, keywords.map((keyword) => ({ value: keyword }))];
+        }),
+      );
+
+      return Object.fromEntries(keywordEntries);
+    },
     {
       ...queryOptions,
       placeholderData: Object.fromEntries(COUNTRY.map((country) => [country, []])),
@@ -126,48 +125,95 @@ export const PopularKeywordQuery = () => {
   );
 };
 
-export const useAutoComplete = (query: any, param: string) => {
-  const [{ result }, setResult] = useState<any>({
+interface AutoCompleteItem {
+  [key: string]: any; // 검색 결과 항목의 동적 키
+  value: string;
+}
+
+export const useAutoComplete = (
+  fetchQuery: (input: string) => Promise<AutoCompleteItem[]>,
+  key: string,
+): [AutoCompleteItem[], (input: string) => Promise<void>] => {
+  const [{ results, value }, setSearchState] = useState<{
+    value: string;
+    results: AutoCompleteItem[];
+  }>({
     value: '',
-    result: [],
+    results: [],
+  });
+  const { data = [] } = useQuery<AutoCompleteItem[]>(['AutoComplete', value, key], () => results, {
+    placeholderData: [],
   });
 
-  // const queryClient = useQueryClient();
-  // const { data } = useQuery<any>(['AutoComplete', param, tmp[0]], () => tmp[1], {
-  //   placeholderData: [],
-  // });
+  const queryClient = useQueryClient();
 
-  const fetchData = (searchValue: string) => {
-    // const queryData = queryClient.getQueryData(['AutoComplete', param, value]);
-    // console.log('eeee');
-    // if (queryData) {
-    //   setTmp([value, queryData]);
-    //   return queryData;
-    // }
-
-    if (!searchValue.length) {
-      setResult({ value: searchValue, result: [] });
-      return [];
+  const fetchData = async (input: string): Promise<void> => {
+    const cached = queryClient.getQueryData<AutoCompleteItem[]>(['AutoComplete', input, key]);
+    if (cached || !input.length) {
+      return setSearchState({ value: input, results: cached || [] });
     }
 
-    query(searchValue)
-      .then((res: any) => {
-        if (res.length) {
-          const ret = res.map((e: any) => ({
-            ...e,
-            value: e[param].toUpperCase(),
-          }));
-          setResult({ value: searchValue, result: ret });
-          return ret;
-        } else {
-          throw new Error();
-        }
+    await fetchQuery(input)
+      .then((res) => {
+        if (!res.length) throw new Error('No results found');
+        setSearchState({
+          value: input,
+          results: res.map((item) => ({
+            ...item,
+            value: item[key].toUpperCase(),
+          })),
+        });
       })
-      .catch(() => {
-        setResult({ value: searchValue, result: result });
-        return result;
+      .catch((err) => {
+        err;
       });
+    return;
   };
 
-  return [result, fetchData];
+  return [data, fetchData];
 };
+// export const useAutoComplete = (query: any, param: string) => {
+//   const [{ result }, setResult] = useState<any>({
+//     value: '',
+//     result: [],
+//   });
+
+//   // const queryClient = useQueryClient();
+//   // const { data } = useQuery<any>(['AutoComplete', param, tmp[0]], () => tmp[1], {
+//   //   placeholderData: [],
+//   // });
+
+//   const fetchData = (searchValue: string) => {
+//     // const queryData = queryClient.getQueryData(['AutoComplete', param, value]);
+//     // console.log('eeee');
+//     // if (queryData) {
+//     //   setTmp([value, queryData]);
+//     //   return queryData;
+//     // }
+
+//     if (!searchValue.length) {
+//       setResult({ value: searchValue, result: [] });
+//       return [];
+//     }
+
+//     query(searchValue)
+//       .then((res: any) => {
+//         if (res.length) {
+//           const ret = res.map((e: any) => ({
+//             ...e,
+//             value: e[param].toUpperCase(),
+//           }));
+//           setResult({ value: searchValue, result: ret });
+//           return ret;
+//         } else {
+//           throw new Error();
+//         }
+//       })
+//       .catch(() => {
+//         setResult({ value: searchValue, result: result });
+//         return result;
+//       });
+//   };
+
+//   return [result, fetchData];
+// };

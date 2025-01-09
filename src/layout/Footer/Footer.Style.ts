@@ -100,4 +100,11 @@ const FooterIconsContainer = styled.div`
   gap: 12px;
   align-items: center; // 아이콘 세로 정렬
 `;
-export { FooterContainer, FooterContents, FooterTitle, FooterButtonContainer, FooterButtonItemContainer, FooterIconsContainer };
+export {
+  FooterContainer,
+  FooterContents,
+  FooterTitle,
+  FooterButtonContainer,
+  FooterButtonItemContainer,
+  FooterIconsContainer,
+};
