@@ -9,7 +9,6 @@ export interface StockInfo {
   price: number;
   priceDiff: number;
   priceDiffPerCent: number;
-  priceSign: number;
 }
 
 export interface StockScore {
