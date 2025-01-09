@@ -21,7 +21,7 @@ const IndexInfoContainer = styled.div({
     width: 'auto',
   },
   [media[0]]: {
-    fontSize: '12px',
+    fontSize: '11px',
   },
 });
 
