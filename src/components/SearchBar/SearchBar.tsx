@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { STOCK_COUNTRY_TYPE } from '@ts/Constants';
-import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
+import { OPPOSITE_SCOTK_COUNTRY, SEARCH_CATEGORY_TEXT, STOCK_COUNTRY_TEXT } from '@ts/Constants';
+import { SEARCH_CATEGORY, STOCK_COUNTRY } from '@ts/Types';
+import {
+  STORAGE_RECENT_ITEMS,
+  getItemLocalStorage,
+  setItemLocalStorage,
+} from '@utils/LocalStorage';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchKeyowordsStocks } from '@controllers/api';
-import { PopularKeywordQuery, useAutoComplete } from '@controllers/query';
+import { AutoCompleteItem } from '@controllers/api.Type';
+import { PopularKeywordsQuery, PopularStocksQuery, useAutoComplete } from '@controllers/query';
 import CancelSVG from '@assets/icons/cancel.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -13,10 +19,10 @@ import UpSVG from '@assets/icons/up.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
 import {
   SearchBarContainer,
-  SearchBarCountryTitle,
-  SearchBarCountryTitleContainer,
-  SearchBarCountryTitleContents,
-  SearchBarCountryTitleShape,
+  SearchBarCountrySelectContainer,
+  SearchBarCountrySelectContents,
+  SearchBarCountrySelectShape,
+  SearchBarCountrySelectTitle,
   SearchBarInput,
   SearchBarLayout,
   SearchBarResultContainer,
@@ -44,72 +50,6 @@ const matchCharacters = (query: string, text: string) => {
   }));
 };
 
-type COUNTRY = 'KOREA' | 'OVERSEA';
-type CATEGORY = 'STOCK' | 'KEYWORD';
-
-const COUNTRY_TEXT = {
-  KOREA: '국내',
-  OVERSEA: '해외',
-};
-
-const CATEGORY_TEXT = {
-  STOCK: '종목',
-  KEYWORD: '키워드',
-};
-
-const popularMock = [
-  {
-    country: 'KOREA',
-    value: '삼성전자',
-    symbolName: '삼성전자',
-  },
-  {
-    country: 'KOREA',
-    value: '카카오',
-    symbolName: '카카오',
-  },
-  {
-    country: 'KOREA',
-    value: '카카오게임즈',
-    symbolName: '카카오게임즈',
-  },
-  {
-    country: 'KOREA',
-    value: 'LG화학',
-    symbolName: 'LG화학',
-  },
-  {
-    country: 'KOREA',
-    value: '삼성SDI',
-    symbolName: '삼성SDI',
-  },
-  {
-    country: 'KOREA',
-    value: 'SK하이닉스',
-    symbolName: 'SK하이닉스',
-  },
-  {
-    country: 'KOREA',
-    value: '아티스트유나이티드',
-    symbolName: '아티스트유나이티드',
-  },
-  {
-    country: 'KOREA',
-    value: 'LG에너지솔루션',
-    symbolName: 'LG에너지솔루션',
-  },
-  {
-    country: 'KOREA',
-    value: 'POSCO홀딩스',
-    symbolName: 'POSCO홀딩스',
-  },
-  {
-    country: 'KOREA',
-    value: '신성델타테크',
-    symbolName: '신성델타테크',
-  },
-];
-
 const useBlocker = (shouldBlock: boolean, onBlock: () => void, onAlwaysExecute?: () => void) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -134,8 +74,11 @@ const useBlocker = (shouldBlock: boolean, onBlock: () => void, onAlwaysExecute?:
   }, [location]);
 };
 
-const useComponentFocus = (initialState: boolean, ref: React.RefObject<HTMLElement>) => {
-  const [isFocus, setIsFocus] = useState<any>(initialState);
+const useComponentFocus = (
+  initialState: boolean,
+  ref: React.RefObject<HTMLElement>,
+): [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
+  const [isFocus, setIsFocus] = useState<boolean>(initialState);
 
   useEffect(() => ref.current?.[isFocus ? 'focus' : 'blur'](), [isFocus]);
 
@@ -161,96 +104,125 @@ const useOutsideClick = (callback: () => void) => {
   return ref;
 };
 
-const SearchBarPreInputComponent = ({
+const SearchBarItemsComponent = ({
+  type,
   category,
-  recentItems,
-  popularItems,
-  onItemClick,
-  onItemDelete,
-  setSelectedCountry,
-  selectedCountry,
+  resultItems,
+  handleItemClick,
+  onItemDelete = () => {},
+  searchValue = '',
+  selectedCountry = 'KOREA',
+  setSelectedOppositeCountry,
+  displayEmpty,
 }: {
-  category: CATEGORY;
-  recentItems: any;
-  popularItems: any;
-  onItemClick: any;
-  onItemDelete: any;
-  setSelectedCountry: any;
-  selectedCountry: any;
+  type: 'SEARCHED' | 'RECENT' | 'POPULAR';
+  category: SEARCH_CATEGORY;
+  resultItems: AutoCompleteItem[];
+  handleItemClick: (item: any) => void;
+  onItemDelete?: (item: any) => void;
+  searchValue?: string;
+  selectedCountry?: STOCK_COUNTRY;
+  setSelectedOppositeCountry?: () => void;
+  displayEmpty?: boolean;
 }) => {
-  if (!popularItems) return;
+  const width = `${type === 'RECENT' ? 50 : 100}%`;
+  const column = type === 'RECENT' ? 1 : type === 'POPULAR' ? 2 : category === 'STOCK' ? 3 : 2;
+  const title =
+    type === 'SEARCHED'
+      ? '검색 결과'
+      : `${type === 'RECENT' ? '최근' : '인기'} 검색 ${SEARCH_CATEGORY_TEXT[category]}`;
 
+  const searchKeyword = resultItems[0]?.keyword;
+  const isHidden = type === 'RECENT' && !resultItems.length;
+
+  if (isHidden) return;
   return (
-    <>
-      {!!recentItems.length && (
-        <SearchBarResultContent width="50%">
-          <SearchBarResultTitle>최근 검색 {CATEGORY_TEXT[category]}</SearchBarResultTitle>
-          <SearchBarResultGridContainer column={1}>
-            {recentItems &&
-              recentItems.slice(0, 5).map((e: any, idx: number) => (
-                <div key={`recent_search_${idx}`}>
-                  <SearchBarResultItemContainer onPointerUp={() => onItemClick(e)}>
-                    {category == 'STOCK' && (
+    <SearchBarResultContent width={width}>
+      {type === 'POPULAR' || resultItems.length ? (
+        <>
+          <SearchBarResultTitle>
+            {title}
+            {type === 'POPULAR' && category == 'KEYWORD' && (
+              <SearchBarCountrySelectContainer onClick={setSelectedOppositeCountry}>
+                <SearchBarCountrySelectContents>
+                  <SearchBarCountrySelectShape current={selectedCountry === 'KOREA'} />
+                  {Object.values(STOCK_COUNTRY_TEXT).map((country) => (
+                    <SearchBarCountrySelectTitle key={`SearchBarCounty_${country}`}>
+                      {country}
+                    </SearchBarCountrySelectTitle>
+                  ))}
+                </SearchBarCountrySelectContents>
+              </SearchBarCountrySelectContainer>
+            )}
+          </SearchBarResultTitle>
+          {type === 'SEARCHED' && category == 'KEYWORD' && (
+            <SearchBarResultSubtitle>
+              <b>{searchKeyword}</b> 이(가) 가장 많이 업급된 종목순으로 노출됩니다.
+            </SearchBarResultSubtitle>
+          )}
+          <SearchBarResultGridContainer column={column}>
+            {resultItems.map((item) => {
+              const { symbolName, country, keywordNames, keyword, value } = item;
+
+              return (
+                <div
+                  key={`SearchBarItem_${type}_${category}_${type === 'SEARCHED' ? symbolName : value}_${country}`}
+                >
+                  <SearchBarResultItemContainer onPointerUp={() => handleItemClick(item)}>
+                    {!((type === 'RECENT' || type === 'POPULAR') && category === 'KEYWORD') && (
                       <SearchBarResultItemSubtitle>
-                        {STOCK_COUNTRY_TYPE[e.country]} {CATEGORY_TEXT[category]}
+                        {STOCK_COUNTRY_TEXT[country]} 종목
                       </SearchBarResultItemSubtitle>
                     )}
-                    <SearchBarResultItemTitle>{e.value}</SearchBarResultItemTitle>
-                    <CancelSVG
-                      onPointerUp={(event: React.PointerEvent<SVGSVGElement>) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        onItemDelete(e);
-                      }}
-                    />
+                    <SearchBarResultItemTitle>
+                      {type === 'SEARCHED'
+                        ? category === 'STOCK'
+                          ? matchCharacters(searchValue.toLocaleUpperCase(), symbolName).map(
+                              ({ isMatch, char }, i) =>
+                                isMatch ? (
+                                  <span key={`SearchBarItemText_${value}_${country}_${i}`}>
+                                    {char}
+                                  </span>
+                                ) : (
+                                  char
+                                ),
+                            )
+                          : symbolName
+                        : value}
+                    </SearchBarResultItemTitle>
+                    {type === 'RECENT' && (
+                      <CancelSVG
+                        onPointerUp={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          onItemDelete(item);
+                        }}
+                      />
+                    )}
+                    {type === 'SEARCHED' && category == 'KEYWORD' && (
+                      <>
+                        <SearchBarResultItemKeyword matched={true}>
+                          {searchKeyword}
+                        </SearchBarResultItemKeyword>
+                        <SearchBarResultItemKeyword matched={false}>
+                          {keywordNames.filter((e) => e !== keyword)[0]}
+                        </SearchBarResultItemKeyword>
+                      </>
+                    )}
                   </SearchBarResultItemContainer>
                 </div>
-              ))}
+              );
+            })}
           </SearchBarResultGridContainer>
-        </SearchBarResultContent>
+        </>
+      ) : (
+        displayEmpty && (
+          <SearchBarResultSVG>
+            <NoResultSVG />
+          </SearchBarResultSVG>
+        )
       )}
-      <SearchBarResultContent width="100%">
-        <SearchBarResultTitle>
-          인기 검색 {CATEGORY_TEXT[category]}
-          {category == 'KEYWORD' && (
-            <SearchBarCountryTitleContainer
-              onClick={() =>
-                setSelectedCountry(Object.keys(COUNTRY_TEXT).filter((e) => e != selectedCountry)[0])
-              }
-            >
-              <input type="checkbox" />
-              <SearchBarCountryTitleContents>
-                <SearchBarCountryTitleShape
-                  current={!!Object.keys(COUNTRY_TEXT).findIndex((e) => e == selectedCountry)}
-                />
-                {Object.values(COUNTRY_TEXT).map((e) => (
-                  <SearchBarCountryTitle key={'SearchBarCountryTitle_' + e}>
-                    {e}
-                  </SearchBarCountryTitle>
-                ))}
-              </SearchBarCountryTitleContents>
-            </SearchBarCountryTitleContainer>
-          )}
-        </SearchBarResultTitle>
-        <SearchBarResultGridContainer column={2}>
-          {popularItems.map((e: any, i: number) => {
-            return (
-              <div key={'POPULAR_' + e.value}>
-                <SearchBarResultItemContainer onPointerUp={() => onItemClick(e)}>
-                  <SearchBarResultItemSubtitle>{i + 1}</SearchBarResultItemSubtitle>
-                  {category == 'STOCK' && (
-                    <SearchBarResultItemSubtitle>
-                      {STOCK_COUNTRY_TYPE[e.country]} {CATEGORY_TEXT[category]}
-                    </SearchBarResultItemSubtitle>
-                  )}
-                  <SearchBarResultItemTitle>{e.value}</SearchBarResultItemTitle>
-                </SearchBarResultItemContainer>
-              </div>
-            );
-          })}
-        </SearchBarResultGridContainer>
-      </SearchBarResultContent>
-    </>
+    </SearchBarResultContent>
   );
 };
 
@@ -273,34 +245,37 @@ const SearchBar = () => {
   const [isFocusSelectBox, setIsFocusSelectBox] = useComponentFocus(false, selectBoxRef);
   const [isFocusInput, setIsFocusInput] = useComponentFocus(false, inputRef);
 
-  const [selectedCategory, setSelectedCategory] = useState<CATEGORY>('STOCK');
-  const [selectedCountry, setSelectedCountry] = useState<COUNTRY>('KOREA');
+  const [selectedCategory, setSelectedCategory] = useState<SEARCH_CATEGORY>('STOCK');
+  const [selectedCountry, setSelectedCountry] = useState<STOCK_COUNTRY>('KOREA');
   const [focusedItem, setFocusedItem] = useState<any>({ idx: -1, type: '' });
   focusedItem;
 
   const resultContainerRef = useRef<HTMLDivElement>(null);
   const resultContainerHeight =
     window.innerHeight - (resultContainerRef.current?.getBoundingClientRect().top ?? 0);
-  console.log(resultContainerHeight);
-  console.log(
-    resultContainerRef.current?.getBoundingClientRect().top,
-    window.innerHeight,
-    window.outerHeight,
-    resultContainerRef.current?.getBoundingClientRect().height,
-    document.body.getBoundingClientRect().height,
-  );
-  // console.log(window.outerHeight);
 
-  const [recentStocks, setRecentStocks] = useState<any>(getItemLocalStorage('RecentStocks', []));
+  const [recentStocks, setRecentStocks] = useState<any>(
+    getItemLocalStorage(STORAGE_RECENT_ITEMS['STOCK'], []),
+  );
   const [recentKeyowrds, setRecentKeyowrds] = useState<any>(
-    getItemLocalStorage('RecentKeywords', []),
+    getItemLocalStorage(STORAGE_RECENT_ITEMS['KEYWORD'], []),
   );
+  const [recentItems, setRecentItems]: any =
+    selectedCategory == 'STOCK'
+      ? [recentStocks, setRecentStocks]
+      : [recentKeyowrds, setRecentKeyowrds];
 
-  const [popularStocks, _] = useState<any>(popularMock);
-  const { data: popularKeywords } = PopularKeywordQuery();
+  const [popularStocks] = PopularStocksQuery();
+  const [popularKeywords] = PopularKeywordsQuery();
+  const popularItems =
+    selectedCategory == 'STOCK' ? popularStocks : popularKeywords[selectedCountry];
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
   const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchKeyowordsStocks, 'keyword');
+  const searchedItems = selectedCategory == 'STOCK' ? searchedStocks : searchedKeywords;
+
+  const setSelectedOppositeCountry = () =>
+    setSelectedCountry(OPPOSITE_SCOTK_COUNTRY[selectedCountry]);
 
   useEffect(() => {
     const setSearchedItems = selectedCategory == 'STOCK' ? setSearchedStocks : setSearchedKeywords;
@@ -310,7 +285,7 @@ const SearchBar = () => {
   useEffect(() => {
     if (!popularKeywords) return;
     const interval = setInterval(() => {
-      const countryList = Object.keys(COUNTRY_TEXT) as COUNTRY[];
+      const countryList = Object.keys(STOCK_COUNTRY_TEXT) as STOCK_COUNTRY[];
       setSelectedCountry(
         (prev) =>
           countryList[
@@ -394,13 +369,17 @@ const SearchBar = () => {
     if (isMobile) {
       document.documentElement.style.overflow = active ? 'hidden' : '';
       document.body.style.overflow = active ? 'hidden' : '';
-      document.body.style.position = active ? 'fixed' : '';
+      document.body.style.position = active ? 'fixed' : ''; // iOS Safari
       document.body.style.inset = active ? '0px' : '';
       document.body.style.left = active ? '0px' : '';
       document.body.style.right = active ? '0px' : '';
       window.onscroll = active ? onScrollEvent : null;
 
-      if (active) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (active) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        resultContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
     setIsActiveSearchBar(active);
   };
@@ -408,41 +387,28 @@ const SearchBar = () => {
   // LocalStorage
 
   const addRecentItem = (item: any) => {
-    const [recentItems, setRecentItems]: any =
-      selectedCategory == 'STOCK'
-        ? [recentStocks, setRecentStocks]
-        : [recentKeyowrds, setRecentKeyowrds];
-    const storageName = selectedCategory == 'STOCK' ? 'RecentStocks' : 'RecentKeywords';
-
+    const { value, country } = item;
     const updatedItems = [
       item,
-      ...recentItems.filter((e: any) => e.value !== item.value || e.country !== item.country),
+      ...recentItems.filter((e: any) => e.value !== value || e.country !== country),
     ];
 
-    setItemLocalStorage(storageName, updatedItems);
+    setItemLocalStorage(STORAGE_RECENT_ITEMS[selectedCategory], updatedItems);
     setRecentItems(updatedItems);
   };
 
   const deleteRecentItem = (item: any) => {
-    const [recentItems, setRecentItems]: any =
-      selectedCategory == 'STOCK'
-        ? [recentStocks, setRecentStocks]
-        : [recentKeyowrds, setRecentKeyowrds];
-    const storageName = selectedCategory == 'STOCK' ? 'RecentStocks' : 'RecentKeywords';
+    const { value, country } = item;
+    const updatedItems = recentItems.filter((e: any) => e.value !== value || e.country !== country);
 
-    const updatedItems = recentItems.filter(
-      (e: any) => e.value !== item.value || e.country !== item.country,
-    );
-
-    setItemLocalStorage(storageName, updatedItems);
+    setItemLocalStorage(STORAGE_RECENT_ITEMS[selectedCategory], updatedItems);
     setRecentItems(updatedItems);
   };
 
   const handleSearch = (item: any) => {
+    const { symbolName, country } = item;
     addRecentItem(item);
-    navigate(webPath.search(), {
-      state: { symbolName: item.symbolName, country: item.country },
-    });
+    navigate(webPath.search(), { state: { symbolName, country } });
     setInputValue('');
     (document.activeElement as HTMLElement).blur();
     updateActiveSearchBar(false);
@@ -462,7 +428,7 @@ const SearchBar = () => {
     setIsFocusSelectBox(!isFocusSelectBox);
   };
 
-  const handleSelectBoxItemClick = (category: CATEGORY) => {
+  const handleSelectBoxItemClick = (category: SEARCH_CATEGORY) => {
     setSelectedCategory(category);
     setIsFocusSelectBox(false);
     setInputValue('');
@@ -474,65 +440,6 @@ const SearchBar = () => {
   };
 
   // Component
-
-  const SearchBarPostInputComponent = ({
-    category,
-    searchedItems,
-  }: {
-    category: CATEGORY;
-    searchedItems: any;
-  }) => {
-    return (
-      <SearchBarResultContent width="100%">
-        {searchedItems?.length ? (
-          <>
-            <SearchBarResultTitle>검색 결과</SearchBarResultTitle>
-            {category == 'KEYWORD' && (
-              <SearchBarResultSubtitle>
-                <b>{searchedItems[0].keyword}</b> 이(가) 가장 많이 업급된 종목순으로 노출됩니다.
-              </SearchBarResultSubtitle>
-            )}
-            <SearchBarResultGridContainer column={category == 'STOCK' ? 3 : 2}>
-              {searchedItems.map((item: any) => (
-                <div key={`${item.symbolName}_${item.stockId}`}>
-                  <SearchBarResultItemContainer onPointerUp={() => handleItemClick(item)}>
-                    <SearchBarResultItemSubtitle>
-                      {STOCK_COUNTRY_TYPE[item.country]} 종목
-                    </SearchBarResultItemSubtitle>
-                    <SearchBarResultItemTitle>
-                      {category == 'STOCK'
-                        ? matchCharacters(searchValue.toLocaleUpperCase(), item.symbolName).map(
-                            ({ isMatch, char }, i) =>
-                              isMatch ? (
-                                <span key={'searched_' + item.symbolName + '_' + i}>{char}</span>
-                              ) : (
-                                char
-                              ),
-                          )
-                        : item.symbolName}
-                    </SearchBarResultItemTitle>
-                    {category == 'KEYWORD' &&
-                      item.keywordNames.map((keyword: string, idx: number) => (
-                        <SearchBarResultItemKeyword
-                          key={`keywords_${item.symbolName}_${idx}`}
-                          matched={keyword == item.keyword}
-                        >
-                          {keyword}
-                        </SearchBarResultItemKeyword>
-                      ))}
-                  </SearchBarResultItemContainer>
-                </div>
-              ))}
-            </SearchBarResultGridContainer>
-          </>
-        ) : (
-          <SearchBarResultSVG>
-            <NoResultSVG />
-          </SearchBarResultSVG>
-        )}
-      </SearchBarResultContent>
-    );
-  };
 
   const searchBarContainerRef = useOutsideClick(() => updateActiveSearchBar(false));
 
@@ -548,19 +455,20 @@ const SearchBar = () => {
             minimize={isFocusInput || (!!inputValue.length && !isFocusSelectBox)}
           >
             <label onClick={handleSelectBoxClick}>
-              <span>{CATEGORY_TEXT[selectedCategory]}</span>
+              <span>{SEARCH_CATEGORY_TEXT[selectedCategory]}</span>
               {isFocusSelectBox ? <UpSVG /> : <DownSVG />}
             </label>
             <SearchBarSelectBoxItems
-              select={Object.keys(CATEGORY_TEXT).findIndex((e) => e == selectedCategory)}
+              select={Object.keys(SEARCH_CATEGORY_TEXT).findIndex((e) => e === selectedCategory)}
             >
-              {(Object.keys(CATEGORY_TEXT) as CATEGORY[]).map((category) => (
-                <li key={'CATEGORY_' + category} onClick={() => handleSelectBoxItemClick(category)}>
-                  {CATEGORY_TEXT[category]}
+              {(Object.keys(SEARCH_CATEGORY_TEXT) as SEARCH_CATEGORY[]).map((category) => (
+                <li key={`CATEGORY_${category}`} onClick={() => handleSelectBoxItemClick(category)}>
+                  {SEARCH_CATEGORY_TEXT[category]}
                 </li>
               ))}
             </SearchBarSelectBoxItems>
           </SearchBarSelectBox>
+
           <SearchBarInput>
             <input
               type="text"
@@ -583,6 +491,7 @@ const SearchBar = () => {
               />
             )}
           </SearchBarInput>
+
           <SearchBarResultLayoutContainer
             ref={resultContainerRef}
             height={!isActiveSearchBar ? 0 : isMobile ? resultContainerHeight : 450}
@@ -590,24 +499,34 @@ const SearchBar = () => {
             <SearchBarResultLayout>
               <SearchBarResultContainer>
                 {searchValue == '' ? (
-                  <SearchBarPreInputComponent
-                    category={selectedCategory}
-                    recentItems={selectedCategory == 'STOCK' ? recentStocks : recentKeyowrds}
-                    popularItems={
-                      selectedCategory == 'STOCK' ? popularStocks : popularKeywords[selectedCountry]
-                    }
-                    onItemClick={handleItemClick}
-                    onItemDelete={deleteRecentItem}
-                    setSelectedCountry={setSelectedCountry}
-                    selectedCountry={selectedCountry}
-                  />
+                  <>
+                    <SearchBarItemsComponent
+                      type="RECENT"
+                      category={selectedCategory}
+                      resultItems={recentItems.slice(0, 5)}
+                      handleItemClick={handleItemClick}
+                      onItemDelete={deleteRecentItem}
+                    />
+                    <SearchBarItemsComponent
+                      type="POPULAR"
+                      category={selectedCategory}
+                      resultItems={popularItems}
+                      handleItemClick={handleItemClick}
+                      selectedCountry={selectedCountry}
+                      setSelectedOppositeCountry={setSelectedOppositeCountry}
+                    />
+                  </>
                 ) : (
-                  <SearchBarPostInputComponent
+                  <SearchBarItemsComponent
+                    type="SEARCHED"
                     category={selectedCategory}
-                    searchedItems={(selectedCategory == 'STOCK'
-                      ? searchedStocks
-                      : searchedKeywords
-                    ).slice(0, SEARCHED_RESULT_MAX_LENGTH[selectedCategory])}
+                    resultItems={searchedItems.slice(
+                      0,
+                      SEARCHED_RESULT_MAX_LENGTH[selectedCategory],
+                    )}
+                    handleItemClick={handleItemClick}
+                    searchValue={searchValue}
+                    displayEmpty
                   />
                 )}
               </SearchBarResultContainer>

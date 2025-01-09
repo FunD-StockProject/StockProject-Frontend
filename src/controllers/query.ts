@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
+import { STOCK_COUNTRY_TEXT } from '@ts/Constants';
 import { StockType } from '@components/Common/Common.Type';
-import { IndexInfo, PERIOD_CODE, RevelantStockInfo, StockTableInfo } from '@controllers/api.Type';
+import {
+  AutoCompleteItem,
+  IndexInfo,
+  PERIOD_CODE,
+  RevelantStockInfo,
+  StockTableInfo,
+} from '@controllers/api.Type';
 import {
   fetchDescentStocks,
   fetchHotStocks,
   fetchIndexScore,
   fetchKeyowordsStocks,
   fetchKeywords,
+  fetchPopularStocks,
   fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
@@ -103,14 +111,30 @@ export const KeywordsStocksQuery = (keywordName: string) => {
 
 // SearchBar
 
-const COUNTRY = ['KOREA', 'OVERSEA'];
+export const PopularStocksQuery = () => {
+  const { data } = useQuery(
+    ['PopularStocksQuery'],
+    async () => {
+      const popularStocks = await Promise.resolve(fetchPopularStocks());
+      return popularStocks.map((stock) => ({ ...stock, value: stock.symbolName }));
+    },
+    {
+      ...queryOptions,
+      placeholderData: [],
+    },
+  );
 
-export const PopularKeywordQuery = () => {
-  return useQuery(
-    ['PopularKeywordQuery'],
+  return [data];
+};
+
+export const PopularKeywordsQuery = () => {
+  const countryList = Object.keys(STOCK_COUNTRY_TEXT);
+
+  const { data } = useQuery(
+    ['PopularKeywordsQuery'],
     async () => {
       const keywordEntries = await Promise.all(
-        COUNTRY.map(async (country) => {
+        countryList.map(async (country) => {
           const keywords = await fetchKeywords(country);
           return [country, keywords.map((keyword) => ({ value: keyword }))];
         }),
@@ -120,15 +144,12 @@ export const PopularKeywordQuery = () => {
     },
     {
       ...queryOptions,
-      placeholderData: Object.fromEntries(COUNTRY.map((country) => [country, []])),
+      placeholderData: Object.fromEntries(countryList.map((country) => [country, []])),
     },
   );
-};
 
-interface AutoCompleteItem {
-  [key: string]: any; // 검색 결과 항목의 동적 키
-  value: string;
-}
+  return [data];
+};
 
 export const useAutoComplete = (
   fetchQuery: (input: string) => Promise<AutoCompleteItem[]>,
@@ -141,6 +162,7 @@ export const useAutoComplete = (
     value: '',
     results: [],
   });
+
   const { data = [] } = useQuery<AutoCompleteItem[]>(['AutoComplete', value, key], () => results, {
     placeholderData: [],
   });

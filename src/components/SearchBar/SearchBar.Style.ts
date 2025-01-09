@@ -1,7 +1,6 @@
 // SearchBar
 import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
-import { SearchBarActiveProps } from './SearchBar.Props';
 
 export const SearchBarLayout = styled.div({
   padding: '0 60px 80px',
@@ -29,7 +28,7 @@ export const SearchBarContainer = styled.div(
       padding: '12px 12px',
     },
   },
-  (props: SearchBarActiveProps) => ({
+  (props: { active: boolean }) => ({
     borderRadius: !props.active ? '12px' : '12px 12px 0 0',
     [media[0]]: {
       borderRadius: '8px',
@@ -116,8 +115,8 @@ export const SearchBarSelectBox = styled.div(
       },
     },
   },
-  ({ focus, minimize }: { focus: boolean; minimize?: boolean }) => ({
-    ...(focus && {
+  (props: { focus: boolean; minimize?: boolean }) => ({
+    ...(props.focus && {
       ['label']: {
         background: theme.colors.grayscale90,
         borderRadius: '8px 8px 0 0',
@@ -129,7 +128,7 @@ export const SearchBarSelectBox = styled.div(
         maxHeight: '150px',
       },
     }),
-    ...(minimize && {
+    ...(props.minimize && {
       [media[0]]: {
         ['label']: {
           ['span']: {
@@ -175,8 +174,8 @@ export const SearchBarSelectBoxItems = styled.ul(
       },
     },
   },
-  ({ select }: { select: number }) => ({
-    [`li:nth-of-type(${select + 1})`]: {
+  (props: { select: number }) => ({
+    [`li:nth-of-type(${props.select + 1})`]: {
       background: theme.colors.grayscale90,
     },
   }),
@@ -192,20 +191,18 @@ export const SearchBarResultLayoutContainer = styled.div(
     right: '0',
     top: '100%',
     overflow: 'hidden',
+    height: 'auto',
 
     transition: 'max-height .25s ease-in-out',
     background: theme.colors.primary100,
 
     [media[0]]: {
       overflow: 'scroll',
-    },
-  },
-  ({ height }: { height: number }) => ({
-    maxHeight: height,
-    height: 'auto',
-    [media[0]]: {
       height: '100vh',
     },
+  },
+  (props: { height: number }) => ({
+    maxHeight: props.height,
   }),
 );
 
@@ -238,15 +235,14 @@ export const SearchBarResultContent = styled.div(
     boxSizing: 'content-box',
     height: '100%',
     textTransform: 'uppercase',
+
     [media[0]]: {
       gap: '12px',
+      width: '100%',
     },
   },
   (props: { width: string }) => ({
     width: props.width,
-    [media[0]]: {
-      width: '100%',
-    },
   }),
 );
 
@@ -276,8 +272,8 @@ export const SearchBarResultTitle = styled.div({
   fontSize: '24px',
   display: 'flex',
   alignItems: 'center',
-
   gap: '12px',
+
   [media[0]]: {
     fontSize: '21px',
     gap: '8px',
@@ -289,6 +285,7 @@ export const SearchBarResultSubtitle = styled.span({
   fontSize: '15px',
   whiteSpace: 'nowrap',
   fontWeight: '500',
+
   ['b']: {
     fontWeight: '900',
   },
@@ -297,18 +294,19 @@ export const SearchBarResultSubtitle = styled.span({
   },
 });
 
-// SearchBarCountryTitle
+// SearchBarCountrySelect
 
-export const SearchBarCountryTitleContainer = styled.div({
+export const SearchBarCountrySelectContainer = styled.div({
   background: theme.colors.grayscale80,
   padding: '4px',
   borderRadius: '8px',
+
   ['input']: {
     display: 'none',
   },
 });
 
-export const SearchBarCountryTitleContents = styled.label({
+export const SearchBarCountrySelectContents = styled.label({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
@@ -316,7 +314,7 @@ export const SearchBarCountryTitleContents = styled.label({
   gap: '4px',
 });
 
-export const SearchBarCountryTitle = styled.span({
+export const SearchBarCountrySelectTitle = styled.span({
   position: 'relative',
   fontSize: '17px',
   padding: '6px 8px',
@@ -326,7 +324,7 @@ export const SearchBarCountryTitle = styled.span({
   },
 });
 
-export const SearchBarCountryTitleShape = styled.span(
+export const SearchBarCountrySelectShape = styled.span(
   {
     position: 'absolute',
 
@@ -342,9 +340,9 @@ export const SearchBarCountryTitleShape = styled.span(
       width: '44px',
     },
   },
-  ({ current }: { current: boolean }) => ({
-    left: current ? '100%' : 0,
-    transform: current ? 'translateX(-100%)' : 'translateX(0%)',
+  (props: { current: boolean }) => ({
+    left: `${props.current ? 0 : 100}%`,
+    transform: `translateX(${props.current ? 0 : -100}%)`,
   }),
 );
 

@@ -25,6 +25,69 @@ export const fetchKeywordsMock = [
   '섬유',
 ];
 
+export const fetchPopularStocksMock = [
+  {
+    stockId: 6221,
+    symbol: 'LAES',
+    symbolName: '실SQ',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 7442,
+    symbol: 'RGTI',
+    symbolName: '리게티 컴퓨팅',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 10057,
+    symbol: 'IONQ',
+    symbolName: '아이온큐',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 9730,
+    symbol: 'FUBO',
+    symbolName: 'FUBO',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 8086,
+    symbol: 'TSLA',
+    symbolName: '테슬라',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 6824,
+    symbol: 'NVDA',
+    symbolName: '엔비디아',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 8087,
+    symbol: 'TSLL',
+    symbolName: 'DIREXION DAILY TSLA BULL 2X SHARES',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 904,
+    symbol: '005930',
+    symbolName: '삼성전자',
+    country: 'KOREA',
+  },
+  {
+    stockId: 4042,
+    symbol: 'ARBE',
+    symbolName: '아베 로보틱스',
+    country: 'OVERSEA',
+  },
+  {
+    stockId: 7340,
+    symbol: 'QSI',
+    symbolName: '퀀텀사이',
+    country: 'OVERSEA',
+  },
+];
+
 export const fetchScoreCardMock = [
   { stockId: 1, symbolName: '삼성전자', score: 81, diff: 18 },
   { stockId: 2, symbolName: '한화솔루션', score: 11, diff: -18 },

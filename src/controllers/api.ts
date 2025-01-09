@@ -3,6 +3,7 @@ import {
   fetchChartMock,
   fetchIndexScoreMock,
   fetchKeywordsMock,
+  fetchPopularStocksMock,
   fetchRelevantMock,
   fetchScoreCardMock,
   fetchScoreMock,
@@ -93,13 +94,24 @@ const fetchIndexScore = () => {
 
 // SearchBar
 
-// Additional stock-related API calls
 const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
 const fetchKeyowordsStocks = (keywordName: string) => {
   return fetchData(`/keyword/${keywordName}/stocks`);
+};
+
+interface PopularStocks {
+  stockId: number;
+  symbol: string;
+  symbolName: string;
+  country: 'KOREA' | 'OVERSEA';
+}
+
+const fetchPopularStocks = (): Promise<PopularStocks[]> => {
+  if (enableMock) return Promise.resolve(fetchPopularStocksMock as PopularStocks[]);
+  return fetchData(`/stock/rankings/hot`);
 };
 
 export {
@@ -117,4 +129,5 @@ export {
   fetchStockTable,
   fetchIndexScore,
   fetchKeyowordsStocks,
+  fetchPopularStocks,
 };

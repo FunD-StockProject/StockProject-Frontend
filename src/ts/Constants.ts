@@ -1,7 +1,20 @@
-const STOCK_COUNTRY_TYPE: Record<string, string> = {
+import { SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
+
+const STOCK_COUNTRY_TEXT: Record<STOCK_COUNTRY, string> = {
   KOREA: '국내',
   OVERSEA: '해외',
 };
+
+const OPPOSITE_SCOTK_COUNTRY: Record<STOCK_COUNTRY, STOCK_COUNTRY> = {
+  KOREA: 'OVERSEA',
+  OVERSEA: 'KOREA',
+};
+
+const SEARCH_CATEGORY_TEXT: Record<SEARCH_CATEGORY, string> = {
+  STOCK: '종목',
+  KEYWORD: '키워드',
+};
+
 const STOCK_UPDATE_TIME: Record<string, string> = {
   KOREA: '17',
   OVERSEA: '06',
@@ -16,4 +29,10 @@ const MARKET_CODES: Record<string, string> = {
   '003': 'ETF',
 };
 
-export { STOCK_UPDATE_TIME, MARKET_CODES, STOCK_COUNTRY_TYPE };
+export {
+  STOCK_UPDATE_TIME,
+  MARKET_CODES,
+  STOCK_COUNTRY_TEXT,
+  SEARCH_CATEGORY_TEXT,
+  OPPOSITE_SCOTK_COUNTRY,
+};
