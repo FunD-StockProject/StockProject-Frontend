@@ -56,10 +56,9 @@ const useBlocker = (shouldBlock: boolean, onBlock: () => void, onAlwaysExecute?:
   const [previousLocation, setPreviousLocation] = useState(location);
 
   useEffect(() => {
-    const handleBeforeUnload = (event: any) => {
+    const handleBeforeUnload = (event: PopStateEvent) => {
       if (shouldBlock) {
         event.preventDefault();
-        event.returnValue = ''; // 크롬 브라우저에서 동작하도록 설정
         navigate(previousLocation, previousLocation);
         onBlock();
       }
@@ -118,8 +117,8 @@ const SearchBarItemsComponent = ({
   type: 'SEARCHED' | 'RECENT' | 'POPULAR';
   category: SEARCH_CATEGORY;
   resultItems: AutoCompleteItem[];
-  handleItemClick: (item: any) => void;
-  onItemDelete?: (item: any) => void;
+  handleItemClick: (item: AutoCompleteItem) => void;
+  onItemDelete?: (item: AutoCompleteItem) => void;
   searchValue?: string;
   selectedCountry?: STOCK_COUNTRY;
   setSelectedOppositeCountry?: () => void;
@@ -247,20 +246,23 @@ const SearchBar = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<SEARCH_CATEGORY>('STOCK');
   const [selectedCountry, setSelectedCountry] = useState<STOCK_COUNTRY>('KOREA');
-  const [focusedItem, setFocusedItem] = useState<any>({ idx: -1, type: '' });
+  const [focusedItem, setFocusedItem] = useState<any>({
+    idx: -1,
+    type: '',
+  });
   focusedItem;
 
   const resultContainerRef = useRef<HTMLDivElement>(null);
   const resultContainerHeight =
     window.innerHeight - (resultContainerRef.current?.getBoundingClientRect().top ?? 0);
 
-  const [recentStocks, setRecentStocks] = useState<any>(
+  const [recentStocks, setRecentStocks] = useState<AutoCompleteItem[]>(
     getItemLocalStorage(STORAGE_RECENT_ITEMS['STOCK'], []),
   );
-  const [recentKeyowrds, setRecentKeyowrds] = useState<any>(
+  const [recentKeyowrds, setRecentKeyowrds] = useState<AutoCompleteItem[]>(
     getItemLocalStorage(STORAGE_RECENT_ITEMS['KEYWORD'], []),
   );
-  const [recentItems, setRecentItems]: any =
+  const [recentItems, setRecentItems] =
     selectedCategory == 'STOCK'
       ? [recentStocks, setRecentStocks]
       : [recentKeyowrds, setRecentKeyowrds];
@@ -386,26 +388,26 @@ const SearchBar = () => {
 
   // LocalStorage
 
-  const addRecentItem = (item: any) => {
+  const addRecentItem = (item: AutoCompleteItem) => {
     const { value, country } = item;
     const updatedItems = [
       item,
-      ...recentItems.filter((e: any) => e.value !== value || e.country !== country),
+      ...recentItems.filter((e) => e.value !== value || e.country !== country),
     ];
 
     setItemLocalStorage(STORAGE_RECENT_ITEMS[selectedCategory], updatedItems);
     setRecentItems(updatedItems);
   };
 
-  const deleteRecentItem = (item: any) => {
+  const deleteRecentItem = (item: AutoCompleteItem) => {
     const { value, country } = item;
-    const updatedItems = recentItems.filter((e: any) => e.value !== value || e.country !== country);
+    const updatedItems = recentItems.filter((e) => e.value !== value || e.country !== country);
 
     setItemLocalStorage(STORAGE_RECENT_ITEMS[selectedCategory], updatedItems);
     setRecentItems(updatedItems);
   };
 
-  const handleSearch = (item: any) => {
+  const handleSearch = (item: AutoCompleteItem) => {
     const { symbolName, country } = item;
     addRecentItem(item);
     navigate(webPath.search(), { state: { symbolName, country } });
@@ -434,7 +436,7 @@ const SearchBar = () => {
     setInputValue('');
   };
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: AutoCompleteItem) => {
     if (searchValue.length || selectedCategory == 'STOCK') handleSearch(item);
     else setInputValue(item.value);
   };
