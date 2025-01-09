@@ -5,11 +5,16 @@ import { IndexScoreQuery } from '@controllers/query';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
-import { IndexDeltaScore, IndexInfoContainer, IndexItem, IndicesContainer } from './IndexScore.style';
+import {
+  IndexDeltaScore,
+  IndexInfoContainer,
+  IndexItem,
+  IndicesContainer,
+} from './IndexScore.style';
 
 const stockIndices = [
-  ['공포 지수', '코스피', '코스닥'],
-  ['공포 지수', 'S&P 500', '나스닥'],
+  ['공포탐욕지수 ', '코스피', '코스닥'],
+  ['공포탐욕지수 ', 'S&P 500', '나스닥'],
 ];
 
 const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
@@ -40,7 +45,8 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
       {result.map(({ score, delta }, idx) => (
         <IndexItem key={stockIndices[tabIndex][idx]}>
           <IndexInfoContainer>
-            {stockIndices[tabIndex][idx]} {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
+            {stockIndices[tabIndex][idx]}
+            {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
           </IndexInfoContainer>
           <IndexDeltaScore delta={delta}>
             {Math.abs(score)}점 {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
