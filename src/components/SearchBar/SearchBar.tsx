@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { OPPOSITE_SCOTK_COUNTRY, SEARCH_CATEGORY_TEXT, STOCK_COUNTRY_TEXT } from '@ts/Constants';
+import {
+  MARKET_CODES,
+  OPPOSITE_SCOTK_COUNTRY,
+  SEARCH_CATEGORY_TEXT,
+  STOCK_COUNTRY_TEXT,
+} from '@ts/Constants';
 import { SEARCH_CATEGORY, STOCK_COUNTRY } from '@ts/Types';
 import {
   STORAGE_RECENT_ITEMS,
@@ -160,15 +165,21 @@ const SearchBarItemsComponent = ({
             </SearchBarResultSubtitle>
           )}
           <SearchBarResultGridContainer column={column}>
-            {resultItems.map((item) => {
-              const { symbolName, country, keywordNames, keyword, value } = item;
+            {resultItems.map((item, idx) => {
+              const { symbolName, symbol, exchangeNum, country, keywordNames, keyword, value } =
+                item;
 
               return (
                 <div
                   key={`SearchBarItem_${type}_${category}_${type === 'SEARCHED' ? symbolName : value}_${country}`}
                 >
                   <SearchBarResultItemContainer onPointerUp={() => handleItemClick(item)}>
-                    {!((type === 'RECENT' || type === 'POPULAR') && category === 'KEYWORD') && (
+                    {type == 'POPULAR' && (
+                      <SearchBarResultItemSubtitle>{idx + 1}</SearchBarResultItemSubtitle>
+                    )}
+                    {(category === 'STOCK'
+                      ? type === 'RECENT' || type === 'POPULAR'
+                      : type === 'SEARCHED') && (
                       <SearchBarResultItemSubtitle>
                         {STOCK_COUNTRY_TEXT[country]} 종목
                       </SearchBarResultItemSubtitle>
@@ -188,6 +199,23 @@ const SearchBarItemsComponent = ({
                             )
                           : symbolName
                         : value}
+                      {type === 'SEARCHED' && category === 'STOCK' && (
+                        <div>
+                          <div>
+                            {matchCharacters(searchValue.toLocaleUpperCase(), symbol).map(
+                              ({ isMatch, char }, i) =>
+                                isMatch ? (
+                                  <span key={`SearchBarItemTextSymbol_${value}_${country}_${i}`}>
+                                    {char}
+                                  </span>
+                                ) : (
+                                  char
+                                ),
+                            )}
+                          </div>
+                          <div>{MARKET_CODES[exchangeNum]}</div>
+                        </div>
+                      )}
                     </SearchBarResultItemTitle>
                     {type === 'RECENT' && (
                       <CancelSVG
@@ -496,7 +524,7 @@ const SearchBar = () => {
 
           <SearchBarResultLayoutContainer
             ref={resultContainerRef}
-            height={!isActiveSearchBar ? 0 : isMobile ? resultContainerHeight : 450}
+            height={!isActiveSearchBar ? 0 : isMobile ? resultContainerHeight : 490}
           >
             <SearchBarResultLayout>
               <SearchBarResultContainer>
