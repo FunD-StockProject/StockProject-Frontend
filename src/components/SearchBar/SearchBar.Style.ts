@@ -250,13 +250,13 @@ export const SearchBarResultSVG = styled.div({
   width: '100%',
   height: '100%',
   boxSizing: 'border-box',
-  padding: '64px',
+  padding: '72px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   ['svg']: {
     boxSizing: 'content-box',
-    minHeight: '220px',
+    minHeight: '260px',
     width: 'auto',
     height: '100%',
   },
@@ -383,16 +383,16 @@ export const SearchBarResultItemContainer = styled.div({
   alignItems: 'center',
   gap: '12px',
   padding: '9px 12px 9px 18px',
-  borderRadius: '0 24px 24px 0',
+  borderRadius: '0 32px 32px 0',
   cursor: 'pointer',
-  height: '24px',
+  // height: '24px',
 
   ['> svg']: {
-    width: '16px',
-    height: '16px',
+    width: '11px',
+    height: '11px',
     cursor: 'pointer',
     borderRadius: '24px',
-    padding: '6px',
+    padding: '4px',
     [':hover']: {
       background: theme.colors.grayscale70,
     },
@@ -407,10 +407,11 @@ export const SearchBarResultItemContainer = styled.div({
 
   [media[0]]: {
     padding: '6px 9px 6px 12px',
-    height: '18px',
+    // height: '18px',
     gap: '8px',
     ['> svg']: {
       padding: '2px',
+      width: '16px',
       height: '16px',
       stroke: theme.colors.primary5,
     },
@@ -446,7 +447,6 @@ export const SearchBarResultItemTitle = styled.span({
   color: theme.colors.primary0,
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-  // width: '100%',
 
   fontSize: '19px',
   marginRight: 'auto',
@@ -455,7 +455,22 @@ export const SearchBarResultItemTitle = styled.span({
     color: theme.colors.primary40,
   },
 
+  ['> div']: {
+    display: 'flex',
+    gap: '8px',
+    fontSize: '15px',
+    paddingTop: '8px',
+    ['> div']: {
+      color: theme.colors.grayscale60,
+    },
+  },
+
   [media[0]]: {
     fontSize: '15px',
+    ['> div']: {
+      paddingTop: '6px',
+      gap: '6px',
+      fontSize: '13px',
+    },
   },
 });
