@@ -29,10 +29,16 @@ const MARKET_CODES: Record<string, string> = {
   '003': 'ETF',
 };
 
+const TEXT_SIZE_ADJUST = {
+  chrome: 0.055,
+  safari: -0.105,
+};
+
 export {
   STOCK_UPDATE_TIME,
   MARKET_CODES,
   STOCK_COUNTRY_TEXT,
   SEARCH_CATEGORY_TEXT,
   OPPOSITE_SCOTK_COUNTRY,
+  TEXT_SIZE_ADJUST,
 };
