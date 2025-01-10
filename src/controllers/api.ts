@@ -1,3 +1,4 @@
+import { WordFrequency } from '@ts/Interfaces';
 import { PERIOD_CODE } from './api.Type';
 import {
   fetchChartMock,
@@ -69,11 +70,6 @@ const fetchSearchSymbolName = (symbolname: string, country: string) => {
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
-const fetchSearchWordCloud = (symbol: string, country: string) => {
-  if (enableMock) return fetchSearchWordCloudMock;
-  return fetchData(`/wordcloud/${symbol}/${country}`);
-};
-
 const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
@@ -90,6 +86,13 @@ const fetchStockTable = (category: string, country: string) => {
 const fetchIndexScore = () => {
   if (enableMock) return fetchIndexScoreMock;
   return fetchData(`/score/index`);
+};
+
+// WordCloud
+
+const fetchSearchWordCloud = (symbol: string, country: string): Promise<WordFrequency[]> => {
+  if (enableMock) return Promise.resolve(fetchSearchWordCloudMock);
+  return fetchData(`/wordcloud/${symbol}/${country}`);
 };
 
 // SearchBar

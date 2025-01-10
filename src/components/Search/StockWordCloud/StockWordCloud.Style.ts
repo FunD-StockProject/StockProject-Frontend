@@ -1,9 +1,17 @@
 import styled from '@emotion/styled';
 import { pop } from '@styles/keyframes';
-import { media, theme } from '@styles/themes';
+import { media, theme, themeColor } from '@styles/themes';
+
+const WordColors: themeColor[] = [
+  'primary30',
+  'primary40',
+  'primary50',
+  'primary60',
+  'primary70',
+  'primary80',
+];
 
 const StockWordCloudContainer = styled.div({
-  // background: theme.colors.grayscale90,
   height: '720px',
   overflow: 'hidden',
   position: 'relative',
@@ -18,24 +26,31 @@ const StockWordCloudContainer = styled.div({
 const WordContainer = styled.div(
   {
     position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transformOrigin: 'left top',
+    userSelect: 'none',
+    cursor: 'default',
   },
   ({
-    orientation,
     posX,
     posY,
     sizeX,
     sizeY,
+    fontSize,
   }: {
-    orientation: number;
     posX: number;
     posY: number;
     sizeX: number;
     sizeY: number;
+    fontSize: number;
   }) => ({
-    left: (!orientation ? posX : posX - sizeY / 2 + sizeX / 2) + 'px',
-    top: (!orientation ? posY : posY + sizeY / 2 - sizeX / 2) + 'px',
-    width: sizeX,
-    height: sizeY,
+    left: posX,
+    top: posY,
+    transform: `scale(${fontSize / 100}) `,
+    width: (sizeX * 100) / fontSize,
+    height: (sizeY * 100) / fontSize,
   }),
 );
 
@@ -48,39 +63,14 @@ const Word = styled.span(
     color: '#FFFA',
     animationFillMode: 'both',
     lineHeight: '1.0',
+    fontSize: '100px',
+    transform: 'scale(1)',
+    fontFamily: 'PretendardBlack',
   },
-  ({
-    animationState,
-    orientation,
-    fontSize,
-    colors,
-    delay,
-  }: {
-    animationState: boolean;
-    orientation: number;
-    fontSize: number;
-    colors: number;
-    delay: number;
-  }) => ({
-    animation: animationState ? pop + ' .75s ease-in-out' : '',
-    transform: animationState ? 'scale(1)' : 'scale(0)',
-    fontSize: fontSize,
+  ({ orientation, colors }: { orientation: number; colors: number }) => ({
+    animation: pop + ' .75s ease-in-out',
     rotate: !orientation ? '' : '90deg',
-    color:
-      colors == 0
-        ? theme.colors.primary30
-        : colors == 1
-          ? theme.colors.primary40
-          : colors == 2
-            ? theme.colors.primary50
-            : colors == 3
-              ? theme.colors.primary60
-              : colors == 4
-                ? theme.colors.primary70
-                : colors == 5
-                  ? theme.colors.primary80
-                  : '',
-    animationDelay: animationState ? delay * 0.1 + 's' : '0s',
+    color: theme.colors[WordColors[colors]],
   }),
 );
 

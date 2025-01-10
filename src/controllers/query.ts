@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { STOCK_COUNTRY_TEXT } from '@ts/Constants';
+import { STOCK_COUNTRY_TEXT, TEXT_SIZE_ADJUST } from '@ts/Constants';
+import { STOCK_COUNTRY } from '@ts/Types';
 import { StockType } from '@components/Common/Common.Type';
 import {
   AutoCompleteItem,
@@ -21,6 +22,7 @@ import {
   fetchRisingStocks,
   fetchScore,
   fetchSearchSymbolName,
+  fetchSearchWordCloud,
   fetchStockChart,
   fetchStockTable,
 } from './api';
@@ -109,6 +111,60 @@ export const KeywordsStocksQuery = (keywordName: string) => {
   );
 };
 
+// WordCloud
+const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts', import.meta.url), {
+  type: 'module',
+});
+
+const agent = window.navigator.userAgent.toLowerCase();
+
+export const WordCloudQuery = (
+  symbol: string,
+  country: STOCK_COUNTRY,
+  { width, height }: any,
+  isMobile: boolean,
+) => {
+  const [wordCloud, setWordCloud] = useState<any>([]);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.setQueryData(['WordCloudQuery', symbol, 0, 0], []);
+    WordCloudWorker.onmessage = ({ data: { layouts, height, width } }: any) => {
+      queryClient.setQueryData(['WordCloudQuery', symbol, width, height], layouts);
+      setWordCloud(layouts);
+    };
+  }, []);
+
+  useEffect(() => {
+    const queryData = queryClient.getQueryData(['WordCloudQuery', symbol, width, height]);
+
+    if (!queryData) {
+      fetchSearchWordCloud(symbol, country).then((res) => {
+        const adjust =
+          agent.indexOf('chrome') > -1
+            ? TEXT_SIZE_ADJUST.chrome
+            : agent.indexOf('instagram') > -1
+              ? TEXT_SIZE_ADJUST.chrome
+              : TEXT_SIZE_ADJUST.safari;
+
+        WordCloudWorker.postMessage({
+          data: res,
+          width,
+          height,
+          adjust,
+          isMobile,
+        });
+      });
+
+      return;
+    }
+    setWordCloud(queryData);
+  }, [symbol, width, height]);
+
+  return [wordCloud];
+};
+
 // SearchBar
 
 export const PopularStocksQuery = () => {
@@ -194,48 +250,3 @@ export const useAutoComplete = (
 
   return [data, fetchData];
 };
-// export const useAutoComplete = (query: any, param: string) => {
-//   const [{ result }, setResult] = useState<any>({
-//     value: '',
-//     result: [],
-//   });
-
-//   // const queryClient = useQueryClient();
-//   // const { data } = useQuery<any>(['AutoComplete', param, tmp[0]], () => tmp[1], {
-//   //   placeholderData: [],
-//   // });
-
-//   const fetchData = (searchValue: string) => {
-//     // const queryData = queryClient.getQueryData(['AutoComplete', param, value]);
-//     // console.log('eeee');
-//     // if (queryData) {
-//     //   setTmp([value, queryData]);
-//     //   return queryData;
-//     // }
-
-//     if (!searchValue.length) {
-//       setResult({ value: searchValue, result: [] });
-//       return [];
-//     }
-
-//     query(searchValue)
-//       .then((res: any) => {
-//         if (res.length) {
-//           const ret = res.map((e: any) => ({
-//             ...e,
-//             value: e[param].toUpperCase(),
-//           }));
-//           setResult({ value: searchValue, result: ret });
-//           return ret;
-//         } else {
-//           throw new Error();
-//         }
-//       })
-//       .catch(() => {
-//         setResult({ value: searchValue, result: result });
-//         return result;
-//       });
-//   };
-
-//   return [result, fetchData];
-// };
