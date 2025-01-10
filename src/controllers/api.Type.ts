@@ -1,3 +1,5 @@
+import { STOCK_COUNTRY } from '@ts/Types';
+
 export interface StockInfo {
   stockId: number;
   symbol: string;
@@ -50,6 +52,15 @@ export interface IndexInfo {
   snpIndexDiff: number;
   nasdaqIndex: number;
   nasdaqIndexDiff: number;
+}
+
+export interface AutoCompleteItem {
+  [key: string]: any; // 검색 결과 항목의 동적 키
+  symbolName: string;
+  keywordNames: string[];
+  keyword: string;
+  country: STOCK_COUNTRY;
+  value: string;
 }
 
 export type PERIOD_CODE = 'D' | 'W' | 'M';

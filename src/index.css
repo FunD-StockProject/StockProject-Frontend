@@ -24,6 +24,13 @@
   -o-text-size-adjust: 100%; /* 오페라 구버전 */
 }
 
+/* html,
+body {
+  height: -webkit-fill-available;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+} */
+
 html {
   margin: 0px;
 }
@@ -34,5 +41,5 @@ body {
   margin: 0px;
   background-color: '#0000FF';
   min-width: 320px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }

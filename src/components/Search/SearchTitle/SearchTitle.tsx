@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MARKET_CODES, STOCK_COUNTRY_TYPE } from '@ts/Constants';
+import { MARKET_CODES, STOCK_COUNTRY_TEXT } from '@ts/Constants';
+import { STOCK_COUNTRY } from '@ts/Types';
 import { StockInfo } from '@controllers/api.Type';
 import AlertSVG from '@assets/alert.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
@@ -17,7 +18,15 @@ import {
   SearchTitleText,
 } from './SearchTitle.Style';
 
-const SearchTitle = ({ stockInfo, resultMode, onClick }: { stockInfo: StockInfo; resultMode: 'indicator' | 'chart'; onClick: (e: any) => void }) => {
+const SearchTitle = ({
+  stockInfo,
+  resultMode,
+  onClick,
+}: {
+  stockInfo: StockInfo;
+  resultMode: 'indicator' | 'chart';
+  onClick: (e: any) => void;
+}) => {
   const { state } = useLocation();
   const titleTextRef = useRef<HTMLDivElement>(null);
   const [animated, setAnimated] = useState<boolean>(false);
@@ -35,16 +44,22 @@ const SearchTitle = ({ stockInfo, resultMode, onClick }: { stockInfo: StockInfo;
   return (
     stockInfo && (
       <SearchTitleContainer>
-        <SearchTitleCountryButton>{STOCK_COUNTRY_TYPE[stockInfo.country]} 주식</SearchTitleCountryButton>
+        <SearchTitleCountryButton>
+          {STOCK_COUNTRY_TEXT[stockInfo.country as STOCK_COUNTRY]} 주식
+        </SearchTitleCountryButton>
         <SearchTitleContent>
           <SearchTitleText ref={titleTextRef}>
             {stockInfo.symbolName}
-            <SearchTitleAnimatedText animated={animated}>{stockInfo.symbolName}</SearchTitleAnimatedText>
+            <SearchTitleAnimatedText animated={animated}>
+              {stockInfo.symbolName}
+            </SearchTitleAnimatedText>
           </SearchTitleText>
           <SearchTitleSVG>
             <ZipyoSVG />
           </SearchTitleSVG>
-          <SearchTitleButton onClick={onClick}>{resultMode == 'indicator' ? '차트' : '인간지표'} 보기</SearchTitleButton>
+          <SearchTitleButton onClick={onClick}>
+            {resultMode == 'indicator' ? '차트' : '인간지표'} 보기
+          </SearchTitleButton>
         </SearchTitleContent>
         <SearchTitleLabelContainer>
           <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
