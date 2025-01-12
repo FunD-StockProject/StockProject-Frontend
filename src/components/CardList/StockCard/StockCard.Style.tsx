@@ -100,6 +100,11 @@ const StockCardKeyword = styled.div({
   color: theme.colors.primary0,
   padding: '0.4em 0.8em',
   borderRadius: '24px',
+  maxWidth: '100px',
+  alignItems: 'left',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
 });
 
 export {

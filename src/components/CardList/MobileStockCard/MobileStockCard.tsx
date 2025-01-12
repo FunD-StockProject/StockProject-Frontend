@@ -47,8 +47,9 @@ const MobileStockCardItem = ({
           </MobileStockCardItemDeltaScore>
         </MobileStockCardItemScore>
         <KeywordContainer>
-          <MobileStockCardKeyword>{keywords[0]}</MobileStockCardKeyword>
-          <MobileStockCardKeyword>{keywords[1]}</MobileStockCardKeyword>
+          {keywords.map((keyword) => (
+            <MobileStockCardKeyword>{keyword}</MobileStockCardKeyword>
+          ))}
         </KeywordContainer>
       </MobileStockCardItemTitle>
     </MobileStockCardItemContainer>
