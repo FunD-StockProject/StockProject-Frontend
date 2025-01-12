@@ -86,4 +86,17 @@ const SlotMachineItemMotionDiv = styled(motion.div)(
   },
 );
 
-export { ScoreSlotMachineContainer, SlotMachineItemContainer, ScoreSlotMachineContent, SlotMachineItemMotionDiv };
+const StockCardItemText = styled.div({
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  width: '100%',
+});
+
+export {
+  ScoreSlotMachineContainer,
+  SlotMachineItemContainer,
+  ScoreSlotMachineContent,
+  SlotMachineItemMotionDiv,
+  StockCardItemText,
+};

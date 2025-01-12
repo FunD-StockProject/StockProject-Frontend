@@ -5,7 +5,13 @@ import { scoreToIndex } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
 import { ARRAY_STOCK_SCORE_IMAGE, ARRAY_STOCK_SCORE_TITLE } from '@constants/stockScore';
 import { ImgDiv } from '@components/Common/Common';
-import { ScoreSlotMachineContainer, ScoreSlotMachineContent, SlotMachineItemContainer, SlotMachineItemMotionDiv } from './stockSlotMachine.Style';
+import {
+  ScoreSlotMachineContainer,
+  ScoreSlotMachineContent,
+  SlotMachineItemContainer,
+  SlotMachineItemMotionDiv,
+  StockCardItemText,
+} from './stockSlotMachine.Style';
 
 const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
   const a = (3 * animationTime) / (lastIndex * lastIndex * lastIndex);
@@ -34,7 +40,13 @@ const variants: Variants = {
   }),
 };
 
-const ScoreSlotMachineItemCard = ({ slotMachineType, idx }: { slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE'; idx: number }) => {
+const ScoreSlotMachineItemCard = ({
+  slotMachineType,
+  idx,
+}: {
+  slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE';
+  idx: number;
+}) => {
   return slotMachineType == 'TITLE' ? (
     ARRAY_STOCK_SCORE_TITLE[idx % ARRAY_STOCK_SCORE_TITLE.length]
   ) : slotMachineType == 'IMAGE' ? (
@@ -98,7 +110,11 @@ const ScoreSlotMachineItem = ({
               >
                 <ScoreSlotMachineItemCard
                   slotMachineType={slotMachineType}
-                  idx={slotMachineType != 'SCORE' ? lastIndex - currentIndex + scoreIndex : lastIndex - currentIndex + stockScore}
+                  idx={
+                    slotMachineType != 'SCORE'
+                      ? lastIndex - currentIndex + scoreIndex
+                      : lastIndex - currentIndex + stockScore
+                  }
                 />
               </SlotMachineItemMotionDiv>
             )
@@ -129,12 +145,28 @@ const ScoreSlotMachine = ({
   };
 
   return (
-    <ScoreSlotMachineContainer active={active} tabIndex={tabIndex} onClick={active ? handleClick : () => {}}>
-      {active ? stockName : ''}
+    <ScoreSlotMachineContainer
+      active={active}
+      tabIndex={tabIndex}
+      onClick={active ? handleClick : () => {}}
+    >
+      <StockCardItemText>{active ? stockName : ''}</StockCardItemText>
       <ScoreSlotMachineContent>
-        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
-        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />
-        <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="SCORE" />
+        <ScoreSlotMachineItem
+          stockName={stockName}
+          stockScore={stockScore}
+          slotMachineType="TITLE"
+        />
+        <ScoreSlotMachineItem
+          stockName={stockName}
+          stockScore={stockScore}
+          slotMachineType="IMAGE"
+        />
+        <ScoreSlotMachineItem
+          stockName={stockName}
+          stockScore={stockScore}
+          slotMachineType="SCORE"
+        />
       </ScoreSlotMachineContent>
     </ScoreSlotMachineContainer>
   );
