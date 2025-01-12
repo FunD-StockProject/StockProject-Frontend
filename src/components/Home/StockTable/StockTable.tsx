@@ -27,7 +27,9 @@ const StockTable = ({ country }: { country: string }) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const updateTime = STOCK_UPDATE_TIME[country];
-  const [stockTable, suspend] = useQueryComponent({ query: StockTableQuery(categories[tabIndex], country) });
+  const [stockTable, suspend] = useQueryComponent({
+    query: StockTableQuery(categories[tabIndex], country),
+  });
 
   const handleClick = (name: string) => {
     navigate(webPath.search(), { state: { symbolName: name, country: country } });
@@ -51,7 +53,11 @@ const StockTable = ({ country }: { country: string }) => {
       </StockTableTitle>
       <StyledTabMenu>
         {tabMenu.map((el, index) => (
-          <li key={index} className={index === tabIndex ? 'submenu focused' : 'submenu'} onClick={() => handleTab(index)}>
+          <li
+            key={index}
+            className={index === tabIndex ? 'submenu focused' : 'submenu'}
+            onClick={() => handleTab(index)}
+          >
             {el}
           </li>
         ))}

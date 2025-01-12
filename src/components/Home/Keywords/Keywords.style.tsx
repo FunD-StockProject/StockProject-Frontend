@@ -20,7 +20,7 @@ const TitleWrapper = styled.div({
   },
   [media[0]]: {
     ['span']: {
-      fontSize: '12px',
+      fontSize: '10px',
     },
   },
 });

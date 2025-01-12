@@ -46,8 +46,9 @@ const StockCardItem = ({
           </StockCardItemDeltaScore>
         </StockCardItemScore>
         <KeywordContainer>
-          <StockCardKeyword>{keywords[0]}</StockCardKeyword>
-          <StockCardKeyword>{keywords[1]}</StockCardKeyword>
+          {keywords.map((keyword) => (
+            <StockCardKeyword>{keyword}</StockCardKeyword>
+          ))}
         </KeywordContainer>
       </StockCardItemTitle>
       <ScoreImage src={scoreImage} />
