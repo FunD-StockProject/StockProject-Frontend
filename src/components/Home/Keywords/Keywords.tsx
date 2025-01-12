@@ -27,7 +27,7 @@ const Keywords = ({ country }: { country: string }) => {
           (keywords &&
             keywords.map((keyword: string, index: number) => (
               <KeywordItem key={index} onClick={() => {}}>
-                {keyword}
+                {keyword.toLocaleUpperCase()}
               </KeywordItem>
             )))}
       </KeywordList>
