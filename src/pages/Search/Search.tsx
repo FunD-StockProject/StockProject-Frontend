@@ -100,7 +100,7 @@ const Search = () => {
   const [stockInfo, suspend] = useQueryComponent({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('chart');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const toggleResultMode = () =>
@@ -129,7 +129,11 @@ const Search = () => {
               </ContentsItemContainer>
             </>
           ) : (
-            <StockChart stockId={stockInfo.stockId} />
+            <StockChart
+              stockId={stockInfo.stockId}
+              symbolName={stockInfo.symbolName}
+              country={stockInfo.country}
+            />
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>

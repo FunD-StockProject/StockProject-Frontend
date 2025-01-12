@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { STOCK_COUNTRY_TEXT, TEXT_SIZE_ADJUST } from '@ts/Constants';
+import {
+  CHART_MOVING_AVERAGE_COLOR,
+  CHART_PRICE_FIELD,
+  STOCK_COUNTRY_TEXT,
+  TEXT_SIZE_ADJUST,
+} from '@ts/Constants';
 import { STOCK_COUNTRY } from '@ts/Types';
+import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
 import {
   AutoCompleteItem,
@@ -74,7 +80,7 @@ export const ScoreQuery = (id: number, country: string) => {
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
   return useQuery<StockInfo>(
     ['chartInfo', id, periodCode, startDate],
-    () => fetchStockChart(id, periodCode, startDate),
+    () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
     queryOptions,
   );
 };
@@ -163,6 +169,108 @@ export const WordCloudQuery = (
   }, [symbol, width, height]);
 
   return [wordCloud];
+};
+
+// StockChart
+
+export const StockChartQuery = (stockId: number, period: string) => {
+  const [chartData, setChartData] = useState<any>([]);
+  const [lastDate, setLastDate] = useState<string>('');
+  const firstDate = '1970-01-01';
+
+  const queryClient = useQueryClient();
+
+  const queryData = queryClient.getQueryData<{
+    lastDate: string;
+    priceInfos: any[];
+    chartData: any[];
+  }>(['StockChart', stockId, period]);
+
+  const formatChartData = (priceInfos: any[], chartData: any[], length: number) => {
+    const newChartData = [...Array.from({ length: length }, () => ({})), ...chartData];
+    const updateLength =
+      length + Object.keys(CHART_MOVING_AVERAGE_COLOR).reduce((acc, e) => Math.max(acc, ~~e), 0);
+
+    priceInfos.some((e, i, arr) => {
+      if (i >= updateLength) return;
+      newChartData[i] = {
+        date: formatLocalDateToDate(e.localDate),
+        price: Object.fromEntries(
+          Object.entries(CHART_PRICE_FIELD).map(([key, value]) => [
+            key,
+            {
+              value: Number(e[value.key]),
+              delta: i ? Number(e[value.key]) / Number(arr[i - 1].closePrice) - 1 : 0,
+            },
+          ]),
+        ),
+        SMA: Object.fromEntries(
+          Object.keys(CHART_MOVING_AVERAGE_COLOR).map((range) => [
+            range,
+            {
+              price:
+                Array.from(
+                  { length: Math.min(~~range, i + 1) },
+                  (_, j) => ~~arr[i - j].closePrice,
+                ).reduce((acc, e) => acc + e) / Math.min(~~range, i + 1),
+            },
+          ]),
+        ),
+        score: {
+          value: e.score,
+          delta: e.diff,
+        },
+        trading: {
+          value: e.accumulatedTradingValue,
+          volume: e.accumulatedTradingVolume,
+          delta: i
+            ? Number(e.accumulatedTradingVolume) / Number(arr[i - 1].accumulatedTradingVolume) - 1
+            : 0,
+        },
+      };
+    });
+
+    return newChartData;
+  };
+
+  const fetchData = async ({
+    lastDate,
+    priceInfos,
+    chartData,
+  }: {
+    lastDate: string;
+    priceInfos: any[];
+    chartData: any[];
+  }) => {
+    fetchStockChart(stockId, period as PERIOD_CODE, firstDate, lastDate).then((e) => {
+      const newPriceInfos = [...[...e.priceInfos].reverse(), ...priceInfos];
+      const lastPriceDate = formatLocalDateToDate(newPriceInfos[0].localDate);
+      lastPriceDate.setDate(lastPriceDate.getDate() - 1);
+      const newChartData = formatChartData(newPriceInfos, chartData, e.priceInfos.length);
+
+      queryClient.setQueryData(['StockChart', stockId, period], {
+        lastDate: formatDateISO(lastPriceDate),
+        priceInfos: newPriceInfos,
+        chartData: newChartData,
+      });
+
+      setChartData(newChartData);
+    });
+  };
+
+  useEffect(() => {
+    if (!queryData) {
+      fetchData({ lastDate: formatDateISO(new Date()), priceInfos: [], chartData: [] });
+      return;
+    }
+    setChartData(queryData.chartData);
+  }, [stockId, period]);
+
+  useEffect(() => {
+    if (queryData) fetchData(queryData);
+  }, [lastDate]);
+
+  return [chartData, setLastDate];
 };
 
 // SearchBar

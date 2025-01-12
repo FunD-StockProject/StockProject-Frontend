@@ -1,4 +1,5 @@
-import { SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
+import { themeColor } from '@styles/themes';
+import { PERIOD_CODE, SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
 
 const STOCK_COUNTRY_TEXT: Record<STOCK_COUNTRY, string> = {
   KOREA: '국내',
@@ -34,6 +35,43 @@ const TEXT_SIZE_ADJUST = {
   safari: -0.105,
 };
 
+const CHART_PRICE_FIELD = {
+  open: { key: 'openPrice', label: '시가' },
+  high: { key: 'highPrice', label: '고가' },
+  low: { key: 'lowPrice', label: '저가' },
+  close: { key: 'closePrice', label: '종가' },
+};
+
+const CHART_SCALE_RATIO = [1, 2, 2.5, 4, 5];
+
+const PERIOD_CODE_TEXT: Record<PERIOD_CODE, string> = {
+  D: '일',
+  W: '주',
+  M: '월',
+};
+
+const MAX_MIN: Record<'max' | 'min', any> = {
+  max: {
+    type: 'high',
+    mul: 1,
+    init: -Infinity,
+    label: '최고',
+  },
+  min: {
+    type: 'low',
+    mul: -1,
+    init: Infinity,
+    label: '최저',
+  },
+};
+
+const CHART_MOVING_AVERAGE_COLOR: Record<string, themeColor> = {
+  5: 'success',
+  20: 'red',
+  60: 'cyan',
+  120: 'yellow',
+};
+
 export {
   STOCK_UPDATE_TIME,
   MARKET_CODES,
@@ -41,4 +79,9 @@ export {
   SEARCH_CATEGORY_TEXT,
   OPPOSITE_SCOTK_COUNTRY,
   TEXT_SIZE_ADJUST,
+  CHART_PRICE_FIELD,
+  CHART_SCALE_RATIO,
+  PERIOD_CODE_TEXT,
+  MAX_MIN,
+  CHART_MOVING_AVERAGE_COLOR,
 };
