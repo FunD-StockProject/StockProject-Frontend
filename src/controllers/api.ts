@@ -45,11 +45,6 @@ const fetchRelevant = async (id: number) => {
   return fetchData(`/stock/${id}/relevant`);
 };
 
-const fetchStockChart = async (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  if (enableMock) return fetchChartMock;
-  return fetchData(`/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}`);
-};
-
 const fetchHotStocks = async (country: string) => {
   // return fetchScoreCardMock;
   return fetchData(`/stock/hot/${country}`);
@@ -93,6 +88,20 @@ const fetchIndexScore = () => {
 const fetchSearchWordCloud = (symbol: string, country: string): Promise<WordFrequency[]> => {
   if (enableMock) return Promise.resolve(fetchSearchWordCloudMock);
   return fetchData(`/wordcloud/${symbol}/${country}`);
+};
+
+// Chart
+
+const fetchStockChart = async (
+  id: number,
+  periodCode: PERIOD_CODE,
+  startDate: string,
+  endDate: string,
+) => {
+  if (enableMock) return fetchChartMock;
+  return fetchData(
+    `/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}&endDate=${endDate}`,
+  );
 };
 
 // SearchBar

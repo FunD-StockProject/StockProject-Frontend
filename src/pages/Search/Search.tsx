@@ -5,7 +5,11 @@ import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { FlexDiv } from '@components/Common/Common';
-import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import {
+  ContentsItemContainer,
+  ContentsItemContent,
+  ContentsItemTitle,
+} from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
@@ -16,7 +20,11 @@ import { StockScore } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
-import { SearchResultContainer, SearchResultContents, StockRelevantContainer } from './Search.Style';
+import {
+  SearchResultContainer,
+  SearchResultContents,
+  StockRelevantContainer,
+} from './Search.Style';
 
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="column" width="100%">
@@ -92,10 +100,11 @@ const Search = () => {
   const [stockInfo, suspend] = useQueryComponent({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('indicator');
+  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('chart');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  const toggleResultMode = () => setResultMode((prev) => (prev === 'indicator' ? 'chart' : 'indicator'));
+  const toggleResultMode = () =>
+    setResultMode((prev) => (prev === 'indicator' ? 'chart' : 'indicator'));
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
@@ -120,7 +129,11 @@ const Search = () => {
               </ContentsItemContainer>
             </>
           ) : (
-            <StockChart stockId={stockInfo.stockId} />
+            <StockChart
+              stockId={stockInfo.stockId}
+              symbolName={stockInfo.symbolName}
+              country={stockInfo.country}
+            />
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>

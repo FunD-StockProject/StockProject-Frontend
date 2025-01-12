@@ -112,7 +112,11 @@ export const ChartLabel = styled.span(
     left: x ?? '0px',
     width: typeof x == 'number' ? 'auto' : '100%',
     transform:
-      'translate(' + (typeof x == 'number' ? '-50%' : '0') + ', ' + (typeof y == 'number' ? '-50%' : '0') + ')',
+      'translate(' +
+      (typeof x == 'number' ? '-50%' : '0') +
+      ', ' +
+      (typeof y == 'number' ? '-50%' : '0') +
+      ')',
 
     background: theme.colors[strokeRect ? 'primary100' : ((fillRect && color) ?? 'transparent')],
     color: theme.colors[(fillText && color) ?? 'primary0'],
@@ -143,3 +147,72 @@ export const ExtremeLabel = styled.span(
     },
   }),
 );
+
+export const StockChartCanvasRefContainer = styled.canvas({
+  top: 0,
+  left: 0,
+  height: '100%',
+  width: '100%',
+  position: 'absolute',
+});
+
+export const StockChartViewContainer = styled.div({
+  display: 'flex',
+  fontSize: '15px',
+  [media[0]]: {
+    fontSize: '11px',
+  },
+});
+
+export const StockChartItemContainer = styled.div(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  ({ grow }: { grow?: true }) =>
+    grow && { flexGrow: 1, borderRight: `2px solid ${theme.colors.grayscale90}` },
+);
+
+export const StockChartItemContent = styled.div(
+  {
+    userSelect: 'none',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  ({ type }: { type?: 'price' | 'score' }) => ({
+    borderBottom: type ? `2px solid ${theme.colors.grayscale90}` : '',
+    height: !type ? 'auto' : type == 'price' ? '500px' : '200px',
+    [media[0]]: {
+      height: !type ? 'auto' : type == 'price' ? '300px' : '100px',
+    },
+  }),
+);
+
+export const StockChartItemCanvasContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+});
+
+export const StockInfoDeltaLabel = styled.span(({ delta }: { delta?: number }) => ({
+  color: theme.colors[!delta ? 'grayscale60' : delta > 0 ? 'red' : 'blue'],
+}));
+
+export const StockChartInfoHeaderItem = styled.div({
+  userSelect: 'none',
+  background: '#00000088',
+  display: 'flex',
+  width: 'auto',
+  gap: '4px',
+});
+
+export const StockChartInfoHeader = styled.div({
+  position: 'absolute',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'start',
+  gap: '8px',
+  padding: '8px',
+});
