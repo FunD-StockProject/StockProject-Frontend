@@ -294,58 +294,6 @@ export const SearchBarResultSubtitle = styled.span({
   },
 });
 
-// SearchBarCountrySelect
-
-export const SearchBarCountrySelectContainer = styled.div({
-  background: theme.colors.grayscale80,
-  padding: '4px',
-  borderRadius: '8px',
-
-  ['input']: {
-    display: 'none',
-  },
-});
-
-export const SearchBarCountrySelectContents = styled.label({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  gap: '4px',
-});
-
-export const SearchBarCountrySelectTitle = styled.span({
-  position: 'relative',
-  fontSize: '17px',
-  padding: '6px 8px',
-
-  [media[0]]: {
-    fontSize: '15px',
-  },
-});
-
-export const SearchBarCountrySelectShape = styled.span(
-  {
-    position: 'absolute',
-
-    width: '48px',
-    height: '100%',
-    background: theme.colors.primary50,
-    borderRadius: '6px',
-
-    transition: `left 0.25s ease-in-out,
-    transform 0.25s ease-in-out`,
-
-    [media[0]]: {
-      width: '44px',
-    },
-  },
-  (props: { current: boolean }) => ({
-    left: `${props.current ? 0 : 100}%`,
-    transform: `translateX(${props.current ? 0 : -100}%)`,
-  }),
-);
-
 // SearchBarResultItem
 
 export const SearchBarResultGridContainer = styled.div(

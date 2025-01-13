@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  MARKET_CODES,
-  OPPOSITE_SCOTK_COUNTRY,
-  SEARCH_CATEGORY_TEXT,
-  STOCK_COUNTRY_TEXT,
-} from '@ts/Constants';
-import { SEARCH_CATEGORY, STOCK_COUNTRY } from '@ts/Types';
+import { MARKET_CODES, SEARCH_CATEGORY_TEXT, STOCK_COUNTRY_TEXT } from '@ts/Constants';
+import { SEARCH_CATEGORY } from '@ts/Types';
 import {
   STORAGE_RECENT_ITEMS,
   getItemLocalStorage,
@@ -15,7 +10,7 @@ import {
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchKeyowordsStocks } from '@controllers/api';
-import { AutoCompleteItem } from '@controllers/api.Type';
+import { AutoCompleteItem, SearchBarResultItems } from '@controllers/api.Type';
 import { PopularKeywordsQuery, PopularStocksQuery, useAutoComplete } from '@controllers/query';
 import CancelSVG from '@assets/icons/cancel.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
@@ -24,10 +19,6 @@ import UpSVG from '@assets/icons/up.svg?react';
 import NoResultSVG from '@assets/noResult.svg?react';
 import {
   SearchBarContainer,
-  SearchBarCountrySelectContainer,
-  SearchBarCountrySelectContents,
-  SearchBarCountrySelectShape,
-  SearchBarCountrySelectTitle,
   SearchBarInput,
   SearchBarLayout,
   SearchBarResultContainer,
@@ -115,18 +106,14 @@ const SearchBarItemsComponent = ({
   handleItemClick,
   onItemDelete = () => {},
   searchValue = '',
-  selectedCountry = 'KOREA',
-  setSelectedOppositeCountry,
   displayEmpty,
 }: {
   type: 'SEARCHED' | 'RECENT' | 'POPULAR';
   category: SEARCH_CATEGORY;
-  resultItems: AutoCompleteItem[];
+  resultItems: SearchBarResultItems[];
   handleItemClick: (item: AutoCompleteItem) => void;
   onItemDelete?: (item: AutoCompleteItem) => void;
   searchValue?: string;
-  selectedCountry?: STOCK_COUNTRY;
-  setSelectedOppositeCountry?: () => void;
   displayEmpty?: boolean;
 }) => {
   const width = `${type === 'RECENT' ? 50 : 100}%`;
@@ -144,21 +131,7 @@ const SearchBarItemsComponent = ({
     <SearchBarResultContent width={width}>
       {type === 'POPULAR' || resultItems.length ? (
         <>
-          <SearchBarResultTitle>
-            {title}
-            {type === 'POPULAR' && category == 'KEYWORD' && (
-              <SearchBarCountrySelectContainer onClick={setSelectedOppositeCountry}>
-                <SearchBarCountrySelectContents>
-                  <SearchBarCountrySelectShape current={selectedCountry === 'KOREA'} />
-                  {Object.values(STOCK_COUNTRY_TEXT).map((country) => (
-                    <SearchBarCountrySelectTitle key={`SearchBarCounty_${country}`}>
-                      {country}
-                    </SearchBarCountrySelectTitle>
-                  ))}
-                </SearchBarCountrySelectContents>
-              </SearchBarCountrySelectContainer>
-            )}
-          </SearchBarResultTitle>
+          <SearchBarResultTitle>{title}</SearchBarResultTitle>
           {type === 'SEARCHED' && category == 'KEYWORD' && (
             <SearchBarResultSubtitle>
               <b>{searchKeyword}</b> 이(가) 가장 많이 업급된 종목순으로 노출됩니다.
@@ -273,7 +246,6 @@ const SearchBar = () => {
   const [isFocusInput, setIsFocusInput] = useComponentFocus(false, inputRef);
 
   const [selectedCategory, setSelectedCategory] = useState<SEARCH_CATEGORY>('STOCK');
-  const [selectedCountry, setSelectedCountry] = useState<STOCK_COUNTRY>('KOREA');
   const [focusedItem, setFocusedItem] = useState<any>({
     idx: -1,
     type: '',
@@ -297,34 +269,16 @@ const SearchBar = () => {
 
   const [popularStocks] = PopularStocksQuery();
   const [popularKeywords] = PopularKeywordsQuery();
-  const popularItems =
-    selectedCategory == 'STOCK' ? popularStocks : popularKeywords[selectedCountry];
+  const popularItems = selectedCategory == 'STOCK' ? popularStocks : popularKeywords;
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
   const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchKeyowordsStocks, 'keyword');
   const searchedItems = selectedCategory == 'STOCK' ? searchedStocks : searchedKeywords;
 
-  const setSelectedOppositeCountry = () =>
-    setSelectedCountry(OPPOSITE_SCOTK_COUNTRY[selectedCountry]);
-
   useEffect(() => {
     const setSearchedItems = selectedCategory == 'STOCK' ? setSearchedStocks : setSearchedKeywords;
     setSearchedItems(searchValue);
   }, [searchValue, selectedCategory]);
-
-  useEffect(() => {
-    if (!popularKeywords) return;
-    const interval = setInterval(() => {
-      const countryList = Object.keys(STOCK_COUNTRY_TEXT) as STOCK_COUNTRY[];
-      setSelectedCountry(
-        (prev) =>
-          countryList[
-            (countryList.findIndex((category) => category == prev) + 1) % countryList.length
-          ],
-      );
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [selectedCountry]);
 
   useBlocker(
     isMobile && isActiveSearchBar,
@@ -540,10 +494,8 @@ const SearchBar = () => {
                     <SearchBarItemsComponent
                       type="POPULAR"
                       category={selectedCategory}
-                      resultItems={popularItems}
+                      resultItems={popularItems as SearchBarResultItems[]}
                       handleItemClick={handleItemClick}
-                      selectedCountry={selectedCountry}
-                      setSelectedOppositeCountry={setSelectedOppositeCountry}
                     />
                   </>
                 ) : (

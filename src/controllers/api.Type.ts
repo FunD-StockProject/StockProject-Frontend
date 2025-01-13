@@ -54,12 +54,21 @@ export interface IndexInfo {
   nasdaqIndexDiff: number;
 }
 
+export interface PopularItems {
+  [key: string]: any;
+  value: string;
+}
+
 export interface AutoCompleteItem {
   [key: string]: any; // 검색 결과 항목의 동적 키
   symbolName: string;
   keywordNames: string[];
   keyword: string;
   country: STOCK_COUNTRY;
+  value: string;
+}
+
+export interface SearchBarResultItems extends PopularItems, AutoCompleteItem {
   value: string;
 }
 
