@@ -1,3 +1,5 @@
+import { STOCK_COUNTRY } from '@ts/Types';
+
 export interface StockInfo {
   stockId: number;
   symbol: string;
@@ -9,7 +11,6 @@ export interface StockInfo {
   price: number;
   priceDiff: number;
   priceDiffPerCent: number;
-  priceSign: number;
 }
 
 export interface StockScore {
@@ -27,7 +28,7 @@ export interface RevelantStockInfo {
   diff: number;
 }
 
-export interface StockTableData {
+export interface StockTableInfo {
   stockId: string;
   symbolName: string;
   country: string;
@@ -38,7 +39,7 @@ export interface StockTableData {
   scoreDiff: number;
 }
 
-export interface indexData {
+export interface IndexInfo {
   kospiVix: number;
   kospiVixDiff: number;
   kospiIndex: number;
@@ -51,6 +52,24 @@ export interface indexData {
   snpIndexDiff: number;
   nasdaqIndex: number;
   nasdaqIndexDiff: number;
+}
+
+export interface PopularItems {
+  [key: string]: any;
+  value: string;
+}
+
+export interface AutoCompleteItem {
+  [key: string]: any; // 검색 결과 항목의 동적 키
+  symbolName: string;
+  keywordNames: string[];
+  keyword: string;
+  country: STOCK_COUNTRY;
+  value: string;
+}
+
+export interface SearchBarResultItems extends PopularItems, AutoCompleteItem {
+  value: string;
 }
 
 export type PERIOD_CODE = 'D' | 'W' | 'M';

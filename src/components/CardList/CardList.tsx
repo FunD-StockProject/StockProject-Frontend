@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
-import { StockType } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
-import MobileStockCardItem from '@components/MobileStockCard/MobileStockCard';
-import StockCardItem from '@components/StockCard/StockCard';
+import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
+import StockCardItem from '@components/CardList/StockCard/StockCard';
+import { StockType } from '@components/Common/Common.Type';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockScore } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
@@ -24,7 +24,7 @@ const CardList = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
-  // const [activeIndex, setActiveIndex] = useState(`${name}_0`);
+
   const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
   const isHot = name === 'HOT';
   const country = index === 0 ? 'KOREA' : 'OVERSEA';
@@ -45,7 +45,7 @@ const CardList = ({
 
   const renderHotStocks = () => {
     return curStocks.map((stock: StockScore, idx: number) => (
-      <CardListItemContainer key={`${name}_${idx}`} width={width ?? 0}>
+      <CardListItemContainer key={`${name}_${idx}`} width={(width ?? 0) * (isMobile ? 0.9 : 1)}>
         <ScoreSlotMachine
           stockName={stock.symbolName}
           active={true}
@@ -86,19 +86,6 @@ const CardList = ({
     ));
   };
 
-  // const handleUpdate = () => {
-  //   const visibleItems = apiRef.current.items.getVisible();
-
-  //   // if (visibleItems.length > 0) {
-  //   //   setActiveIndex(visibleItems[0][0]);
-  //   // }
-  // };
-
-  // const indicatorArray =
-  //   !isMobile && !isHot
-  //     ? Array.from({ length: curStocks?.length }, (_, idx) => idx).filter((_, idx) => idx % 3 === 0)
-  //     : Array.from({ length: curStocks?.length }, (_, idx) => idx);
-
   return (
     <NoScrollbar ref={containerRef}>
       {suspend ||
@@ -107,7 +94,6 @@ const CardList = ({
             LeftArrow={<ScrollArrow direction="left" />}
             RightArrow={<ScrollArrow direction="right" />}
             apiRef={apiRef}
-            // onUpdate={handleUpdate}
           >
             {renderStocks()}
           </ScrollMenu>

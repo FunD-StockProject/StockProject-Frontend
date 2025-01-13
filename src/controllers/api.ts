@@ -1,14 +1,15 @@
+import { WordFrequency } from '@ts/Interfaces';
 import { PERIOD_CODE } from './api.Type';
 import {
   fetchChartMock,
   fetchIndexScoreMock,
   fetchKeywordsMock,
+  fetchPopularStocksMock,
   fetchRelevantMock,
   fetchScoreCardMock,
   fetchScoreMock,
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
-  fetchStockTableMock,
 } from './mock';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -29,7 +30,7 @@ const fetchData = async (path: string) => {
     await wait(0);
     return await res.json();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     throw error;
   }
 };
@@ -42,11 +43,6 @@ const fetchScore = async (id: number, country: string) => {
 const fetchRelevant = async (id: number) => {
   if (enableMock) return fetchRelevantMock;
   return fetchData(`/stock/${id}/relevant`);
-};
-
-const fetchStockChart = async (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  if (enableMock) return fetchChartMock;
-  return fetchData(`/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}`);
 };
 
 const fetchHotStocks = async (country: string) => {
@@ -63,38 +59,75 @@ const fetchDescentStocks = async (country: string) => {
   if (enableMock) return fetchScoreCardMock;
   return fetchData(`/stock/descent/${country}`);
 };
-// Additional stock-related API calls
-const fetchAutoComplete = (name: string) => {
-  return fetchData(`/stock/autocomplete?keyword=${name}`);
-};
 
 const fetchSearchSymbolName = (symbolname: string, country: string) => {
   if (enableMock) return fetchSearchSymbolNameMock;
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
-const fetchSearchWordCloud = (symbol: string, country: string) => {
-  if (enableMock) return fetchSearchWordCloudMock;
-  return fetchData(`/wordcloud/${symbol}/${country}`);
-};
-
 const fetchRealStockInfo = (stockId: number, country: string) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
-const fetchKeywords = (country: string) => {
-  if (enableMock) return fetchKeywordsMock;
+const fetchKeywords = (country: string): Promise<string[]> => {
+  if (enableMock) return Promise.resolve(fetchKeywordsMock);
   return fetchData(`/keyword/popular/${country}`);
 };
 
 const fetchStockTable = (category: string, country: string) => {
-  if (enableMock) return fetchStockTableMock;
   return fetchData(`/stock/category/${category}/${country}`);
 };
 
 const fetchIndexScore = () => {
   if (enableMock) return fetchIndexScoreMock;
   return fetchData(`/score/index`);
+};
+
+// WordCloud
+
+const fetchSearchWordCloud = (symbol: string, country: string): Promise<WordFrequency[]> => {
+  if (enableMock) return Promise.resolve(fetchSearchWordCloudMock);
+  return fetchData(`/wordcloud/${symbol}/${country}`);
+};
+
+// Chart
+
+const fetchStockChart = async (
+  id: number,
+  periodCode: PERIOD_CODE,
+  startDate: string,
+  endDate: string,
+) => {
+  if (enableMock) return fetchChartMock;
+  return fetchData(
+    `/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}&endDate=${endDate}`,
+  );
+};
+
+// SearchBar
+
+const fetchAutoComplete = (name: string) => {
+  return fetchData(`/stock/autocomplete?keyword=${name}`);
+};
+
+const fetchKeyowordsStocks = (keywordName: string) => {
+  return fetchData(`/keyword/${keywordName}/stocks`);
+};
+
+interface PopularStocks {
+  stockId: number;
+  symbol: string;
+  symbolName: string;
+  country: 'KOREA' | 'OVERSEA';
+}
+
+const fetchPopularStocks = (): Promise<PopularStocks[]> => {
+  if (enableMock) return Promise.resolve(fetchPopularStocksMock as PopularStocks[]);
+  return fetchData(`/stock/rankings/hot`);
+};
+
+const fetchPopularKeywords = (): Promise<string[]> => {
+  return fetchData('/keyword/rankings');
 };
 
 export {
@@ -111,4 +144,7 @@ export {
   fetchKeywords,
   fetchStockTable,
   fetchIndexScore,
+  fetchKeyowordsStocks,
+  fetchPopularStocks,
+  fetchPopularKeywords,
 };

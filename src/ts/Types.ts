@@ -1,13 +1,5 @@
-interface LayoutProps {
-  children?: React.ReactNode;
-  className?: string;
-}
-
-type StockType = 'HOT' | 'RISING' | 'DESCENT';
-
-interface StockSearchInfo {
-  symbolName: string;
-  country: string;
-}
-
-export type { LayoutProps, StockType, StockSearchInfo };
+export type STOCK_COUNTRY = 'KOREA' | 'OVERSEA';
+export type SEARCH_CATEGORY = 'STOCK' | 'KEYWORD';
+export type DAY_TYPE = 'D' | 'W' | 'M' | 'Y';
+export type PERIOD_CODE = 'D' | 'W' | 'M';
+export type RESULT_TYPE = 'INDICATOR' | 'CHART';

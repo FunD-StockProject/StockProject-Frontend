@@ -6,6 +6,14 @@
   font-display: swap;
 }
 
+@font-face {
+  src:
+    local('PretendardBlack'),
+    url('/fonts/Pretendard-Black.woff2') format('woff2');
+  font-family: 'PretendardBlack';
+  font-display: swap;
+}
+
 :root {
   color: rgba(255, 255, 255, 0.87);
   color-scheme: light dark;
@@ -24,8 +32,16 @@
   -o-text-size-adjust: 100%; /* 오페라 구버전 */
 }
 
+/* html,
+body {
+  height: -webkit-fill-available;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+} */
+
 html {
   margin: 0px;
+  zoom: 1; /* 기본 줌 설정 */
 }
 
 body {

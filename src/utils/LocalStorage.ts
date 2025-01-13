@@ -1,30 +1,28 @@
-const setItemLocalStorage = (name: string, data: any) => {
-  if (typeof data == 'object') {
-    localStorage.setItem(name, JSON.stringify(data));
-  } else if (typeof data == 'number') {
-    localStorage.setItem(name, data.toString());
-  } else {
-    localStorage.setItem(name, data);
-  }
+import { SEARCH_CATEGORY } from '@ts/Types';
+
+const setItemLocalStorage = (key: string, data: any) => {
+  const value = typeof data === 'object' ? JSON.stringify(data) : String(data);
+  localStorage.setItem(key, value);
 };
 
-const getItemLocalStorage = (name: string) => {
-  const data = localStorage.getItem(name);
+const getItemLocalStorage = (key: string, initial?: any) => {
+  const data = localStorage.getItem(key);
 
-  // Wrong item name cause (null)
-  if (data == null) return null;
-
-  // number and object type can parse from JSON
+  if (!data) return initial;
   try {
-    const json = JSON.parse(data);
-    return json;
+    return JSON.parse(data);
   } catch {
     return data;
   }
 };
 
-const isExistItemLocalStorage = (name: string) => {
-  return localStorage.getItem(name) ? true : false;
+const isExistItemLocalStorage = (key: string) => {
+  return localStorage.getItem(key) ? true : false;
+};
+
+export const STORAGE_RECENT_ITEMS: Record<SEARCH_CATEGORY, string> = {
+  STOCK: 'RecentStocks',
+  KEYWORD: 'RecentKeywords',
 };
 
 export { setItemLocalStorage, getItemLocalStorage, isExistItemLocalStorage };

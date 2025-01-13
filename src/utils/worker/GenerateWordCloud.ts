@@ -1,5 +1,5 @@
+import { WordCloudItem, WordFrequency } from '@ts/Interfaces';
 import { LoadWordCloudWASM } from '@utils/wasm/WordCloudWasm';
-import { WordFrequency } from '@components/StockWordCloud/StockWordCloud.Type';
 
 const GetnerateWordCloud = (params: {
   frequencies: WordFrequency[];
@@ -10,7 +10,6 @@ const GetnerateWordCloud = (params: {
   minFontSize?: number;
   margin?: number;
   maxWords?: number;
-  // relativeScaling?: number;
   randomState?: number;
   maxFontSize?: number;
 }): any => {
@@ -22,16 +21,17 @@ const GetnerateWordCloud = (params: {
     wasm,
     minFontSize = 4,
     margin = 4,
-    maxWords = 200,
-    // relativeScaling = 0.5,
+    maxWords = 800,
     randomState = ~~(Math.random() * 1e9),
     maxFontSize,
   } = params;
 
-  frequencies = frequencies.sort((a, b) => b.freq - a.freq).slice(0, maxWords);
+  frequencies = frequencies
+    .sort((a, b) => b.freq - a.freq || a.word.length - b.word.length)
+    .slice(0, maxWords);
 
   const margin_gap = margin / 2;
-  const layouts: any = [];
+  const layouts: WordCloudItem[] = [];
 
   let startFontSize = 1;
 
@@ -48,7 +48,7 @@ const GetnerateWordCloud = (params: {
 
       if (!ret) return null;
 
-      const fontSizes = ret.map(({ fontSize }: any) => fontSize);
+      const fontSizes = ret.layouts.map(({ fontSize }: any) => fontSize);
 
       if (fontSizes.length >= 2) {
         startFontSize = ~~((2 * fontSizes[0] * fontSizes[1]) / (fontSizes[0] + fontSizes[1]));
@@ -66,15 +66,15 @@ const GetnerateWordCloud = (params: {
 
   const FontOffCtx = new OffscreenCanvas(width, height).getContext('2d');
   if (!FontOffCtx) return null;
-  FontOffCtx.font = `${maxFontSize}px "Pretendard"`;
+  FontOffCtx.font = `${maxFontSize}px "PretendardBlack"`;
 
-  frequencies.every(({ word, freq }: any) => {
+  frequencies.every(({ word, freq }) => {
     word = word.toUpperCase();
     const textWidth = FontOffCtx.measureText(word).width / maxFontSize;
-    if (!freq) return true;
 
     const { fontSize, orientation, posX, posY } = wasm.getPosition(startFontSize, textWidth);
-    if (fontSize < minFontSize) return false;
+
+    if (fontSize < minFontSize) return true;
     startFontSize = fontSize;
 
     const [sizeX, sizeY] = [
@@ -85,10 +85,11 @@ const GetnerateWordCloud = (params: {
     const offCtx = new OffscreenCanvas(sizeX, sizeY).getContext('2d');
     if (!offCtx) return false;
     offCtx.textBaseline = 'top';
-    offCtx.font = `${fontSize}px "Pretendard"`;
+    offCtx.font = `${fontSize}px "PretendardBlack"`;
 
     const textX = margin_gap;
-    const textY = (orientation ? -1 : 1) * margin_gap + fontSize * (!orientation ? adjust : -(1 - adjust));
+    const textY =
+      (orientation ? -1 : 1) * margin_gap + fontSize * (!orientation ? adjust : -(1 - adjust));
     if (orientation) {
       offCtx.rotate((90 * Math.PI) / 180);
       offCtx.fillText(word, textX, textY);
@@ -99,9 +100,10 @@ const GetnerateWordCloud = (params: {
 
     layouts.push({
       word,
+      freq: freq,
       fontSize,
       orientation,
-      position: { x: posX + margin_gap, y: posY + margin_gap },
+      pos: { x: posX + margin_gap, y: posY + margin_gap },
       size: { w: sizeX, h: sizeY },
       color: ~~(Math.random() * 6),
     });
@@ -114,31 +116,41 @@ const GetnerateWordCloud = (params: {
     return true;
   });
 
-  return layouts;
+  return { width: width, height: height, layouts: layouts };
 };
 
-self.onmessage = (e) => {
+self.onmessage = ({ data: { symbol, data, width, height, adjust, isMobile } }) => {
   if (!self.FontFace) {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace('Pretendard', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
+  const fontFace = new FontFace(
+    'PretendardBlack',
+    "url(/fonts/Pretendard-Black.woff2) format('woff2')",
+  );
   self.fonts.add(fontFace);
+
   fontFace.load().then(async () => {
     if (!self.OffscreenCanvas) {
       postMessage("Your browser doesn't support OffscreeenCanvas yet");
       return;
     }
 
-    const wasmModule = await LoadWordCloudWASM(e.data.width, e.data.height);
+    const wasmModule = await LoadWordCloudWASM(width, height);
 
-    const ret = GetnerateWordCloud({
-      frequencies: e.data.data,
-      height: e.data.height,
-      width: e.data.width,
-      adjust: e.data.adjust,
-      wasm: wasmModule,
-    });
+    const ret = {
+      symbol,
+      ...GetnerateWordCloud({
+        frequencies: data,
+        height: height,
+        width: width,
+        adjust: adjust,
+        minFontSize: !isMobile ? 7 : 5,
+        margin: !isMobile ? 4 : 3,
+        maxWords: !isMobile ? 800 : 600,
+        wasm: wasmModule,
+      }),
+    };
     postMessage(ret);
   });
 };

@@ -14,11 +14,11 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  fontSize: '40px',
+  fontSize: '32px',
   fontWeight: '700',
   color: theme.colors.grayscale10,
   ['svg']: {
-    height: '36px',
+    height: '28px',
     width: 'auto',
     fill: color ? theme.colors[color] : '',
   },

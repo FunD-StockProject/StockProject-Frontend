@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UseQueryResult } from 'react-query';
-import ErrorComponent from '@components/ErrorComponent';
-import LoadingComponent from '@components/LoadingComponent';
+import ErrorComponent from '@components/Common/ErrorComponent';
+import LoadingComponent from '@components/Common/LoadingComponent';
 
 export const useQueryComponent = ({ children, query }: { children?: React.ReactNode; query: UseQueryResult }) => {
   const { data, isLoading, isError }: { data: any; isLoading: any; isError: any } = query;
@@ -18,5 +18,6 @@ export const useQueryComponent = ({ children, query }: { children?: React.ReactN
 
   if (isLoading) return [null, isDeferred && <LoadingComponent />];
   if (isError) return [null, <ErrorComponent />];
+
   return [data, children];
 };

@@ -1,21 +1,16 @@
 import { keyframes } from '@emotion/react';
 
-const pop = keyframes`
-  from {
-    -webkit-transform: scale(0.0);
-    transform: scale(0);
-  }
-
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-
-  to {
-    -webkit-transform: scale(1.0);
-    transform: scale(1);
-  }
-`;
+const pop = keyframes({
+  ['from']: {
+    transform: 'scale(0)',
+  },
+  ['50%']: {
+    transform: 'scale(1.2)',
+  },
+  ['to%']: {
+    transform: 'scale(1)',
+  },
+});
 
 const popOut = keyframes`
   from {
