@@ -1,22 +1,30 @@
+import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MARKET_CODES, STOCK_COUNTRY_TEXT } from '@ts/Constants';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { MARKET_CODES, ResultInfo } from '@ts/Constants';
+import { RESULT_TYPE } from '@ts/Types';
+import { deltaColor } from '@utils/Delta';
 import { StockInfo } from '@controllers/api.Type';
-import AlertSVG from '@assets/alert.svg?react';
+import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
-  SearchInfo,
-  SearchTitleAnimatedText,
-  SearchTitleButton,
+  SearchTitleBody,
+  SearchTitleBodySubtitle,
+  SearchTitleBodyTitle,
+  SearchTitleBodyTitleAnimatedText,
+  SearchTitleBodyTitleSVG,
+  SearchTitleBodyTitleText,
   SearchTitleContainer,
-  SearchTitleContent,
-  SearchTitleCountryButton,
-  SearchTitleLabelContainer,
-  SearchTitleLabelItem,
-  SearchTitleSVG,
-  SearchTitleText,
+  SearchTitleFooterContainer,
+  SearchTitleFooterItems,
+  SearchTitleHeaderButton,
+  SearchTitleHeaderContainer,
+  SearchTitleHeaderSymbol,
 } from './SearchTitle.Style';
+
+const BASE_DELAY = 1500;
+
+const priceDiff = (diff: number) => `${(diff < 0 ? '-' : '+') + Math.abs(diff).toLocaleString()}`;
 
 const SearchTitle = ({
   stockInfo,
@@ -24,60 +32,92 @@ const SearchTitle = ({
   onClick,
 }: {
   stockInfo: StockInfo;
-  resultMode: 'indicator' | 'chart';
+  resultMode: RESULT_TYPE;
   onClick: (e: any) => void;
 }) => {
   const { state } = useLocation();
-  const titleTextRef = useRef<HTMLDivElement>(null);
-  const [animated, setAnimated] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!titleTextRef.current) return;
-    setAnimated(titleTextRef.current.scrollWidth > titleTextRef.current.offsetWidth);
-  }, [state]);
-
-  const priceDiff = (diff: number) => {
-    return `${(diff < 0 ? '-' : '+') + Math.abs(diff).toLocaleString()}`;
-  };
 
   const money = stockInfo.country === 'KOREA' ? '₩' : '$';
+
+  const titleTextRef = useRef<HTMLDivElement>(null);
+
+  const [animated, setAnimated] = useState<boolean>(false);
+  const [animationDelay, setAnimationDelay] = useState<any>({
+    initial: BASE_DELAY,
+    animate: BASE_DELAY,
+    instant: BASE_DELAY,
+  });
+  const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
+
+  const variants: Variants = {
+    initial: {
+      left: '0%',
+      transform: 'translateX(0%)',
+    },
+    animate: {
+      left: '100%',
+      transform: 'translateX(-100%)',
+      transition: { duration: animationDelay['animate'] / 1000, ease: 'linear' }, // 애니메이션
+    },
+    instant: {
+      left: '0%',
+      transform: 'translateX(0%)',
+      transition: { delay: animationDelay['instant'] / 1000, duration: 0 }, // 즉시 이동
+    },
+  };
+
+  useEffect(() => {
+    if (titleTextRef.current) {
+      const { offsetWidth, scrollWidth } = titleTextRef.current;
+      setAnimated(scrollWidth > offsetWidth);
+      setAnimationDelay({ ...animationDelay, animate: (BASE_DELAY * scrollWidth) / offsetWidth });
+    }
+  }, [state]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (animated) cycleAnimation();
+    }, animationDelay[animation]);
+    return () => clearInterval(interval);
+  }, [animation, animated]);
+
   return (
     stockInfo && (
       <SearchTitleContainer>
-        <SearchTitleCountryButton>
-          {STOCK_COUNTRY_TEXT[stockInfo.country as STOCK_COUNTRY]} 주식
-        </SearchTitleCountryButton>
-        <SearchTitleContent>
-          <SearchTitleText ref={titleTextRef}>
-            {stockInfo.symbolName}
-            <SearchTitleAnimatedText animated={animated}>
+        <SearchTitleHeaderContainer>
+          <SearchTitleHeaderSymbol>{stockInfo.symbol}</SearchTitleHeaderSymbol>
+          <SearchTitleHeaderButton onClick={onClick}>
+            {ResultInfo[ResultInfo[resultMode].opposite].text} 보기
+            <RightSVG />
+          </SearchTitleHeaderButton>
+        </SearchTitleHeaderContainer>
+        <SearchTitleBody>
+          <SearchTitleBodyTitle>
+            <SearchTitleBodyTitleText ref={titleTextRef}>
               {stockInfo.symbolName}
-            </SearchTitleAnimatedText>
-          </SearchTitleText>
-          <SearchTitleSVG>
-            <ZipyoSVG />
-          </SearchTitleSVG>
-          <SearchTitleButton onClick={onClick}>
-            {resultMode == 'indicator' ? '차트' : '인간지표'} 보기
-          </SearchTitleButton>
-        </SearchTitleContent>
-        <SearchTitleLabelContainer>
-          <SearchTitleLabelItem>{stockInfo.symbol}</SearchTitleLabelItem>
-          <SearchTitleLabelItem>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleLabelItem>
-          <SearchTitleLabelItem bold={true} delta={stockInfo.priceDiff}>
+              <AnimatePresence>
+                <SearchTitleBodyTitleAnimatedText variants={variants} animate={animation}>
+                  {stockInfo.symbolName}
+                </SearchTitleBodyTitleAnimatedText>
+              </AnimatePresence>
+            </SearchTitleBodyTitleText>
+            <SearchTitleBodyTitleSVG>
+              <ZipyoSVG />
+            </SearchTitleBodyTitleSVG>
+          </SearchTitleBodyTitle>
+          <SearchTitleBodySubtitle>
+            {false &&
+              `동사는 신한금융 계열사에 대한 지배/경영관리, 종속회사에 대한 자금지원 등을 주요
+            사업목적으로 2001년 설립된 금융지주회사임.`}
+          </SearchTitleBodySubtitle>
+        </SearchTitleBody>
+        <SearchTitleFooterContainer>
+          <SearchTitleFooterItems>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleFooterItems>
+          <SearchTitleFooterItems delta={deltaColor(stockInfo.priceDiff)}>
             {money} {stockInfo.price.toLocaleString()}
-            <span>
-              {`
-                ${priceDiff(stockInfo.priceDiff)}
-                (${stockInfo.priceDiffPerCent}%)
-              `}
-            </span>
-          </SearchTitleLabelItem>
-        </SearchTitleLabelContainer>
-        <SearchInfo>
-          <AlertSVG />
-          인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
-        </SearchInfo>
+            <span>{`${priceDiff(stockInfo.priceDiff)}(${stockInfo.priceDiffPerCent}%)`}</span>
+          </SearchTitleFooterItems>
+        </SearchTitleFooterContainer>
       </SearchTitleContainer>
     )
   );
