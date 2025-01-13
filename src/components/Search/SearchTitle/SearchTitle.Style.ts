@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
-import { marquee } from '@styles/keyframes';
-import { media, theme } from '@styles/themes';
+import { motion } from 'framer-motion';
+import { media, theme, themeColor } from '@styles/themes';
 
-const SearchTitleContainer = styled.div({
+export const SearchTitleContainer = styled.div({
   background: theme.colors.primary100,
   display: 'flex',
   flexDirection: 'column',
@@ -11,161 +10,149 @@ const SearchTitleContainer = styled.div({
   maxWidth: '1280px',
   boxSizing: 'border-box',
   margin: '0 auto',
-  height: '100%',
-  gap: '24px',
-  fontSize: '19px',
+  gap: '32px',
   color: theme.colors.grayscale30,
   [media[0]]: {
-    gap: '12px',
-    fontSize: '13px',
+    gap: '24px',
   },
 });
 
-const SearchTitleCountryButton = styled.div({
-  background: theme.colors.grayscale70,
-  padding: '12px 24px',
-  width: 'fit-content',
-  borderRadius: '64px',
-  fontSize: '15px',
-  color: theme.colors.primary0,
-  [media[0]]: {
-    fontSize: '11px',
-    padding: '6px 16px',
-  },
-});
-
-const SearchTitleContent = styled.div({
+export const SearchTitleHeaderContainer = styled.div({
   display: 'flex',
-  boxSizing: 'content-box',
+  justifyContent: 'space-between',
+  alignItems: 'end',
+});
+
+export const SearchTitleHeaderSymbol = styled.p({
+  margin: '0',
+  fontSize: '15px',
+  padding: '8px 16px',
+  borderRadius: '24px',
+  background: theme.colors.grayscale100,
+  [media[0]]: {
+    fontSize: '13px',
+    padding: '4px 12px',
+  },
+});
+
+export const SearchTitleHeaderButton = styled.div({
+  lineHeight: '1',
+  fontSize: '17px',
+  padding: '12px 20px',
+  borderRadius: '8px',
+  background: theme.colors.primary50,
+  cursor: 'pointer',
+  display: 'flex',
   gap: '12px',
   alignItems: 'center',
-  width: '100%',
-  fontSize: '40px',
   fontWeight: '700',
+  ['svg']: {
+    stroke: theme.colors.primary0,
+    strokeWidth: '1.5',
+  },
   [media[0]]: {
+    fontSize: '15px',
+    padding: '12px 16px',
     gap: '8px',
-    fontSize: '21px',
+    ['svg']: {
+      width: '16px',
+      height: '16px',
+    },
   },
 });
 
-const SearchTitleText = styled.div({
+export const SearchTitleBody = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  [media[0]]: {
+    gap: '12px',
+  },
+});
+
+export const SearchTitleBodyTitle = styled.div({
+  fontSize: '42px',
+  lineHeight: '1',
+  fontWeight: '700',
+  display: 'flex',
+  alignItems: 'center',
+  color: theme.colors.transparent,
+
+  [media[0]]: {
+    fontSize: '32px',
+  },
+});
+
+export const SearchTitleBodyTitleText = styled.div({
+  boxSizing: 'content-box',
+  position: 'relative',
   textWrap: 'nowrap',
   overflow: 'hidden',
-  position: 'relative',
-  color: theme.colors.transparent,
 });
 
-const SearchTitleAnimatedText = styled.div(
-  ({ animated }: { animated: boolean }) => animated && { animation: marquee + ' ' + 5 + 's linear infinite' },
-  {
-    top: '0',
-    position: 'absolute',
-    color: theme.colors.primary0,
-  },
-);
+export const SearchTitleBodyTitleAnimatedText = styled(motion.div)({
+  top: '0',
+  position: 'absolute',
+  color: theme.colors.primary0,
+});
 
-const SearchTitleSVG = styled.div({
+export const SearchTitleBodyTitleSVG = styled.div({
   display: 'flex',
+  paddingLeft: '12px',
   ['svg']: {
-    fill: theme.colors.primary40,
-    height: '40px',
+    fill: theme.colors.primary50,
     width: '85px',
     marginRight: 'auto',
     textWrap: 'nowrap',
     overflowWrap: 'anywhere',
-    [media[0]]: {
-      height: 'auto',
-      width: '45px',
+  },
+  [media[0]]: {
+    paddingLeft: '8 px',
+    ['svg']: {
+      width: '56px',
     },
   },
 });
 
-const SearchTitleButton = styled.div({
-  padding: '12px 42px',
-  borderRadius: '30px',
-  background: theme.colors.primary50,
-  fontSize: '19px',
-  color: theme.colors.grayscale5,
-  fontWeight: '700',
-  textWrap: 'nowrap',
-  marginLeft: 'auto',
+export const SearchTitleBodySubtitle = styled.div({
+  fontSize: '15px',
+
   [media[0]]: {
-    padding: '6px 24px',
-    fontSize: '13px',
+    fontSize: '11px',
   },
 });
 
-const SearchTitleLabelContainer = styled.div({
+export const SearchTitleFooterContainer = styled.div({
   display: 'flex',
-  alignItems: 'center',
-  fontSize: '19px',
-  gap: '14px',
-  color: theme.colors.primary0,
-  lineHeight: 1,
-  [media[0]]: {
-    fontSize: '13px',
-    gap: '8px',
-  },
+  gap: '12px',
 });
 
-const SearchTitleLabelItem = styled.div(
-  ({ delta, bold }: { delta?: number; bold?: boolean }) => ({
-    fontWeight: bold ? '700' : '400',
-    span: {
-      color: deltaScoreToColor(delta ?? 0),
-    },
-  }),
+export const SearchTitleFooterItems = styled.div(
   {
-    background: theme.colors.grayscale90,
-    borderRadius: '6px',
+    lineHeight: '1',
+    fontSize: '17px',
     padding: '12px 18px',
     display: 'flex',
+    gap: '8px',
+    background: theme.colors.grayscale100,
+    borderRadius: '8px',
     alignItems: 'center',
-    gap: '6px',
-    span: {
+    fontWeight: '700',
+    ['span']: {
       fontSize: '15px',
+      fontWeight: '500',
     },
     [media[0]]: {
+      fontSize: '15px',
       padding: '8px 12px',
-      gap: '4px',
-      span: {
-        fontSize: '10px',
+      ['span']: {
+        fontSize: '13px',
       },
     },
   },
+  ({ delta }: { delta?: themeColor }) => ({
+    ['span']: {
+      color: theme.colors[delta ?? 'primary0'],
+    },
+  }),
 );
-
-const SearchInfo = styled.div({
-  display: 'flex',
-  height: '50px',
-  padding: '10px 8px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '4px',
-  borderRadius: '10px',
-  backgroundColor: theme.colors.grayscale100,
-
-  margin: '0px 18px',
-  color: theme.colors.grayscale20,
-  fontSize: '20px',
-  fontWeight: '500',
-  lineHeight: '1.5',
-
-  [media[0]]: {
-    height: '25px',
-    fontSize: '12px',
-    margin: '0 0px',
-  },
-});
-export {
-  SearchTitleContainer,
-  SearchTitleCountryButton,
-  SearchTitleContent,
-  SearchTitleText,
-  SearchTitleAnimatedText,
-  SearchTitleSVG,
-  SearchTitleButton,
-  SearchTitleLabelContainer,
-  SearchTitleLabelItem,
-  SearchInfo,
-};

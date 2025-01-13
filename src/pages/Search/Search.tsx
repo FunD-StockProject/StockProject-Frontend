@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ResultInfo } from '@ts/Constants';
+import { RESULT_TYPE } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
@@ -18,11 +20,13 @@ import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockScore } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
+import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import {
   SearchResultContainer,
   SearchResultContents,
+  SearchResultInfo,
   StockRelevantContainer,
 } from './Search.Style';
 
@@ -100,11 +104,10 @@ const Search = () => {
   const [stockInfo, suspend] = useQueryComponent({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
-  const [resultMode, setResultMode] = useState<'indicator' | 'chart'>('chart');
+  const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  const toggleResultMode = () =>
-    setResultMode((prev) => (prev === 'indicator' ? 'chart' : 'indicator'));
+  const toggleResultMode = () => setResultMode((prev) => ResultInfo[prev].opposite);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
@@ -113,7 +116,11 @@ const Search = () => {
       <SearchResultContainer>
         <SearchResultContents>
           <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
-          {resultMode === 'indicator' ? (
+          <SearchResultInfo>
+            <AlertSVG />
+            인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
+          </SearchResultInfo>
+          {resultMode === 'INDICATOR' ? (
             <>
               <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
               <ContentsItemContainer>

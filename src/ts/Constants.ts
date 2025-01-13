@@ -1,5 +1,5 @@
 import { themeColor } from '@styles/themes';
-import { PERIOD_CODE, SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
+import { PERIOD_CODE, RESULT_TYPE, SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
 
 const STOCK_COUNTRY_TEXT: Record<STOCK_COUNTRY, string> = {
   KOREA: '국내',
@@ -67,6 +67,23 @@ const CHART_MOVING_AVERAGE_COLOR: Record<string, themeColor> = {
   120: 'yellow',
 };
 
+const ResultInfo: Record<
+  RESULT_TYPE,
+  {
+    text: string;
+    opposite: RESULT_TYPE;
+  }
+> = {
+  INDICATOR: {
+    text: '인간지표',
+    opposite: 'CHART',
+  },
+  CHART: {
+    text: '차트',
+    opposite: 'INDICATOR',
+  },
+};
+
 export {
   STOCK_UPDATE_TIME,
   MARKET_CODES,
@@ -78,4 +95,5 @@ export {
   PERIOD_CODE_TEXT,
   MAX_MIN,
   CHART_MOVING_AVERAGE_COLOR,
+  ResultInfo,
 };

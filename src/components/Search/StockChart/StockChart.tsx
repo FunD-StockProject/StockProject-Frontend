@@ -9,6 +9,7 @@ import {
 import { PERIOD_CODE, STOCK_COUNTRY } from '@ts/Types';
 import { drawLine, drawRect, setLineWidth } from '@utils/Canvas';
 import { formatDateISO, getDateLabel } from '@utils/Date';
+import { deltaColor } from '@utils/Delta';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { StockChartQuery } from '@controllers/query';
 import { theme, themeColor } from '@styles/themes';
@@ -31,9 +32,6 @@ import {
   StockChartViewContainer,
   StockInfoDeltaLabel,
 } from './StockChart.Style';
-
-const deltaColor = (delta: number): themeColor =>
-  !delta ? 'grayscale50' : delta > 0 ? 'red' : 'blue';
 
 const DPR = window.devicePixelRatio;
 
