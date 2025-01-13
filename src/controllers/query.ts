@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import {
-  CHART_MOVING_AVERAGE_COLOR,
-  CHART_PRICE_FIELD,
-  STOCK_COUNTRY_TEXT,
-  TEXT_SIZE_ADJUST,
-} from '@ts/Constants';
+import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD, TEXT_SIZE_ADJUST } from '@ts/Constants';
 import { STOCK_COUNTRY } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
@@ -13,6 +8,7 @@ import {
   AutoCompleteItem,
   IndexInfo,
   PERIOD_CODE,
+  PopularItems,
   RevelantStockInfo,
   StockTableInfo,
 } from '@controllers/api.Type';
@@ -22,6 +18,7 @@ import {
   fetchIndexScore,
   fetchKeyowordsStocks,
   fetchKeywords,
+  fetchPopularKeywords,
   fetchPopularStocks,
   fetchRealStockInfo,
   fetchRelevant,
@@ -276,11 +273,14 @@ export const StockChartQuery = (stockId: number, period: string) => {
 // SearchBar
 
 export const PopularStocksQuery = () => {
-  const { data } = useQuery(
+  const { data = [] } = useQuery(
     ['PopularStocksQuery'],
     async () => {
       const popularStocks = await Promise.resolve(fetchPopularStocks());
-      return popularStocks.map((stock) => ({ ...stock, value: stock.symbolName }));
+      return popularStocks.map((stock) => ({
+        ...stock,
+        value: stock.symbolName,
+      })) as PopularItems[];
     },
     {
       ...queryOptions,
@@ -292,23 +292,15 @@ export const PopularStocksQuery = () => {
 };
 
 export const PopularKeywordsQuery = () => {
-  const countryList = Object.keys(STOCK_COUNTRY_TEXT);
-
-  const { data } = useQuery(
+  const { data = [] } = useQuery(
     ['PopularKeywordsQuery'],
     async () => {
-      const keywordEntries = await Promise.all(
-        countryList.map(async (country) => {
-          const keywords = await fetchKeywords(country);
-          return [country, keywords.map((keyword) => ({ value: keyword }))];
-        }),
-      );
-
-      return Object.fromEntries(keywordEntries);
+      const popularKeywords = await Promise.resolve(fetchPopularKeywords());
+      return popularKeywords.map((keyword) => ({ value: keyword })) as PopularItems[];
     },
     {
       ...queryOptions,
-      placeholderData: Object.fromEntries(countryList.map((country) => [country, []])),
+      placeholderData: [],
     },
   );
 

@@ -126,6 +126,10 @@ const fetchPopularStocks = (): Promise<PopularStocks[]> => {
   return fetchData(`/stock/rankings/hot`);
 };
 
+const fetchPopularKeywords = (): Promise<string[]> => {
+  return fetchData('/keyword/rankings');
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -142,4 +146,5 @@ export {
   fetchIndexScore,
   fetchKeyowordsStocks,
   fetchPopularStocks,
+  fetchPopularKeywords,
 };
