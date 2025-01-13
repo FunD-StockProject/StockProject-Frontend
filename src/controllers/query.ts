@@ -133,7 +133,7 @@ export const WordCloudQuery = (
 
   useEffect(() => {
     queryClient.setQueryData(['WordCloudQuery', symbol, 0, 0], []);
-    WordCloudWorker.onmessage = ({ data: { layouts, height, width } }: any) => {
+    WordCloudWorker.onmessage = ({ data: { symbol, layouts, height, width } }: any) => {
       queryClient.setQueryData(['WordCloudQuery', symbol, width, height], layouts);
       setWordCloud(layouts);
     };
@@ -145,13 +145,14 @@ export const WordCloudQuery = (
     if (!queryData) {
       fetchSearchWordCloud(symbol, country).then((res) => {
         const adjust =
-          agent.indexOf('chrome') > -1
+          agent.indexOf('chrome') > -1 || agent.indexOf('firefox') > -1
             ? TEXT_SIZE_ADJUST.chrome
             : agent.indexOf('instagram') > -1
               ? TEXT_SIZE_ADJUST.chrome
               : TEXT_SIZE_ADJUST.safari;
 
         WordCloudWorker.postMessage({
+          symbol,
           data: res,
           width,
           height,

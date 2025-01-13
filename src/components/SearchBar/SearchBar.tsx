@@ -55,7 +55,7 @@ const useBlocker = (shouldBlock: boolean, onBlock: () => void, onAlwaysExecute?:
     const handleBeforeUnload = (event: PopStateEvent) => {
       if (shouldBlock) {
         event.preventDefault();
-        navigate(previousLocation, previousLocation);
+        navigate(previousLocation, { state: previousLocation.state });
         onBlock();
       }
       if (onAlwaysExecute) onAlwaysExecute();

@@ -119,7 +119,7 @@ const GetnerateWordCloud = (params: {
   return { width: width, height: height, layouts: layouts };
 };
 
-self.onmessage = ({ data: { data, width, height, adjust, isMobile } }) => {
+self.onmessage = ({ data: { symbol, data, width, height, adjust, isMobile } }) => {
   if (!self.FontFace) {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
@@ -138,16 +138,19 @@ self.onmessage = ({ data: { data, width, height, adjust, isMobile } }) => {
 
     const wasmModule = await LoadWordCloudWASM(width, height);
 
-    const ret = GetnerateWordCloud({
-      frequencies: data,
-      height: height,
-      width: width,
-      adjust: adjust,
-      minFontSize: !isMobile ? 7 : 5,
-      margin: !isMobile ? 4 : 3,
-      maxWords: !isMobile ? 800 : 600,
-      wasm: wasmModule,
-    });
+    const ret = {
+      symbol,
+      ...GetnerateWordCloud({
+        frequencies: data,
+        height: height,
+        width: width,
+        adjust: adjust,
+        minFontSize: !isMobile ? 7 : 5,
+        margin: !isMobile ? 4 : 3,
+        maxWords: !isMobile ? 800 : 600,
+        wasm: wasmModule,
+      }),
+    };
     postMessage(ret);
   });
 };
