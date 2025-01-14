@@ -6,7 +6,7 @@ export interface StockInfo {
   symbolName: string;
   securityName: string;
   exchangeNum: string;
-  country: string;
+  country: STOCK_COUNTRY;
 
   price: number;
   priceDiff: number;

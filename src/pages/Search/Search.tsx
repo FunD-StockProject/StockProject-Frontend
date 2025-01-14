@@ -107,14 +107,6 @@ const Search = () => {
       <SearchResultContainer>
         <SearchResultContents>
           <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
-          {/* <div>
-            {[
-              '1983년 현대전자로 설립됐고, 2001년 하이닉스반도체를 거쳐 2012년 최대주주가 SK텔레콤으로 바뀌면서 SK하이닉스로 상호를 변경함.',
-              '주력제품은 DRAM, 낸드플래쉬, MCP와 같은 메모리 반도체이며, 2007년부터 시스템LSI 분야인 CIS 사업에 재진출함.',
-            ].map((el) => (
-              <div>{el}</div>
-            ))}
-          </div> */}
           <SearchResultInfo>
             <AlertSVG />
             인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요

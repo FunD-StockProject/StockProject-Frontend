@@ -27,6 +27,7 @@ import {
   fetchSearchSymbolName,
   fetchSearchWordCloud,
   fetchStockChart,
+  fetchStockSummary,
   fetchStockTable,
 } from './api';
 import { StockInfo } from './api.Type';
@@ -42,7 +43,7 @@ const StockFetchers = {
   DESCENT: fetchDescentStocks,
 };
 
-export const SearchSymbolNameQuery = (name: string, country: string) => {
+export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
@@ -90,7 +91,20 @@ export const KeywordsStocksQuery = (keywordName: string) => {
   return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchKeywordsStocks(keywordName), queryOptions);
 };
 
+// SearchTitle
+
+export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
+  const { data = [] } = useQuery<string[]>(
+    ['StockSummary', symbol, country],
+    () => fetchStockSummary(symbol, country),
+    queryOptions,
+  );
+
+  return [data];
+};
+
 // WordCloud
+
 const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts', import.meta.url), {
   type: 'module',
 });
