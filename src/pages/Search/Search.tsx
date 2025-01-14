@@ -7,11 +7,7 @@ import { useQueryComponent } from '@hooks/useQueryComponent';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { FlexDiv } from '@components/Common/Common';
-import {
-  ContentsItemContainer,
-  ContentsItemContent,
-  ContentsItemTitle,
-} from '@components/Common/ContentsItem.Style';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
@@ -23,12 +19,7 @@ import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controll
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
-import {
-  SearchResultContainer,
-  SearchResultContents,
-  SearchResultInfo,
-  StockRelevantContainer,
-} from './Search.Style';
+import { SearchResultContainer, SearchResultContents, SearchResultInfo, StockRelevantContainer } from './Search.Style';
 
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="column" width="100%">
@@ -39,7 +30,7 @@ const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; count
         score={stock.score}
         delta={stock.diff}
         country={country}
-        keywords={stock.keywords ?? []}
+        keywords={stock.keywords}
       />
     ))}
   </FlexDiv>
@@ -116,6 +107,14 @@ const Search = () => {
       <SearchResultContainer>
         <SearchResultContents>
           <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
+          {/* <div>
+            {[
+              '1983년 현대전자로 설립됐고, 2001년 하이닉스반도체를 거쳐 2012년 최대주주가 SK텔레콤으로 바뀌면서 SK하이닉스로 상호를 변경함.',
+              '주력제품은 DRAM, 낸드플래쉬, MCP와 같은 메모리 반도체이며, 2007년부터 시스템LSI 분야인 CIS 사업에 재진출함.',
+            ].map((el) => (
+              <div>{el}</div>
+            ))}
+          </div> */}
           <SearchResultInfo>
             <AlertSVG />
             인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
@@ -136,11 +135,7 @@ const Search = () => {
               </ContentsItemContainer>
             </>
           ) : (
-            <StockChart
-              stockId={stockInfo.stockId}
-              symbolName={stockInfo.symbolName}
-              country={stockInfo.country}
-            />
+            <StockChart stockId={stockInfo.stockId} symbolName={stockInfo.symbolName} country={stockInfo.country} />
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
