@@ -16,8 +16,8 @@ import {
   fetchDescentStocks,
   fetchHotStocks,
   fetchIndexScore,
-  fetchKeyowordsStocks,
   fetchKeywords,
+  fetchKeywordsStocks,
   fetchPopularKeywords,
   fetchPopularStocks,
   fetchRealStockInfo,
@@ -36,42 +36,26 @@ export const queryOptions = {
   staleTime: 1000, // 다시 fetch 보내려 할때 해당 시간 이내이면 굳이 fetch 다시 하지 않음
 };
 
-export const SearchSymbolNameQuery = (name: string, country: string) => {
-  return useQuery<StockInfo>(
-    ['searchSymbolByName', name],
-    () => fetchSearchSymbolName(name, country),
-    queryOptions,
-  );
-};
-
-export const StockRelevantQuery = (id: number) => {
-  return useQuery<RevelantStockInfo>(
-    ['searchRelevangStockById', id],
-    () => fetchRelevant(id),
-    queryOptions,
-  );
-};
-
 const StockFetchers = {
   HOT: fetchHotStocks,
   RISING: fetchRisingStocks,
   DESCENT: fetchDescentStocks,
 };
 
-export const StockFetchQuery = (type: StockType, index: number) => {
-  return useQuery<any>(
-    [type + ' ' + index],
-    () => StockFetchers[type](!index ? 'KOREA' : 'OVERSEA'),
-    queryOptions,
-  );
+export const SearchSymbolNameQuery = (name: string, country: string) => {
+  return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
+};
+
+export const StockRelevantQuery = (id: number) => {
+  return useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), queryOptions);
+};
+
+export const StockFetchQuery = (type: StockType, country: string) => {
+  return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
 };
 
 export const ScoreQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(
-    ['searchSymbolByName', id, country],
-    () => fetchScore(id, country),
-    queryOptions,
-  );
+  return useQuery<StockInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
@@ -83,11 +67,7 @@ export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: strin
 };
 
 export const RealStockInfoQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(
-    ['realStockInfo', id, country],
-    () => fetchRealStockInfo(id, country),
-    queryOptions,
-  );
+  return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
 
 export const KeywordsQuery = (country: string) => {
@@ -107,11 +87,7 @@ export const IndexScoreQuery = () => {
 };
 
 export const KeywordsStocksQuery = (keywordName: string) => {
-  return useQuery<string[]>(
-    ['keywordsStocks', keywordName],
-    () => fetchKeyowordsStocks(keywordName),
-    queryOptions,
-  );
+  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchKeywordsStocks(keywordName), queryOptions);
 };
 
 // WordCloud
@@ -121,12 +97,7 @@ const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts',
 
 const agent = window.navigator.userAgent.toLowerCase();
 
-export const WordCloudQuery = (
-  symbol: string,
-  country: STOCK_COUNTRY,
-  { width, height }: any,
-  isMobile: boolean,
-) => {
+export const WordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, height }: any, isMobile: boolean) => {
   const [wordCloud, setWordCloud] = useState<any>([]);
 
   const queryClient = useQueryClient();
@@ -186,8 +157,7 @@ export const StockChartQuery = (stockId: number, period: string) => {
 
   const formatChartData = (priceInfos: any[], chartData: any[], length: number) => {
     const newChartData = [...Array.from({ length: length }, () => ({})), ...chartData];
-    const updateLength =
-      length + Object.keys(CHART_MOVING_AVERAGE_COLOR).reduce((acc, e) => Math.max(acc, ~~e), 0);
+    const updateLength = length + Object.keys(CHART_MOVING_AVERAGE_COLOR).reduce((acc, e) => Math.max(acc, ~~e), 0);
 
     priceInfos.some((e, i, arr) => {
       if (i >= updateLength) return;
@@ -207,10 +177,9 @@ export const StockChartQuery = (stockId: number, period: string) => {
             range,
             {
               price:
-                Array.from(
-                  { length: Math.min(~~range, i + 1) },
-                  (_, j) => ~~arr[i - j].closePrice,
-                ).reduce((acc, e) => acc + e) / Math.min(~~range, i + 1),
+                Array.from({ length: Math.min(~~range, i + 1) }, (_, j) => ~~arr[i - j].closePrice).reduce(
+                  (acc, e) => acc + e,
+                ) / Math.min(~~range, i + 1),
             },
           ]),
         ),
@@ -221,9 +190,7 @@ export const StockChartQuery = (stockId: number, period: string) => {
         trading: {
           value: e.accumulatedTradingValue,
           volume: e.accumulatedTradingVolume,
-          delta: i
-            ? Number(e.accumulatedTradingVolume) / Number(arr[i - 1].accumulatedTradingVolume) - 1
-            : 0,
+          delta: i ? Number(e.accumulatedTradingVolume) / Number(arr[i - 1].accumulatedTradingVolume) - 1 : 0,
         },
       };
     });

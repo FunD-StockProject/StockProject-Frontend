@@ -2,14 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES, SEARCH_CATEGORY_TEXT, STOCK_COUNTRY_TEXT } from '@ts/Constants';
 import { SEARCH_CATEGORY } from '@ts/Types';
-import {
-  STORAGE_RECENT_ITEMS,
-  getItemLocalStorage,
-  setItemLocalStorage,
-} from '@utils/LocalStorage';
+import { STORAGE_RECENT_ITEMS, getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
-import { fetchAutoComplete, fetchKeyowordsStocks } from '@controllers/api';
+import { fetchAutoComplete, fetchKeywordsStocks } from '@controllers/api';
 import { AutoCompleteItem, SearchBarResultItems } from '@controllers/api.Type';
 import { PopularKeywordsQuery, PopularStocksQuery, useAutoComplete } from '@controllers/query';
 import CancelSVG from '@assets/icons/cancel.svg?react';
@@ -119,9 +115,7 @@ const SearchBarItemsComponent = ({
   const width = `${type === 'RECENT' ? 50 : 100}%`;
   const column = type === 'RECENT' ? 1 : type === 'POPULAR' ? 2 : category === 'STOCK' ? 3 : 2;
   const title =
-    type === 'SEARCHED'
-      ? '검색 결과'
-      : `${type === 'RECENT' ? '최근' : '인기'} 검색 ${SEARCH_CATEGORY_TEXT[category]}`;
+    type === 'SEARCHED' ? '검색 결과' : `${type === 'RECENT' ? '최근' : '인기'} 검색 ${SEARCH_CATEGORY_TEXT[category]}`;
 
   const searchKeyword = resultItems[0]?.keyword;
   const isHidden = type === 'RECENT' && !resultItems.length;
@@ -139,51 +133,32 @@ const SearchBarItemsComponent = ({
           )}
           <SearchBarResultGridContainer column={column}>
             {resultItems.map((item, idx) => {
-              const { symbolName, symbol, exchangeNum, country, keywordNames, keyword, value } =
-                item;
+              const { symbolName, symbol, exchangeNum, country, keywordNames, keyword, value } = item;
 
               return (
-                <div
-                  key={`SearchBarItem_${type}_${category}_${type === 'SEARCHED' ? symbolName : value}_${country}`}
-                >
+                <div key={`SearchBarItem_${type}_${category}_${type === 'SEARCHED' ? symbolName : value}_${country}`}>
                   <SearchBarResultItemContainer onPointerUp={() => handleItemClick(item)}>
-                    {type == 'POPULAR' && (
-                      <SearchBarResultItemSubtitle>{idx + 1}</SearchBarResultItemSubtitle>
-                    )}
-                    {(category === 'STOCK'
-                      ? type === 'RECENT' || type === 'POPULAR'
-                      : type === 'SEARCHED') && (
-                      <SearchBarResultItemSubtitle>
-                        {STOCK_COUNTRY_TEXT[country]} 종목
-                      </SearchBarResultItemSubtitle>
+                    {type == 'POPULAR' && <SearchBarResultItemSubtitle>{idx + 1}</SearchBarResultItemSubtitle>}
+                    {(category === 'STOCK' ? type === 'RECENT' || type === 'POPULAR' : type === 'SEARCHED') && (
+                      <SearchBarResultItemSubtitle>{STOCK_COUNTRY_TEXT[country]} 종목</SearchBarResultItemSubtitle>
                     )}
                     <SearchBarResultItemTitle>
                       {type === 'SEARCHED'
                         ? category === 'STOCK'
-                          ? matchCharacters(searchValue.toLocaleUpperCase(), symbolName).map(
-                              ({ isMatch, char }, i) =>
-                                isMatch ? (
-                                  <span key={`SearchBarItemText_${value}_${country}_${i}`}>
-                                    {char}
-                                  </span>
-                                ) : (
-                                  char
-                                ),
+                          ? matchCharacters(searchValue.toLocaleUpperCase(), symbolName).map(({ isMatch, char }, i) =>
+                              isMatch ? <span key={`SearchBarItemText_${value}_${country}_${i}`}>{char}</span> : char,
                             )
                           : symbolName
                         : value}
                       {type === 'SEARCHED' && category === 'STOCK' && (
                         <div>
                           <div>
-                            {matchCharacters(searchValue.toLocaleUpperCase(), symbol).map(
-                              ({ isMatch, char }, i) =>
-                                isMatch ? (
-                                  <span key={`SearchBarItemTextSymbol_${value}_${country}_${i}`}>
-                                    {char}
-                                  </span>
-                                ) : (
-                                  char
-                                ),
+                            {matchCharacters(searchValue.toLocaleUpperCase(), symbol).map(({ isMatch, char }, i) =>
+                              isMatch ? (
+                                <span key={`SearchBarItemTextSymbol_${value}_${country}_${i}`}>{char}</span>
+                              ) : (
+                                char
+                              ),
                             )}
                           </div>
                           <div>{MARKET_CODES[exchangeNum]}</div>
@@ -201,9 +176,7 @@ const SearchBarItemsComponent = ({
                     )}
                     {type === 'SEARCHED' && category == 'KEYWORD' && (
                       <>
-                        <SearchBarResultItemKeyword matched={true}>
-                          {searchKeyword}
-                        </SearchBarResultItemKeyword>
+                        <SearchBarResultItemKeyword matched={true}>{searchKeyword}</SearchBarResultItemKeyword>
                         <SearchBarResultItemKeyword matched={false}>
                           {keywordNames.filter((e) => e !== keyword)[0]}
                         </SearchBarResultItemKeyword>
@@ -253,8 +226,7 @@ const SearchBar = () => {
   focusedItem;
 
   const resultContainerRef = useRef<HTMLDivElement>(null);
-  const resultContainerHeight =
-    window.innerHeight - (resultContainerRef.current?.getBoundingClientRect().top ?? 0);
+  const resultContainerHeight = window.innerHeight - (resultContainerRef.current?.getBoundingClientRect().top ?? 0);
 
   const [recentStocks, setRecentStocks] = useState<AutoCompleteItem[]>(
     getItemLocalStorage(STORAGE_RECENT_ITEMS['STOCK'], []),
@@ -263,16 +235,14 @@ const SearchBar = () => {
     getItemLocalStorage(STORAGE_RECENT_ITEMS['KEYWORD'], []),
   );
   const [recentItems, setRecentItems] =
-    selectedCategory == 'STOCK'
-      ? [recentStocks, setRecentStocks]
-      : [recentKeyowrds, setRecentKeyowrds];
+    selectedCategory == 'STOCK' ? [recentStocks, setRecentStocks] : [recentKeyowrds, setRecentKeyowrds];
 
   const [popularStocks] = PopularStocksQuery();
   const [popularKeywords] = PopularKeywordsQuery();
   const popularItems = selectedCategory == 'STOCK' ? popularStocks : popularKeywords;
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
-  const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchKeyowordsStocks, 'keyword');
+  const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchKeywordsStocks, 'keyword');
   const searchedItems = selectedCategory == 'STOCK' ? searchedStocks : searchedKeywords;
 
   useEffect(() => {
@@ -372,10 +342,7 @@ const SearchBar = () => {
 
   const addRecentItem = (item: AutoCompleteItem) => {
     const { value, country } = item;
-    const updatedItems = [
-      item,
-      ...recentItems.filter((e) => e.value !== value || e.country !== country),
-    ];
+    const updatedItems = [item, ...recentItems.filter((e) => e.value !== value || e.country !== country)];
 
     setItemLocalStorage(STORAGE_RECENT_ITEMS[selectedCategory], updatedItems);
     setRecentItems(updatedItems);
@@ -502,10 +469,7 @@ const SearchBar = () => {
                   <SearchBarItemsComponent
                     type="SEARCHED"
                     category={selectedCategory}
-                    resultItems={searchedItems.slice(
-                      0,
-                      SEARCHED_RESULT_MAX_LENGTH[selectedCategory],
-                    )}
+                    resultItems={searchedItems.slice(0, SEARCHED_RESULT_MAX_LENGTH[selectedCategory])}
                     handleItemClick={handleItemClick}
                     searchValue={searchValue}
                     displayEmpty

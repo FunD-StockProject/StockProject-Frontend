@@ -92,16 +92,9 @@ const fetchSearchWordCloud = (symbol: string, country: string): Promise<WordFreq
 
 // Chart
 
-const fetchStockChart = async (
-  id: number,
-  periodCode: PERIOD_CODE,
-  startDate: string,
-  endDate: string,
-) => {
+const fetchStockChart = async (id: number, periodCode: PERIOD_CODE, startDate: string, endDate: string) => {
   if (enableMock) return fetchChartMock;
-  return fetchData(
-    `/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}&endDate=${endDate}`,
-  );
+  return fetchData(`/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}&endDate=${endDate}`);
 };
 
 // SearchBar
@@ -110,7 +103,7 @@ const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
-const fetchKeyowordsStocks = (keywordName: string) => {
+const fetchKeywordsStocks = (keywordName: string) => {
   return fetchData(`/keyword/${keywordName}/stocks`);
 };
 
@@ -144,7 +137,7 @@ export {
   fetchKeywords,
   fetchStockTable,
   fetchIndexScore,
-  fetchKeyowordsStocks,
+  fetchKeywordsStocks,
   fetchPopularStocks,
   fetchPopularKeywords,
 };
