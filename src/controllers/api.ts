@@ -1,4 +1,5 @@
 import { WordFrequency } from '@ts/Interfaces';
+import { STOCK_COUNTRY } from '@ts/Types';
 import { PERIOD_CODE } from './api.Type';
 import {
   fetchChartMock,
@@ -60,7 +61,7 @@ const fetchDescentStocks = async (country: string) => {
   return fetchData(`/stock/descent/${country}`);
 };
 
-const fetchSearchSymbolName = (symbolname: string, country: string) => {
+const fetchSearchSymbolName = (symbolname: string, country: STOCK_COUNTRY) => {
   if (enableMock) return fetchSearchSymbolNameMock;
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
@@ -81,6 +82,12 @@ const fetchStockTable = (category: string, country: string) => {
 const fetchIndexScore = () => {
   if (enableMock) return fetchIndexScoreMock;
   return fetchData(`/score/index`);
+};
+
+// SearchTitle
+
+const fetchStockSummary = (symbol: string, country: STOCK_COUNTRY) => {
+  return fetchData(`/stock/summary/${symbol}/${country}`);
 };
 
 // WordCloud
@@ -140,4 +147,5 @@ export {
   fetchKeywordsStocks,
   fetchPopularStocks,
   fetchPopularKeywords,
+  fetchStockSummary,
 };

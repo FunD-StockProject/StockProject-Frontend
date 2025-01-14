@@ -5,6 +5,7 @@ import { MARKET_CODES, ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
 import { StockInfo } from '@controllers/api.Type';
+import { StockSummaryQuery } from '@controllers/query';
 import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
@@ -48,6 +49,8 @@ const SearchTitle = ({
     instant: BASE_DELAY,
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
+
+  const [summary] = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
   const variants: Variants = {
     initial: {
@@ -106,9 +109,9 @@ const SearchTitle = ({
             </SearchTitleBodyTitleSVG>
           </SearchTitleBodyTitle>
           <SearchTitleBodySubtitle>
-            {false &&
-              `동사는 신한금융 계열사에 대한 지배/경영관리, 종속회사에 대한 자금지원 등을 주요
-            사업목적으로 2001년 설립된 금융지주회사임.`}
+            {summary.map((e, i) => (
+              <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
+            ))}
           </SearchTitleBodySubtitle>
         </SearchTitleBody>
         <SearchTitleFooterContainer>
