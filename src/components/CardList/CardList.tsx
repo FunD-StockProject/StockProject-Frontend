@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
@@ -26,7 +26,7 @@ const CardList = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, country) });
+  const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
 
   useEffect(() => {
     if (!containerRef.current) return;
