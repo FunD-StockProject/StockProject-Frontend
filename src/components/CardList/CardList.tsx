@@ -50,6 +50,7 @@ const CardList = ({
           active={true}
           stockScore={stock.score}
           tabIndex={0}
+          stockDiff={stock.diff}
           country={country}
         />
       </CardListItemContainer>
