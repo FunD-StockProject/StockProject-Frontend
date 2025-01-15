@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { media, theme } from '@styles/themes';
 
 const ScoreSlotMachineContainer = styled.div(
@@ -52,39 +53,25 @@ const ScoreSlotMachineContent = styled.div({
   },
 });
 
-const SlotMachineItemMotionDiv = styled(motion.div)(
-  ({ slotMachineType }: { slotMachineType: 'TITLE' | 'IMAGE' | 'SCORE' }) =>
-    slotMachineType == 'TITLE'
-      ? {
-          fontSize: '72px',
-          [media[0]]: {
-            fontSize: '24px',
-          },
-        }
-      : slotMachineType == 'SCORE'
-        ? {
-            fontSize: '96px',
-            [media[0]]: {
-              fontSize: '32px',
-            },
-          }
-        : {},
-  {
-    color: theme.colors.primary0,
-    fontWeight: '700',
-    position: 'relative',
-    width: '100%',
+const SlotMachineItemMotionDiv = styled(motion.div)({
+  fontSize: '72px',
+  color: theme.colors.primary0,
+  fontWeight: '700',
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  ['img']: {
     height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ['img']: {
-      height: '100%',
-      width: '100%',
-      objectFit: 'cover',
-    },
+    width: '100%',
+    objectFit: 'cover',
   },
-);
+  [media[0]]: {
+    fontSize: '24px',
+  },
+});
 
 const StockCardItemText = styled.div({
   whiteSpace: 'nowrap',
@@ -93,10 +80,36 @@ const StockCardItemText = styled.div({
   width: '100%',
 });
 
+const StockCardItemScore = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  color: theme.colors.primary0,
+
+  fontSize: '1.0em',
+  gap: '0.25em',
+});
+const StockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({
+  display: 'flex',
+  alignItems: 'center',
+
+  fontSize: '0.8em',
+  gap: '4px',
+  color: deltaScoreToColor(delta),
+  padding: '0 0.4em',
+
+  ['svg']: {
+    height: '0.5em',
+    width: 'auto',
+    fill: deltaScoreToColor(delta),
+  },
+}));
 export {
   ScoreSlotMachineContainer,
   SlotMachineItemContainer,
   ScoreSlotMachineContent,
   SlotMachineItemMotionDiv,
   StockCardItemText,
+  StockCardItemScore,
+  StockCardItemDeltaScore,
 };
