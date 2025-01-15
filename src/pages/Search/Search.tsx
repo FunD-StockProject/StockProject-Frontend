@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { FlexDiv } from '@components/Common/Common';
@@ -54,22 +54,21 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
 );
 
 const StockRelevant = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
+  const [stockRelevantList] = useQuery({ query: StockRelevantQuery(stockId) });
   const isMobile = useIsMobile();
 
   return (
-    suspend ||
-    (stockRelevantList &&
-      (isMobile ? (
-        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
-      ) : (
-        <WebRelevantStocks stocks={stockRelevantList} country={country} />
-      )))
+    stockRelevantList &&
+    (isMobile ? (
+      <MobileRelevantStocks stocks={stockRelevantList} country={country} />
+    ) : (
+      <WebRelevantStocks stocks={stockRelevantList} country={country} />
+    ))
   );
 };
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
+  const [score, suspend] = useQuery({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -92,7 +91,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 const Search = () => {
   const { state } = useLocation();
 
-  const [stockInfo, suspend] = useQueryComponent({
+  const [stockInfo] = useQuery({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
@@ -102,8 +101,7 @@ const Search = () => {
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    suspend ||
-    (stockInfo && (
+    stockInfo && (
       <SearchResultContainer>
         <SearchResultContents>
           <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
@@ -137,7 +135,7 @@ const Search = () => {
           </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>
-    ))
+    )
   );
 };
 

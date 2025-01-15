@@ -1,6 +1,6 @@
 import { WordFrequency } from '@ts/Interfaces';
 import { STOCK_COUNTRY } from '@ts/Types';
-import { PERIOD_CODE } from './api.Type';
+import { PERIOD_CODE, PopularStocks } from './api.Type';
 import {
   fetchChartMock,
   fetchIndexScoreMock,
@@ -31,7 +31,6 @@ const fetchData = async (path: string) => {
     await wait(0);
     return await res.json();
   } catch (error) {
-    // console.error(error);
     throw error;
   }
 };
@@ -110,16 +109,9 @@ const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
-const fetchKeywordsStocks = (keywordName: string) => {
+const fetchSearchKeyword = (keywordName: string) => {
   return fetchData(`/keyword/${keywordName}/stocks`);
 };
-
-interface PopularStocks {
-  stockId: number;
-  symbol: string;
-  symbolName: string;
-  country: 'KOREA' | 'OVERSEA';
-}
 
 const fetchPopularStocks = (): Promise<PopularStocks[]> => {
   if (enableMock) return Promise.resolve(fetchPopularStocksMock as PopularStocks[]);
@@ -144,7 +136,7 @@ export {
   fetchKeywords,
   fetchStockTable,
   fetchIndexScore,
-  fetchKeywordsStocks,
+  fetchSearchKeyword,
   fetchPopularStocks,
   fetchPopularKeywords,
   fetchStockSummary,

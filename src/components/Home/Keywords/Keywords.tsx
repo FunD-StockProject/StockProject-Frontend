@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import { KeywordItem, KeywordList, KeywordsContainer, Title, TitleWrapper } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
-  const [keywords, suspend] = useQueryComponent({ query: KeywordsQuery(country) });
+  const [keywords, suspend] = useQuery({ query: KeywordsQuery(country) });
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);

@@ -72,4 +72,11 @@ export interface SearchBarResultItems extends PopularItems, AutoCompleteItem {
   value: string;
 }
 
+export interface PopularStocks {
+  stockId: number;
+  symbol: string;
+  symbolName: string;
+  country: 'KOREA' | 'OVERSEA';
+}
+
 export type PERIOD_CODE = 'D' | 'W' | 'M';

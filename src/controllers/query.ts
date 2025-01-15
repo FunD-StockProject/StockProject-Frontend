@@ -17,13 +17,13 @@ import {
   fetchHotStocks,
   fetchIndexScore,
   fetchKeywords,
-  fetchKeywordsStocks,
   fetchPopularKeywords,
   fetchPopularStocks,
   fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
+  fetchSearchKeyword,
   fetchSearchSymbolName,
   fetchSearchWordCloud,
   fetchStockChart,
@@ -88,14 +88,14 @@ export const IndexScoreQuery = () => {
 };
 
 export const KeywordsStocksQuery = (keywordName: string) => {
-  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchKeywordsStocks(keywordName), queryOptions);
+  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
 };
 
 // SearchTitle
 
 export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
   const { data = [] } = useQuery<string[]>(
-    ['StockSummary', symbol, country],
+    ['stockSummary', symbol, country],
     () => fetchStockSummary(symbol, country),
     queryOptions,
   );

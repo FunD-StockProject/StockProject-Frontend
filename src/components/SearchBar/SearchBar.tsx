@@ -5,7 +5,7 @@ import { SEARCH_CATEGORY } from '@ts/Types';
 import { STORAGE_RECENT_ITEMS, getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
-import { fetchAutoComplete, fetchKeywordsStocks } from '@controllers/api';
+import { fetchAutoComplete, fetchSearchKeyword } from '@controllers/api';
 import { AutoCompleteItem, SearchBarResultItems } from '@controllers/api.Type';
 import { PopularKeywordsQuery, PopularStocksQuery, useAutoComplete } from '@controllers/query';
 import CancelSVG from '@assets/icons/cancel.svg?react';
@@ -242,7 +242,7 @@ const SearchBar = () => {
   const popularItems = selectedCategory == 'STOCK' ? popularStocks : popularKeywords;
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
-  const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchKeywordsStocks, 'keyword');
+  const [searchedKeywords, setSearchedKeywords] = useAutoComplete(fetchSearchKeyword, 'keyword');
   const searchedItems = selectedCategory == 'STOCK' ? searchedStocks : searchedKeywords;
 
   useEffect(() => {
