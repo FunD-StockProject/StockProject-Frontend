@@ -868,6 +868,7 @@ const StockChartView = ({
 
   const handleCanvasMouseLeave = () => {
     setIsMouseEnter(false);
+    setMousePosInfo(null);
   };
 
   const handlePriceCanvasMouseMove = (e: MouseEvent) => {

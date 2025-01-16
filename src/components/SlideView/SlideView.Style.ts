@@ -41,7 +41,6 @@ export const SlideItemContents = styled.div(
 
 export const SlideItem = styled.div(
   {
-    scrollSnapAlign: 'center',
     position: 'absolute',
     top: 0,
     transition: 'left .5s',
@@ -55,6 +54,7 @@ export const SlideItem = styled.div(
   ({ idx, count }: { idx: number; count: number }) => ({
     width: `calc(100%/${count})`,
     left: `calc((100%*${idx / count}))`,
+    scrollSnapAlign: idx % count == Math.floor(count / 2) ? 'center' : 'none',
   }),
 );
 
@@ -62,6 +62,7 @@ export const SlideArrowContainer = styled.div(
   {
     position: 'relative',
     width: '100%',
+    height: '10px',
   },
   ({ visible }: { visible: boolean }) => ({
     display: visible ? 'block' : 'none',
@@ -72,7 +73,7 @@ export const SlideArrowContents = styled.div(
   {
     position: 'absolute',
     top: '18px',
-    right: '0',
+    right: '24px',
     lineHeight: '1',
     display: 'flex',
     alignItems: 'center',
@@ -81,7 +82,6 @@ export const SlideArrowContents = styled.div(
     gap: '4px',
     ['svg']: {
       height: '1.5em',
-      cursor: 'pointer',
       fill: theme.colors.primary0,
     },
   },
@@ -89,9 +89,11 @@ export const SlideArrowContents = styled.div(
     ['svg']: {
       [':first-of-type']: {
         fill: theme.colors[!idx ? 'grayscale60' : 'primary0'],
+        cursor: !idx ? 'not-allowed' : 'pointer',
       },
       [':last-of-type']: {
-        fill: theme.colors[idx == length ? 'grayscale60' : 'primary0'],
+        fill: theme.colors[idx == length - 1 ? 'grayscale60' : 'primary0'],
+        cursor: idx == length - 1 ? 'not-allowed' : 'pointer',
       },
     },
   }),

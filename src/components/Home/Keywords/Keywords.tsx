@@ -4,7 +4,14 @@ import { useQuery } from '@hooks/useQuery';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
-import { KeywordItem, KeywordList, KeywordsContainer, Title, TitleWrapper } from './Keywords.style';
+import {
+  KeywordItem,
+  KeywordItemConainer,
+  KeywordList,
+  KeywordsContainer,
+  Title,
+  TitleWrapper,
+} from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
   const [keywords, suspend] = useQuery({ query: KeywordsQuery(country) });
@@ -23,13 +30,15 @@ const Keywords = ({ country }: { country: string }) => {
         <span>매일 {updateTime}시 업데이트됩니다.</span>
       </TitleWrapper>
       <KeywordList>
-        {suspend ||
-          (keywords &&
-            keywords.map((keyword: string, index: number) => (
-              <KeywordItem key={index} onClick={() => {}}>
-                {keyword.toLocaleUpperCase()}
-              </KeywordItem>
-            )))}
+        <KeywordItemConainer>
+          {suspend ||
+            (keywords &&
+              keywords.map((keyword: string, index: number) => (
+                <KeywordItem key={index} onClick={() => {}}>
+                  {keyword.toLocaleUpperCase()}
+                </KeywordItem>
+              )))}
+        </KeywordItemConainer>
       </KeywordList>
       {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}
     </KeywordsContainer>

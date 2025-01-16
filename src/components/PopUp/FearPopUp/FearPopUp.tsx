@@ -7,8 +7,8 @@ const FearPopUp = ({ onClose }: { onClose: () => void }) => (
     <PopUpContent>
       <div>
         공포탐욕지수는 시장의 7가지 요인을 분석하여
-        <StyledSpan> 현재 투자자들의 심리를 극단적인 공포(0)부터 극단적인 탐욕(100)</StyledSpan>에
-        이르기까지를 가늠하는 심리지표입니다.
+        <StyledSpan> 현재 투자자들의 심리를 극단적인 공포(0)부터 극단적인 탐욕(100)</StyledSpan>에 이르기까지를 가늠하는
+        심리지표입니다.
       </div>
     </PopUpContent>
   </CommonPopUp>

@@ -58,6 +58,7 @@ const PopUpContent = styled('div')({
   fontStyle: 'normal',
   fontWeight: '500',
   lineHeight: '1.5',
+  whiteSpace: 'break-spaces',
   color: theme.colors.grayscale100,
 });
 

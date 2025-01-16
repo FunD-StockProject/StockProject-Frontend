@@ -114,6 +114,7 @@ const TableRow = styled.div({
   padding: '12px 0',
   color: theme.colors.primary0,
   borderBottom: `1px solid ${theme.colors.grayscale90}`, // 행 구분선 추가
+  cursor: 'pointer',
   ':last-child': {
     borderBottom: 'none',
   },
@@ -126,9 +127,6 @@ const StockInfo = styled.div({
   justifyContent: 'center',
   textAlign: 'left',
   gap: '8px',
-  [media[0]]: {
-    justifyContent: 'start',
-  },
 });
 
 const StockLogo = styled.div({

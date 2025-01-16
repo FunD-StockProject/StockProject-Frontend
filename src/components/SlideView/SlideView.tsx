@@ -31,12 +31,16 @@ const SlideView = ({ keyName, list, count }: { keyName: string; list: JSX.Elemen
   const isMobile = useIsMobile();
 
   const scrollToSelected = (selected: number) => {
-    selected = selected < 0 ? 0 : selected > list.length - count ? list.length - count : selected;
+    selected = selected < 0 ? 0 : selected > ~~(list.length / count) - 1 ? ~~(list.length / count) - 1 : selected;
     setSelected(selected);
     containerRef.current?.scrollTo({
-      left: selected * widthRef.current,
+      left: selected * widthRef.current * count,
       behavior: 'smooth',
     });
+  };
+
+  const handleScrollEnd = () => {
+    setSelected((containerRef.current?.scrollLeft ?? 0) / widthRef.current / count);
   };
 
   useEffect(() => {
@@ -54,6 +58,8 @@ const SlideView = ({ keyName, list, count }: { keyName: string; list: JSX.Elemen
 
     const container = containerRef.current;
     if (!container) return;
+
+    container.onscrollend = handleScrollEnd;
   }, []);
 
   return (
@@ -70,9 +76,8 @@ const SlideView = ({ keyName, list, count }: { keyName: string; list: JSX.Elemen
         </SlideItemContents>
       </SlideItemContainer>
       <SlideArrowContainer visible={!isMobile && list.length > count}>
-        <SlideArrowContents idx={selected} length={list.length - count}>
+        <SlideArrowContents idx={selected} length={list.length / count}>
           <LeftArrowSVG onClick={() => scrollToSelected(selected - 1)} />
-          {`${selected + 1}/${list.length - (count - 1)}`}
           <RightArrowSVG onClick={() => scrollToSelected(selected + 1)} />
         </SlideArrowContents>
       </SlideArrowContainer>
