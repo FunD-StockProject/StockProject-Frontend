@@ -22,6 +22,7 @@ import {
   SearchBarResultGridContainer,
   SearchBarResultItemContainer,
   SearchBarResultItemKeyword,
+  SearchBarResultItemSVG,
   SearchBarResultItemSubtitle,
   SearchBarResultItemTitle,
   SearchBarResultLayout,
@@ -166,13 +167,15 @@ const SearchBarItemsComponent = ({
                       )}
                     </SearchBarResultItemTitle>
                     {type === 'RECENT' && (
-                      <CancelSVG
-                        onPointerUp={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          onItemDelete(item);
-                        }}
-                      />
+                      <SearchBarResultItemSVG>
+                        <CancelSVG
+                          onPointerUp={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onItemDelete(item);
+                          }}
+                        />
+                      </SearchBarResultItemSVG>
                     )}
                     {type === 'SEARCHED' && category == 'KEYWORD' && (
                       <>

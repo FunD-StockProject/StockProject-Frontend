@@ -3,8 +3,9 @@ import businessSVG from '@assets/footer/footer_business.svg';
 import commentSVG from '@assets/footer/footer_comment.svg';
 import developerSVG from '@assets/footer/footer_developer.svg';
 import dictSVG from '@assets/footer/footer_dict.svg';
-import InstagramSVG from '@assets/footer/footer_instagram.svg';
-import LinkedinSVG from '@assets/footer/footer_linkedin.svg';
+import InstagramSVG from '@assets/footer/footer_instagram.svg?react';
+import LinkedInSVG from '@assets/footer/footer_linkedin.svg?react';
+import ThreadsSVG from '@assets/footer/footer_threads.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import {
   FooterButtonContainer,
@@ -31,6 +32,7 @@ const FooterButton = ({
     </FooterButtonItemContainer>
   );
 };
+
 const openDictionaryModel = () => {
   window.open('https://balanced-bun-351.notion.site/17412e0c80b880259849c17228046794?pvs=4');
 };
@@ -51,8 +53,12 @@ const openInstagram = () => {
   window.open('https://www.instagram.com/humanzipyo/');
 };
 
-const openLinkedin = () => {
+const openLinkedIn = () => {
   window.open('https://www.linkedin.com/company/humanzipyo');
+};
+
+const openThreads = () => {
+  window.open('https://www.threads.net/@humanzipyo');
 };
 
 const Footer = () => {
@@ -71,8 +77,9 @@ const Footer = () => {
             <FooterButton img={developerSVG} str="만든이들" onClick={openCreatorsInfoModal} />
           </FooterButtonContainer>
           <FooterIconsContainer>
-            <ImgDiv alt={'인스타그램'} src={InstagramSVG} objectFit="fill" onClick={openInstagram} />
-            <ImgDiv alt={'링크드인'} src={LinkedinSVG} objectFit="fill" onClick={openLinkedin} />
+            <InstagramSVG onClick={openInstagram} />
+            <LinkedInSVG onClick={openLinkedIn} />
+            <ThreadsSVG onClick={openThreads} />
           </FooterIconsContainer>
         </FooterContents>
       </FooterContainer>
