@@ -14,6 +14,7 @@ export const SearchTitleContainer = styled.div({
   color: theme.colors.grayscale30,
   [media[0]]: {
     gap: '24px',
+    padding: '0 20px',
   },
 });
 
@@ -115,6 +116,8 @@ export const SearchTitleBodyTitleSVG = styled.div({
 });
 
 export const SearchTitleBodySubtitle = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
   fontSize: '15px',
 
   [media[0]]: {

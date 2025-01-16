@@ -1,3 +1,5 @@
+import { StockInfo } from './api.Type';
+
 export const fetchIndexScoreMock = {
   kospiVix: 50,
   kospiVixDiff: 5,
@@ -106,7 +108,7 @@ export const fetchRelevantMock = [
   { stockId: 3, symbolName: 'SK하이닉스', score: 32, diff: -7 },
 ];
 
-export const fetchSearchSymbolNameMock = {
+export const fetchSearchSymbolNameMock: StockInfo = {
   stockId: 0,
   symbolName: 'string',
   securityName: 'string',

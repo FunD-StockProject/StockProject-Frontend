@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
 import { IndexScoreQuery } from '@controllers/query';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import InfoSVG from '@assets/info.svg?react';
-import {
-  IndexDeltaScore,
-  IndexInfoContainer,
-  IndexItem,
-  IndicesContainer,
-} from './IndexScore.style';
+import { IndexDeltaScore, IndexInfoContainer, IndexItem, IndicesContainer } from './IndexScore.style';
 
 const stockIndices = [
   ['공포탐욕지수 ', '코스피', '코스닥'],
@@ -18,7 +13,7 @@ const stockIndices = [
 ];
 
 const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
-  const [indexScores, suspend] = useQueryComponent({ query: IndexScoreQuery() });
+  const [indexScores, suspend] = useQuery({ query: IndexScoreQuery() });
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);

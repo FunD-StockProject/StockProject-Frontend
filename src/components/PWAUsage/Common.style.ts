@@ -31,8 +31,8 @@ const DetailContainer = styled.div({
 
 const DetailItem = styled.div({
   display: 'flex',
-  width: '100%', // 전체 너비 차지
-  flexDirection: 'column', // 아이템 내부는 가로 정렬
+  width: '100%',
+  flexDirection: 'column',
   alignItems: 'flex-start',
   gap: '22px',
 
@@ -44,8 +44,8 @@ const DetailItem = styled.div({
   },
 
   ['svg']: {
-    width: '100%',
-    height: 'auto',
+    alignItems: 'flex-start',
+    maxWidth: '100%',
   },
 });
 

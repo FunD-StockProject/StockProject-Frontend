@@ -1,9 +1,16 @@
-import AddToHomeSVG from '@assets/PWA/AddToHome.svg?react';
+import AddToHomeSVG from '@assets/PWA/IOS/AddToHome.svg?react';
+import ShareButtonSVG from '@assets/PWA/IOS/ShareButton.svg?react';
 import RunAppSVG from '@assets/PWA/RunApp.svg?react';
-import ShareButtonSVG from '@assets/PWA/ShareButton.svg?react';
-import { DetailContainer, DetailItem, DetailNumber, DetailText, HeaderText, OrderContainer } from './IOSSafari.style';
+import {
+  DetailContainer,
+  DetailItem,
+  DetailNumber,
+  DetailText,
+  HeaderText,
+  OrderContainer,
+} from '../Common.style';
 
-const IOSSafari = () => (
+const IOS = () => (
   <OrderContainer>
     <HeaderText>
       홈화면에 앱을 <br />
@@ -13,7 +20,7 @@ const IOSSafari = () => (
       <DetailItem>
         <div>
           <DetailNumber>1</DetailNumber>
-          <DetailText>하단 공유 버튼 탭</DetailText>
+          <DetailText>safari 접속, 하단 공유 버튼 탭</DetailText>
         </div>
         <ShareButtonSVG style={{ margin: '-20px 0' }} />
       </DetailItem>
@@ -35,4 +42,4 @@ const IOSSafari = () => (
   </OrderContainer>
 );
 
-export default IOSSafari;
+export default IOS;

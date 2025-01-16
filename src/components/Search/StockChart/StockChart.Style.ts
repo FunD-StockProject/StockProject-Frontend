@@ -4,7 +4,7 @@ import { media, theme, themeColor } from '@styles/themes';
 export const StockChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: '24px',
+  gap: '18px',
 
   [media[0]]: {
     gap: '12px',
@@ -38,6 +38,9 @@ export const StockChartHeaderItem = styled.div(
     padding: '4px 8px',
     borderRadius: '8px',
     cursor: 'pointer',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 );
 
@@ -112,11 +115,7 @@ export const ChartLabel = styled.span(
     left: x ?? '0px',
     width: typeof x == 'number' ? 'auto' : '100%',
     transform:
-      'translate(' +
-      (typeof x == 'number' ? '-50%' : '0') +
-      ', ' +
-      (typeof y == 'number' ? '-50%' : '0') +
-      ')',
+      'translate(' + (typeof x == 'number' ? '-50%' : '0') + ', ' + (typeof y == 'number' ? '-50%' : '0') + ')',
 
     background: theme.colors[strokeRect ? 'primary100' : ((fillRect && color) ?? 'transparent')],
     color: theme.colors[(fillText && color) ?? 'primary0'],
@@ -169,8 +168,7 @@ export const StockChartItemContainer = styled.div(
     display: 'flex',
     flexDirection: 'column',
   },
-  ({ grow }: { grow?: true }) =>
-    grow && { flexGrow: 1, borderRight: `2px solid ${theme.colors.grayscale90}` },
+  ({ grow }: { grow?: true }) => grow && { flexGrow: 1, borderRight: `2px solid ${theme.colors.grayscale90}` },
 );
 
 export const StockChartItemContent = styled.div(

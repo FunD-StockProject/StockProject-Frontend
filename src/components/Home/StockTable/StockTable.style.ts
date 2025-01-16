@@ -4,6 +4,11 @@ import { media, theme } from '@styles/themes';
 
 const StockTableContainer = styled.div({
   width: '100%',
+  boxSizing: 'border-box',
+
+  [media[0]]: {
+    padding: '0 20px', // 상하 여백 추가
+  },
 });
 
 const StockTableTitle = styled.div({
@@ -36,14 +41,14 @@ const StockTableTitle = styled.div({
   },
 
   [media[0]]: {
-    fontSize: '20px',
+    fontSize: '24px',
     padding: '5px 0', // 상하 여백 추가
 
     ['span']: {
-      fontSize: '12px',
+      fontSize: '13px',
     },
     ['svg']: {
-      height: '18px',
+      height: '0.9em',
     },
   },
 });
@@ -56,10 +61,11 @@ const StyledTabMenu = styled.ul({
   backgroundColor: theme.colors.primary100,
 
   '.submenu': {
+    borderRadius: '8px',
     boxSizing: 'border-box',
     display: 'flex',
     justifyContent: 'center',
-    padding: '14px',
+    padding: '8px 12px',
     fontWeight: '500',
     color: theme.colors.primary0,
     backgroundColor: theme.colors.primary100,
@@ -68,7 +74,6 @@ const StyledTabMenu = styled.ul({
 
   '.focused': {
     backgroundColor: theme.colors.grayscale100,
-    borderRadius: '10px',
     fontWeight: '700',
   },
 
@@ -102,7 +107,8 @@ const TableHeaderContainer = styled.div({
 });
 
 const TableRow = styled.div({
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: '33% 33% 33%',
   justifyContent: 'center',
   alignItems: 'center',
   padding: '12px 0',
@@ -114,26 +120,27 @@ const TableRow = styled.div({
 });
 
 const StockInfo = styled.div({
+  width: '100%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  textAlign: 'left',
   gap: '8px',
+  [media[0]]: {
+    justifyContent: 'start',
+  },
 });
 
-const StockLogo = styled.img({
-  width: '26px',
-  height: '26px',
+const StockLogo = styled.div({
+  width: '1.5em',
+  height: '1.5em',
+  borderRadius: '64px',
 });
 
 const StockName = styled.div({
-  width: '200px',
-  alignItems: 'left',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
   overflow: 'hidden',
-  [media[0]]: {
-    width: '100px',
-  },
+  textOverflow: 'ellipsis',
+  wordBreak: 'keep-all',
 });
 
 const StockData = styled.div({

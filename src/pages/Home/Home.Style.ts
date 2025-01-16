@@ -12,16 +12,16 @@ const HomeContents = styled.div({
   boxSizing: 'border-box',
   width: '100%',
   margin: '0 auto',
-  padding: '60px',
+  padding: '90px 60px',
   height: '100%',
-  gap: '48px',
+  gap: '64px',
   display: 'flex',
   flexDirection: 'column',
   maxWidth: '1280px',
 
   [media[0]]: {
-    gap: '32px',
-    padding: '30px',
+    gap: '48px',
+    padding: '40px 0px',
   },
 });
 

@@ -3,10 +3,9 @@ import { UseQueryResult } from 'react-query';
 import ErrorComponent from '@components/Common/ErrorComponent';
 import LoadingComponent from '@components/Common/LoadingComponent';
 
-export const useQueryComponent = ({ children, query }: { children?: React.ReactNode; query: UseQueryResult }) => {
-  const { data, isLoading, isError }: { data: any; isLoading: any; isError: any } = query;
+export const useQuery = ({ query }: { query: UseQueryResult }) => {
+  const { data, isLoading, isError }: { data: any; isLoading: boolean; isError: boolean } = query;
 
-  //로딩창 안띄우는 시간
   const [isDeferred, setIsDeferred] = useState(false);
 
   useEffect(() => {
@@ -19,5 +18,5 @@ export const useQueryComponent = ({ children, query }: { children?: React.ReactN
   if (isLoading) return [null, isDeferred && <LoadingComponent />];
   if (isError) return [null, <ErrorComponent />];
 
-  return [data, children];
+  return [data];
 };

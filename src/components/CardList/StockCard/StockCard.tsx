@@ -1,59 +1,65 @@
 import { useNavigate } from 'react-router-dom';
+import { STOCK_COUNTRY } from '@ts/Types';
+import { deltaColor } from '@utils/Delta';
 import { scoreToImage } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import {
-  KeywordContainer,
-  ScoreImage,
-  StockCardItemContainer,
-  StockCardItemDeltaScore,
-  StockCardItemScore,
-  StockCardItemText,
-  StockCardItemTitle,
-  StockCardKeyword,
+  StockCardContainer,
+  StockCardImage,
+  StockCardKeywords,
+  StockCardTitle,
+  StockCardTitleContents,
+  StockCardTitleName,
+  StockCardTitleScore,
 } from './StockCard.Style';
 
-const StockCardItem = ({
-  name,
-  score,
-  delta,
-  country,
-  keywords,
-}: {
-  name: string;
+interface StockCardInfo {
+  symbolName: string;
   score: number;
-  delta: number;
-  country: string;
+  diff: number;
+  country: STOCK_COUNTRY;
   keywords: string[];
-}) => {
+}
+
+const signedNumber = (value: number) => {
+  const sign = value > 0 ? '+' : value < 0 ? '-' : '';
+  return sign + Math.abs(value);
+};
+
+const StockCard = ({ stockInfo: { symbolName, score, diff, keywords, country } }: { stockInfo: StockCardInfo }) => {
   const navigate = useNavigate();
+  const deltaSVG = !diff ? ' -' : diff > 0 ? <UpSVG /> : <DownSVG />;
   const scoreImage = scoreToImage(score);
-  const deltaSVG = !delta ? ' -' : delta > 0 ? <UpSVG /> : <DownSVG />;
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { symbolName: name, country: country } });
+    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
   };
 
   return (
-    <StockCardItemContainer onClick={handleClick}>
-      <StockCardItemTitle>
-        <StockCardItemText>{name}</StockCardItemText>
-        <StockCardItemScore>
-          {score}점
-          <StockCardItemDeltaScore delta={delta}>
-            {Math.abs(delta)}점{deltaSVG}
-          </StockCardItemDeltaScore>
-        </StockCardItemScore>
-        <KeywordContainer>
-          {keywords.map((keyword) => (
-            <StockCardKeyword>{keyword}</StockCardKeyword>
+    <StockCardContainer onClick={handleClick}>
+      <StockCardImage>
+        <img src={scoreImage} />
+      </StockCardImage>
+      <StockCardTitle>
+        <StockCardTitleContents>
+          <StockCardTitleName>{symbolName}</StockCardTitleName>
+          <StockCardTitleScore diffColor={deltaColor(diff)}>
+            {score}점
+            <span>
+              {signedNumber(diff)}점{deltaSVG}
+            </span>
+          </StockCardTitleScore>
+        </StockCardTitleContents>
+        <StockCardKeywords>
+          {keywords.map((e, i) => (
+            <span key={`Relevant_Keywords_${symbolName}_${i}`}>{e}</span>
           ))}
-        </KeywordContainer>
-      </StockCardItemTitle>
-      <ScoreImage src={scoreImage} />
-    </StockCardItemContainer>
+        </StockCardKeywords>
+      </StockCardTitle>
+    </StockCardContainer>
   );
 };
 
-export default StockCardItem;
+export default StockCard;

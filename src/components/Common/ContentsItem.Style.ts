@@ -4,9 +4,9 @@ import { media, theme, themeColor } from '@styles/themes';
 const ContentsItemContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: '18px',
+  gap: '24px',
   [media[0]]: {
-    gap: '12px',
+    gap: '18px',
   },
 });
 
@@ -18,32 +18,33 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
   fontWeight: '700',
   color: theme.colors.grayscale10,
   ['svg']: {
-    height: '28px',
+    height: '0.9em',
     width: 'auto',
     fill: color ? theme.colors[color] : '',
   },
   ['.btn_info']: {
-    marginLeft: '8px',
-    height: '32px',
+    marginLeft: '4px',
+    height: '0.8em',
     cursor: 'pointer',
   },
   [media[0]]: {
-    fontSize: '19px',
+    padding: '0 20px',
+    fontSize: '24px',
     gap: '6px',
-    ['svg']: {
-      height: '17px',
-    },
     ['.btn_info']: {
-      marginLeft: '4px',
-      height: '19px',
+      marginLeft: '0px',
     },
   },
 }));
 
 const ContentsItemContent = styled.div({
-  margin: '0 18px',
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '0 32px',
+  gap: '18px',
   [media[0]]: {
     margin: '0 0px',
+    padding: '0 20px',
   },
 });
 
