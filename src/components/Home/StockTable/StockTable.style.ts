@@ -4,6 +4,11 @@ import { media, theme } from '@styles/themes';
 
 const StockTableContainer = styled.div({
   width: '100%',
+  boxSizing: 'border-box',
+
+  [media[0]]: {
+    padding: '0 20px', // 상하 여백 추가
+  },
 });
 
 const StockTableTitle = styled.div({
@@ -36,14 +41,14 @@ const StockTableTitle = styled.div({
   },
 
   [media[0]]: {
-    fontSize: '20px',
+    fontSize: '24px',
     padding: '5px 0', // 상하 여백 추가
 
     ['span']: {
-      fontSize: '12px',
+      fontSize: '13px',
     },
     ['svg']: {
-      height: '18px',
+      height: '0.9em',
     },
   },
 });

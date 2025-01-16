@@ -14,6 +14,7 @@ export const SearchTitleContainer = styled.div({
   color: theme.colors.grayscale30,
   [media[0]]: {
     gap: '24px',
+    padding: '0 20px',
   },
 });
 

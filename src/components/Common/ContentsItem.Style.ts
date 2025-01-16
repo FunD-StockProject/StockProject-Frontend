@@ -28,6 +28,7 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
     cursor: 'pointer',
   },
   [media[0]]: {
+    padding: '0 20px',
     fontSize: '24px',
     gap: '6px',
     ['.btn_info']: {
@@ -43,6 +44,7 @@ const ContentsItemContent = styled.div({
   gap: '18px',
   [media[0]]: {
     margin: '0 0px',
+    padding: '0 20px',
   },
 });
 

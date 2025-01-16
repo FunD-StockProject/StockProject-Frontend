@@ -22,6 +22,7 @@ const TitleWrapper = styled.div({
     ['span']: {
       fontSize: '10px',
     },
+    padding: '0 20px',
   },
 });
 
@@ -51,11 +52,18 @@ const Title = styled.div({
 
 const KeywordList = styled.div({
   display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
-  flexWrap: 'wrap',
   gap: '8px',
   alignSelf: 'stretch',
+  overflow: 'auto',
+  whiteSpace: 'nowrap',
+  msOverflowStyle: 'none',
+  ['::-webkit-scrollbar']: {
+    display: 'none',
+  },
+  [media[0]]: {
+    padding: '0 20px',
+  },
 });
 
 const KeywordItem = styled.div({
