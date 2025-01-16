@@ -64,7 +64,9 @@ const Home = () => {
       </StyleTabMenuContainer>
 
       <HomeContents>
-        <IndexScore tabIndex={tabIndex} />
+        <ContentsItemContent>
+          <IndexScore tabIndex={tabIndex} />
+        </ContentsItemContent>
         <ContentsItemContainer>
           <ContentsItemTitle color="primary50">
             지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한
@@ -73,8 +75,8 @@ const Home = () => {
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={hotStocksApiRef} name={'HOT'} country={country} />
+            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>
-          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[0] && <HotPopUp onClose={() => togglePopup(0)} />}
         </ContentsItemContainer>
         <ContentsItemContainer>
@@ -85,8 +87,8 @@ const Home = () => {
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={risingStocksApiRef} name={'RISING'} country={country} />
+            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>
-          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[1] && <RisingPopUp onClose={() => togglePopup(1)} />}
         </ContentsItemContainer>
         <ContentsItemContainer>
@@ -97,8 +99,8 @@ const Home = () => {
           </ContentsItemTitle>
           <ContentsItemContent>
             <CardList apiRef={descentStocksApiRef} name={'DESCENT'} country={country} />
+            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>
-          <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           {isPopupOpen[2] && <DescentPopUp onClose={() => togglePopup(2)} />}
         </ContentsItemContainer>
         <StockTable country={country} />

@@ -21,7 +21,7 @@ const FooterContents = styled.div({
 
   [media[0]]: {
     gap: '24px',
-    padding: '60px 30px',
+    padding: '60px 20px',
     fontSize: '13px',
   },
 });
@@ -52,25 +52,25 @@ const FooterTitle = styled.div({
 const FooterButtonContainer = styled.div({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '18px',
+  gap: '12px',
 
   [media[0]]: {
-    gap: '12px',
+    gap: '8px',
   },
 });
 
 const FooterButtonItemContainer = styled.div({
   display: 'flex',
   background: theme.colors.primary0,
-  padding: '18px 24px',
-  borderRadius: '18px',
-  gap: '12px',
+  padding: '12px 18px',
+  borderRadius: '8px',
+  gap: '8px',
   alignItems: 'center',
   color: theme.colors.primary100,
-  fontSize: '24px',
+  fontSize: '18px',
 
   ['img']: {
-    height: '32px',
+    height: '1.5em',
   },
 
   '&:hover': {
@@ -81,17 +81,8 @@ const FooterButtonItemContainer = styled.div({
 
   [media[0]]: {
     gap: '8px',
-
     width: '100%',
-    padding: '12px 18px',
-
-    fontSize: '18px',
-
-    borderRadius: '12px',
-
-    ['img']: {
-      height: '28px',
-    },
+    borderRadius: '8px',
   },
 });
 
