@@ -47,10 +47,6 @@ export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
-export const StockRelevantQuery = (id: number) => {
-  return useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), queryOptions);
-};
-
 export const StockFetchQuery = (type: StockType, country: string) => {
   return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
 };
@@ -99,6 +95,17 @@ export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
     () => fetchStockSummary(symbol, country),
     queryOptions,
   );
+
+  return [data];
+};
+
+// SearchRelevant
+
+export const StockRelevantQuery = (id: number) => {
+  const { data } = useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), {
+    ...queryOptions,
+    enabled: id != undefined,
+  });
 
   return [data];
 };

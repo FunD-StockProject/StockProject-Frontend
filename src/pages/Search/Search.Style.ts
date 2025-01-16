@@ -19,7 +19,7 @@ const SearchResultContents = styled.div({
 
   [media[0]]: {
     gap: '32px',
-    padding: '60px 20px',
+    padding: '60px 0px',
   },
 });
 
@@ -51,7 +51,7 @@ const SearchResultInfo = styled.div({
     height: '25px',
     fontSize: '11px',
     padding: '12px',
-    margin: '0',
+    margin: '0 20px',
   },
 });
 

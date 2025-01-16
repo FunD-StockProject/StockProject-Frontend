@@ -8,6 +8,7 @@ const IndicesContainer = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   gap: '8px',
+  whiteSpace: 'nowrap',
 });
 
 const IndexItem = styled.div({
