@@ -10,11 +10,11 @@ import UpSVG from '@assets/icons/up.svg?react';
 import {
   ScoreSlotMachineContainer,
   ScoreSlotMachineContent,
+  ScoreSlotMachineTitle,
   SlotMachineItemContainer,
   SlotMachineItemMotionDiv,
   StockCardItemDeltaScore,
   StockCardItemScore,
-  StockCardItemText,
 } from './stockSlotMachine.Style';
 
 const getDuration = (animationTime: number, idx: number, lastIndex: number) => {
@@ -165,7 +165,7 @@ const ScoreSlotMachine = ({
 
   return (
     <ScoreSlotMachineContainer active={active} tabIndex={tabIndex} onClick={active ? handleClick : () => {}}>
-      <StockCardItemText>{active ? stockName : ''}</StockCardItemText>
+      {active && <ScoreSlotMachineTitle>{stockName}</ScoreSlotMachineTitle>}
       <ScoreSlotMachineContent>
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="TITLE" />
         <ScoreSlotMachineItem stockName={stockName} stockScore={stockScore} slotMachineType="IMAGE" />

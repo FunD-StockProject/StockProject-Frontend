@@ -7,49 +7,54 @@ const ScoreSlotMachineContainer = styled.div(
   {
     display: 'flex',
     flexDirection: 'column',
-    padding: '32px',
-    background: theme.colors.grayscale100,
-    borderRadius: '24px',
-    fontSize: '32px',
     fontWeight: '700',
     lineHeight: '1',
-    gap: '21px',
+    gap: '24px',
 
     [media[0]]: {
-      fontSize: '17px',
-      padding: '12px',
-      borderRadius: '12px',
       gap: '13px',
       marginBottom: '0.5em',
+    },
+    [':hover > div > div']: {
+      backgroundColor: theme.colors.grayscale90,
     },
   },
   ({ active }: { active?: boolean }) => active && { cursor: 'pointer' },
 );
 
-const SlotMachineItemContainer = styled.div({
-  backgroundColor: theme.colors.grayscale90,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  maxHeight: '240px',
-  border: `1px solid ${theme.colors.grayscale40}`,
-  borderRadius: '16px',
-  width: '100%',
+const ScoreSlotMachineTitle = styled.span({
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
   overflow: 'hidden',
-  position: 'relative',
-  height: '240px',
-
+  width: '100%',
+  fontSize: '24px',
   [media[0]]: {
-    height: '80px',
-    borderRadius: '8px',
+    fontSize: '17px',
   },
 });
 
 const ScoreSlotMachineContent = styled.div({
   display: 'flex',
-  gap: '24px',
+  gap: '12px',
   [media[0]]: {
     gap: '12px',
+  },
+});
+
+const SlotMachineItemContainer = styled.div({
+  backgroundColor: theme.colors.grayscale100,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '12px',
+  width: '100%',
+  overflow: 'hidden',
+  position: 'relative',
+  height: '320px',
+
+  [media[0]]: {
+    height: '100px',
+    borderRadius: '8px',
   },
 });
 
@@ -71,13 +76,6 @@ const SlotMachineItemMotionDiv = styled(motion.div)({
   [media[0]]: {
     fontSize: '24px',
   },
-});
-
-const StockCardItemText = styled.div({
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  width: '100%',
 });
 
 const StockCardItemScore = styled.div({
@@ -109,7 +107,7 @@ export {
   SlotMachineItemContainer,
   ScoreSlotMachineContent,
   SlotMachineItemMotionDiv,
-  StockCardItemText,
+  ScoreSlotMachineTitle,
   StockCardItemScore,
   StockCardItemDeltaScore,
 };

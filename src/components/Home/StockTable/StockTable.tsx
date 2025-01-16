@@ -62,6 +62,7 @@ const StockTable = ({ country }: { country: string }) => {
           </li>
         ))}
       </StyledTabMenu>
+
       <TableHeaderContainer>
         <HeaderItem>종목</HeaderItem>
         <HeaderItem>주가</HeaderItem>
@@ -74,7 +75,7 @@ const StockTable = ({ country }: { country: string }) => {
               <TableRow key={index} onClick={() => handleClick(stock.symbolName)}>
                 <StockData>
                   <StockInfo>
-                    {/* <StockLogo src={stock.logo} /> */}
+                    {/* <StockLogo /> */}
                     <StockName>{stock.symbolName}</StockName>
                   </StockInfo>
                 </StockData>

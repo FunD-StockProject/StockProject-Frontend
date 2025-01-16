@@ -64,9 +64,6 @@ const Footer = () => {
             About
             <LogoSVG />
           </FooterTitle>
-          개미들이 원하던 서비스! '인간지표'가 2025년 1월 11일에 공식 오픈이 예정되어있어요! 😊
-          <br />
-          '인간지표'를 사용하면서 불편한 부분이나 추가로 원하는 기능이 있으면 언제든지 피드백해주세요 :)
           <FooterButtonContainer>
             <FooterButton img={dictSVG} str="데이터 추출 방식 자세히 보기" onClick={openDictionaryModel} />
             <FooterButton img={commentSVG} str="서비스 의견 남기기" onClick={openSurveyWindow} />
