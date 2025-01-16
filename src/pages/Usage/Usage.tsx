@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { detectBrowser, detectPlatform } from '@utils/Detector';
+import { detectPlatform } from '@utils/Detector';
+import Android from '@components/PWAUsage/Android/Android';
 import leftArrow from '../../assets/leftArrow.svg';
-import IOSSafari from '../../components/PWAUsage/iOSSafari/IOSSafari';
+import IOS from '../../components/PWAUsage/iOS/IOS';
 import { BackButton, UsageContainer } from './Usage.Style';
 
 const Usage = () => {
@@ -25,10 +26,8 @@ const Usage = () => {
   return (
     <UsageContainer>
       <BackButton src={leftArrow} onClick={() => navigate(-1)} />
-      <IOSSafari />
-      {/* {detectPlatform() === 'iOS' && detectBrowser() === 'Safari' && <IOSSafari />}
-      {detectPlatform() === 'iOS' && detectBrowser() === 'Chrome' && <IOSSafari />}
-      {detectPlatform() === 'Android' && <IOSSafari />} */}
+      {detectPlatform() === 'iOS' && <IOS />}
+      {detectPlatform() === 'Android' && <Android />}
     </UsageContainer>
   );
 };

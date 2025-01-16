@@ -46,8 +46,8 @@ const StockCardItem = ({
           </StockCardItemDeltaScore>
         </StockCardItemScore>
         <KeywordContainer>
-          {keywords.map((keyword) => (
-            <StockCardKeyword>{keyword}</StockCardKeyword>
+          {keywords.map((keyword, i) => (
+            <StockCardKeyword key={`StockCardKeyword_${name}_${i}`}>{keyword}</StockCardKeyword>
           ))}
         </KeywordContainer>
       </StockCardItemTitle>

@@ -52,14 +52,13 @@ const StockCardItemText = styled.div({
   width: '100%',
 });
 
-const StockCardItemScore = styled.div(() => ({
+const StockCardItemScore = styled.div({
   display: 'flex',
   alignItems: 'center',
-
   color: theme.colors.primary0,
 
   fontSize: '1.0em',
-}));
+});
 
 const StockCardItemDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',

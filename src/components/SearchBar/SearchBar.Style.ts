@@ -41,8 +41,9 @@ export const SearchBarInput = styled.div({
   alignItems: 'center',
   background: theme.colors.grayscale100,
   padding: '18px',
-  borderRadius: '12px',
+  borderRadius: '8px',
   width: '100%',
+  fontSize: '24px',
   ['input']: {
     boxSizing: 'border-box',
     width: '100%',
@@ -57,18 +58,17 @@ export const SearchBarInput = styled.div({
     },
   },
   ['svg']: {
-    height: '24px',
+    height: '1em',
     width: 'auto',
     stroke: theme.colors.grayscale30,
     cursor: 'pointer',
   },
   [media[0]]: {
     padding: '0 12px',
+    borderRadius: '4px',
+    fontSize: '18px',
     ['input']: {
       padding: '12px 0',
-    },
-    ['svg']: {
-      height: '18px',
     },
   },
 });
@@ -93,8 +93,8 @@ export const SearchBarSelectBox = styled.div(
       },
       ['svg']: {
         fill: theme.colors.grayscale10,
-        height: '16px',
-        width: 'auto',
+        height: '1em',
+        width: '1em',
       },
     },
     [media[0]]: {
@@ -107,11 +107,7 @@ export const SearchBarSelectBox = styled.div(
         },
         fontSize: '15px',
         padding: '12px',
-        borderRadius: '8px',
-        ['svg']: {
-          height: '12px',
-          width: '12px',
-        },
+        borderRadius: '4px',
       },
     },
   },

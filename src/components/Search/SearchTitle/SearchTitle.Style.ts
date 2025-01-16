@@ -115,6 +115,8 @@ export const SearchTitleBodyTitleSVG = styled.div({
 });
 
 export const SearchTitleBodySubtitle = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
   fontSize: '15px',
 
   [media[0]]: {

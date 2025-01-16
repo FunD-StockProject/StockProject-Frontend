@@ -331,12 +331,7 @@ const StockChartView = ({
       max: chartItems.reduce((prev, { trading: { volume } }) => Math.max(prev, volume), 0),
     };
 
-    const scaledVolume: any = getScaledValue(
-      rangedVolume,
-      volumeScale,
-      scoreHeight,
-      GRID_GAP.SCORE_Y,
-    );
+    const scaledVolume: any = getScaledValue(rangedVolume, volumeScale, scoreHeight, GRID_GAP.SCORE_Y);
     setScaledVolume(scaledVolume);
 
     const scoreGrid = getGrid(scaledScore, (value: any) => (value < 0 || value > 100 ? '' : value));
@@ -513,11 +508,7 @@ const StockChartView = ({
       dayWidth += itemWidth;
 
       if (dayWidth < GRID_GAP.X) {
-        if (
-          (type === 'M' && beforeType === 'D') ||
-          (type === 'Y' && ['D', 'M'].includes(beforeType))
-        )
-          acc.pop();
+        if ((type === 'M' && beforeType === 'D') || (type === 'Y' && ['D', 'M'].includes(beforeType))) acc.pop();
         else return acc;
       }
 
@@ -553,18 +544,16 @@ const StockChartView = ({
   };
 
   const getChartSMAItems = (chartItems: any[], scaledPrice: any) => {
-    const chartSMAItems: Record<
-      string,
-      { color: themeColor; items: { pos: { x: number; y: number } }[] }
-    > = Object.fromEntries(
-      Object.entries(CHART_MOVING_AVERAGE_COLOR).map(([key, value]) => [
-        key,
-        {
-          color: value,
-          items: [],
-        },
-      ]),
-    );
+    const chartSMAItems: Record<string, { color: themeColor; items: { pos: { x: number; y: number } }[] }> =
+      Object.fromEntries(
+        Object.entries(CHART_MOVING_AVERAGE_COLOR).map(([key, value]) => [
+          key,
+          {
+            color: value,
+            items: [],
+          },
+        ]),
+      );
 
     chartItems.forEach(({ pos, SMA }) => {
       Object.entries(SMA).forEach(([key, { price }]: [string, any]) => {
@@ -595,12 +584,7 @@ const StockChartView = ({
     };
   };
 
-  const getExtremePrice = (
-    chartItems: any[],
-    recentPrice: any,
-    [min, max]: [number, number],
-    scaledPrice: any,
-  ) => {
+  const getExtremePrice = (chartItems: any[], recentPrice: any, [min, max]: [number, number], scaledPrice: any) => {
     const extremePriceList = chartItems.filter(({ pos }) => isBetween(pos.x, min, max));
     if (!extremePriceList.length) return;
 
@@ -636,17 +620,13 @@ const StockChartView = ({
   };
 
   const getGrid = (scaledValue: any, valueStr: any) => {
-    return Array.from(
-      { length: Math.ceil(scaledValue.range / scaledValue.axisScale) + 1 },
-      (_, i) => {
-        const value =
-          (i + Math.floor(scaledValue.min / scaledValue.axisScale)) * scaledValue.axisScale;
-        return {
-          valueStr: valueStr(value),
-          pos: { x: 0, y: scaledValue.Y(value) },
-        };
-      },
-    );
+    return Array.from({ length: Math.ceil(scaledValue.range / scaledValue.axisScale) + 1 }, (_, i) => {
+      const value = (i + Math.floor(scaledValue.min / scaledValue.axisScale)) * scaledValue.axisScale;
+      return {
+        valueStr: valueStr(value),
+        pos: { x: 0, y: scaledValue.Y(value) },
+      };
+    });
   };
 
   const getChartScoreItems = (chartItems: any[], scaledScore: any, scaledVolume: any) => {
@@ -825,9 +805,7 @@ const StockChartView = ({
         now.y += e.clientY / touches.length;
       });
       touches.map((e) => {
-        now.a +=
-          Math.sqrt(Math.pow(e.clientX - now.x, 2) + Math.pow(e.clientY - now.y, 2)) /
-          touches.length;
+        now.a += Math.sqrt(Math.pow(e.clientX - now.x, 2) + Math.pow(e.clientY - now.y, 2)) / touches.length;
       });
       setZoom(now.a);
     }
@@ -844,9 +822,7 @@ const StockChartView = ({
         now.y += e.clientY / touches.length;
       });
       touches.map((e) => {
-        now.a +=
-          Math.sqrt(Math.pow(e.clientX - now.x, 2) + Math.pow(e.clientY - now.y, 2)) /
-          touches.length;
+        now.a += Math.sqrt(Math.pow(e.clientX - now.x, 2) + Math.pow(e.clientY - now.y, 2)) / touches.length;
       });
       if (zoomRef.current && Math.abs(zoomRef.current - now.a) > 10) {
         zoomChart(now.a / zoomRef.current, now.x);
@@ -966,11 +942,7 @@ const StockChartView = ({
             <StockChartCanvasRefContainer ref={scoreCanvasRef} />
             <StockChartInfoHeader>
               <StockChartInfoHeaderItem>
-                <ChartBottomInfo
-                  trading={mousePosInfo?.trading}
-                  score={mousePosInfo?.score}
-                  isMobile={isMobile}
-                />
+                <ChartBottomInfo trading={mousePosInfo?.trading} score={mousePosInfo?.score} isMobile={isMobile} />
               </StockChartInfoHeaderItem>
             </StockChartInfoHeader>
           </StockChartItemContent>
@@ -999,21 +971,12 @@ const StockChartView = ({
             </ChartLabel>
           ))}
           {lastPriceItem && (
-            <ChartLabel
-              strokeRect
-              fillText
-              y={lastPriceItem.pos.y}
-              color={deltaColor(lastPriceItem.delta)}
-            >
+            <ChartLabel strokeRect fillText y={lastPriceItem.pos.y} color={deltaColor(lastPriceItem.delta)}>
               {lastPriceItem.priceStr}
             </ChartLabel>
           )}
           {recentPriceItem && (
-            <ChartLabel
-              fillRect
-              y={recentPriceItem.pos.y}
-              color={deltaColor(recentPriceItem.delta)}
-            >
+            <ChartLabel fillRect y={recentPriceItem.pos.y} color={deltaColor(recentPriceItem.delta)}>
               {recentPriceItem.priceStr}
             </ChartLabel>
           )}
@@ -1044,24 +1007,14 @@ const StockChartView = ({
   );
 };
 
-const ChartBottomInfo = ({
-  trading,
-  score,
-  isMobile,
-}: {
-  trading: any;
-  score: any;
-  isMobile: boolean;
-}) => {
+const ChartBottomInfo = ({ trading, score, isMobile }: { trading: any; score: any; isMobile: boolean }) => {
   return (
     <>
       거래량{' '}
       {!isMobile && trading && (
         <>
           {formatVolume(trading.volume)}{' '}
-          <StockInfoDeltaLabel delta={trading.delta}>
-            {formatDeltaStr(trading.delta)}
-          </StockInfoDeltaLabel>
+          <StockInfoDeltaLabel delta={trading.delta}>{formatDeltaStr(trading.delta)}</StockInfoDeltaLabel>
         </>
       )}
       / 인간지표{' '}
@@ -1077,15 +1030,7 @@ const ChartBottomInfo = ({
   );
 };
 
-const ChartPriceInfo = ({
-  label,
-  price,
-  country,
-}: {
-  label: string;
-  price: any;
-  country: string;
-}) => {
+const ChartPriceInfo = ({ label, price, country }: { label: string; price: any; country: string }) => {
   return (
     <>
       {label + ' '}
@@ -1132,16 +1077,7 @@ const StockChart = ({
   return (
     <StockChartContainer>
       <StockChartHeader>
-        <StockChartHeaderContents>
-          <StockChartHeaderItem
-            onClick={() => {
-              updateChartData();
-            }}
-          >
-            {symbolName}
-          </StockChartHeaderItem>
-          {/* <StockChartHeaderItem>새로고침</StockChartHeaderItem> */}
-        </StockChartHeaderContents>
+        <StockChartHeaderItem>{symbolName}</StockChartHeaderItem>
         <StockChartHeaderContents>
           {(Object.entries(PERIOD_CODE_TEXT) as [PERIOD_CODE, string][]).map(([key, value], i) => (
             <StockChartHeaderItem
@@ -1154,12 +1090,7 @@ const StockChart = ({
           ))}
         </StockChartHeaderContents>
       </StockChartHeader>
-      <StockChartView
-        chartData={chartData}
-        updateChart={updateChartData}
-        period={selectedPeriod}
-        country={country}
-      />
+      <StockChartView chartData={chartData} updateChart={updateChartData} period={selectedPeriod} country={country} />
     </StockChartContainer>
   );
 };

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
@@ -15,19 +15,18 @@ import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Styl
 const CardList = ({
   apiRef,
   name,
-  index,
+  country,
 }: {
   apiRef: React.MutableRefObject<publicApiType>;
   name: StockType;
-  index: number;
+  country: string;
 }) => {
+  const isHot = name === 'HOT';
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
   const isMobile = useIsMobile();
-
-  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, index) });
-  const isHot = name === 'HOT';
-  const country = index === 0 ? 'KOREA' : 'OVERSEA';
+  const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -51,6 +50,7 @@ const CardList = ({
           active={true}
           stockScore={stock.score}
           tabIndex={0}
+          stockDiff={stock.diff}
           country={country}
         />
       </CardListItemContainer>
@@ -105,20 +105,15 @@ const CardList = ({
 const ScrollArrow = ({ direction }: { direction: 'left' | 'right' }) => {
   const { scrollPrev, scrollNext, useIsVisible } = useContext(VisibilityContext);
 
-  // 첫 번째 및 마지막 아이템 여부 확인
   const isFirstItemVisible = useIsVisible('first', true);
   const isLastItemVisible = useIsVisible('last', false);
-
-  // 방향에 따른 비활성화 상태 결정
   const isDisabled = direction === 'left' ? isFirstItemVisible : isLastItemVisible;
 
-  // 방향에 따른 클릭 핸들러
   const onClick = () => {
     if (isDisabled) return; // 비활성화 상태면 동작 안 함
     direction === 'left' ? scrollPrev() : scrollNext();
   };
 
-  // 이미지 링크 결정
   const imgLink = direction === 'left' ? leftArrowImgLink : rightArrowImgLink;
 
   return (

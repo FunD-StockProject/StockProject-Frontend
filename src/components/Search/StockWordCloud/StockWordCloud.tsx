@@ -55,7 +55,7 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_CO
   }, [state]);
 
   useEffect(() => {
-    if (!wordCloud.length || currentIndex > wordCloud.length) return;
+    if (!wordCloud || currentIndex > wordCloud.length) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
@@ -68,7 +68,7 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_CO
 
   return (
     <StockWordCloudContainer ref={containerRef}>
-      {wordCloud.length ? (
+      {wordCloud ? (
         [...wordCloud]
           .reverse()
           .map(

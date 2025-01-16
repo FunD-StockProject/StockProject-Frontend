@@ -3,15 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { useQuery } from '@hooks/useQuery';
 import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
 import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { FlexDiv } from '@components/Common/Common';
-import {
-  ContentsItemContainer,
-  ContentsItemContent,
-  ContentsItemTitle,
-} from '@components/Common/ContentsItem.Style';
+import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
@@ -23,12 +19,7 @@ import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controll
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
-import {
-  SearchResultContainer,
-  SearchResultContents,
-  SearchResultInfo,
-  StockRelevantContainer,
-} from './Search.Style';
+import { SearchResultContainer, SearchResultContents, SearchResultInfo, StockRelevantContainer } from './Search.Style';
 
 const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
   <FlexDiv flexDirection="column" width="100%">
@@ -39,7 +30,7 @@ const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; count
         score={stock.score}
         delta={stock.diff}
         country={country}
-        keywords={stock.keywords ?? []}
+        keywords={stock.keywords}
       />
     ))}
   </FlexDiv>
@@ -63,22 +54,21 @@ const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country:
 );
 
 const StockRelevant = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [stockRelevantList, suspend] = useQueryComponent({ query: StockRelevantQuery(stockId) });
+  const [stockRelevantList] = useQuery({ query: StockRelevantQuery(stockId) });
   const isMobile = useIsMobile();
 
   return (
-    suspend ||
-    (stockRelevantList &&
-      (isMobile ? (
-        <MobileRelevantStocks stocks={stockRelevantList} country={country} />
-      ) : (
-        <WebRelevantStocks stocks={stockRelevantList} country={country} />
-      )))
+    stockRelevantList &&
+    (isMobile ? (
+      <MobileRelevantStocks stocks={stockRelevantList} country={country} />
+    ) : (
+      <WebRelevantStocks stocks={stockRelevantList} country={country} />
+    ))
   );
 };
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
+  const [score, suspend] = useQuery({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -101,7 +91,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 const Search = () => {
   const { state } = useLocation();
 
-  const [stockInfo, suspend] = useQueryComponent({
+  const [stockInfo] = useQuery({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
@@ -111,8 +101,7 @@ const Search = () => {
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
-    suspend ||
-    (stockInfo && (
+    stockInfo && (
       <SearchResultContainer>
         <SearchResultContents>
           <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
@@ -136,11 +125,7 @@ const Search = () => {
               </ContentsItemContainer>
             </>
           ) : (
-            <StockChart
-              stockId={stockInfo.stockId}
-              symbolName={stockInfo.symbolName}
-              country={stockInfo.country}
-            />
+            <StockChart stockId={stockInfo.stockId} symbolName={stockInfo.symbolName} country={stockInfo.country} />
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
@@ -150,7 +135,7 @@ const Search = () => {
           </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>
-    ))
+    )
   );
 };
 

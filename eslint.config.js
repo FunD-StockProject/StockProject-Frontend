@@ -1,7 +1,7 @@
-import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
@@ -14,7 +14,13 @@ export default [
         node: true,
       },
       plugins: ['@typescript-eslint', 'react', 'prettier'],
-      extends: ['prettier', 'eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
+      extends: [
+        'prettier',
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:prettier/recommended',
+        'plugin:@typescript-eslint/recommended',
+      ],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 'latest',
@@ -29,7 +35,7 @@ export default [
         'react/jsx-one-expression-per-line': 0,
         'no-nested-ternary': 0,
       },
-    }
+    },
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
