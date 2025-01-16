@@ -51,10 +51,6 @@ const Title = styled.div({
 });
 
 const KeywordList = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  alignSelf: 'stretch',
   overflow: 'auto',
   whiteSpace: 'nowrap',
   msOverflowStyle: 'none',
@@ -66,22 +62,33 @@ const KeywordList = styled.div({
   },
 });
 
+const KeywordItemConainer = styled.div({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '12px',
+  [media[0]]: {
+    gap: '8px',
+    justifyContent: 'start',
+  },
+});
+
 const KeywordItem = styled.div({
   color: theme.colors.primary0,
   backgroundColor: theme.colors.grayscale100,
   textAlign: 'right',
   fontFamily: 'Pretendard', // Corrected camelCase syntax
   fontSize: '19px', // Corrected camelCase syntax
-  fontStyle: 'normal',
   fontWeight: 700,
 
-  padding: '12px 20px',
+  padding: '8px 24px',
   borderRadius: '30px',
-  border: `1px solid ${theme.colors.grayscale100}`,
 
   [media[0]]: {
-    fontSize: '16px',
+    fontSize: '13px',
+    padding: '8px 12px',
   },
 });
 
-export { KeywordsContainer, TitleWrapper, Title, KeywordList, KeywordItem };
+export { KeywordsContainer, TitleWrapper, Title, KeywordList, KeywordItemConainer, KeywordItem };

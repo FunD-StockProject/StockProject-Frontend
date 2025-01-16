@@ -12,12 +12,11 @@ const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }
   const isMobile = useIsMobile();
   const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
 
-  console.log(suspend);
-
   return (
     suspend ||
     (curStocks && (
       <SlideView
+        key={`${name}_${country}`}
         keyName={name}
         list={isHot ? StockHot(curStocks, country) : StockRisingDescend(curStocks, country)}
         count={isHot ? 1 : !isMobile ? 3 : 1}

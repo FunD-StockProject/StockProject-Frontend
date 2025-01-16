@@ -68,6 +68,7 @@ const FooterButtonItemContainer = styled.div({
   alignItems: 'center',
   color: theme.colors.primary100,
   fontSize: '18px',
+  cursor: 'pointer',
 
   ['img']: {
     height: '1.5em',
@@ -86,11 +87,18 @@ const FooterButtonItemContainer = styled.div({
   },
 });
 
-const FooterIconsContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center; // 아이콘 세로 정렬
-`;
+const FooterIconsContainer = styled.div({
+  display: 'flex',
+  gap: '12px',
+  alignItems: 'center',
+  fontSize: '32px',
+  ['svg']: {
+    cursor: 'pointer',
+    height: '1em',
+    width: '1em',
+    fill: 'white',
+  },
+});
 export {
   FooterContainer,
   FooterContents,
