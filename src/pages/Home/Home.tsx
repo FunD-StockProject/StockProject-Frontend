@@ -73,7 +73,7 @@ const Home = () => {
             <ZipyoSVG />
             <InfoSVG className="btn_info" onClick={() => togglePopup(0)} />
           </ContentsItemTitle>
-          <CardList apiRef={hotStocksApiRef} name={'HOT'} country={country} />
+          <CardList name={'HOT'} country={country} />
           <ContentsItemContent>
             <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>
@@ -85,7 +85,7 @@ const Home = () => {
             <ZipyoSVG />
             <InfoSVG className="btn_info" onClick={() => togglePopup(1)} />
           </ContentsItemTitle>
-          <CardList apiRef={risingStocksApiRef} name={'RISING'} country={country} />
+          <CardList name={'RISING'} country={country} />
           <ContentsItemContent>
             <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>
@@ -97,7 +97,7 @@ const Home = () => {
             <ZipyoSVG />
             <InfoSVG className="btn_info" onClick={() => togglePopup(2)} />
           </ContentsItemTitle>
-          <CardList apiRef={descentStocksApiRef} name={'DESCENT'} country={country} />
+          <CardList name={'DESCENT'} country={country} />
           <ContentsItemContent>
             <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
           </ContentsItemContent>

@@ -1,28 +1,13 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
 import { STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQuery } from '@hooks/useQuery';
-import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
-import StockCardItem from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
 import StockCard from '@components/StockCard/StockCard';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { StockScore } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
-import leftArrowImgLink from '../../assets/leftArrow.svg';
-import rightArrowImgLink from '../../assets/rightArrow.svg';
-import { ArrowButton, CardListItemContainer, NoScrollbar } from './CardList.Style';
 
-const CardList = ({
-  name,
-  country,
-}: {
-  apiRef: React.MutableRefObject<publicApiType>;
-  name: StockType;
-  country: STOCK_COUNTRY;
-}) => {
+const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
   const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
