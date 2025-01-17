@@ -14,28 +14,35 @@ const HeaderContents = styled.div({
   boxSizing: 'border-box',
   margin: '0 auto',
   height: '100%',
-  gap: '32px',
-
-  [media[0]]: {
-    gap: '18px',
-  },
 });
 
 const HeaderLogo = styled.div({
+  width: '100%',
   margin: '0 auto',
-  padding: '32px',
+  padding: '64px',
+  display: 'flex',
+  alignItems: 'center',
+  boxSizing: 'border-box',
 
   [media[0]]: {
     padding: '24px',
   },
 
-  ['svg']: {
+  ['> svg']: {
     cursor: 'pointer',
     width: 'auto',
     height: '48px',
+    margin: '0 auto',
 
     [media[0]]: {
       height: '24px',
+    },
+  },
+
+  ['iframe']: {
+    background: 'transparent',
+    ['div']: {
+      background: 'red',
     },
   },
 });
