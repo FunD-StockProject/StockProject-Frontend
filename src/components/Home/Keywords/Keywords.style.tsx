@@ -9,65 +9,74 @@ const KeywordsContainer = styled.div({
 
 const TitleWrapper = styled.div({
   display: 'flex',
-  justifyContent: 'space-between', // 제목과 날짜 간 간격
   alignItems: 'center',
-  fontFamily: 'Pretendard', // 폰트 지정
+  justifyContent: 'space-between',
 
-  ['span']: {
-    fontSize: '16px', // 기준 텍스트 크기
-    fontWeight: '500',
-    color: theme.colors.grayscale60, // 기준 텍스트 색상
-  },
+  fontFamily: 'Pretendard',
+
   [media[0]]: {
+    padding: '0 20px',
+
     ['span']: {
       fontSize: '10px',
     },
-    padding: '0 20px',
+  },
+
+  ['span']: {
+    color: theme.colors.grayscale60,
+    fontWeight: '500',
+    fontSize: '16px',
   },
 });
 
 const Title = styled.div({
-  color: theme.colors.grayscale10, // 제목 텍스트 색상
-  fontSize: '32px', // 글자 크기
-  fontStyle: 'normal',
-  fontWeight: 700,
-  lineHeight: '150%', // 줄 간격
-  display: 'flex', // 텍스트와 아이콘 정렬을 위해 flex 사용
-  alignItems: 'center', // 세로축 중앙 정렬
+  display: 'flex',
+  alignItems: 'center',
 
-  ['svg']: {
-    marginLeft: '8px', // 아이콘과 텍스트 간 간격
-    width: '24px',
-    height: '24px',
-  },
+  color: theme.colors.grayscale10,
+  fontWeight: 700,
+  fontSize: '32px',
+  fontStyle: 'normal',
+  lineHeight: '150%',
 
   [media[0]]: {
-    fontSize: '16px', // 작은 화면에서 글자 크기 조정
+    fontSize: '16px',
 
     ['svg']: {
-      width: '20px', // 아이콘 크기 조정
+      width: '20px',
     },
+  },
+
+  ['svg']: {
+    width: '24px',
+    height: '24px',
+    marginLeft: '8px',
   },
 });
 
 const KeywordList = styled.div({
   overflow: 'auto',
+
   whiteSpace: 'nowrap',
+
   msOverflowStyle: 'none',
-  ['::-webkit-scrollbar']: {
-    display: 'none',
-  },
+
   [media[0]]: {
     padding: '0 20px',
+  },
+
+  ['::-webkit-scrollbar']: {
+    display: 'none',
   },
 });
 
 const KeywordItemConainer = styled.div({
-  width: '100%',
   display: 'flex',
+  gap: '12px',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '12px',
+  width: '100%',
+
   [media[0]]: {
     gap: '8px',
     justifyContent: 'start',
@@ -75,19 +84,21 @@ const KeywordItemConainer = styled.div({
 });
 
 const KeywordItem = styled.div({
-  color: theme.colors.primary0,
-  backgroundColor: theme.colors.grayscale100,
-  textAlign: 'right',
-  fontFamily: 'Pretendard', // Corrected camelCase syntax
-  fontSize: '19px', // Corrected camelCase syntax
-  fontWeight: 700,
-
   padding: '8px 24px',
+
+  color: theme.colors.primary0,
+  fontWeight: 700,
+  fontSize: '19px',
+  fontFamily: 'Pretendard',
+  textAlign: 'right',
+
+  backgroundColor: theme.colors.grayscale100,
   borderRadius: '30px',
 
   [media[0]]: {
-    fontSize: '13px',
     padding: '8px 12px',
+
+    fontSize: '13px',
   },
 });
 
