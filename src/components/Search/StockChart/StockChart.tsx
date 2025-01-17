@@ -37,7 +37,10 @@ const DPR = window.devicePixelRatio;
 
 const useResizeObserver = <T extends HTMLElement>(): [any, React.RefObject<T>] => {
   const ref = useRef<T>(null);
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [size, setSize] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     const element = ref.current;
@@ -46,7 +49,10 @@ const useResizeObserver = <T extends HTMLElement>(): [any, React.RefObject<T>] =
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
-        setSize({ width, height });
+        setSize({
+          width,
+          height,
+        });
       }
     });
 
@@ -106,10 +112,22 @@ const formatDeltaStr = (delta: number) => {
 const formatSymbol = (delta: number) => (!delta ? '' : delta > 0 ? '+' : '-');
 const formatVolume = (volume: number) => {
   const unit = [
-    { type: 'B', num: 1e9 },
-    { type: 'M', num: 1e6 },
-    { type: 'K', num: 1e3 },
-    { type: '', num: 1 },
+    {
+      type: 'B',
+      num: 1e9,
+    },
+    {
+      type: 'M',
+      num: 1e6,
+    },
+    {
+      type: 'K',
+      num: 1e3,
+    },
+    {
+      type: '',
+      num: 1,
+    },
   ];
   const a = unit.find(({ num }) => volume >= num);
 
@@ -129,7 +147,12 @@ const getScaledValue = ({ max, min }: any, scale: number, height: number, gap: n
   const scaledRange = scaled.max - scaled.min;
 
   const axisScale =
-    Array.from({ length: 9 }, (_, i) => Math.pow(10, i))
+    Array.from(
+      {
+        length: 12,
+      },
+      (_, i) => Math.pow(10, i - 3),
+    )
       .flatMap((dec) => CHART_SCALE_RATIO.map((ratio) => dec * ratio))
       .find((scale) => (scale / scaledRange) * height >= gap) ?? 1e9;
 
@@ -217,7 +240,9 @@ const StockChartView = ({
 
   const [mousePosInfo, setMousePosInfo] = useState<any>();
 
-  const [stateRef] = useManagedStateRef<any>({ chartLength: chartData.length });
+  const [stateRef] = useManagedStateRef<any>({
+    chartLength: chartData.length,
+  });
 
   const barGap = 1.5;
 
@@ -427,7 +452,9 @@ const StockChartView = ({
       charContainer.addEventListener('mousemove', handlePriceCanvasMouseMove);
     } else {
       charContainer.addEventListener('touchstart', handleCanvasPointerDown);
-      window.addEventListener('touchmove', handleCanvasPointerMove, { passive: false });
+      window.addEventListener('touchmove', handleCanvasPointerMove, {
+        passive: false,
+      });
       window.addEventListener('touchend', handleCanvasPointerUp);
     }
 
@@ -544,16 +571,26 @@ const StockChartView = ({
   };
 
   const getChartSMAItems = (chartItems: any[], scaledPrice: any) => {
-    const chartSMAItems: Record<string, { color: themeColor; items: { pos: { x: number; y: number } }[] }> =
-      Object.fromEntries(
-        Object.entries(CHART_MOVING_AVERAGE_COLOR).map(([key, value]) => [
-          key,
-          {
-            color: value,
-            items: [],
-          },
-        ]),
-      );
+    const chartSMAItems: Record<
+      string,
+      {
+        color: themeColor;
+        items: {
+          pos: {
+            x: number;
+            y: number;
+          };
+        }[];
+      }
+    > = Object.fromEntries(
+      Object.entries(CHART_MOVING_AVERAGE_COLOR).map(([key, value]) => [
+        key,
+        {
+          color: value,
+          items: [],
+        },
+      ]),
+    );
 
     chartItems.forEach(({ pos, SMA }) => {
       Object.entries(SMA).forEach(([key, { price }]: [string, any]) => {
@@ -620,19 +657,30 @@ const StockChartView = ({
   };
 
   const getGrid = (scaledValue: any, valueStr: any) => {
-    return Array.from({ length: Math.ceil(scaledValue.range / scaledValue.axisScale) + 1 }, (_, i) => {
-      const value = (i + Math.floor(scaledValue.min / scaledValue.axisScale)) * scaledValue.axisScale;
-      return {
-        valueStr: valueStr(value),
-        pos: { x: 0, y: scaledValue.Y(value) },
-      };
-    });
+    return Array.from(
+      {
+        length: Math.ceil(scaledValue.range / scaledValue.axisScale) + 1,
+      },
+      (_, i) => {
+        const value = (i + Math.floor(scaledValue.min / scaledValue.axisScale)) * scaledValue.axisScale;
+        return {
+          valueStr: valueStr(value),
+          pos: {
+            x: 0,
+            y: scaledValue.Y(value),
+          },
+        };
+      },
+    );
   };
 
   const getChartScoreItems = (chartItems: any[], scaledScore: any, scaledVolume: any) => {
     return chartItems.map(({ pos, score, trading: { volume, delta } }) => ({
       pos: pos,
-      score: { ...score, y: scaledScore.Y(score.value) },
+      score: {
+        ...score,
+        y: scaledScore.Y(score.value),
+      },
       trading: {
         y: scaledVolume.Y(volume),
         h: scaledVolume.H(volume),
@@ -799,7 +847,11 @@ const StockChartView = ({
     setIsZoom(!('clientX' in e) && e.touches.length >= 2);
     if (!('clientX' in e) && Object.values(e.touches).length >= 2) {
       const touches = Object.values(e.touches);
-      const now = { x: 0, y: 0, a: 0 };
+      const now = {
+        x: 0,
+        y: 0,
+        a: 0,
+      };
       touches.map((e) => {
         now.x += e.clientX / touches.length;
         now.y += e.clientY / touches.length;
@@ -816,7 +868,11 @@ const StockChartView = ({
     if (isZoomRef.current && !('clientX' in e)) {
       if (e.cancelable) e.preventDefault();
       const touches = Object.values(e.touches);
-      const now = { x: 0, y: 0, a: 0 };
+      const now = {
+        x: 0,
+        y: 0,
+        a: 0,
+      };
       touches.map((e) => {
         now.x += e.clientX / touches.length;
         now.y += e.clientY / touches.length;
@@ -1056,7 +1112,13 @@ const ChartSMAInfo = ({
 }) => {
   return (
     <>
-      <span style={{ color: theme.colors[color] }}>{range + ' '}</span>
+      <span
+        style={{
+          color: theme.colors[color],
+        }}
+      >
+        {range + ' '}
+      </span>
       {price && formatPriceStr(price, country, true)}
     </>
   );
