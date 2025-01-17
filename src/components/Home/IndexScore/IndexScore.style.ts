@@ -5,70 +5,78 @@ import { media, theme } from '@styles/themes';
 const IndicesContainer = styled.div({
   display: 'flex',
   flexDirection: 'row',
+  gap: '8px',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '8px',
+
   whiteSpace: 'nowrap',
 });
 
 const IndexItem = styled.div({
-  boxSizing: 'border-box',
-  flex: 1,
   display: 'flex',
-  background: theme.colors.grayscale100,
-  borderRadius: '8px',
-  padding: '18px 24px',
+  flex: 1,
   gap: '4px',
   justifyContent: 'space-between',
+  boxSizing: 'border-box',
+  padding: '18px 24px',
 
   color: theme.colors.primary0,
   fontFamily: 'Pretendard',
   fontStyle: 'normal',
   lineHeight: '1.5',
 
+  background: theme.colors.grayscale100,
+  borderRadius: '8px',
+
   [media[0]]: {
-    padding: '12px',
-    alignItems: 'flex-start',
     flexDirection: 'column',
-    justifyContent: 'center',
     gap: '8px',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    padding: '12px',
   },
 });
 
 const IndexInfoContainer = styled.div({
   display: 'flex',
-  alignItems: 'center',
   gap: '4px',
-  fontSize: '18px',
-  fontWeight: '500',
+  alignItems: 'center',
 
-  ['svg']: {
-    height: '1.25em',
-    width: 'auto',
-  },
+  fontWeight: '500',
+  fontSize: '18px',
+
   [media[0]]: {
     fontWeight: '700',
     fontSize: '11px',
+  },
+
+  ['svg']: {
+    width: 'auto',
+    height: '1.25em',
   },
 });
 
 const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
   display: 'flex',
-  alignItems: 'center',
   gap: '4px',
+  alignItems: 'center',
+
   color: deltaScoreToColor(delta),
-  fontSize: '32px',
   fontWeight: '700',
+  fontSize: '32px',
   lineHeight: '1',
 
-  ['svg']: {
-    height: '0.5em',
-    width: 'auto',
-    fill: deltaScoreToColor(delta),
-  },
   [media[0]]: {
-    fontSize: '24px',
     margin: '0 4px',
+
+    fontSize: '24px',
+  },
+
+  ['svg']: {
+    width: 'auto',
+    height: '0.5em',
+
+    fill: deltaScoreToColor(delta),
   },
 }));
 
