@@ -373,8 +373,8 @@ const StockChartView = ({
 
     const chartContainer = chartContainerRef.current;
     if (!chartContainer) return;
-    chartContainer.width = width;
-    chartContainer.height = height;
+    chartContainer.width = width * DPR;
+    chartContainer.height = height * DPR;
     const ctx = chartContainer.getContext('2d');
     if (!ctx) return;
 
@@ -757,8 +757,6 @@ const StockChartView = ({
         items.map((e) => [e.pos.x, e.pos.y]),
       );
     });
-
-    console.log(recentPriceItem);
 
     ctx.strokeStyle = theme.colors['red'];
     setLineWidth(ctx, 1);

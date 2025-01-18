@@ -240,7 +240,6 @@ export const StockChartQuery = (stockId: number, period: string) => {
     chartData: any[];
   }) => {
     fetchStockChart(stockId, period as PERIOD_CODE, firstDate, lastDate).then((e) => {
-      console.log(e, firstDate, lastDate);
       const newPriceInfos = [...[...e.priceInfos].reverse(), ...priceInfos];
       const lastPriceDate = formatLocalDateToDate(newPriceInfos[0].localDate);
       if (['D', 'W'].includes(period)) lastPriceDate.setDate(lastPriceDate.getDate() - 1);
