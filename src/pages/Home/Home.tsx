@@ -54,7 +54,7 @@ const Home = () => {
           {tabMenu.map((el, index) => (
             <li
               key={index}
-              className={index === tabIndex ? 'submenu focused' : 'submenu'}
+              className={index === tabIndex ? 'focused' : ''}
               onClick={() => handleTab(index)}
             >
               {el}
