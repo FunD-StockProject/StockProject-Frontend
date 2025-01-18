@@ -58,23 +58,21 @@ const StyleTabMenu = styled.ul({
 
   paddingInlineStart: '0',
 
-  '.focused': {
-    color: theme.colors.primary0,
-
-    backgroundColor: theme.colors.primary100,
-  },
-
-  '.submenu': {
+  ['>li']: {
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
     padding: '12px 24px',
 
-    color: theme.colors.grayscale50,
-    fontWeight: 'bold',
-
-    backgroundColor: theme.colors.grayscale100,
     cursor: 'pointer',
+    fontWeight: 'bold',
+    backgroundColor: theme.colors.grayscale100,
+    color: theme.colors.grayscale50,
+  },
+
+  '.focused': { 
+    color: theme.colors.primary0,
+    backgroundColor: theme.colors.primary100,
   },
 
   [media[0]]: {
