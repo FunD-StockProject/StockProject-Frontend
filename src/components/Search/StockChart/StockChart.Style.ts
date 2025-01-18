@@ -74,6 +74,13 @@ export const StockChartGridContainer = styled.div({
 
     overflow: 'hidden',
   },
+
+  [media[0]]: {
+    gridTemplateRows: '400px 19px',
+    gridTemplateColumns: '28px auto 48px',
+
+    fontSize: '11px',
+  },
 });
 
 export const ChartLabelBase = styled.span({

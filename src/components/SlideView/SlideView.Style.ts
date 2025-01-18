@@ -7,17 +7,21 @@ export const SlideContainer = styled.div({
 });
 
 export const SlideItemContainer = styled.div({
-  width: '100%',
-  boxSizing: 'border-box',
-  padding: '0px 24px',
-  scrollBehavior: 'auto',
   overflowX: 'scroll',
   overflowY: 'hidden',
-  scrollSnapType: 'x mandatory',
+  boxSizing: 'border-box',
+  width: '100%',
+  padding: '0px 24px',
+
   msOverflowStyle: 'none',
+  scrollBehavior: 'auto',
+  scrollSnapType: 'x mandatory',
+  WebkitOverflowScrolling: 'touch',
+
   ['::-webkit-scrollbar']: {
     display: 'none',
   },
+
   [media[0]]: {
     padding: '0px 16px',
   },
@@ -25,35 +29,46 @@ export const SlideItemContainer = styled.div({
 
 export const SlideItemContents = styled.div(
   {
-    width: '100%',
     position: 'relative',
+
+    width: '100%',
+
     ['>div:last-child:after']: {
-      content: '""',
-      display: 'block',
       position: 'absolute',
       right: '-100%',
+
+      display: 'block',
       width: '20px',
       height: '20px',
+
+      content: '""',
     },
   },
-  ({ height }: { height: number }) => ({ height }),
+  ({ height }: { height: number }) => ({
+    height,
+  }),
 );
 
 export const SlideItem = styled.div(
   {
     position: 'absolute',
     top: 0,
-    transition: 'left .5s',
-    padding: '0 8px',
+
     boxSizing: 'border-box',
     minHeight: '10px',
+    padding: '0 8px',
+
+    transition: 'left .5s',
+
     [media[0]]: {
       padding: '0px 4px',
     },
   },
   ({ idx, count }: { idx: number; count: number }) => ({
-    width: `calc(100%/${count})`,
     left: `calc((100%*${idx / count}))`,
+
+    width: `calc(100%/${count})`,
+
     scrollSnapAlign: idx % count == Math.floor(count / 2) ? 'center' : 'none',
   }),
 );
@@ -61,6 +76,7 @@ export const SlideItem = styled.div(
 export const SlideArrowContainer = styled.div(
   {
     position: 'relative',
+
     width: '100%',
     height: '10px',
   },
@@ -74,26 +90,33 @@ export const SlideArrowContents = styled.div(
     position: 'absolute',
     top: '18px',
     right: '24px',
-    lineHeight: '1',
+
     display: 'flex',
-    alignItems: 'center',
-    fontSize: '19px',
-    color: theme.colors.grayscale60,
     gap: '4px',
+    alignItems: 'center',
+
+    color: theme.colors.grayscale60,
+    fontSize: '19px',
+    lineHeight: '1',
+
     ['svg']: {
       height: '1.5em',
+
       fill: theme.colors.primary0,
     },
   },
   ({ idx, length }: { idx: number; length: number }) => ({
     ['svg']: {
       [':first-of-type']: {
-        fill: theme.colors[!idx ? 'grayscale60' : 'primary0'],
         cursor: !idx ? 'not-allowed' : 'pointer',
+
+        fill: theme.colors[!idx ? 'grayscale60' : 'primary0'],
       },
+
       [':last-of-type']: {
-        fill: theme.colors[idx == length - 1 ? 'grayscale60' : 'primary0'],
         cursor: idx == length - 1 ? 'not-allowed' : 'pointer',
+
+        fill: theme.colors[idx == length - 1 ? 'grayscale60' : 'primary0'],
       },
     },
   }),

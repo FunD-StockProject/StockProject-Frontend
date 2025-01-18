@@ -31,6 +31,7 @@
   -moz-text-size-adjust: 100%; /* 파이어폭스 */
   -o-text-size-adjust: 100%; /* 오페라 구버전 */
 
+  -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
 }
 
