@@ -13,6 +13,7 @@ const TitleWrapper = styled.div({
   justifyContent: 'space-between',
 
   fontFamily: 'Pretendard',
+  whiteSpace: 'nowrap',
 
   ['> span']: {
     color: theme.colors.grayscale60,
