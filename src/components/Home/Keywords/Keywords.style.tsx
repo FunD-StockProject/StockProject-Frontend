@@ -13,19 +13,20 @@ const TitleWrapper = styled.div({
   justifyContent: 'space-between',
 
   fontFamily: 'Pretendard',
+  whiteSpace: 'nowrap',
+
+  ['> span']: {
+    color: theme.colors.grayscale60,
+    fontWeight: '500',
+    fontSize: '15px',
+  },
 
   [media[0]]: {
     padding: '0 20px',
 
-    ['span']: {
-      fontSize: '10px',
+    ['> span']: {
+      fontSize: '11px',
     },
-  },
-
-  ['span']: {
-    color: theme.colors.grayscale60,
-    fontWeight: '500',
-    fontSize: '16px',
   },
 });
 
@@ -39,18 +40,18 @@ const Title = styled.div({
   fontStyle: 'normal',
   lineHeight: '150%',
 
+  ['svg']: {
+    width: '24px',
+    height: '24px',
+    marginLeft: '8px',
+  },
+
   [media[0]]: {
     fontSize: '16px',
 
     ['svg']: {
       width: '20px',
     },
-  },
-
-  ['svg']: {
-    width: '24px',
-    height: '24px',
-    marginLeft: '8px',
   },
 });
 
@@ -61,12 +62,12 @@ const KeywordList = styled.div({
 
   msOverflowStyle: 'none',
 
-  [media[0]]: {
-    padding: '0 20px',
-  },
-
   ['::-webkit-scrollbar']: {
     display: 'none',
+  },
+
+  [media[0]]: {
+    padding: '0 20px',
   },
 });
 

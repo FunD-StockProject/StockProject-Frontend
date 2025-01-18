@@ -45,7 +45,7 @@ export const DisquietViewContainer = styled.div({
   right: '0',
 
   display: 'flex',
-  overflow: 'hidden',
+  overflow: 'auto',
   gap: '18px',
   alignItems: 'center',
   boxSizing: 'border-box',
@@ -59,6 +59,19 @@ export const DisquietViewContainer = styled.div({
   borderRadius: '18px',
   boxShadow: '5px 4px 3px rgba(0, 0, 0, 0.5)',
   cursor: 'pointer',
+
+  ['::-webkit-scrollbar']: {
+    display: 'none',
+  },
+
+  ['>svg']: {
+    width: '48px',
+    height: '48px',
+
+    filter: 'drop-shadow(5px 7px 0px rgba(0, 0, 0, 0.1));',
+
+    animation: elevator + ' 8s ease-in-out 0s infinite',
+  },
 
   [media[0]]: {
     position: 'relative',
@@ -74,15 +87,6 @@ export const DisquietViewContainer = styled.div({
       height: '32px',
     },
   },
-
-  ['>svg']: {
-    width: '48px',
-    height: '48px',
-
-    filter: 'drop-shadow(5px 7px 0px rgba(0, 0, 0, 0.1));',
-
-    animation: elevator + ' 8s ease-in-out 0s infinite',
-  },
 });
 
 export const DisquietViewTitleContainer = styled.div({
@@ -94,6 +98,11 @@ export const DisquietViewTitleContainer = styled.div({
   fontSize: '24px',
   lineHeight: '1',
 
+  ['svg']: {
+    width: 'auto',
+    height: '15px',
+  },
+
   [media[0]]: {
     gap: '8px',
 
@@ -103,10 +112,5 @@ export const DisquietViewTitleContainer = styled.div({
       width: '48px',
       height: '11px',
     },
-  },
-
-  ['svg']: {
-    width: 'auto',
-    height: '15px',
   },
 });

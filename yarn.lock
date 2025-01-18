@@ -4016,10 +4016,10 @@ prettier-plugin-css-order@^2.1.2:
     postcss-less "^6.0.0"
     postcss-scss "^4.0.9"
 
-prettier-plugin-emotion-order@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/prettier-plugin-emotion-order/-/prettier-plugin-emotion-order-1.0.1.tgz"
-  integrity sha512-241AxYEZF7aIkGxaAG92FbHcXy6x9tQKGIVZHN3AHFYpYVhCT7bslwD2ug3ttizD0S4YLYO8Nan8/VPU926r9A==
+prettier-plugin-emotion-order@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/prettier-plugin-emotion-order/-/prettier-plugin-emotion-order-1.1.0.tgz"
+  integrity sha512-5jwBn4ipapmVbo3lmJXoE9dJCA757VY2C4UsNUX7/tYER3AG4odglOf6l+Ctz//FfSuRF9v3K76A22Yd+HN1wQ==
   dependencies:
     "@babel/generator" "^7.26.2"
     "@babel/parser" "^7.26.2"
