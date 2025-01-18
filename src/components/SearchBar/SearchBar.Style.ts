@@ -78,7 +78,9 @@ export const SearchBarSelectBox = styled.div(
     position: 'relative',
     display: 'flex',
     width: '50%',
+
     ['label']: {
+      cursor: 'pointer',
       fontSize: '17px',
       borderRadius: '8px',
       padding: '18px',
@@ -138,6 +140,7 @@ export const SearchBarSelectBox = styled.div(
 
 export const SearchBarSelectBoxItems = styled.ul(
   {
+    cursor: 'pointer',
     position: 'absolute',
     zIndex: '20',
     top: '100%',
@@ -329,34 +332,39 @@ export const SearchBarResultItemContainer = styled.div({
   padding: '9px 12px 9px 18px',
   borderRadius: '0 32px 32px 0',
   cursor: 'pointer',
-  // height: '24px',
-
-  ['> svg']: {
-    width: '11px',
-    height: '11px',
-    cursor: 'pointer',
-    borderRadius: '24px',
-    padding: '4px',
-    [':hover']: {
-      background: theme.colors.grayscale70,
-    },
-  },
+  fontSize: '18px',
 
   [':hover']: {
     background: theme.colors.grayscale100,
-    ['> svg']: {
+    ['svg']: {
       stroke: theme.colors.primary5,
     },
   },
 
   [media[0]]: {
+    fontSize: '15px',
     padding: '6px 9px 6px 12px',
     // height: '18px',
     gap: '8px',
+  },
+});
+
+export const SearchBarResultItemSVG = styled.div({
+  lineHeight: 1,
+  height: 'auto',
+  display: 'flex',
+  alignItems: 'center',
+  ['> svg']: {
+    width: '.9em',
+    height: '.9em',
+    cursor: 'pointer',
+    borderRadius: '24px',
+    [':hover']: {
+      background: theme.colors.grayscale70,
+    },
+  },
+  [media[0]]: {
     ['> svg']: {
-      padding: '2px',
-      width: '16px',
-      height: '16px',
       stroke: theme.colors.primary5,
     },
   },

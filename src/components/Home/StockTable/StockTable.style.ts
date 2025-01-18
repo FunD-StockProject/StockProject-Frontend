@@ -3,7 +3,12 @@ import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { media, theme } from '@styles/themes';
 
 const StockTableContainer = styled.div({
+  boxSizing: 'border-box',
   width: '100%',
+
+  [media[0]]: {
+    padding: '0 20px',
+  },
 });
 
 const StockTableTitle = styled.div({
@@ -39,14 +44,14 @@ const StockTableTitle = styled.div({
   [media[0]]: {
     padding: '5px 0',
 
-    fontSize: '20px',
+    fontSize: '24px',
 
     ['span']: {
       fontSize: '11px',
     },
 
     ['svg']: {
-      height: '18px',
+      height: '0.9em',
     },
   },
 });
@@ -121,6 +126,7 @@ const TableRow = styled.div({
   color: theme.colors.primary0,
 
   borderBottom: `1px solid ${theme.colors.grayscale90}`,
+  cursor: 'pointer',
 
   ':last-child': {
     borderBottom: 'none',
@@ -134,11 +140,7 @@ const StockInfo = styled.div({
   justifyContent: 'center',
   width: '100%',
 
-  textAlign: 'left',
-
-  [media[0]]: {
-    justifyContent: 'start',
-  },
+  textAlign: 'center',
 });
 
 const StockLogo = styled.div({

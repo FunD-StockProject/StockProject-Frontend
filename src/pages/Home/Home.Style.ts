@@ -23,7 +23,7 @@ const HomeContents = styled.div({
 
   [media[0]]: {
     gap: '48px',
-    padding: '40px 20px',
+    padding: '40px 0px',
   },
 });
 

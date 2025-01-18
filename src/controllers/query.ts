@@ -47,10 +47,6 @@ export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
-export const StockRelevantQuery = (id: number) => {
-  return useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), queryOptions);
-};
-
 export const StockFetchQuery = (type: StockType, country: string) => {
   return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
 };
@@ -99,6 +95,17 @@ export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
     () => fetchStockSummary(symbol, country),
     queryOptions,
   );
+
+  return [data];
+};
+
+// SearchRelevant
+
+export const StockRelevantQuery = (id: number) => {
+  const { data } = useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), {
+    ...queryOptions,
+    enabled: id != undefined,
+  });
 
   return [data];
 };
@@ -170,7 +177,15 @@ export const StockChartQuery = (stockId: number, period: string) => {
   }>(['StockChart', stockId, period]);
 
   const formatChartData = (priceInfos: any[], chartData: any[], length: number) => {
-    const newChartData = [...Array.from({ length: length }, () => ({})), ...chartData];
+    const newChartData = [
+      ...Array.from(
+        {
+          length: length,
+        },
+        () => ({}),
+      ),
+      ...chartData,
+    ];
     const updateLength = length + Object.keys(CHART_MOVING_AVERAGE_COLOR).reduce((acc, e) => Math.max(acc, ~~e), 0);
 
     priceInfos.some((e, i, arr) => {
@@ -191,9 +206,12 @@ export const StockChartQuery = (stockId: number, period: string) => {
             range,
             {
               price:
-                Array.from({ length: Math.min(~~range, i + 1) }, (_, j) => ~~arr[i - j].closePrice).reduce(
-                  (acc, e) => acc + e,
-                ) / Math.min(~~range, i + 1),
+                Array.from(
+                  {
+                    length: Math.min(~~range, i + 1),
+                  },
+                  (_, j) => Number(arr[i - j].closePrice),
+                ).reduce((acc, e) => acc + e) / Math.min(~~range, i + 1),
             },
           ]),
         ),
@@ -243,7 +261,11 @@ export const StockChartQuery = (stockId: number, period: string) => {
 
   useEffect(() => {
     if (!queryData) {
-      fetchData({ lastDate: formatDateISO(new Date()), priceInfos: [], chartData: [] });
+      fetchData({
+        lastDate: formatDateISO(new Date()),
+        priceInfos: [],
+        chartData: [],
+      });
       return;
     }
     setChartData(queryData.chartData);
@@ -282,7 +304,9 @@ export const PopularKeywordsQuery = () => {
     ['PopularKeywordsQuery'],
     async () => {
       const popularKeywords = await Promise.resolve(fetchPopularKeywords());
-      return popularKeywords.map((keyword) => ({ value: keyword })) as PopularItems[];
+      return popularKeywords.map((keyword) => ({
+        value: keyword,
+      })) as PopularItems[];
     },
     {
       ...queryOptions,
@@ -314,7 +338,10 @@ export const useAutoComplete = (
   const fetchData = async (input: string): Promise<void> => {
     const cached = queryClient.getQueryData<AutoCompleteItem[]>(['AutoComplete', input, key]);
     if (cached || !input.length) {
-      return setSearchState({ value: input, results: cached || [] });
+      return setSearchState({
+        value: input,
+        results: cached || [],
+      });
     }
 
     await fetchQuery(input)

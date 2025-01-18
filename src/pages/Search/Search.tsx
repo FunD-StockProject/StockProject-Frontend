@@ -1,71 +1,23 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
-import { RESULT_TYPE } from '@ts/Types';
+import { RESULT_TYPE, STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useQuery } from '@hooks/useQuery';
-import MobileStockCardItem from '@components/CardList/MobileStockCard/MobileStockCard';
-import StockCardItem from '@components/CardList/StockCard/StockCard';
-import { FlexDiv } from '@components/Common/Common';
+import StockCard from '@components/CardList/StockCard/StockCard';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
 import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
+import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { StockScore } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
-import { SearchResultContainer, SearchResultContents, SearchResultInfo, StockRelevantContainer } from './Search.Style';
-
-const MobileRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
-  <FlexDiv flexDirection="column" width="100%">
-    {stocks.map((stock) => (
-      <MobileStockCardItem
-        key={`RELEVANT_${stock.stockId}`}
-        name={stock.symbolName}
-        score={stock.score}
-        delta={stock.diff}
-        country={country}
-        keywords={stock.keywords}
-      />
-    ))}
-  </FlexDiv>
-);
-
-const WebRelevantStocks = ({ stocks, country }: { stocks: StockScore[]; country: string }) => (
-  <FlexDiv flexDirection="column" gap="24px" width="100%">
-    <StockRelevantContainer>
-      {stocks.map((stock) => (
-        <StockCardItem
-          key={`RELEVANT_${stock.stockId}`}
-          name={stock.symbolName}
-          score={stock.score}
-          delta={stock.diff}
-          country={country}
-          keywords={stock.keywords}
-        />
-      ))}
-    </StockRelevantContainer>
-  </FlexDiv>
-);
-
-const StockRelevant = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [stockRelevantList] = useQuery({ query: StockRelevantQuery(stockId) });
-  const isMobile = useIsMobile();
-
-  return (
-    stockRelevantList &&
-    (isMobile ? (
-      <MobileRelevantStocks stocks={stockRelevantList} country={country} />
-    ) : (
-      <WebRelevantStocks stocks={stockRelevantList} country={country} />
-    ))
-  );
-};
+import { SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
   const [score, suspend] = useQuery({ query: ScoreQuery(stockId, country) });
@@ -91,6 +43,8 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 const Search = () => {
   const { state } = useLocation();
 
+  const isMobile = useIsMobile();
+
   const [stockInfo] = useQuery({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
@@ -99,6 +53,7 @@ const Search = () => {
 
   const toggleResultMode = () => setResultMode((prev) => ResultInfo[prev].opposite);
   const togglePopup = () => setPopupOpen((prev) => !prev);
+  const [stockRelevantList] = StockRelevantQuery(stockInfo?.stockId);
 
   return (
     stockInfo && (
@@ -129,14 +84,24 @@ const Search = () => {
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
-            <ContentsItemContent>
-              <StockRelevant stockId={stockInfo.stockId} country={stockInfo.country} />
-            </ContentsItemContent>
+            {stockRelevantList && (
+              <SlideView
+                keyName="Relevant"
+                list={StockRelevant(stockRelevantList, stockInfo.country)}
+                count={isMobile ? 1 : 3}
+              />
+            )}
           </ContentsItemContainer>
         </SearchResultContents>
       </SearchResultContainer>
     )
   );
+};
+
+const StockRelevant = (stockRelevantList: any, country: STOCK_COUNTRY) => {
+  return stockRelevantList.map((e: any) => {
+    return <StockCard stockInfo={{ ...e, country }} />;
+  });
 };
 
 export default Search;

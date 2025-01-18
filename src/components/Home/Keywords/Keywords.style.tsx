@@ -22,6 +22,8 @@ const TitleWrapper = styled.div({
   },
 
   [media[0]]: {
+    padding: '0 20px',
+
     ['> span']: {
       fontSize: '11px',
     },
@@ -54,31 +56,51 @@ const Title = styled.div({
 });
 
 const KeywordList = styled.div({
+  overflow: 'auto',
+
+  whiteSpace: 'nowrap',
+
+  msOverflowStyle: 'none',
+
+  ['::-webkit-scrollbar']: {
+    display: 'none',
+  },
+
+  [media[0]]: {
+    padding: '0 20px',
+  },
+});
+
+const KeywordItemConainer = styled.div({
   display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
+  gap: '12px',
   alignItems: 'center',
-  alignSelf: 'stretch',
   justifyContent: 'center',
+  width: '100%',
+
+  [media[0]]: {
+    gap: '8px',
+    justifyContent: 'start',
+  },
 });
 
 const KeywordItem = styled.div({
-  padding: '12px 20px',
+  padding: '8px 24px',
 
   color: theme.colors.primary0,
   fontWeight: 700,
   fontSize: '19px',
   fontFamily: 'Pretendard',
-  fontStyle: 'normal',
   textAlign: 'right',
 
   backgroundColor: theme.colors.grayscale100,
-  border: `1px solid ${theme.colors.grayscale100}`,
   borderRadius: '30px',
 
   [media[0]]: {
-    fontSize: '16px',
+    padding: '8px 12px',
+
+    fontSize: '13px',
   },
 });
 
-export { KeywordsContainer, TitleWrapper, Title, KeywordList, KeywordItem };
+export { KeywordsContainer, TitleWrapper, Title, KeywordList, KeywordItemConainer, KeywordItem };
