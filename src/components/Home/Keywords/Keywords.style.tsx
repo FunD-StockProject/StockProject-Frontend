@@ -9,67 +9,71 @@ const KeywordsContainer = styled.div({
 
 const TitleWrapper = styled.div({
   display: 'flex',
-  justifyContent: 'space-between', // 제목과 날짜 간 간격
   alignItems: 'center',
-  fontFamily: 'Pretendard', // 폰트 지정
+  justifyContent: 'space-between',
 
-  ['span']: {
-    fontSize: '16px', // 기준 텍스트 크기
+  fontFamily: 'Pretendard',
+
+  ['> span']: {
+    color: theme.colors.grayscale60,
     fontWeight: '500',
-    color: theme.colors.grayscale60, // 기준 텍스트 색상
+    fontSize: '15px',
   },
+
   [media[0]]: {
-    ['span']: {
-      fontSize: '10px',
+    ['> span']: {
+      fontSize: '11px',
     },
   },
 });
 
 const Title = styled.div({
-  color: theme.colors.grayscale10, // 제목 텍스트 색상
-  fontSize: '32px', // 글자 크기
-  fontStyle: 'normal',
+  display: 'flex',
+  alignItems: 'center',
+
+  color: theme.colors.grayscale10,
   fontWeight: 700,
-  lineHeight: '150%', // 줄 간격
-  display: 'flex', // 텍스트와 아이콘 정렬을 위해 flex 사용
-  alignItems: 'center', // 세로축 중앙 정렬
+  fontSize: '32px',
+  fontStyle: 'normal',
+  lineHeight: '150%',
 
   ['svg']: {
-    marginLeft: '8px', // 아이콘과 텍스트 간 간격
     width: '24px',
     height: '24px',
+    marginLeft: '8px',
   },
 
   [media[0]]: {
-    fontSize: '16px', // 작은 화면에서 글자 크기 조정
+    fontSize: '16px',
 
     ['svg']: {
-      width: '20px', // 아이콘 크기 조정
+      width: '20px',
     },
   },
 });
 
 const KeywordList = styled.div({
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
   flexWrap: 'wrap',
   gap: '8px',
+  alignItems: 'center',
   alignSelf: 'stretch',
+  justifyContent: 'center',
 });
 
 const KeywordItem = styled.div({
-  color: theme.colors.primary0,
-  backgroundColor: theme.colors.grayscale100,
-  textAlign: 'right',
-  fontFamily: 'Pretendard', // Corrected camelCase syntax
-  fontSize: '19px', // Corrected camelCase syntax
-  fontStyle: 'normal',
-  fontWeight: 700,
-
   padding: '12px 20px',
-  borderRadius: '30px',
+
+  color: theme.colors.primary0,
+  fontWeight: 700,
+  fontSize: '19px',
+  fontFamily: 'Pretendard',
+  fontStyle: 'normal',
+  textAlign: 'right',
+
+  backgroundColor: theme.colors.grayscale100,
   border: `1px solid ${theme.colors.grayscale100}`,
+  borderRadius: '30px',
 
   [media[0]]: {
     fontSize: '16px',
