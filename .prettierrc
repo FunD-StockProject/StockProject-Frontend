@@ -7,6 +7,29 @@
   "trailingComma": "all",
   "printWidth": 120,
   "arrowParens": "always",
+
+  "emotionOrderConfigPath": ".emotionorderrc",
+  "emotionOrderSeperation": true,
+  "emotionOrderTextVisible": false,
+  "emotionOrderUndefinedPosition": "back",
+  "emotionOrderUndefinedSortMethod": "alpha",
+
+  "emotionOrderDefaultCategoryEnable": true,
+  "emotionOrderDefaultCategoryAddMode": "append",
+  "emotionOrderDefaultCategoryConflictPosition": "auto",
+  "emotionOrderDefaultCategoryConflictResolution": "merge",
+  "emotionOrderDefaultCategoryStyleAddMode": "prepend",
+  "emotionOrderDefaultCategoryConflictStylePosition": "auto",
+  "emotionOrderDefaultCategoryConflictTextResolution": "replace",
+
+  "emotionOrderNestedSeperation": true,
+  "emotionOrderNestedIndexSortMethod": "ascend",
+  "emotionOrderNestedUndefinedPosition": "front",
+  "emotionOrderNestedUndefinedSortMethod": "alpha",
+
+  "emotionOrderCaseInsensitiveStyle": true,
+  "emotionOrderCaseInsensitiveNested": true,
+
   "importOrder": [
     "^@ts/(.*)$",
     "^@base/(.*)$",
@@ -26,5 +49,5 @@
   ],
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,
-  "plugins": ["prettier-plugin-css-order", "@trivago/prettier-plugin-sort-imports"]
+  "plugins": ["prettier-plugin-css-order", "@trivago/prettier-plugin-sort-imports", "prettier-plugin-emotion-order"]
 }
