@@ -364,7 +364,7 @@ const StockChartView = ({
 
     const scoreChartList = getChartScoreItems(chartItems, scaledScore, scaledVolume);
 
-    drawPriceChart(dateGrid, chartPriceItems, chartSMAItems);
+    drawPriceChart(dateGrid, chartPriceItems, chartSMAItems, recentPriceItem);
     drawScoreChart(dateGrid, scoreChartList);
   }, [chartData, priceCanvasSize, canvasPos, barSize, priceScale, scoreScale]);
 
@@ -411,7 +411,7 @@ const StockChartView = ({
 
     ctx.strokeStyle = theme.colors.primary0;
     setLineWidth(ctx, 1);
-    ctx.setLineDash([10, 5]);
+    ctx.setLineDash([4, 2]);
     drawLine(ctx, [
       [alignedPos.x, 0],
       [alignedPos.x, height],
@@ -705,6 +705,7 @@ const StockChartView = ({
         }[];
       }
     >,
+    recentPriceItem: any,
   ) => {
     const { width, height } = priceCanvasSize;
     const canvas = priceCanvasRef.current;
@@ -756,6 +757,18 @@ const StockChartView = ({
         items.map((e) => [e.pos.x, e.pos.y]),
       );
     });
+
+    console.log(recentPriceItem);
+
+    ctx.strokeStyle = theme.colors['red'];
+    setLineWidth(ctx, 1);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.setLineDash([4, 4]);
+    drawLine(ctx, [
+      [0, recentPriceItem.pos.y],
+      [width, recentPriceItem.pos.y],
+    ]);
   };
 
   const drawScoreChart = (dateGrid: any[], scoreChartList: any[]) => {
