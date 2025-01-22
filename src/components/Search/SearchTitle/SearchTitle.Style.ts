@@ -113,7 +113,6 @@ export const SearchTitleBodyTitleText = styled.div({
 export const SearchTitleBodyTitleAnimatedText = styled(motion.div)({
   willChange: 'transform',
   position: 'absolute',
-  width: '100px',
   top: '0',
 
   color: theme.colors.primary0,

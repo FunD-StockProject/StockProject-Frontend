@@ -5,16 +5,16 @@ import { STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import LoadingComponent from '@components/Common/LoadingComponent';
 import { WordCloudQuery } from '@controllers/query';
-import { StockWordCloudContainer, Word, WordContainer } from './StockWordCloud.Style';
-
-const agent = window.navigator.userAgent.toLowerCase();
+import { StockWordCloudContainer, Word, WordCloudTestText, WordContainer } from './StockWordCloud.Style';
 
 const StockWordCloudContents = ({
   wordCloutItem: { orientation, pos, size, fontSize, color, word },
   index,
+  adjustFontSize,
 }: {
   wordCloutItem: WordCloudItem;
   index: number;
+  adjustFontSize: number;
 }) => {
   return (
     <WordContainer
@@ -23,7 +23,7 @@ const StockWordCloudContents = ({
       posY={pos.y}
       sizeX={size.w}
       sizeY={size.h}
-      fontSize={fontSize / (agent.indexOf('instagram') > -1 ? 1.1 : 1)}
+      fontSize={fontSize / adjustFontSize}
     >
       <Word orientation={orientation ? 1 : 0} colors={color}>
         {word}
@@ -49,6 +49,8 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_CO
     isMobile,
   );
 
+  const testTextRef = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
     if (symbol == state?.symbol) return;
     setCurrentIndex(-1);
@@ -68,13 +70,19 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_CO
 
   return (
     <StockWordCloudContainer ref={containerRef}>
+      <WordCloudTestText ref={testTextRef}>감자탕</WordCloudTestText>
       {wordCloud ? (
         [...wordCloud]
           .reverse()
           .map(
             (item: WordCloudItem, idx: number) =>
               wordCloud.length - idx <= currentIndex && (
-                <StockWordCloudContents key={idx} wordCloutItem={item} index={idx} />
+                <StockWordCloudContents
+                  key={idx}
+                  wordCloutItem={item}
+                  index={idx}
+                  adjustFontSize={(testTextRef.current?.offsetHeight ?? 0) / 100}
+                />
               ),
             6,
           )

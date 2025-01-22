@@ -25,11 +25,6 @@ const MARKET_CODES: Record<string, string> = {
   '003': 'ETF',
 };
 
-const TEXT_SIZE_ADJUST = {
-  chrome: 0.055,
-  safari: -0.105,
-};
-
 const CHART_PRICE_FIELD = {
   open: { key: 'openPrice', label: '시가' },
   high: { key: 'highPrice', label: '고가' },
@@ -89,7 +84,6 @@ export {
   MARKET_CODES,
   STOCK_COUNTRY_TEXT,
   SEARCH_CATEGORY_TEXT,
-  TEXT_SIZE_ADJUST,
   CHART_PRICE_FIELD,
   CHART_SCALE_RATIO,
   PERIOD_CODE_TEXT,

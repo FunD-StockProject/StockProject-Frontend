@@ -2,14 +2,7 @@ import styled from '@emotion/styled';
 import { pop } from '@styles/keyframes';
 import { media, theme, themeColor } from '@styles/themes';
 
-const WordColors: themeColor[] = [
-  'primary30',
-  'primary40',
-  'primary50',
-  'primary60',
-  'primary70',
-  'primary80',
-];
+const WordColors: themeColor[] = ['primary30', 'primary40', 'primary50', 'primary60', 'primary70', 'primary80'];
 
 const StockWordCloudContainer = styled.div({
   height: '720px',
@@ -21,6 +14,13 @@ const StockWordCloudContainer = styled.div({
     height: '480px',
     borderRadius: '12px',
   },
+});
+
+const WordCloudTestText = styled.span({
+  fontSize: '100px',
+  position: 'absolute',
+  lineHeight: '1',
+  color: theme.colors.transparent,
 });
 
 const WordContainer = styled.div(
@@ -74,4 +74,4 @@ const Word = styled.span(
   }),
 );
 
-export { StockWordCloudContainer, WordContainer, Word };
+export { StockWordCloudContainer, WordCloudTestText, WordContainer, Word };
