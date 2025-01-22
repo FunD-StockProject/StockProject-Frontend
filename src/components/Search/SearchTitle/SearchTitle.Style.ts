@@ -3,15 +3,18 @@ import { motion } from 'framer-motion';
 import { media, theme, themeColor } from '@styles/themes';
 
 export const SearchTitleContainer = styled.div({
-  background: theme.colors.primary100,
   display: 'flex',
   flexDirection: 'column',
+  gap: '32px',
+  boxSizing: 'border-box',
   width: '100%',
   maxWidth: '1280px',
-  boxSizing: 'border-box',
   margin: '0 auto',
-  gap: '32px',
+
   color: theme.colors.grayscale30,
+
+  background: theme.colors.primary100,
+
   [media[0]]: {
     gap: '24px',
     padding: '0 20px',
@@ -20,41 +23,52 @@ export const SearchTitleContainer = styled.div({
 
 export const SearchTitleHeaderContainer = styled.div({
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'end',
+  justifyContent: 'space-between',
 });
 
 export const SearchTitleHeaderSymbol = styled.p({
   margin: '0',
-  fontSize: '15px',
   padding: '8px 16px',
-  borderRadius: '24px',
+
+  fontSize: '15px',
+
   background: theme.colors.grayscale100,
+  borderRadius: '24px',
+
   [media[0]]: {
-    fontSize: '13px',
     padding: '4px 12px',
+
+    fontSize: '13px',
   },
 });
 
 export const SearchTitleHeaderButton = styled.div({
-  lineHeight: '1',
-  fontSize: '17px',
-  padding: '12px 20px',
-  borderRadius: '8px',
-  background: theme.colors.primary50,
-  cursor: 'pointer',
   display: 'flex',
   gap: '12px',
   alignItems: 'center',
+  padding: '12px 20px',
+
   fontWeight: '700',
+  fontSize: '17px',
+  lineHeight: '1',
+
+  background: theme.colors.primary50,
+  borderRadius: '8px',
+  cursor: 'pointer',
+
   ['svg']: {
     stroke: theme.colors.primary0,
+
     strokeWidth: '1.5',
   },
+
   [media[0]]: {
-    fontSize: '15px',
-    padding: '12px 16px',
     gap: '8px',
+    padding: '12px 16px',
+
+    fontSize: '15px',
+
     ['svg']: {
       width: '16px',
       height: '16px',
@@ -66,17 +80,19 @@ export const SearchTitleBody = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
+
   [media[0]]: {
     gap: '12px',
   },
 });
 
 export const SearchTitleBodyTitle = styled.div({
-  fontSize: '42px',
-  lineHeight: '1',
-  fontWeight: '700',
   display: 'flex',
   alignItems: 'center',
+
+  fontWeight: '700',
+  fontSize: '42px',
+  lineHeight: '1',
   color: theme.colors.transparent,
 
   [media[0]]: {
@@ -85,30 +101,41 @@ export const SearchTitleBodyTitle = styled.div({
 });
 
 export const SearchTitleBodyTitleText = styled.div({
-  boxSizing: 'content-box',
   position: 'relative',
-  textWrap: 'nowrap',
+
   overflow: 'hidden',
+  boxSizing: 'content-box',
+
+  textWrap: 'nowrap',
+  textOverflow: 'ellipsis',
 });
 
 export const SearchTitleBodyTitleAnimatedText = styled(motion.div)({
-  top: '0',
+  willChange: 'transform',
   position: 'absolute',
+  width: '100px',
+  top: '0',
+
   color: theme.colors.primary0,
 });
 
 export const SearchTitleBodyTitleSVG = styled.div({
   display: 'flex',
   paddingLeft: '12px',
+
   ['svg']: {
-    fill: theme.colors.primary50,
     width: '85px',
     marginRight: 'auto',
+
     textWrap: 'nowrap',
     overflowWrap: 'anywhere',
+
+    fill: theme.colors.primary50,
   },
+
   [media[0]]: {
     paddingLeft: '8 px',
+
     ['svg']: {
       width: '56px',
     },
@@ -118,6 +145,7 @@ export const SearchTitleBodyTitleSVG = styled.div({
 export const SearchTitleBodySubtitle = styled.div({
   display: 'flex',
   flexDirection: 'column',
+
   fontSize: '15px',
 
   [media[0]]: {
@@ -132,22 +160,28 @@ export const SearchTitleFooterContainer = styled.div({
 
 export const SearchTitleFooterItems = styled.div(
   {
-    lineHeight: '1',
-    fontSize: '17px',
-    padding: '12px 18px',
     display: 'flex',
     gap: '8px',
+    alignItems: 'center',
+    padding: '12px 18px',
+
+    fontWeight: '700',
+    fontSize: '17px',
+    lineHeight: '1',
+
     background: theme.colors.grayscale100,
     borderRadius: '8px',
-    alignItems: 'center',
-    fontWeight: '700',
+
     ['span']: {
-      fontSize: '15px',
       fontWeight: '500',
-    },
-    [media[0]]: {
       fontSize: '15px',
+    },
+
+    [media[0]]: {
       padding: '8px 12px',
+
+      fontSize: '15px',
+
       ['span']: {
         fontSize: '13px',
       },

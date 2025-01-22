@@ -49,5 +49,5 @@
   ],
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,
-  "plugins": ["prettier-plugin-css-order", "@trivago/prettier-plugin-sort-imports", "prettier-plugin-emotion-order"]
+  "plugins": ["prettier-plugin-css-order", "@trivago/prettier-plugin-sort-imports"]
 }

@@ -36,6 +36,7 @@ const HeaderLogo = styled.div({
 
     [media[0]]: {
       height: '24px',
+      padding: '12px 0',
     },
   },
 

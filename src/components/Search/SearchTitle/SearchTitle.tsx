@@ -54,18 +54,23 @@ const SearchTitle = ({
 
   const variants: Variants = {
     initial: {
-      left: '0%',
       transform: 'translateX(0%)',
     },
     animate: {
-      left: '100%',
-      transform: 'translateX(-100%)',
-      transition: { duration: animationDelay['animate'] / 1000, ease: 'linear' }, // 애니메이션
+      transform:
+        'translateX(' + ((titleTextRef.current?.offsetWidth ?? 0) - (titleTextRef.current?.scrollWidth ?? 0)) + 'px)',
+      transition: {
+        duration: animationDelay['animate'] / 1000,
+        ease: 'linear',
+      }, // 애니메이션
     },
     instant: {
-      left: '0%',
       transform: 'translateX(0%)',
-      transition: { delay: animationDelay['instant'] / 1000, duration: 0 }, // 즉시 이동
+      transition: {
+        delay: animationDelay['instant'] / 1000,
+        duration: 0,
+        ease: 'linear',
+      }, // 즉시 이동
     },
   };
 
@@ -73,7 +78,10 @@ const SearchTitle = ({
     if (titleTextRef.current) {
       const { offsetWidth, scrollWidth } = titleTextRef.current;
       setAnimated(scrollWidth > offsetWidth);
-      setAnimationDelay({ ...animationDelay, animate: (BASE_DELAY * scrollWidth) / offsetWidth });
+      setAnimationDelay({
+        ...animationDelay,
+        animate: BASE_DELAY * (scrollWidth / offsetWidth - 1) * 2,
+      });
     }
   }, [state]);
 
