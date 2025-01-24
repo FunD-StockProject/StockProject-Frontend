@@ -52,7 +52,6 @@ const SearchTitle = ({
 
   const [summary] = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
-  console.log((titleTextRef.current?.offsetWidth ?? 0) - (titleTextRef.current?.scrollWidth ?? 0));
   const variants: Variants = {
     initial: {
       transform: 'translateX(0%)',

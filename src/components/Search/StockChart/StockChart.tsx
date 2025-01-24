@@ -443,9 +443,9 @@ const StockChartView = ({
       window.addEventListener('mousemove', handleCanvasPointerMove);
       window.addEventListener('mouseup', handleCanvasPointerUp);
 
-      charContainer.addEventListener('wheel', handleCanvasZoom);
-      priceLabel.addEventListener('wheel', handlePriceZoom);
-      scoreLabel.addEventListener('wheel', handleScoreZoom);
+      charContainer.addEventListener('wheel', handleCanvasZoom, { passive: false });
+      priceLabel.addEventListener('wheel', handlePriceZoom, { passive: false });
+      scoreLabel.addEventListener('wheel', handleScoreZoom, { passive: false });
 
       charContainer.addEventListener('mouseenter', handleCanvasMouseEnter);
       charContainer.addEventListener('mouseleave', handleCanvasMouseLeave);
@@ -926,7 +926,8 @@ const StockChartView = ({
 
   const handleCanvasZoom = (e: WheelEvent) => {
     e.preventDefault();
-    zoomChart(e.deltaY < 0 ? 4 / 3 : 3 / 4, e.offsetX);
+    const deltaY = e.deltaY > 10 ? 10 : e.deltaY < -10 ? -10 : e.deltaY;
+    zoomChart(1 - deltaY / 100, e.offsetX);
   };
 
   const handleCanvasMouseEnter = () => {
@@ -949,16 +950,16 @@ const StockChartView = ({
 
   const handlePriceZoom = (e: WheelEvent) => {
     e.preventDefault();
-    const delta = 4 / 5;
-    const scale = priceScaleRef.current * (e.deltaY < 0 ? delta : 1 / delta);
+    const deltaY = e.deltaY > 10 ? 10 : e.deltaY < -10 ? -10 : e.deltaY;
+    const scale = (1 + deltaY / 100) * priceScaleRef.current;
     if (scale <= 0.1 || scale > 20) return;
     setPriceScale(scale);
   };
 
   const handleScoreZoom = (e: WheelEvent) => {
     e.preventDefault();
-    const delta = 4 / 5;
-    const scale = scoreScaleRef.current * (e.deltaY < 0 ? delta : 1 / delta);
+    const deltaY = e.deltaY > 10 ? 10 : e.deltaY < -10 ? -10 : e.deltaY;
+    const scale = (1 + deltaY / 100) * scoreScaleRef.current;
     if (scale <= 0.1 || scale > 20) return;
     setScoreScale(scale);
     setVolumeScale(scale);
