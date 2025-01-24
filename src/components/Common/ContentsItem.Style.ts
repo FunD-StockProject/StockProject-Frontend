@@ -5,6 +5,7 @@ const ContentsItemContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '24px',
+
   [media[0]]: {
     gap: '18px',
   },
@@ -12,25 +13,33 @@ const ContentsItemContainer = styled.div({
 
 const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
   display: 'flex',
-  alignItems: 'center',
   gap: '8px',
-  fontSize: '32px',
-  fontWeight: '700',
+  alignItems: 'center',
+
   color: theme.colors.grayscale10,
-  ['svg']: {
-    height: '0.9em',
-    width: 'auto',
-    fill: color ? theme.colors[color] : '',
-  },
+  fontWeight: '700',
+  fontSize: '32px',
+
   ['.btn_info']: {
-    marginLeft: '4px',
     height: '0.8em',
+    marginLeft: '4px',
+
     cursor: 'pointer',
   },
+
+  ['svg']: {
+    width: 'auto',
+    height: '0.9em',
+
+    fill: color ? theme.colors[color] : '',
+  },
+
   [media[0]]: {
-    padding: '0 20px',
-    fontSize: '24px',
     gap: '6px',
+    padding: '0 20px',
+
+    fontSize: '24px',
+
     ['.btn_info']: {
       marginLeft: '0px',
     },
@@ -40,8 +49,9 @@ const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
 const ContentsItemContent = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  margin: '0 32px',
   gap: '18px',
+  margin: '0 32px',
+
   [media[0]]: {
     margin: '0 0px',
     padding: '0 20px',
