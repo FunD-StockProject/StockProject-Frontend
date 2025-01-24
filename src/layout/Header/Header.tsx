@@ -13,7 +13,7 @@ const Header = () => {
         <HeaderContents>
           <HeaderLogo onClick={() => navigate('/')}>
             <LogoSVG />
-            <DisquietVote />
+            {false && <DisquietVote />}
           </HeaderLogo>
           <SearchBar />
         </HeaderContents>

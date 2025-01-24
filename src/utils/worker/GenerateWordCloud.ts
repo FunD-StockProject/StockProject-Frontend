@@ -5,7 +5,6 @@ const GetnerateWordCloud = (params: {
   frequencies: WordFrequency[];
   height?: number;
   width: number;
-  adjust: number;
   wasm: any;
   minFontSize?: number;
   margin?: number;
@@ -17,7 +16,6 @@ const GetnerateWordCloud = (params: {
     frequencies,
     height = 300,
     width = 300,
-    adjust,
     wasm,
     minFontSize = 4,
     margin = 4,
@@ -26,9 +24,7 @@ const GetnerateWordCloud = (params: {
     maxFontSize,
   } = params;
 
-  frequencies = frequencies
-    .sort((a, b) => b.freq - a.freq || a.word.length - b.word.length)
-    .slice(0, maxWords);
+  frequencies = frequencies.sort((a, b) => b.freq - a.freq || a.word.length - b.word.length).slice(0, maxWords);
 
   const margin_gap = margin / 2;
   const layouts: WordCloudItem[] = [];
@@ -66,6 +62,10 @@ const GetnerateWordCloud = (params: {
 
   const FontOffCtx = new OffscreenCanvas(width, height).getContext('2d');
   if (!FontOffCtx) return null;
+  FontOffCtx.font = `10000px "PretendardBlack"`;
+  FontOffCtx.textBaseline = 'top';
+  const adjust = (10965.5 - FontOffCtx.measureText('감자탕').fontBoundingBoxDescent) / 10000;
+
   FontOffCtx.font = `${maxFontSize}px "PretendardBlack"`;
 
   frequencies.every(({ word, freq }) => {
@@ -88,8 +88,7 @@ const GetnerateWordCloud = (params: {
     offCtx.font = `${fontSize}px "PretendardBlack"`;
 
     const textX = margin_gap;
-    const textY =
-      (orientation ? -1 : 1) * margin_gap + fontSize * (!orientation ? adjust : -(1 - adjust));
+    const textY = (orientation ? -1 : 1) * margin_gap + fontSize * (!orientation ? adjust : -(1 - adjust));
     if (orientation) {
       offCtx.rotate((90 * Math.PI) / 180);
       offCtx.fillText(word, textX, textY);
@@ -119,15 +118,12 @@ const GetnerateWordCloud = (params: {
   return { width: width, height: height, layouts: layouts };
 };
 
-self.onmessage = ({ data: { symbol, data, width, height, adjust, isMobile } }) => {
+self.onmessage = ({ data: { symbol, data, width, height, isMobile } }) => {
   if (!self.FontFace) {
     postMessage("Your browser doesn't support the FontFace API from WebWorkers yet");
     return;
   }
-  const fontFace = new FontFace(
-    'PretendardBlack',
-    "url(/fonts/Pretendard-Black.woff2) format('woff2')",
-  );
+  const fontFace = new FontFace('PretendardBlack', "url(/fonts/Pretendard-Black.woff2) format('woff2')");
   self.fonts.add(fontFace);
 
   fontFace.load().then(async () => {
@@ -144,7 +140,6 @@ self.onmessage = ({ data: { symbol, data, width, height, adjust, isMobile } }) =
         frequencies: data,
         height: height,
         width: width,
-        adjust: adjust,
         minFontSize: !isMobile ? 7 : 5,
         margin: !isMobile ? 4 : 3,
         maxWords: !isMobile ? 800 : 600,

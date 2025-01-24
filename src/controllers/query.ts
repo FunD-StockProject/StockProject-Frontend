@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD, TEXT_SIZE_ADJUST } from '@ts/Constants';
+import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD } from '@ts/Constants';
 import { STOCK_COUNTRY } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
@@ -116,8 +116,6 @@ const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts',
   type: 'module',
 });
 
-const agent = window.navigator.userAgent.toLowerCase();
-
 export const WordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, height }: any, isMobile: boolean) => {
   const [wordCloud, setWordCloud] = useState<any>([]);
 
@@ -136,19 +134,11 @@ export const WordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, 
 
     if (!queryData) {
       fetchSearchWordCloud(symbol, country).then((res) => {
-        const adjust =
-          agent.indexOf('chrome') > -1 || agent.indexOf('firefox') > -1
-            ? TEXT_SIZE_ADJUST.chrome
-            : agent.indexOf('instagram') > -1
-              ? TEXT_SIZE_ADJUST.chrome
-              : TEXT_SIZE_ADJUST.safari;
-
         WordCloudWorker.postMessage({
           symbol,
           data: res,
           width,
           height,
-          adjust,
           isMobile,
         });
       });
@@ -240,7 +230,6 @@ export const StockChartQuery = (stockId: number, period: string) => {
     chartData: any[];
   }) => {
     fetchStockChart(stockId, period as PERIOD_CODE, firstDate, lastDate).then((e) => {
-      console.log(e, firstDate, lastDate);
       const newPriceInfos = [...[...e.priceInfos].reverse(), ...priceInfos];
       const lastPriceDate = formatLocalDateToDate(newPriceInfos[0].localDate);
       if (['D', 'W'].includes(period)) lastPriceDate.setDate(lastPriceDate.getDate() - 1);
