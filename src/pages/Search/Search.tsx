@@ -13,6 +13,7 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { StockInfo } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
@@ -98,9 +99,9 @@ const Search = () => {
   );
 };
 
-const StockRelevant = (stockRelevantList: any, country: STOCK_COUNTRY) => {
-  return stockRelevantList.map((e: any) => {
-    return <StockCard stockInfo={{ ...e, country }} />;
+const StockRelevant = (stockRelevantList: StockInfo[], country: STOCK_COUNTRY) => {
+  return stockRelevantList.map((curStock: StockInfo) => {
+    return <StockCard stockInfo={curStock} country={country} />;
   });
 };
 

@@ -5,6 +5,7 @@ import StockCard from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { StockInfo } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
 
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
@@ -25,9 +26,9 @@ const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }
   );
 };
 
-const StockRisingDescend = (curStocks: any, country: STOCK_COUNTRY) => {
-  return curStocks.map((e: any) => {
-    return <StockCard stockInfo={{ ...e, country }} />;
+const StockRisingDescend = (curStocks: StockInfo[], country: STOCK_COUNTRY) => {
+  return curStocks.map((curStock: StockInfo) => {
+    return <StockCard stockInfo={curStock} country={country} />;
   });
 };
 

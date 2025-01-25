@@ -9,7 +9,7 @@ import {
   IndexInfo,
   PERIOD_CODE,
   PopularItems,
-  RevelantStockInfo,
+  StockInfo,
   StockTableInfo,
 } from '@controllers/api.Type';
 import {
@@ -19,7 +19,6 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -30,7 +29,7 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import { StockInfo } from './api.Type';
+import { StockDetailInfo } from './api.Type';
 
 export const queryOptions = {
   // retry: 5, // 실패 시 반복 횟수 - 기본 3
@@ -44,7 +43,11 @@ const StockFetchers = {
 };
 
 export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
-  return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
+  return useQuery<StockDetailInfo>(
+    ['symbolName', name, country],
+    () => fetchSearchSymbolName(name, country),
+    queryOptions,
+  );
 };
 
 export const StockFetchQuery = (type: StockType, country: string) => {
@@ -52,19 +55,15 @@ export const StockFetchQuery = (type: StockType, country: string) => {
 };
 
 export const ScoreQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
+  return useQuery<StockDetailInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery<StockInfo>(
+  return useQuery<StockDetailInfo>(
     ['chartInfo', id, periodCode, startDate],
     () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
     queryOptions,
   );
-};
-
-export const RealStockInfoQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
 
 export const KeywordsQuery = (country: string) => {
@@ -88,7 +87,6 @@ export const KeywordsStocksQuery = (keywordName: string) => {
 };
 
 // SearchTitle
-
 export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
   const { data = [] } = useQuery<string[]>(
     ['stockSummary', symbol, country],
@@ -100,9 +98,8 @@ export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
 };
 
 // SearchRelevant
-
 export const StockRelevantQuery = (id: number) => {
-  const { data } = useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), {
+  const { data } = useQuery<StockInfo[]>(['relevant', id], () => fetchRelevant(id), {
     ...queryOptions,
     enabled: id != undefined,
   });
