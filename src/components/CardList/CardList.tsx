@@ -1,6 +1,6 @@
 import { STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQuery } from '@hooks/useQuery';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import StockCard from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
@@ -10,7 +10,7 @@ import { StockFetchQuery } from '@controllers/query';
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
+  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, country) });
 
   return (
     suspend ||
