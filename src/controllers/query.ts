@@ -19,7 +19,6 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -65,10 +64,6 @@ export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: strin
     () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
     queryOptions,
   );
-};
-
-export const RealStockInfoQuery = (id: number, country: string) => {
-  return useQuery<StockDetailInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
 };
 
 export const KeywordsQuery = (country: string) => {

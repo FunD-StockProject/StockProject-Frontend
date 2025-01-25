@@ -20,7 +20,7 @@ export interface StockInfo {
   keywords?: string[];
 }
 
-export interface StockScore {
+export interface StockScoreInfo {
   stockId: number;
   symbolName: string;
   score: number;
