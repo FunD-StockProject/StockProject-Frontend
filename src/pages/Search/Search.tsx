@@ -41,7 +41,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 const Search = () => {
   const { state } = useLocation();
   const { data: stockInfo } = SearchSymbolNameQuery(state?.symbolName, state?.country);
-  const { data: curRelevantStocks } = StockRelevantQuery(stockInfo?.stockId ?? 0);
+  const { data: curRelevantStocks } = StockRelevantQuery(stockInfo?.stockId);
 
   const isMobile = useIsMobile();
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');

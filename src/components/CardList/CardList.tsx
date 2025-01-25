@@ -10,10 +10,10 @@ import { StockFetchQuery } from '@controllers/query';
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
-  const { data: curStocks } = StockFetchQuery(name, country);
+  const { data: curStocks = [] } = StockFetchQuery(name, country);
 
   return (
-    curStocks && (
+    curStocks.length && (
       <SlideView
         key={`${name}_${country}`}
         keyName={name}

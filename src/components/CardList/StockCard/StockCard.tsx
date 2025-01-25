@@ -22,7 +22,7 @@ const DeltaIcon = ({ diff }: { diff: number }) => {
 };
 
 const StockCard = ({ stockInfo, country }: { stockInfo: StockInfo; country: STOCK_COUNTRY }) => {
-  const { symbolName, score, diff, keywords } = stockInfo;
+  const { symbolName, score, diff, keywords = [] } = stockInfo;
   const navigate = useNavigate();
   const scoreImage = scoreToImage(score);
   const handleClick = () => navigate(webPath.search(), { state: { symbolName, country } });
@@ -43,7 +43,9 @@ const StockCard = ({ stockInfo, country }: { stockInfo: StockInfo; country: STOC
           </StockCardTitleScore>
         </StockCardTitleContents>
         <StockCardKeywords>
-          {keywords?.map((keyword, index) => <span key={`Relevant_Keywords_${symbolName}_${index}`}>{keyword}</span>)}
+          {keywords.map((keyword, index) => (
+            <span key={`Relevant_Keywords_${symbolName}_${index}`}>{keyword}</span>
+          ))}
         </StockCardKeywords>
       </StockCardTitle>
     </StockCardContainer>

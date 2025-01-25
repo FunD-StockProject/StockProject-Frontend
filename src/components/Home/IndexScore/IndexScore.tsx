@@ -12,12 +12,12 @@ const stockIndices = [
 ];
 
 const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
-  const { data: indexScores } = IndexScoreQuery();
+  const { data: indexScores = [] } = IndexScoreQuery();
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
-  const entries = Object.entries(indexScores ?? []);
+  const entries = Object.entries(indexScores);
 
   const transformed = entries.reduce<{ score: number; delta: number }[]>((acc, _, i) => {
     if (i % 2 === 0) {
