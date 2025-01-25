@@ -9,7 +9,7 @@ import {
   IndexInfo,
   PERIOD_CODE,
   PopularItems,
-  StockInfo,
+  RevelantStockInfo,
   StockTableInfo,
 } from '@controllers/api.Type';
 import {
@@ -19,6 +19,7 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
+  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -29,13 +30,12 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import { StockDetailInfo } from './api.Type';
+import { StockInfo } from './api.Type';
 
-export const getQueryOptions = (...params: any[]) => ({
+export const queryOptions = {
   // retry: 5, // 실패 시 반복 횟수 - 기본 3
-  staleTime: 1000, // 일정 시간 내 재요청 방지
-  enabled: params.every((param) => param !== null && param !== undefined && param !== 0),
-});
+  staleTime: 1000, // 다시 fetch 보내려 할때 해당 시간 이내이면 굳이 fetch 다시 하지 않음
+};
 
 const StockFetchers = {
   HOT: fetchHotStocks,
@@ -43,82 +43,71 @@ const StockFetchers = {
   DESCENT: fetchDescentStocks,
 };
 
-// 📌 SymbolName 조회
 export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
-  return useQuery<StockDetailInfo>(
-    ['symbolName', name, country],
-    async () => fetchSearchSymbolName(name, country),
-    getQueryOptions(name, country),
-  );
+  return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
-// 📌 주식 데이터 조회
-export const StockFetchQuery = (type: StockType, country: STOCK_COUNTRY) => {
-  return useQuery<StockInfo[]>(
-    ['searchStocks', type, country],
-    async () => StockFetchers[type](country),
-    getQueryOptions(type, country),
-  );
+export const StockFetchQuery = (type: StockType, country: string) => {
+  return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
 };
 
-// 📌 점수 조회
 export const ScoreQuery = (id: number, country: string) => {
-  return useQuery<{ score: number }>(
-    ['score', id, country],
-    async () => fetchScore(id, country),
-    getQueryOptions(id, country),
-  );
+  return useQuery<StockInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
-// 📌 차트 조회
 export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery<StockDetailInfo>(
+  return useQuery<StockInfo>(
     ['chartInfo', id, periodCode, startDate],
-    async () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
-    getQueryOptions(id, periodCode, startDate),
+    () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
+    queryOptions,
   );
 };
 
-// 📌 키워드 조회
+export const RealStockInfoQuery = (id: number, country: string) => {
+  return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
+};
+
 export const KeywordsQuery = (country: string) => {
-  return useQuery<string[]>(['keywords', country], async () => fetchKeywords(country), getQueryOptions(country));
+  return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
 };
 
-// 📌 테이블 데이터 조회
 export const StockTableQuery = (category: string, country: string) => {
-  return useQuery<StockTableInfo[]>(
+  return useQuery<StockTableInfo>(
     ['stockTable', category, country],
-    async () => fetchStockTable(category, country),
-    getQueryOptions(category, country),
+    () => fetchStockTable(category, country),
+    queryOptions,
   );
 };
 
-// 📌 인덱스 점수 조회
 export const IndexScoreQuery = () => {
-  return useQuery<IndexInfo>(['indexScore'], async () => fetchIndexScore(), getQueryOptions(true));
+  return useQuery<IndexInfo>(['indexScore'], () => fetchIndexScore(), queryOptions);
 };
 
-// 📌 키워드 검색 조회
 export const KeywordsStocksQuery = (keywordName: string) => {
-  return useQuery<string[]>(
-    ['keywordsStocks', keywordName],
-    async () => fetchSearchKeyword(keywordName),
-    getQueryOptions(keywordName),
-  );
+  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
 };
 
-// 📌 종목 요약 조회
+// SearchTitle
+
 export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
-  return useQuery<string[]>(
+  const { data = [] } = useQuery<string[]>(
     ['stockSummary', symbol, country],
-    async () => fetchStockSummary(symbol, country),
-    getQueryOptions(symbol, country),
+    () => fetchStockSummary(symbol, country),
+    queryOptions,
   );
+
+  return [data];
 };
 
-// 📌 연관 종목 조회
-export const StockRelevantQuery = (id?: number) => {
-  return useQuery<StockInfo[]>(['relevant', id], async () => (id ? fetchRelevant(id) : []), getQueryOptions(id));
+// SearchRelevant
+
+export const StockRelevantQuery = (id: number) => {
+  const { data } = useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), {
+    ...queryOptions,
+    enabled: id != undefined,
+  });
+
+  return [data];
 };
 
 // WordCloud
@@ -291,7 +280,7 @@ export const PopularStocksQuery = () => {
       })) as PopularItems[];
     },
     {
-      ...getQueryOptions(),
+      ...queryOptions,
       placeholderData: [],
     },
   );
@@ -309,7 +298,7 @@ export const PopularKeywordsQuery = () => {
       })) as PopularItems[];
     },
     {
-      ...getQueryOptions(),
+      ...queryOptions,
       placeholderData: [],
     },
   );

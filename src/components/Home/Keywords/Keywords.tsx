@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { useQuery } from '@hooks/useQuery';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { KeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
@@ -13,7 +14,8 @@ import {
 } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
-  const { data: keywords = [] } = KeywordsQuery(country);
+  const [keywords, suspend] = useQuery({ query: KeywordsQuery(country) });
+
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
@@ -29,11 +31,13 @@ const Keywords = ({ country }: { country: string }) => {
       </TitleWrapper>
       <KeywordList>
         <KeywordItemConainer>
-          {keywords.map((keyword: string, index: number) => (
-            <KeywordItem key={index} onClick={() => {}}>
-              {keyword.toLocaleUpperCase()}
-            </KeywordItem>
-          ))}
+          {suspend ||
+            (keywords &&
+              keywords.map((keyword: string, index: number) => (
+                <KeywordItem key={index} onClick={() => {}}>
+                  {keyword.toLocaleUpperCase()}
+                </KeywordItem>
+              )))}
         </KeywordItemConainer>
       </KeywordList>
       {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}

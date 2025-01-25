@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { MARKET_CODES, ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
-import { StockDetailInfo } from '@controllers/api.Type';
+import { StockInfo } from '@controllers/api.Type';
 import { StockSummaryQuery } from '@controllers/query';
 import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
@@ -32,7 +32,7 @@ const SearchTitle = ({
   resultMode,
   onClick,
 }: {
-  stockInfo: StockDetailInfo;
+  stockInfo: StockInfo;
   resultMode: RESULT_TYPE;
   onClick: (e: any) => void;
 }) => {
@@ -50,7 +50,7 @@ const SearchTitle = ({
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
 
-  const { data: stockSummaries = [] } = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  const [summary] = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
   const variants: Variants = {
     initial: {
@@ -117,8 +117,8 @@ const SearchTitle = ({
             </SearchTitleBodyTitleSVG>
           </SearchTitleBodyTitle>
           <SearchTitleBodySubtitle>
-            {stockSummaries.map((stockSummary: string, idx: number) => (
-              <span key={`Summary_${stockInfo.symbol}_${idx}`}>{stockSummary}</span>
+            {summary.map((e, i) => (
+              <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
             ))}
           </SearchTitleBodySubtitle>
         </SearchTitleBody>

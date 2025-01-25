@@ -1,6 +1,6 @@
 import { STOCK_COUNTRY } from '@ts/Types';
 
-export interface StockDetailInfo {
+export interface StockInfo {
   stockId: number;
   symbol: string;
   symbolName: string;
@@ -12,20 +12,20 @@ export interface StockDetailInfo {
   priceDiff: number;
   priceDiffPerCent: number;
 }
-export interface StockInfo {
-  stockId: number;
-  symbolName: string;
-  score: number;
-  diff: number;
-  keywords?: string[];
-}
 
-export interface StockScoreInfo {
+export interface StockScore {
   stockId: number;
   symbolName: string;
   score: number;
   diff: number;
   keywords: string[];
+}
+
+export interface RevelantStockInfo {
+  stockId: number;
+  symbolName: string;
+  score: number;
+  diff: number;
 }
 
 export interface StockTableInfo {
