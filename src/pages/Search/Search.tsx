@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE, STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQuery } from '@hooks/useQuery';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import StockCard from '@components/CardList/StockCard/StockCard';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
@@ -20,7 +20,7 @@ import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [score, suspend] = useQuery({ query: ScoreQuery(stockId, country) });
+  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -45,7 +45,7 @@ const Search = () => {
 
   const isMobile = useIsMobile();
 
-  const [stockInfo] = useQuery({
+  const [stockInfo] = useQueryComponent({
     query: SearchSymbolNameQuery(state?.symbolName, state?.country),
   });
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
