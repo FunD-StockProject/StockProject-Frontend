@@ -43,8 +43,6 @@ const Search = () => {
   const { data: stockInfo } = SearchSymbolNameQuery(state?.symbolName, state?.country);
   const { data: curRelevantStocks } = StockRelevantQuery(stockInfo?.stockId);
 
-  console.log(stockInfo);
-  debugger;
   const isMobile = useIsMobile();
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
   const [isPopupOpen, setPopupOpen] = useState(false);
