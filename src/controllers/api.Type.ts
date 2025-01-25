@@ -12,6 +12,12 @@ export interface StockInfo {
   priceDiff: number;
   priceDiffPerCent: number;
 }
+export interface HomeStockInfo {
+  stockId: number;
+  symbolName: string;
+  score: number;
+  diff: number;
+}
 
 export interface StockScore {
   stockId: number;

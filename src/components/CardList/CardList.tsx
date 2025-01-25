@@ -5,34 +5,34 @@ import StockCard from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
+import { HomeStockInfo } from '@controllers/api.Type';
 import { StockFetchQuery } from '@controllers/query';
 
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
+  const [curStocks] = useQuery({ query: StockFetchQuery(name, country) });
 
   return (
-    suspend ||
-    (curStocks && (
+    curStocks && (
       <SlideView
         key={`${name}_${country}`}
         keyName={name}
         list={isHot ? StockHot(curStocks, country) : StockRisingDescend(curStocks, country)}
-        count={isHot ? 1 : !isMobile ? 3 : 1}
+        count={isHot || isMobile ? 1 : 3}
       />
-    ))
+    )
   );
 };
 
-const StockRisingDescend = (curStocks: any, country: STOCK_COUNTRY) => {
+const StockRisingDescend = (curStocks: HomeStockInfo[], country: STOCK_COUNTRY) => {
   return curStocks.map((e: any) => {
     return <StockCard stockInfo={{ ...e, country }} />;
   });
 };
 
-const StockHot = (curStocks: any, country: STOCK_COUNTRY) => {
-  return curStocks.map((stock: any) => {
+const StockHot = (curStocks: HomeStockInfo[], country: STOCK_COUNTRY) => {
+  return curStocks.map((stock: HomeStockInfo) => {
     return (
       <ScoreSlotMachine
         stockName={stock.symbolName}

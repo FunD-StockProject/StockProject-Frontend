@@ -6,6 +6,7 @@ import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
 import {
   AutoCompleteItem,
+  HomeStockInfo,
   IndexInfo,
   PERIOD_CODE,
   PopularItems,
@@ -47,8 +48,8 @@ export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
 };
 
-export const StockFetchQuery = (type: StockType, country: string) => {
-  return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
+export const StockFetchQuery = (type: StockType, country: STOCK_COUNTRY) => {
+  return useQuery<HomeStockInfo>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
 };
 
 export const ScoreQuery = (id: number, country: string) => {
