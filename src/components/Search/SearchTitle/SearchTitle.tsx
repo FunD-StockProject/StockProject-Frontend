@@ -50,7 +50,7 @@ const SearchTitle = ({
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
 
-  const [summary] = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  const { data: stockSummaries = [] } = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
   const variants: Variants = {
     initial: {
@@ -117,8 +117,8 @@ const SearchTitle = ({
             </SearchTitleBodyTitleSVG>
           </SearchTitleBodyTitle>
           <SearchTitleBodySubtitle>
-            {summary.map((e, i) => (
-              <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
+            {stockSummaries.map((stockSummary: string, idx: number) => (
+              <span key={`Summary_${stockInfo.symbol}_${idx}`}>{stockSummary}</span>
             ))}
           </SearchTitleBodySubtitle>
         </SearchTitleBody>

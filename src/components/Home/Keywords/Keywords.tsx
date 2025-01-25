@@ -13,7 +13,7 @@ import {
 } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
-  const { data: keywords } = KeywordsQuery(country);
+  const { data: keywords = [] } = KeywordsQuery(country);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
@@ -29,12 +29,11 @@ const Keywords = ({ country }: { country: string }) => {
       </TitleWrapper>
       <KeywordList>
         <KeywordItemConainer>
-          {keywords &&
-            keywords?.map((keyword: string, index: number) => (
-              <KeywordItem key={index} onClick={() => {}}>
-                {keyword.toLocaleUpperCase()}
-              </KeywordItem>
-            ))}
+          {keywords.map((keyword: string, index: number) => (
+            <KeywordItem key={index} onClick={() => {}}>
+              {keyword.toLocaleUpperCase()}
+            </KeywordItem>
+          ))}
         </KeywordItemConainer>
       </KeywordList>
       {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}

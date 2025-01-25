@@ -89,19 +89,16 @@ export const KeywordsStocksQuery = (keywordName: string) => {
 // SearchTitle
 
 export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
-  const { data = [] } = useQuery<string[]>(
-    ['stockSummary', symbol, country],
-    () => fetchStockSummary(symbol, country),
-    queryOptions,
-  );
-
-  return [data];
+  return useQuery<string[]>(['stockSummary', symbol, country], () => fetchStockSummary(symbol, country), queryOptions);
 };
 
 // SearchRelevant
 
-export const StockRelevantQuery = (id: number) => {
-  return useQuery<StockInfo[]>(['relevant', id], () => fetchRelevant(id), queryOptions);
+export const StockRelevantQuery = (id?: number) => {
+  return useQuery<StockInfo[]>(['relevant', id], () => fetchRelevant(id!), {
+    ...queryOptions,
+    enabled: Boolean(id), // id가 있을 때만 실행
+  });
 };
 
 // WordCloud
