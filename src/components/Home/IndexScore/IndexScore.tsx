@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@hooks/useQuery';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
 import { IndexScoreQuery } from '@controllers/query';
 import DownSVG from '@assets/icons/down.svg?react';
@@ -13,7 +12,7 @@ const stockIndices = [
 ];
 
 const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
-  const [indexScores, suspend] = useQuery({ query: IndexScoreQuery() });
+  const { data: indexScores } = IndexScoreQuery();
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -32,8 +31,6 @@ const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
 
   const splitIndex = transformed.length / 2;
   const result = tabIndex === 0 ? transformed.slice(0, splitIndex) : transformed.slice(splitIndex);
-
-  if (suspend) return null;
 
   return (
     <IndicesContainer>

@@ -3,6 +3,7 @@ import { STOCK_COUNTRY } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
 import { scoreToImage } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
+import { StockInfo } from '@controllers/api.Type';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import {
@@ -15,27 +16,16 @@ import {
   StockCardTitleScore,
 } from './StockCard.Style';
 
-interface StockCardInfo {
-  symbolName: string;
-  score: number;
-  diff: number;
-  country: STOCK_COUNTRY;
-  keywords: string[];
-}
-
-const signedNumber = (value: number) => {
-  const sign = value > 0 ? '+' : value < 0 ? '-' : '';
-  return sign + Math.abs(value);
+const DeltaIcon = ({ diff }: { diff: number }) => {
+  if (diff === 0) return null;
+  return diff > 0 ? <UpSVG /> : <DownSVG />;
 };
 
-const StockCard = ({ stockInfo: { symbolName, score, diff, keywords, country } }: { stockInfo: StockCardInfo }) => {
+const StockCard = ({ stockInfo, country }: { stockInfo: StockInfo; country: STOCK_COUNTRY }) => {
+  const { symbolName, score, diff, keywords } = stockInfo;
   const navigate = useNavigate();
-  const deltaSVG = !diff ? ' -' : diff > 0 ? <UpSVG /> : <DownSVG />;
   const scoreImage = scoreToImage(score);
-
-  const handleClick = () => {
-    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
-  };
+  const handleClick = () => navigate(webPath.search(), { state: { symbolName, country } });
 
   return (
     <StockCardContainer onClick={handleClick}>
@@ -48,14 +38,12 @@ const StockCard = ({ stockInfo: { symbolName, score, diff, keywords, country } }
           <StockCardTitleScore diffColor={deltaColor(diff)}>
             {score}점
             <span>
-              {signedNumber(diff)}점{deltaSVG}
+              {Math.abs(diff)}점 <DeltaIcon diff={diff} />
             </span>
           </StockCardTitleScore>
         </StockCardTitleContents>
         <StockCardKeywords>
-          {keywords.map((e, i) => (
-            <span key={`Relevant_Keywords_${symbolName}_${i}`}>{e}</span>
-          ))}
+          {keywords?.map((keyword, index) => <span key={`Relevant_Keywords_${symbolName}_${index}`}>{keyword}</span>)}
         </StockCardKeywords>
       </StockCardTitle>
     </StockCardContainer>

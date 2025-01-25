@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { MARKET_CODES, ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
-import { StockInfo } from '@controllers/api.Type';
+import { StockDetailInfo } from '@controllers/api.Type';
 import { StockSummaryQuery } from '@controllers/query';
 import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
@@ -32,7 +32,7 @@ const SearchTitle = ({
   resultMode,
   onClick,
 }: {
-  stockInfo: StockInfo;
+  stockInfo: StockDetailInfo;
   resultMode: RESULT_TYPE;
   onClick: (e: any) => void;
 }) => {
