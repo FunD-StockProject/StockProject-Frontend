@@ -6,11 +6,10 @@ import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
 import {
   AutoCompleteItem,
-  HomeStockInfo,
   IndexInfo,
   PERIOD_CODE,
   PopularItems,
-  RevelantStockInfo,
+  StockInfo,
   StockTableInfo,
 } from '@controllers/api.Type';
 import {
@@ -20,7 +19,6 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -31,7 +29,7 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import { StockInfo } from './api.Type';
+import { StockDetailInfo } from './api.Type';
 
 export const queryOptions = {
   // retry: 5, // 실패 시 반복 횟수 - 기본 3
@@ -45,27 +43,27 @@ const StockFetchers = {
 };
 
 export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
-  return useQuery<StockInfo>(['symbolName', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
-};
-
-export const StockFetchQuery = (type: StockType, country: STOCK_COUNTRY) => {
-  return useQuery<HomeStockInfo>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
-};
-
-export const ScoreQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
-};
-
-export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery<StockInfo>(
-    ['chartInfo', id, periodCode, startDate],
-    () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
+  return useQuery<StockDetailInfo>(
+    ['symbolName', name, country],
+    () => fetchSearchSymbolName(name, country),
     queryOptions,
   );
 };
 
-export const RealStockInfoQuery = (id: number, country: string) => {
-  return useQuery<StockInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
+export const StockFetchQuery = (type: StockType, country: STOCK_COUNTRY) => {
+  return useQuery<StockInfo[]>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
+};
+
+export const ScoreQuery = (id: number, country: string) => {
+  return useQuery<{ score: number }>(['score', id, country], () => fetchScore(id, country), queryOptions);
+};
+
+export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
+  return useQuery<StockDetailInfo>(
+    ['chartInfo', id, periodCode, startDate],
+    () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
+    queryOptions,
+  );
 };
 
 export const KeywordsQuery = (country: string) => {
@@ -73,7 +71,7 @@ export const KeywordsQuery = (country: string) => {
 };
 
 export const StockTableQuery = (category: string, country: string) => {
-  return useQuery<StockTableInfo>(
+  return useQuery<StockTableInfo[]>(
     ['stockTable', category, country],
     () => fetchStockTable(category, country),
     queryOptions,
@@ -103,12 +101,7 @@ export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
 // SearchRelevant
 
 export const StockRelevantQuery = (id: number) => {
-  const { data } = useQuery<RevelantStockInfo>(['relevant', id], () => fetchRelevant(id), {
-    ...queryOptions,
-    enabled: id != undefined,
-  });
-
-  return [data];
+  return useQuery<StockInfo[]>(['relevant', id], () => fetchRelevant(id), queryOptions);
 };
 
 // WordCloud
