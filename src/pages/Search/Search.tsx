@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE, STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
+import { useQuery } from '@hooks/useQuery';
 import StockCard from '@components/CardList/StockCard/StockCard';
 import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
@@ -12,7 +13,6 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { StockInfo } from '@controllers/api.Type';
 import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
@@ -20,7 +20,7 @@ import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const { data: { score } = {} } = ScoreQuery(stockId, country);
+  const [score, suspend] = useQuery({ query: ScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -32,7 +32,9 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
         <LogoSVG />
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
-      <ContentsItemContent>{score && <ScoreSlotMachine stockScore={score} country={country} />}</ContentsItemContent>
+      <ContentsItemContent>
+        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
+      </ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
@@ -40,15 +42,18 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
 
 const Search = () => {
   const { state } = useLocation();
-  const { data: stockInfo } = SearchSymbolNameQuery(state?.symbolName, state?.country);
-  const { data: curRelevantStocks } = StockRelevantQuery(stockInfo?.stockId);
 
   const isMobile = useIsMobile();
+
+  const [stockInfo] = useQuery({
+    query: SearchSymbolNameQuery(state?.symbolName, state?.country),
+  });
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const toggleResultMode = () => setResultMode((prev) => ResultInfo[prev].opposite);
   const togglePopup = () => setPopupOpen((prev) => !prev);
+  const [stockRelevantList] = StockRelevantQuery(stockInfo?.stockId);
 
   return (
     stockInfo && (
@@ -79,10 +84,10 @@ const Search = () => {
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
-            {curRelevantStocks && (
+            {stockRelevantList && (
               <SlideView
                 keyName="Relevant"
-                list={StockRelevant(curRelevantStocks, stockInfo.country)}
+                list={StockRelevant(stockRelevantList, stockInfo.country)}
                 count={isMobile ? 1 : 3}
               />
             )}
@@ -93,15 +98,10 @@ const Search = () => {
   );
 };
 
-<<<<<<< HEAD
-const StockRelevant = (stockRelevantList: StockInfo[], country: STOCK_COUNTRY) => {
-  return stockRelevantList.map((curStock: StockInfo) => {
-    return <StockCard stockInfo={curStock} country={country} />;
+const StockRelevant = (stockRelevantList: any, country: STOCK_COUNTRY) => {
+  return stockRelevantList.map((e: any) => {
+    return <StockCard stockInfo={{ ...e, country }} />;
   });
-=======
-const StockRelevant = (curRelevantStocks: StockInfo[], country: STOCK_COUNTRY) => {
-  return curRelevantStocks.map((curRelevantStock: any) => <StockCard stockInfo={curRelevantStock} country={country} />);
->>>>>>> b3de1b4877a20fc89a873b2b9ea96a52b10a413a
 };
 
 export default Search;

@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { useQuery } from '@hooks/useQuery';
 import { webPath } from '@router/index';
 import { StockTableInfo } from '@controllers/api.Type';
 import { StockTableQuery } from '@controllers/query';
@@ -18,24 +19,29 @@ import {
   TableRow,
 } from './StockTable.style';
 
-const TAB_MENUS = [
-  { label: '시가총액', category: 'MARKET' },
-  { label: '거래량', category: 'VOLUME' },
-  { label: '급상승', category: 'RISING' },
-  { label: '급하락', category: 'DESCENT' },
-];
+const tabMenu = ['시가총액', '거래량', '급상승', '급하락'];
+const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
 
 const StockTable = ({ country }: { country: string }) => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const updateTime = STOCK_UPDATE_TIME[country];
-  const { data: stockTable = [] } = StockTableQuery(TAB_MENUS[tabIndex].category, country);
+  const [stockTable, suspend] = useQuery({
+    query: StockTableQuery(categories[tabIndex], country),
+  });
 
-  const handleClick = useCallback(
-    (name: string) => navigate(webPath.search(), { state: { symbolName: name, country } }),
-    [navigate, country],
-  );
+  const handleClick = (name: string) => {
+    navigate(webPath.search(), { state: { symbolName: name, country: country } });
+  };
+
+  const handleTab = (index: number) => {
+    if (tabIndex === index) {
+      return;
+    }
+
+    setTabIndex(index);
+  };
 
   return (
     <StockTableContainer>
@@ -46,51 +52,51 @@ const StockTable = ({ country }: { country: string }) => {
         <span>매일 {updateTime}시 업데이트됩니다.</span>
       </StockTableTitle>
       <StyledTabMenu>
-        {TAB_MENUS.map((tab, index) => (
+        {tabMenu.map((el, index) => (
           <li
-            key={tab.category}
+            key={index}
             className={index === tabIndex ? 'submenu focused' : 'submenu'}
-            onClick={() => setTabIndex(index)}
+            onClick={() => handleTab(index)}
           >
-            {tab.label}
+            {el}
           </li>
         ))}
       </StyledTabMenu>
+
       <TableHeaderContainer>
         <HeaderItem>종목</HeaderItem>
         <HeaderItem>주가</HeaderItem>
         <HeaderItem>인간지표</HeaderItem>
       </TableHeaderContainer>
-      {stockTable.map((stock) => (
-        <StockRow key={stock.symbolName} stock={stock} onClick={handleClick} />
-      ))}
+      {suspend ||
+        (stockTable &&
+          stockTable.map((stock: StockTableInfo, index: number) => {
+            return (
+              <TableRow key={index} onClick={() => handleClick(stock.symbolName)}>
+                <StockData>
+                  <StockInfo>
+                    {/* <StockLogo /> */}
+                    <StockName>{stock.symbolName}</StockName>
+                  </StockInfo>
+                </StockData>
+                <StockData>
+                  <span>{stock.price.toLocaleString()}</span>
+                  <DeltaScore delta={stock.priceDiff}>
+                    {stock.priceDiff > 0 ? '+' : ''}
+                    {stock.priceDiff.toLocaleString()}({Math.abs(stock.priceDiffPerCent)}%)
+                  </DeltaScore>
+                </StockData>
+                <StockData>
+                  <span>{stock.score}점 </span>
+                  <DeltaScore delta={stock.scoreDiff}>
+                    ({stock.scoreDiff > 0 ? '+' : ''}
+                    {stock.scoreDiff})
+                  </DeltaScore>
+                </StockData>
+              </TableRow>
+            );
+          }))}
     </StockTableContainer>
-  );
-};
-
-const StockRow = ({ stock, onClick }: { stock: StockTableInfo; onClick: (name: string) => void }) => {
-  return (
-    <TableRow onClick={() => onClick(stock.symbolName)}>
-      <StockData>
-        <StockInfo>
-          <StockName>{stock.symbolName}</StockName>
-        </StockInfo>
-      </StockData>
-      <StockData>
-        <span>{stock.price.toLocaleString()}</span>
-        <DeltaScore delta={stock.priceDiff}>
-          {stock.priceDiff > 0 ? '+' : ''}
-          {stock.priceDiff.toLocaleString()} ({Math.abs(stock.priceDiffPerCent)}%)
-        </DeltaScore>
-      </StockData>
-      <StockData>
-        <span>{stock.score}점</span>
-        <DeltaScore delta={stock.scoreDiff}>
-          ({stock.scoreDiff > 0 ? '+' : ''}
-          {stock.scoreDiff})
-        </DeltaScore>
-      </StockData>
-    </TableRow>
   );
 };
 
