@@ -11,7 +11,7 @@ import { drawLine, drawRect, setLineWidth } from '@utils/Canvas';
 import { formatDateISO, getDateLabel } from '@utils/Date';
 import { deltaColor } from '@utils/Delta';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { StockChartQuery } from '@controllers/query';
+import { useStockChartQuery } from '@controllers/query';
 import { theme, themeColor } from '@styles/themes';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
@@ -1147,7 +1147,7 @@ const StockChart = ({
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState<PERIOD_CODE>('D');
 
-  const [chartData, updateChartData] = StockChartQuery(stockId, selectedPeriod);
+  const [chartData, updateChartData] = useStockChartQuery(stockId, selectedPeriod);
 
   return (
     <StockChartContainer>

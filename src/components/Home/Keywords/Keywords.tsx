@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
-import { KeywordsQuery } from '@controllers/query';
+import { useKeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import {
   KeywordItem,
@@ -14,7 +14,7 @@ import {
 } from './Keywords.style';
 
 const Keywords = ({ country }: { country: string }) => {
-  const [keywords, suspend] = useQueryComponent({ query: KeywordsQuery(country) });
+  const [keywords, suspend] = useQueryComponent({ query: useKeywordsQuery(country) });
 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = () => setPopupOpen((prev) => !prev);

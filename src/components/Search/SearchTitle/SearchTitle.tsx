@@ -5,7 +5,7 @@ import { MARKET_CODES, ResultInfo } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
 import { StockDetailInfo } from '@controllers/api.Type';
-import { StockSummaryQuery } from '@controllers/query';
+import { useStockSummaryQuery } from '@controllers/query';
 import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
@@ -50,7 +50,7 @@ const SearchTitle = ({
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
 
-  const [summary] = StockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
   const variants: Variants = {
     initial: {

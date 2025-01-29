@@ -13,14 +13,15 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { ScoreQuery, SearchSymbolNameQuery, StockRelevantQuery } from '@controllers/query';
+import { StockInfo } from '@controllers/api.Type';
+import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [score, suspend] = useQueryComponent({ query: ScoreQuery(stockId, country) });
+  const [score, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const togglePopup = () => setPopupOpen((prev) => !prev);
@@ -46,14 +47,14 @@ const Search = () => {
   const isMobile = useIsMobile();
 
   const [stockInfo] = useQueryComponent({
-    query: SearchSymbolNameQuery(state?.symbolName, state?.country),
+    query: useSymbolNameSearchQuery(state?.symbolName, state?.country),
   });
   const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const toggleResultMode = () => setResultMode((prev) => ResultInfo[prev].opposite);
   const togglePopup = () => setPopupOpen((prev) => !prev);
-  const [stockRelevantList] = StockRelevantQuery(stockInfo?.stockId);
+  const [curRelevantStocks] = useRelevantStockFetchQuery(stockInfo?.stockId);
 
   return (
     stockInfo && (
@@ -84,10 +85,10 @@ const Search = () => {
           )}
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
-            {stockRelevantList && (
+            {curRelevantStocks && (
               <SlideView
                 keyName="Relevant"
-                list={StockRelevant(stockRelevantList, stockInfo.country)}
+                list={StockRelevant(curRelevantStocks, stockInfo.country)}
                 count={isMobile ? 1 : 3}
               />
             )}
@@ -98,9 +99,9 @@ const Search = () => {
   );
 };
 
-const StockRelevant = (stockRelevantList: any, country: STOCK_COUNTRY) => {
-  return stockRelevantList.map((e: any) => {
-    return <StockCard stockInfo={{ ...e, country }} />;
+const StockRelevant = (curRelevantStocks: StockInfo[], country: STOCK_COUNTRY) => {
+  return curRelevantStocks.map((e: StockInfo) => {
+    return <StockCard stockInfo={e} country={country} />;
   });
 };
 

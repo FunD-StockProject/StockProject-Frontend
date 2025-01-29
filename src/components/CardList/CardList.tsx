@@ -6,12 +6,12 @@ import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockInfo } from '@controllers/api.Type';
-import { StockFetchQuery } from '@controllers/query';
+import { useHomeStockFetchQuery } from '@controllers/query';
 
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQueryComponent({ query: StockFetchQuery(name, country) });
+  const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(name, country) });
 
   return (
     suspend ||

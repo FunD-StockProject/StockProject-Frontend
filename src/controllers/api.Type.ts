@@ -32,7 +32,7 @@ export interface StockTableInfo {
   scoreDiff: number;
 }
 
-export interface IndexInfo {
+export interface IndexScoreInfo {
   kospiVix: number;
   kospiVixDiff: number;
   kospiIndex: number;
