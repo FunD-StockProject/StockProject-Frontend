@@ -20,7 +20,7 @@ const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }
         key={`${name}_${country}`}
         keyName={name}
         list={isHot ? StockHot(curStocks, country) : StockRisingDescend(curStocks, country)}
-        count={isHot ? 1 : !isMobile ? 3 : 1}
+        count={isHot || isMobile ? 1 : 3}
       />
     ))
   );
