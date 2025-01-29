@@ -7,7 +7,7 @@ import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
 import { fetchAutoComplete, fetchSearchKeyword } from '@controllers/api';
 import { AutoCompleteItem, SearchBarResultItems } from '@controllers/api.Type';
-import { PopularKeywordsQuery, PopularStocksQuery, useAutoComplete } from '@controllers/query';
+import { PopularKeywordQuery, useAutoComplete, usePopularStockFetchQuery } from '@controllers/query';
 import CancelSVG from '@assets/icons/cancel.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -240,8 +240,8 @@ const SearchBar = () => {
   const [recentItems, setRecentItems] =
     selectedCategory == 'STOCK' ? [recentStocks, setRecentStocks] : [recentKeyowrds, setRecentKeyowrds];
 
-  const [popularStocks] = PopularStocksQuery();
-  const [popularKeywords] = PopularKeywordsQuery();
+  const [popularStocks] = usePopularStockFetchQuery();
+  const [popularKeywords] = PopularKeywordQuery();
   const popularItems = selectedCategory == 'STOCK' ? popularStocks : popularKeywords;
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');

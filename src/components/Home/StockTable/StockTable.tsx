@@ -4,7 +4,7 @@ import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import { StockTableInfo } from '@controllers/api.Type';
-import { StockTableQuery } from '@controllers/query';
+import { useStockTableInfoQuery } from '@controllers/query';
 import HumanIndexSVG from '@assets/HumanIndex.svg?react';
 import {
   DeltaScore,
@@ -28,7 +28,7 @@ const StockTable = ({ country }: { country: string }) => {
 
   const updateTime = STOCK_UPDATE_TIME[country];
   const [stockTable, suspend] = useQueryComponent({
-    query: StockTableQuery(categories[tabIndex], country),
+    query: useStockTableInfoQuery(categories[tabIndex], country),
   });
 
   const handleClick = (name: string) => {

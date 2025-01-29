@@ -6,7 +6,7 @@ import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { StockType } from '@components/Common/Common.Type';
 import {
   AutoCompleteItem,
-  IndexInfo,
+  IndexScoreInfo,
   PERIOD_CODE,
   PopularItems,
   StockInfo,
@@ -19,7 +19,6 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -37,29 +36,33 @@ export const queryOptions = {
   staleTime: 1000, // 다시 fetch 보내려 할때 해당 시간 이내이면 굳이 fetch 다시 하지 않음
 };
 
-const StockFetchers = {
+const STOCK_FETCH_FUNCTIONS = {
   HOT: fetchHotStocks,
   RISING: fetchRisingStocks,
   DESCENT: fetchDescentStocks,
 };
 
-export const SearchSymbolNameQuery = (name: string, country: STOCK_COUNTRY) => {
+export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery<StockDetailInfo>(
-    ['symbolName', name, country],
+    ['symbolNameSearch', name, country],
     () => fetchSearchSymbolName(name, country),
     queryOptions,
   );
 };
 
-export const StockFetchQuery = (type: StockType, country: string) => {
-  return useQuery<any>(['searchStocks', type, country], () => StockFetchers[type](country), queryOptions);
+export const useHomeStockFetchQuery = (type: StockType, country: string) => {
+  return useQuery<StockInfo>(
+    ['homeStockFetch', type, country],
+    () => STOCK_FETCH_FUNCTIONS[type](country),
+    queryOptions,
+  );
 };
 
-export const ScoreQuery = (id: number, country: string) => {
+export const useScoreQuery = (id: number, country: string) => {
   return useQuery<StockDetailInfo>(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
-export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
+export const useChartInfoQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
   return useQuery<StockDetailInfo>(
     ['chartInfo', id, periodCode, startDate],
     () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
@@ -67,33 +70,29 @@ export const ChartQuery = (id: number, periodCode: PERIOD_CODE, startDate: strin
   );
 };
 
-export const RealStockInfoQuery = (id: number, country: string) => {
-  return useQuery<StockDetailInfo>(['realStockInfo', id, country], () => fetchRealStockInfo(id, country), queryOptions);
-};
-
-export const KeywordsQuery = (country: string) => {
+export const useKeywordsQuery = (country: string) => {
   return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
 };
 
-export const StockTableQuery = (category: string, country: string) => {
+export const useStockTableInfoQuery = (category: string, country: string) => {
   return useQuery<StockTableInfo>(
-    ['stockTable', category, country],
+    ['stockTableInfo', category, country],
     () => fetchStockTable(category, country),
     queryOptions,
   );
 };
 
-export const IndexScoreQuery = () => {
-  return useQuery<IndexInfo>(['indexScore'], () => fetchIndexScore(), queryOptions);
+export const useIndexScoreQuery = () => {
+  return useQuery<IndexScoreInfo>(['indexScore'], () => fetchIndexScore(), queryOptions);
 };
 
-export const KeywordsStocksQuery = (keywordName: string) => {
-  return useQuery<string[]>(['keywordsStocks', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
+export const useKeywordSearchQuery = (keywordName: string) => {
+  return useQuery<string[]>(['keywordSearch', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
 };
 
 // SearchTitle
 
-export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
+export const useStockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
   const { data = [] } = useQuery<string[]>(
     ['stockSummary', symbol, country],
     () => fetchStockSummary(symbol, country),
@@ -105,8 +104,8 @@ export const StockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
 
 // SearchRelevant
 
-export const StockRelevantQuery = (id: number) => {
-  const { data } = useQuery<StockInfo>(['relevant', id], () => fetchRelevant(id), {
+export const useRelevantStockFetchQuery = (id: number) => {
+  const { data } = useQuery<StockInfo[]>(['relevantStockFetch', id], () => fetchRelevant(id), {
     ...queryOptions,
     enabled: id != undefined,
   });
@@ -120,7 +119,12 @@ const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts',
   type: 'module',
 });
 
-export const WordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, height }: any, isMobile: boolean) => {
+export const useWordCloudQuery = (
+  symbol: string,
+  country: STOCK_COUNTRY,
+  { width, height }: any,
+  isMobile: boolean,
+) => {
   const [wordCloud, setWordCloud] = useState<any>([]);
 
   const queryClient = useQueryClient();
@@ -157,7 +161,7 @@ export const WordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, 
 
 // StockChart
 
-export const StockChartQuery = (stockId: number, period: string) => {
+export const useStockChartQuery = (stockId: number, period: string) => {
   const [chartData, setChartData] = useState<any>([]);
   const [lastDate, setLastDate] = useState<string>('');
   const firstDate = '1970-01-01';
@@ -273,9 +277,9 @@ export const StockChartQuery = (stockId: number, period: string) => {
 
 // SearchBar
 
-export const PopularStocksQuery = () => {
+export const usePopularStockFetchQuery = () => {
   const { data = [] } = useQuery(
-    ['PopularStocksQuery'],
+    ['PopularStocksFetch'],
     async () => {
       const popularStocks = await Promise.resolve(fetchPopularStocks());
       return popularStocks.map((stock) => ({
@@ -292,9 +296,9 @@ export const PopularStocksQuery = () => {
   return [data];
 };
 
-export const PopularKeywordsQuery = () => {
+export const PopularKeywordQuery = () => {
   const { data = [] } = useQuery(
-    ['PopularKeywordsQuery'],
+    ['PopularKeywordFetch'],
     async () => {
       const popularKeywords = await Promise.resolve(fetchPopularKeywords());
       return popularKeywords.map((keyword) => ({
