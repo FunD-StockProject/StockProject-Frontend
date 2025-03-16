@@ -1,16 +1,17 @@
 import { STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { useQuery } from '@hooks/useQuery';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import StockCard from '@components/CardList/StockCard/StockCard';
 import { StockType } from '@components/Common/Common.Type';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { StockFetchQuery } from '@controllers/query';
+import { StockInfo } from '@controllers/api.Type';
+import { useHomeStockFetchQuery } from '@controllers/query';
 
 const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
   const isHot = name === 'HOT';
   const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQuery({ query: StockFetchQuery(name, country) });
+  const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(name, country) });
 
   return (
     suspend ||
@@ -19,20 +20,20 @@ const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }
         key={`${name}_${country}`}
         keyName={name}
         list={isHot ? StockHot(curStocks, country) : StockRisingDescend(curStocks, country)}
-        count={isHot ? 1 : !isMobile ? 3 : 1}
+        count={isHot || isMobile ? 1 : 3}
       />
     ))
   );
 };
 
-const StockRisingDescend = (curStocks: any, country: STOCK_COUNTRY) => {
-  return curStocks.map((e: any) => {
-    return <StockCard stockInfo={{ ...e, country }} />;
+const StockRisingDescend = (curStocks: StockInfo[], country: STOCK_COUNTRY) => {
+  return curStocks.map((stock: StockInfo) => {
+    return <StockCard stockInfo={stock} country={country} />;
   });
 };
 
-const StockHot = (curStocks: any, country: STOCK_COUNTRY) => {
-  return curStocks.map((stock: any) => {
+const StockHot = (curStocks: StockInfo[], country: STOCK_COUNTRY) => {
+  return curStocks.map((stock: StockInfo) => {
     return (
       <ScoreSlotMachine
         stockName={stock.symbolName}

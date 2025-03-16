@@ -3,7 +3,7 @@ import { UseQueryResult } from 'react-query';
 import ErrorComponent from '@components/Common/ErrorComponent';
 import LoadingComponent from '@components/Common/LoadingComponent';
 
-export const useQuery = ({ query }: { query: UseQueryResult }) => {
+export const useQueryComponent = ({ query }: { query: UseQueryResult }) => {
   const { data, isLoading, isError }: { data: any; isLoading: boolean; isError: boolean } = query;
 
   const [isDeferred, setIsDeferred] = useState(false);

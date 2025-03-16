@@ -4,7 +4,7 @@ import { WordCloudItem } from '@ts/Interfaces';
 import { STOCK_COUNTRY } from '@ts/Types';
 import { useIsMobile } from '@hooks/useIsMobile';
 import LoadingComponent from '@components/Common/LoadingComponent';
-import { WordCloudQuery } from '@controllers/query';
+import { useWordCloudQuery } from '@controllers/query';
 import { StockWordCloudContainer, Word, WordCloudTestText, WordContainer } from './StockWordCloud.Style';
 
 const StockWordCloudContents = ({
@@ -39,7 +39,7 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_CO
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
-  const [wordCloud] = WordCloudQuery(
+  const [wordCloud] = useWordCloudQuery(
     symbol,
     country,
     {
