@@ -1,3 +1,4 @@
+import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import { LayoutProps } from './Mainlayout.Props';
@@ -8,6 +9,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
     <StyledMainlayout>
       <Header />
       {children}
+      <BottomNavigation />
       <Footer />
     </StyledMainlayout>
   );
