@@ -18,7 +18,7 @@ import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } f
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
-import { SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
+import { MockTradeButtonWrapper, SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
   const [score, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
@@ -39,6 +39,12 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>
   );
+};
+
+const StockRelevant = (curRelevantStocks: StockInfo[], country: STOCK_COUNTRY) => {
+  return curRelevantStocks.map((e: StockInfo) => {
+    return <StockCard stockInfo={e} country={country} />;
+  });
 };
 
 const Search = () => {
@@ -65,24 +71,21 @@ const Search = () => {
             <AlertSVG />
             인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요
           </SearchResultInfo>
-          {resultMode === 'INDICATOR' ? (
-            <>
-              <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
-              <ContentsItemContainer>
-                <ContentsItemTitle>
-                  개미들의 목소리
-                  <InfoSVG className="btn_info" onClick={togglePopup} />
-                </ContentsItemTitle>
+          <StockChart stockId={stockInfo.stockId} symbolName={stockInfo.symbolName} country={stockInfo.country} />
 
-                <ContentsItemContent>
-                  <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
-                </ContentsItemContent>
-                {isPopupOpen && <AntVoicePopUp onClose={togglePopup} />}
-              </ContentsItemContainer>
-            </>
-          ) : (
-            <StockChart stockId={stockInfo.stockId} symbolName={stockInfo.symbolName} country={stockInfo.country} />
-          )}
+          <SearchResultHumanIndicator stockId={stockInfo.stockId} country={stockInfo.country} />
+          <ContentsItemContainer>
+            <ContentsItemTitle>
+              개미들의 목소리
+              <InfoSVG className="btn_info" onClick={togglePopup} />
+            </ContentsItemTitle>
+
+            <ContentsItemContent>
+              <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
+            </ContentsItemContent>
+            {isPopupOpen && <AntVoicePopUp onClose={togglePopup} />}
+          </ContentsItemContainer>
+
           <ContentsItemContainer>
             <ContentsItemTitle>이 종목과 점수가 비슷한 종목</ContentsItemTitle>
             {curRelevantStocks && (
@@ -94,15 +97,10 @@ const Search = () => {
             )}
           </ContentsItemContainer>
         </SearchResultContents>
+        <MockTradeButtonWrapper>모의 매수하기</MockTradeButtonWrapper>
       </SearchResultContainer>
     )
   );
-};
-
-const StockRelevant = (curRelevantStocks: StockInfo[], country: STOCK_COUNTRY) => {
-  return curRelevantStocks.map((e: StockInfo) => {
-    return <StockCard stockInfo={e} country={country} />;
-  });
 };
 
 export default Search;
