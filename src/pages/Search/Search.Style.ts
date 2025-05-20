@@ -55,4 +55,24 @@ const SearchResultInfo = styled.div({
   },
 });
 
-export { SearchResultContainer, SearchResultContents, StockRelevantContainer, SearchResultInfo };
+const MockTradeButtonWrapper = styled.div({
+  position: 'fixed',
+  bottom: '100px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  backgroundColor: theme.colors.primary50,
+  color: theme.colors.primary0,
+  padding: '12px 24px',
+  borderRadius: '12px',
+  cursor: 'pointer',
+  width: 'calc(100% - 80px)',
+  textAlign: 'center',
+});
+
+export {
+  SearchResultContainer,
+  SearchResultContents,
+  StockRelevantContainer,
+  SearchResultInfo,
+  MockTradeButtonWrapper,
+};
