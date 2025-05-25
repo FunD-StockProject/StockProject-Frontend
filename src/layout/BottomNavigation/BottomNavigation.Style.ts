@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const NavContainer = styled('nav')({
-  position: 'fixed',
+  // position: 'fixed',
   bottom: 0,
   width: '100%',
   height: '64px',
@@ -10,7 +10,7 @@ export const NavContainer = styled('nav')({
   display: 'flex',
   justifyContent: 'space-around',
   alignItems: 'center',
-  zIndex: 1000,
+  zIndex: 100,
   fontFamily: 'Noto Sans KR',
 });
 

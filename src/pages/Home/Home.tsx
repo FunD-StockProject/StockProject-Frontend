@@ -52,11 +52,7 @@ const Home = () => {
       <StyleTabMenuContainer>
         <StyleTabMenu>
           {tabMenu.map((el, index) => (
-            <li
-              key={index}
-              className={index === tabIndex ? 'focused' : ''}
-              onClick={() => handleTab(index)}
-            >
+            <li key={index} className={index === tabIndex ? 'focused' : ''} onClick={() => handleTab(index)}>
               {el}
             </li>
           ))}
