@@ -1,4 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
+
 const MyPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       <div style={{ padding: '24px 12px' }}>
@@ -40,7 +45,14 @@ const MyPage = () => {
             <p style={{ margin: '0', fontSize: '15px' }}>로그인하고</p>
             <p style={{ margin: '0', fontSize: '17px', fontWeight: '700' }}>내가 '인간지표'인지 확인하기</p>
           </div>
-          <p style={{ border: '1px solid white', padding: '12px', margin: '0' }}>로그인</p>
+          <p
+            style={{ border: '1px solid white', padding: '12px', margin: '0' }}
+            onClick={() => {
+              navigate(webPath.login());
+            }}
+          >
+            로그인
+          </p>
         </div>
         <p style={{ fontSize: '12px', margin: '0' }}>
           아직 인간지표 계정이 없으시가면?{' '}

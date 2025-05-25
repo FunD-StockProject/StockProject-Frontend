@@ -8,7 +8,6 @@ import { HeaderContainer, HeaderContents, HeaderLogo } from './Header.Style';
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   return (
     <>
@@ -18,7 +17,7 @@ const Header = () => {
             <LogoSVG />
             {false && <DisquietVote />}
           </HeaderLogo>
-          {location.pathname != webPath.mypage() && <SearchBar />}
+          {![webPath.mypage(), webPath.login()].includes(location.pathname) && <SearchBar />}
         </HeaderContents>
       </HeaderContainer>
     </>

@@ -1,4 +1,5 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import Usage from '@pages/Usage/Usage';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
@@ -9,7 +10,7 @@ export const webPath = {
   search: () => '/search',
   usage: () => '/usage',
   mypage: () => '/mypage',
-  login: () => '/login',
+  login: () => '/mypage/login',
 };
 
 const Root = () => {
@@ -36,6 +37,7 @@ const routes = [
         children: [{ path: '', element: <Search /> }],
       },
       { path: webPath.mypage(), element: <MyPage /> },
+      { path: webPath.login(), element: <Login /> },
     ],
   },
   {
