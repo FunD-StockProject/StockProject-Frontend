@@ -3,10 +3,12 @@ import Usage from '@pages/Usage/Usage';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
+import ShortView from '@pages/ShortView/ShortView';
 
 export const webPath = {
   search: () => '/search',
   usage: () => '/usage',
+  shortView: () => '/shortview',
 };
 
 const Root = () => {
@@ -38,6 +40,11 @@ const routes = [
     path: webPath.usage(),
     element: <Usage />,
   },
+
+  {
+    path: webPath.shortView(),
+    element: <ShortView />
+  }
 ];
 
 export const router = createBrowserRouter(routes);

@@ -25,7 +25,7 @@ const BottomNavigation = () => {
         alert('관심 종목은 준비중입니다.');
         break;
       case 2:
-        alert('숏뷰는 준비중입니다.');
+        navigate('/shortview');
         break;
       case 3:
         alert('실험실은 준비중입니다.');
@@ -43,7 +43,6 @@ const BottomNavigation = () => {
       {navItems.map((item, index) => (
         <NavItem key={index} onClick={() => handleClick(index)}>
           {item.icon}
-          {item.label}
         </NavItem>
       ))}
     </NavContainer>
