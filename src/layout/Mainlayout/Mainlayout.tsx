@@ -11,10 +11,12 @@ const Mainlayout = ({ children }: LayoutProps) => {
 
   return (
     <StyledMainlayout>
-      <Header />
-      {children}
+      <div style={{ position: 'relative', overflow: 'auto', width: '100%', height: '100%' }}>
+        <Header />
+        {children}
+        {![webPath.login(), webPath.register()].includes(location.pathname) && <Footer />}
+      </div>
       <BottomNavigation />
-      {![webPath.login(), webPath.register()].includes(location.pathname) && <Footer />}
     </StyledMainlayout>
   );
 };

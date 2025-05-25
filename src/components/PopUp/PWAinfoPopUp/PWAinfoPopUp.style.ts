@@ -5,8 +5,8 @@ const PWAInfoContainer = styled.div({
   display: 'flex',
   position: 'fixed',
   bottom: '0',
-  left: '50%',
-  transform: 'translateX(-50%)',
+  // left: '50%',
+  // transform: 'translateX(-50%)',
   borderRadius: '12px 12px 0 0',
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
   zIndex: 1000,
@@ -81,8 +81,8 @@ const Backdrop = styled('div')({
 
 const CloseButton = styled('button')({
   position: 'absolute',
-  top: '-40px',
-  right: '-20px',
+  bottom: '100%',
+  right: '0px',
   background: 'none',
   border: 'none',
   fontSize: '30px',
@@ -90,4 +90,15 @@ const CloseButton = styled('button')({
   color: theme.colors.primary0,
 });
 
-export { PWAInfoContainer, DetailContainer, HeaderText, NormalText, TextArea, ButtonContainer, Close24HourButton, ConfirmButton, Backdrop, CloseButton };
+export {
+  PWAInfoContainer,
+  DetailContainer,
+  HeaderText,
+  NormalText,
+  TextArea,
+  ButtonContainer,
+  Close24HourButton,
+  ConfirmButton,
+  Backdrop,
+  CloseButton,
+};

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { media, theme, themeColor } from '@styles/themes';
 
 const HomeContainer = styled.div({
-  position: 'relative',
+  // position: 'relative',
 
   width: '100%',
   marginBottom: 'auto',
@@ -70,7 +70,7 @@ const StyleTabMenu = styled.ul({
     color: theme.colors.grayscale50,
   },
 
-  '.focused': { 
+  '.focused': {
     color: theme.colors.primary0,
     backgroundColor: theme.colors.primary100,
   },
