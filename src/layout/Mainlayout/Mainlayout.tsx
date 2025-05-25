@@ -14,7 +14,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
       <Header />
       {children}
       <BottomNavigation />
-      {![webPath.login()].includes(location.pathname) && <Footer />}
+      {![webPath.login(), webPath.register()].includes(location.pathname) && <Footer />}
     </StyledMainlayout>
   );
 };

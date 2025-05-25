@@ -1,6 +1,7 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
+import Register from '@pages/Register/Register';
 import Usage from '@pages/Usage/Usage';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
@@ -11,6 +12,7 @@ export const webPath = {
   usage: () => '/usage',
   mypage: () => '/mypage',
   login: () => '/mypage/login',
+  register: () => '/mypage/register',
 };
 
 const Root = () => {
@@ -38,6 +40,7 @@ const routes = [
       },
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
+      { path: webPath.register(), element: <Register /> },
     ],
   },
   {

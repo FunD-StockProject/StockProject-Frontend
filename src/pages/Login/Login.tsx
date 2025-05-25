@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
 import CheckCircleSVG from '@assets/icons/checkCircle.svg?react';
 
 const LoginButton = styled.button({
@@ -28,6 +30,8 @@ const CheckBox = styled.div(
 );
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [toggleSaveId, setToggleSaveId] = useState(false);
   const [toggleKeepLogin, setToggleKeepLogin] = useState(false);
 
@@ -84,7 +88,7 @@ const Login = () => {
         <button style={{ width: '100%', padding: '8px' }}>로그인</button>
         <p style={{ textAlign: 'center' }}>
           아직 인간지표 계정이 없으시다면?{' '}
-          <span style={{ borderBottom: '1px solid white' }} onClick={() => alert('회원가입')}>
+          <span style={{ borderBottom: '1px solid white' }} onClick={() => navigate(webPath.register())}>
             회원가입
           </span>
         </p>
