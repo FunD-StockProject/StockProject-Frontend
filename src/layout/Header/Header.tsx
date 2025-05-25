@@ -17,7 +17,9 @@ const Header = () => {
             <LogoSVG />
             {false && <DisquietVote />}
           </HeaderLogo>
-          {![webPath.mypage(), webPath.login(), webPath.register()].includes(location.pathname) && <SearchBar />}
+          {![webPath.mypage(), webPath.login(), webPath.register(), webPath.registerDone()].includes(
+            location.pathname,
+          ) && <SearchBar />}
         </HeaderContents>
       </HeaderContainer>
     </>

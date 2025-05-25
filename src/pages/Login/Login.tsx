@@ -32,6 +32,9 @@ const CheckBox = styled.div(
 const Login = () => {
   const navigate = useNavigate();
 
+  const [userId, setUserId] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+
   const [toggleSaveId, setToggleSaveId] = useState(false);
   const [toggleKeepLogin, setToggleKeepLogin] = useState(false);
 
@@ -64,6 +67,8 @@ const Login = () => {
               fontSize: '15px',
               padding: '8px',
             }}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           />
           <input
             type="password"
@@ -72,10 +77,12 @@ const Login = () => {
               fontSize: '15px',
               padding: '8px',
             }}
+            value={userPassword}
+            onChange={(e) => setUserPassword(e.target.value)}
           />
         </div>
         <p style={{ color: 'red', fontSize: '10px' }}>비밀번호가 일치하지 않습니다.</p>
-        <div style={{ display: 'flex', gap: '12px', padding: '12px 4px' }}>
+        <div style={{ display: 'flex', gap: '16px', padding: '12px 4px' }}>
           <CheckBox toggle={toggleSaveId} onClick={() => setToggleSaveId((prev) => !prev)}>
             <CheckCircleSVG />
             아이디 저장

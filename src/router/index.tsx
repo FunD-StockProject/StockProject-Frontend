@@ -2,6 +2,8 @@ import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import Register from '@pages/Register/Register';
+import RegisterDetail from '@pages/RegisterDetail/RegisterDetail';
+import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import Usage from '@pages/Usage/Usage';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
@@ -13,6 +15,8 @@ export const webPath = {
   mypage: () => '/mypage',
   login: () => '/mypage/login',
   register: () => '/mypage/register',
+  registerDetail: () => '/mypage/register/detail',
+  registerDone: () => '/mypage/register/done',
 };
 
 const Root = () => {
@@ -41,6 +45,8 @@ const routes = [
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
+      { path: webPath.registerDetail(), element: <RegisterDetail /> },
+      { path: webPath.registerDone(), element: <RegisterDone /> },
     ],
   },
   {
