@@ -23,7 +23,7 @@ const HeaderLogo = styled.div({
   display: 'flex',
   alignItems: 'center',
   boxSizing: 'border-box',
-
+  background: theme.colors.primary50,
   [media[0]]: {
     padding: '24px',
   },

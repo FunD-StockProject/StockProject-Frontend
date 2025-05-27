@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
 
 const RegisterDone = () => {
   const navigate = useNavigate();
