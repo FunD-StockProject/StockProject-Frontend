@@ -4,9 +4,7 @@ import { theme } from '@styles/themes';
 const PWAInfoContainer = styled.div({
   display: 'flex',
   position: 'fixed',
-  bottom: '0',
-  // left: '50%',
-  // transform: 'translateX(-50%)',
+  bottom: 'env(safe-area-inset-bottom, 0)', // Use safe-area to avoid iOS nav bar overlap
   borderRadius: '12px 12px 0 0',
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
   zIndex: 1000,
@@ -16,6 +14,7 @@ const PWAInfoContainer = styled.div({
   color: 'black',
   fontFamily: 'Pretendard',
   fontStyle: 'normal',
+  paddingBottom: 'calc(env(safe-area-inset-bottom, 0) + 10px)', // Add some padding from the safe area
 });
 
 const DetailContainer = styled('div')({
