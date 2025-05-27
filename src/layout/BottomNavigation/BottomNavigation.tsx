@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
 import FavoritesSVG from '@assets/bottomNav/favorites.svg?react';
 import HomeSVG from '@assets/bottomNav/home.svg?react';
 import LabSVG from '@assets/bottomNav/lab.svg?react';
@@ -31,7 +32,8 @@ const BottomNavigation = () => {
         alert('실험실은 준비중입니다.');
         break;
       case 4:
-        alert('마이페이지는 준비중입니다.');
+        // alert('마이페이지는 준비중입니다.');
+        navigate(webPath.mypage());
         break;
       default:
         break;

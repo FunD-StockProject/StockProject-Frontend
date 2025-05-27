@@ -7,7 +7,7 @@ const StyledMainlayout = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  // justifyContent: 'space-between',
   width: '100%',
   height: '100vh',
   backgroundColor: theme.colors.grayscale100,
