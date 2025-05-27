@@ -101,7 +101,7 @@ const SearchBarItemsComponent = ({
   category,
   resultItems,
   handleItemClick,
-  onItemDelete = () => {},
+  onItemDelete = () => { },
   searchValue = '',
   displayEmpty,
 }: {
@@ -147,8 +147,8 @@ const SearchBarItemsComponent = ({
                       {type === 'SEARCHED'
                         ? category === 'STOCK'
                           ? matchCharacters(searchValue.toLocaleUpperCase(), symbolName).map(({ isMatch, char }, i) =>
-                              isMatch ? <span key={`SearchBarItemText_${value}_${country}_${i}`}>{char}</span> : char,
-                            )
+                            isMatch ? <span key={`SearchBarItemText_${value}_${country}_${i}`}>{char}</span> : char,
+                          )
                           : symbolName
                         : value}
                       {type === 'SEARCHED' && category === 'STOCK' && (
@@ -169,7 +169,7 @@ const SearchBarItemsComponent = ({
                     {type === 'RECENT' && (
                       <SearchBarResultItemSVG>
                         <CancelSVG
-                          onPointerUp={(e) => {
+                          onPointerUp={(e: any) => {
                             e.preventDefault();
                             e.stopPropagation();
                             onItemDelete(item);

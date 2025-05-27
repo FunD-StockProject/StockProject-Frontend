@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import {
   WrapperStyle,
   CardStyle,
-  ButtonGroupStyle,
   ToastStyle,
   EndMessageStyle,
   TitleStyle,
@@ -11,7 +10,6 @@ import {
   ScoreStyle,
   CategoryTagListStyle,
   IconButtonGroupStyle,
-  LogoStyle,
 } from './ShortView.Style';
 import { HeaderLogo } from '@layout/Header/Header.Style';
 import LogoSVG from '@assets/logo_white.svg?react';
