@@ -33,17 +33,14 @@ const ShortView = () => {
   const [index, setIndex] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
   const currentStock = mockStocks[index];
 
   const handleSwipe = (direction: 'left' | 'right') => {
     setSwipeDirection(direction);
-    setIsAnimating(true);
     setTimeout(() => {
       setSwipeDirection(null);
       setIndex((prev) => prev + 1);
-      setIsAnimating(false);
       if (direction === 'right') {
         setToast(`${currentStock.name} 모의 매수 등록했어요!`);
         setTimeout(() => setToast(null), 3000);
