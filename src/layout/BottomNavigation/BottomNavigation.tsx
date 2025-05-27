@@ -26,13 +26,12 @@ const BottomNavigation = () => {
         alert('관심 종목은 준비중입니다.');
         break;
       case 2:
-        navigate('/shortview');
+        navigate(webPath.shortView());
         break;
       case 3:
         alert('실험실은 준비중입니다.');
         break;
       case 4:
-        // alert('마이페이지는 준비중입니다.');
         navigate(webPath.mypage());
         break;
       default:
