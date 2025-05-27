@@ -2,14 +2,15 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const NavContainer = styled('nav')({
+  display: 'flex',
+  position: 'fixed',
   bottom: 0,
   width: '100%',
   height: '64px',
   backgroundColor: theme.colors.primary0,
-  display: 'flex',
   justifyContent: 'space-around',
   alignItems: 'center',
-  zIndex: 100,
+  zIndex: 10,
   fontFamily: 'Noto Sans KR',
 });
 
