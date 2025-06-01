@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import {
   WrapperStyle,
   CardStyle,
@@ -15,105 +15,83 @@ import { HeaderLogo } from '@layout/Header/Header.Style';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
+import { webPath } from '@router/index';
+import { STOCK_COUNTRY } from '@ts/Types';
+import TinderCard from 'react-tinder-card'
+
 interface StockCard {
   id: string;
-  name: string;
+  symbolName: string;
   currentPrice: number;
   priceChange: number;
+  country: STOCK_COUNTRY
   tags: string[];
 }
 
 const mockStocks: StockCard[] = [
-  { id: '1', name: '삼성전자', currentPrice: 71500, priceChange: 1200, tags: ['IT', '반도체'] },
-  { id: '2', name: '네이버', currentPrice: 205000, priceChange: -1500, tags: ['플랫폼', '인터넷'] },
-  { id: '3', name: '카카오', currentPrice: 61000, priceChange: 500, tags: ['모빌리티', '광고'] },
+  { id: '1', symbolName: '삼성전자', currentPrice: 71500, priceChange: 1200, country: 'KOREA', tags: ['IT', '반도체'] },
+  { id: '2', symbolName: '네이버', currentPrice: 205000, priceChange: -1500, country: 'KOREA', tags: ['플랫폼', '인터넷'] },
+  { id: '3', symbolName: '카카오', currentPrice: 61000, priceChange: 500, country: 'KOREA', tags: ['모빌리티', '광고'] },
 ];
 
 const ShortView = () => {
   const [index, setIndex] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
-  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [history, setHistory] = useState<StockCard[]>([]);
   const navigate = useNavigate();
   const currentStock = mockStocks[index];
 
-  const handleSwipe = (direction: 'left' | 'right') => {
-    setSwipeDirection(direction);
+  const handleSwipe = (direction: string) => {
+    console.log(direction);
     setTimeout(() => {
-      setSwipeDirection(null);
+      if (direction === 'down') {
+        if (history.length === 0) return; // do nothing if no history
+        const last = history[0];
+        const lastIndex = mockStocks.findIndex(stock => stock.id === last.id);
+        setIndex(lastIndex);
+        setHistory((prev) => prev.slice(1));
+        return;
+      }
+
       setIndex((prev) => prev + 1);
+
       if (direction === 'right') {
-        setToast(`${currentStock.name} 모의 매수 등록했어요!`);
+        setHistory((prev) => [mockStocks[index], ...prev]);
+        setToast(`${currentStock.symbolName} 모의 매수 등록했어요!`);
         setTimeout(() => setToast(null), 3000);
-      } else {
-        setToast(`${currentStock.name}은(는) 다시 안볼게요 👋`);
+      } else if (direction === 'left') {
+        setHistory((prev) => [mockStocks[index], ...prev]);
+        setToast(`${currentStock.symbolName}은(는) 다시 안볼게요 👋`);
         setTimeout(() => setToast(null), 3000);
       }
     }, 400); // match transition duration
   };
 
   const handleAddToFavorites = () => {
-    setToast(`${currentStock.name}을(를) 관심 종목에 추가했어요!`);
+    setToast(`${currentStock.symbolName}을(를) 관심 종목에 추가했어요!`);
     setTimeout(() => setToast(null), 3000);
   };
 
   const handleNeverShowAgain = () => {
-    setToast(`${currentStock.name}은(는) 다시 안볼게요 👋`);
+    setToast(`${currentStock.symbolName}은(는) 다시 안볼게요 👋`);
     setTimeout(() => setToast(null), 3000);
     setIndex((prev) => prev + 1);
   };
 
   const handleMockPurchase = () => {
-    setToast(`${currentStock.name} 모의 매수 등록했어요!`);
+    setToast(`${currentStock.symbolName} 모의 매수 등록했어요!`);
     setTimeout(() => setToast(null), 3000);
   };
 
   const handleSearchStock = () => {
-    window.open(`https://search.naver.com/search.naver?query=${currentStock.name}`, '_blank');
+    const symbolName = currentStock.symbolName;
+    const country = currentStock.country;
+    navigate(webPath.search(), { state: { symbolName, country } });
   };
 
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const dragStartX = useRef<number | null>(null);
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      dragStartX.current = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (dragStartX.current === null) return;
-      const endX = e.changedTouches[0].clientX;
-      const deltaX = endX - dragStartX.current;
-
-      if (Math.abs(deltaX) > 50) {
-        handleSwipe(deltaX > 0 ? 'right' : 'left');
-      }
-
-      dragStartX.current = null;
-    };
-
-    card.addEventListener('touchstart', handleTouchStart);
-    card.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      card.removeEventListener('touchstart', handleTouchStart);
-      card.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [currentStock]);
-
-  useEffect(() => {
-    if (!swipeDirection && cardRef.current) {
-      cardRef.current.style.opacity = '0';
-      requestAnimationFrame(() => {
-        if (cardRef.current) {
-          cardRef.current.style.transition = 'opacity 0.4s ease-in-out';
-          cardRef.current.style.opacity = '1';
-        }
-      });
-    }
-  }, [index]);
+  const onSwipe = (direction: any) => {
+    handleSwipe(direction);
+  }
 
   return (
     <>
@@ -122,18 +100,13 @@ const ShortView = () => {
       </HeaderLogo>
       <WrapperStyle>
         {currentStock ? (
-          <div ref={cardRef} style={{ position: 'relative' }}>
-            <CardStyle
-              key={currentStock.id}
-              style={{
-                transform: swipeDirection
-                  ? `translateX(${swipeDirection === 'right' ? '150%' : '-150%'}) rotate(${swipeDirection === 'right' ? '12deg' : '-12deg'})`
-                  : 'translateX(0) rotate(0)',
-                opacity: swipeDirection ? 0 : 1,
-                transition: 'transform 0.4s ease-in-out, opacity 0.4s ease-in-out',
-              }}
-            >
-              <TitleStyle>{currentStock.name}</TitleStyle>
+          <TinderCard
+            key={currentStock.id}
+            onSwipe={onSwipe}
+            preventSwipe={history.length === 0 ? ['up', 'down'] : ['up']}
+          >
+            <CardStyle>
+              <TitleStyle>{currentStock.symbolName}</TitleStyle>
               <PriceWrapperStyle>
                 <span style={{ fontSize: '16px' }}>₩{currentStock.currentPrice.toLocaleString()}</span>&nbsp;
                 <span style={{ color: currentStock.priceChange >= 0 ? 'red' : 'blue', fontSize: '12px' }}>
@@ -158,12 +131,13 @@ const ShortView = () => {
                 <button type="button" onClick={handleSearchStock}>🔍</button>
               </IconButtonGroupStyle>
             </CardStyle>
-          </div>
+
+          </TinderCard>
         ) : (
           <EndMessageStyle>모든 종목을 확인했어요!</EndMessageStyle>
         )}
         {toast && <ToastStyle key={toast}>{toast}</ToastStyle>}
-      </WrapperStyle>
+      </WrapperStyle >
 
       <BottomNavigation />
     </>
