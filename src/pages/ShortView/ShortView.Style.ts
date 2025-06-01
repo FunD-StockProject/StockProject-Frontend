@@ -10,7 +10,7 @@ export const WrapperStyle = styled.div({
 });
 
 export const CardStyle = styled.div({
-  width: '320px',
+  width: 'calc(100vw - 75px)',
   height: '100%',
   padding: '20px',
   border: '1px solid #888',
