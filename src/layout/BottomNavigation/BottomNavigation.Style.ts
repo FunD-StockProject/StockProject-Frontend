@@ -7,14 +7,15 @@ export const NavContainer = styled('nav')({
   bottom: 0,
   width: '100%',
   height: '64px',
-  backgroundColor: theme.colors.primary0,
+  backgroundColor: theme.colors.sub_black,
   justifyContent: 'space-around',
   alignItems: 'center',
   zIndex: 10,
   fontFamily: 'Noto Sans KR',
 });
 
-export const NavItem = styled('div')({
+export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
+
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -23,19 +24,11 @@ export const NavItem = styled('div')({
   fontSize: '10px',
   lineHeight: '150%',
   letterSpacing: '0.6px',
-  color: '#333',
   cursor: 'pointer',
   transition: 'color 0.2s ease',
 
   '& svg path': {
     transition: 'fill 0.2s ease',
+    fill: isActive ? theme.colors.sub_white : '',
   },
-
-  '&:hover': {
-    color: theme.colors.primary50,
-
-    '& svg path': {
-      fill: theme.colors.primary50,
-    },
-  },
-});
+}));

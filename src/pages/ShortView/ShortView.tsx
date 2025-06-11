@@ -42,7 +42,11 @@ const ShortView = () => {
   const currentStock = mockStocks[index];
 
   const handleSwipe = (direction: string) => {
-    console.log(direction);
+    const showToast = (message: string) => {
+      setToast(message);
+      setTimeout(() => setToast(null), 3000);
+    };
+
     setTimeout(() => {
       if (direction === 'down') {
         if (history.length === 0) return; // do nothing if no history
@@ -53,17 +57,16 @@ const ShortView = () => {
         return;
       }
 
-      setIndex((prev) => prev + 1);
-
       if (direction === 'right') {
         setHistory((prev) => [mockStocks[index], ...prev]);
-        setToast(`${currentStock.symbolName} 모의 매수 등록했어요!`);
-        setTimeout(() => setToast(null), 3000);
+        showToast(`${currentStock.symbolName} 모의 매수 등록했어요!`);
       } else if (direction === 'left') {
+        showToast(`${currentStock.symbolName}은(는) 다시 안볼게요 👋`);
+      } else if (direction === 'up') {
         setHistory((prev) => [mockStocks[index], ...prev]);
-        setToast(`${currentStock.symbolName}은(는) 다시 안볼게요 👋`);
-        setTimeout(() => setToast(null), 3000);
       }
+
+      setIndex((prev) => prev + 1);
     }, 400); // match transition duration
   };
 
@@ -103,7 +106,7 @@ const ShortView = () => {
           <TinderCard
             key={currentStock.id}
             onSwipe={onSwipe}
-            preventSwipe={history.length === 0 ? ['up', 'down'] : ['up']}
+            preventSwipe={history.length === 0 ? ['down'] : []}
           >
             <CardStyle>
               <TitleStyle>{currentStock.symbolName}</TitleStyle>
