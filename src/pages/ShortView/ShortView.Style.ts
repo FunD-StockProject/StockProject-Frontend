@@ -4,24 +4,35 @@ import { theme } from '@styles/themes';
 export const WrapperStyle = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  height: '85vh',
+  width: '100%',
+  height: '80vh',
   background: theme.colors.primary50,
+  margin: '0 auto',
+});
+
+export const CardWrapperStyle = styled.div({
+  position: 'relative',
+  width: '100%',
+  maxWidth: '480px',
+  height: '100%',
+  margin: '0 auto',
 });
 
 export const CardStyle = styled.div({
-  width: 'calc(100vw - 75px)',
-  height: '100%',
+  width: '100%',
+  maxWidth: '480px',
   padding: '20px',
+  boxSizing: 'border-box',
   border: '1px solid #888',
-  borderRadius: '12px',
   backgroundColor: '#000',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '12px',
-  position: 'relative',
+  gap: '24px',
+  position: 'absolute', // ensure absolutely positioned for stacking
+  top: 0,
+  left: 0,
+  right: 0,
   transition: 'transform 0.4s ease-in-out, opacity 0.4s ease-in-out',
   willChange: 'transform, opacity',
   opacity: 1,
@@ -82,8 +93,14 @@ export const ScoreStyle = styled.div({
 
 export const CategoryTagListStyle = styled.div({
   display: 'flex',
-  gap: '6px',
+  gap: '16px',
   alignSelf: 'flex-start',
+});
+
+export const CategoryTagItemStyle = styled.div({
+  border: '1px solid #FFF',
+  borderRadius: '16px',
+  padding: '10px 12px'
 });
 
 export const ButtonGroupStyle = styled.div({
@@ -104,6 +121,7 @@ export const IconButtonGroupStyle = styled.div({
   justifyContent: 'space-around',
   width: '100%',
   marginTop: '16px',
+  touchAction: 'manipulation',
 
   button: {
     border: 'none',

@@ -3,10 +3,8 @@ import { media, theme, themeColor } from '@styles/themes';
 
 const HomeContainer = styled.div({
   // position: 'relative',
-
   width: '100%',
   marginBottom: 'auto',
-
   background: theme.colors.primary100,
 });
 

@@ -25,7 +25,7 @@ const HeaderLogo = styled.div({
   boxSizing: 'border-box',
   background: theme.colors.primary50,
   [media[0]]: {
-    padding: '24px',
+    padding: '10px',
   },
 
   ['> svg']: {

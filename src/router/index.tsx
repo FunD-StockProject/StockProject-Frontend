@@ -49,6 +49,7 @@ const routes = [
       { path: webPath.register(), element: <Register /> },
       { path: webPath.registerDetail(), element: <RegisterDetail /> },
       { path: webPath.registerDone(), element: <RegisterDone /> },
+      { path: webPath.shortView(), element: <ShortView /> }
     ],
   },
   {
@@ -56,10 +57,7 @@ const routes = [
     element: <Usage />,
   },
 
-  {
-    path: webPath.shortView(),
-    element: <ShortView />
-  }
+
 ];
 
 export const router = createBrowserRouter(routes);
