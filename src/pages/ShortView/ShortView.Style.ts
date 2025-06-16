@@ -5,38 +5,40 @@ export const WrapperStyle = styled.div({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: '80vh',
+  minHeight: '100vh',
   background: theme.colors.primary50,
   margin: '0 auto',
-});
-
-export const CardWrapperStyle = styled.div({
   position: 'relative',
-  width: '100%',
-  maxWidth: '480px',
-  height: '100%',
-  margin: '0 auto',
+  overflow: 'hidden',
 });
 
-export const CardStyle = styled.div({
+interface CardStyleProps {
+  isVisible: boolean;
+  isCurrent: boolean;
+}
+
+export const CardStyle = styled.div<CardStyleProps>(({ isVisible, isCurrent }) => ({
   width: '100%',
   maxWidth: '480px',
+  // height: 'calc(100vh - 68px - 64px)',
   padding: '20px',
   boxSizing: 'border-box',
   border: '1px solid #888',
   backgroundColor: '#000',
-  display: 'flex',
+  display: isVisible ? 'flex' : 'none',
   flexDirection: 'column',
   alignItems: 'center',
   gap: '24px',
-  position: 'absolute', // ensure absolutely positioned for stacking
+  position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
-  transition: 'transform 0.4s ease-in-out, opacity 0.4s ease-in-out',
+  transition: isCurrent ? 'transform 0.3s ease-in-out' : 'none',
   willChange: 'transform, opacity',
-  opacity: 1,
-});
+  opacity: isVisible ? 1 : 0,
+  pointerEvents: isCurrent ? 'auto' : 'none',
+  transform: isCurrent ? 'scale(1)' : 'scale(0.97)',
+}));
 
 export const LogoStyle = styled.div({
   width: '100%',

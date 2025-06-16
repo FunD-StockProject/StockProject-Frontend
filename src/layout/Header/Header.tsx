@@ -9,18 +9,16 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <>
-      <HeaderContainer>
-        <HeaderContents>
-          <HeaderLogo onClick={() => navigate('/')}>
-            <LogoSVG />
-          </HeaderLogo>
-          {![webPath.mypage(), webPath.shortView(), webPath.search(), webPath.login(), webPath.register(), webPath.registerDone()].includes(
-            location.pathname,
-          ) && <SearchBar />}
-        </HeaderContents>
-      </HeaderContainer>
-    </>
+    <HeaderContainer>
+      <HeaderContents>
+        <HeaderLogo onClick={() => navigate('/')}>
+          <LogoSVG />
+        </HeaderLogo>
+        {![webPath.mypage(), webPath.shortView(), webPath.search(), webPath.login(), webPath.register(), webPath.registerDone()].includes(
+          location.pathname,
+        ) && <SearchBar />}
+      </HeaderContents>
+    </HeaderContainer>
   );
 };
 
