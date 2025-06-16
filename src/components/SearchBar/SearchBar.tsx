@@ -259,54 +259,6 @@ const SearchBar = () => {
     () => inputRef.current?.blur(),
   );
 
-  // const searchBarInputKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   // const length = searchValue == '' ? (selectedCategory == 'STOCK' ? ()):(2);
-
-  //   if (searchValue == '') {
-  //     const recentItems = selectedCategory == 'STOCK' ? recentStocks : recentKeyowrds;
-  //     const popularItems =
-  //       selectedCategory == 'STOCK' ? popularStocks : popularKeywords[selectedCountry];
-  //   } else {
-  //     const searchedItems = selectedCategory == 'STOCK' ? searchedStocks : searchedKeywords;
-  //   }
-
-  //   // if (e.key == 'ArrowDown') {
-  //   //   e.preventDefault();
-  //   //   setFocusIdx((prev) =>
-  //   //     stockName == '' ? (prev + 1) % stockSearchInfo.length : (prev + 1) % searchedResult.length,
-  //   //   );
-  //   // } else if (e.key == 'ArrowUp') {
-  //   //   e.preventDefault();
-  //   //   setFocusIdx((prev) =>
-  //   //     stockName == ''
-  //   //       ? ((prev == -1 ? 0 : prev) + stockSearchInfo.length - 1) % stockSearchInfo.length
-  //   //       : ((prev == -1 ? 0 : prev) + searchedResult.length - 1) % searchedResult.length,
-  //   //   );
-  //   // }
-
-  //   // else if (e.key == 'Escape') {
-  //   //   (document.activeElement as HTMLElement).blur();
-  //   //   setFocusIdx(-1);
-  //   // } else if (e.key === 'Enter') {
-  //   //   if (focusIdx === -1) return;
-  //   //   const name =
-  //   //     stockName == ''
-  //   //       ? stockSearchInfo[focusIdx].symbolName
-  //   //       : searchedResult[focusIdx].symbolName;
-  //   //   const country =
-  //   //     stockName == ''
-  //   //       ? stockSearchInfo[focusIdx].country
-  //   //       : searchedResult[focusIdx].country;
-  //   //   const result = await fetchSearchSymbolName(name, country);
-  //   //   if (result) {
-  //   //     const curStockSearchInfo: StockSearchInfo = {
-  //   //       symbolName: result.symbolName,
-  //   //       country: result.country,
-  //   //     };
-  //   //     handleSearch(curStockSearchInfo);
-  //   //   }
-  //   // }
-  // };
 
   const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

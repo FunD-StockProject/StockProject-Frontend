@@ -6,7 +6,7 @@ export const SearchBarLayout = styled.div({
   padding: '0 60px 80px',
   [media[0]]: {
     position: 'relative',
-    padding: '0 20px 40px',
+    padding: '0 20px 20px',
   },
 });
 

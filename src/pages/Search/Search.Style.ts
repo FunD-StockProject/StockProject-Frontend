@@ -19,7 +19,7 @@ const SearchResultContents = styled.div({
 
   [media[0]]: {
     gap: '32px',
-    padding: '60px 0px',
+    padding: '20px 0px',
   },
 });
 
@@ -57,7 +57,7 @@ const SearchResultInfo = styled.div({
 
 const MockTradeButtonWrapper = styled.div({
   position: 'fixed',
-  bottom: '100px',
+  bottom: '20px',
   left: '50%',
   transform: 'translateX(-50%)',
   backgroundColor: theme.colors.primary50,

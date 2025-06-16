@@ -95,13 +95,6 @@ const SearchTitle = ({
   return (
     stockInfo && (
       <SearchTitleContainer>
-        <SearchTitleHeaderContainer>
-          <SearchTitleHeaderSymbol>{stockInfo.symbol}</SearchTitleHeaderSymbol>
-          <SearchTitleHeaderButton onClick={onClick}>
-            {ResultInfo[ResultInfo[resultMode].opposite].text} 보기
-            <RightSVG />
-          </SearchTitleHeaderButton>
-        </SearchTitleHeaderContainer>
         <SearchTitleBody>
           <SearchTitleBodyTitle>
             <SearchTitleBodyTitleText ref={titleTextRef}>
@@ -124,6 +117,7 @@ const SearchTitle = ({
         </SearchTitleBody>
         <SearchTitleFooterContainer>
           <SearchTitleFooterItems>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleFooterItems>
+          <SearchTitleFooterItems>{stockInfo.symbol}</SearchTitleFooterItems>
           <SearchTitleFooterItems delta={deltaColor(stockInfo.priceDiff)}>
             {money} {stockInfo.price.toLocaleString()}
             <span>{`${priceDiff(stockInfo.priceDiff)}(${stockInfo.priceDiffPerCent}%)`}</span>
