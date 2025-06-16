@@ -1,12 +1,11 @@
 import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MARKET_CODES, ResultInfo } from '@ts/Constants';
+import { MARKET_CODES } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
 import { StockDetailInfo } from '@controllers/api.Type';
 import { useStockSummaryQuery } from '@controllers/query';
-import RightSVG from '@assets/icons/right.svg?react';
 import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
   SearchTitleBody,
@@ -18,9 +17,6 @@ import {
   SearchTitleContainer,
   SearchTitleFooterContainer,
   SearchTitleFooterItems,
-  SearchTitleHeaderButton,
-  SearchTitleHeaderContainer,
-  SearchTitleHeaderSymbol,
 } from './SearchTitle.Style';
 
 const BASE_DELAY = 1500;
@@ -29,8 +25,6 @@ const priceDiff = (diff: number) => `${(diff < 0 ? '-' : '+') + Math.abs(diff).t
 
 const SearchTitle = ({
   stockInfo,
-  resultMode,
-  onClick,
 }: {
   stockInfo: StockDetailInfo;
   resultMode: RESULT_TYPE;
