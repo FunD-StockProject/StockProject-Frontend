@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
+import { media, theme } from '@styles/themes';
 
 export const WrapperStyle = styled.div({
   display: 'flex',
@@ -30,14 +30,14 @@ export const CardStyle = styled.div<CardStyleProps>(({ isVisible, isCurrent }) =
   alignItems: 'center',
   gap: '24px',
   position: 'absolute',
-  top: 0,
-  left: 0,
+  top: '50%',
+  left: '50%',
   right: 0,
   transition: isCurrent ? 'transform 0.3s ease-in-out' : 'none',
   willChange: 'transform, opacity',
   opacity: isVisible ? 1 : 0,
   pointerEvents: isCurrent ? 'auto' : 'none',
-  transform: isCurrent ? 'scale(1)' : 'scale(0.97)',
+  transform: isCurrent ? 'translate(-50%, 0%) scale(1)' : 'translate(-50%, 0%) scale(0.97)',
 }));
 
 export const LogoStyle = styled.div({
