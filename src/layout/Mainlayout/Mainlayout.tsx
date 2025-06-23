@@ -11,15 +11,18 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isSearchPage = location.pathname === webPath.search();
+  const isRootPage = location.pathname === '/';
+
   return (
     <StyledMainlayout>
       <MainContent>
-        {[webPath.search()].includes(location.pathname) && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
+        {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
         <Header />
         {children}
-        {![webPath.login(), webPath.shortView(), webPath.search(), webPath.register(), webPath.registerDone()].includes(location.pathname) && <Footer />}
+        {isRootPage && <Footer />}
       </MainContent>
-      {![webPath.search()].includes(location.pathname) && <BottomNavigation />}
+      {!isSearchPage && <BottomNavigation />}
     </StyledMainlayout>
   );
 };
