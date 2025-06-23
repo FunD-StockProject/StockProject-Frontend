@@ -339,6 +339,12 @@ const font = {
     lineHeight: '150%',
     letterSpacing: '0',
   },
+  body14Semibold: {
+    fontSize: '14px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
   body14Regular: {
     fontSize: '14px',
     fontWeight: 400,

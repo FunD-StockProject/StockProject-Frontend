@@ -9,6 +9,7 @@ import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
 import ShortView from '@pages/ShortView/ShortView';
+import Lab from '@pages/Lab/Lab';
 
 export const webPath = {
   search: () => '/search',
@@ -19,6 +20,7 @@ export const webPath = {
   register: () => '/mypage/register',
   registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
+  lab: () => '/lab',
 };
 
 const Root = () => {
@@ -49,7 +51,8 @@ const routes = [
       { path: webPath.register(), element: <Register /> },
       { path: webPath.registerDetail(), element: <RegisterDetail /> },
       { path: webPath.registerDone(), element: <RegisterDone /> },
-      { path: webPath.shortView(), element: <ShortView /> }
+      { path: webPath.shortView(), element: <ShortView /> },
+      { path: webPath.lab(), element: <Lab /> },
     ],
   },
   {
