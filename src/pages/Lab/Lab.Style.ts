@@ -109,3 +109,10 @@ export const MessageLink = styled.span`
   text-decoration: underline;
   cursor: pointer;
 `;
+
+export const TopBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+`;
