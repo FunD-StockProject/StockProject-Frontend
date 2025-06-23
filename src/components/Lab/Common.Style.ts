@@ -51,7 +51,7 @@ export const TabContainer = styled.div`
 
 export const InnerContainer = styled.div`
   padding: 24px;
-  padding-bottom: 120px; // for bottom bar spacing
+  padding-bottom: 120px; 
   overflow-y: auto;
   justify-content: space-between;
 `;
@@ -87,8 +87,7 @@ export const NavButton = styled.button<{ next?: boolean, active?: boolean }>`
 
 export const IndustryTag = styled.div<{ selected: boolean }>`
   padding: 6px 12px;
-  background: ${({ selected }) =>
-    selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
+  background: ${({ selected }) => selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
   color: white;
   border-radius: 16px;
   font-size: 13px;
@@ -105,6 +104,7 @@ export const SearchInput = styled.input`
   color: white;
   
   &::placeholder{
+  ${theme.font.body16Medium}
     color: ${theme.colors.sub_gray7};
   }
 `;

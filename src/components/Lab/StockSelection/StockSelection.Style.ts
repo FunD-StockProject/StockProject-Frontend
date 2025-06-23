@@ -56,3 +56,5 @@ export const RemoveStockButton = styled.span`
   margin-left: 8px;
   cursor: pointer;
 `;
+
+

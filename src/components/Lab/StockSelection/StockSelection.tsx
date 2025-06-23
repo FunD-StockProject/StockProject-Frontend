@@ -83,7 +83,12 @@ const StockSelection = () => {
             <SearchInput
               type="text"
               placeholder="종목명 or TICKER를 입력해주세요"
-              onFocus={() => setIsSearching(true)}
+              onFocus={() => {
+                setIsSearching(true);
+                setTimeout(() => {
+                  document.activeElement instanceof HTMLElement && document.activeElement.blur();
+                }, 100); // added slight delay to ensure visual smoothness
+              }}
             />
             <SearchIconWrapper>
               <SearchSVG width={20} height={20} />
