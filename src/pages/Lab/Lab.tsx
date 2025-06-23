@@ -19,6 +19,8 @@ import {
   MessageLink,
   Tab
 } from './Lab.Style';
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
 
 const mocksummaryMetrics = [
   { label: '총 실험 수', value: '0회' },
@@ -27,9 +29,13 @@ const mocksummaryMetrics = [
 ];
 
 const Lab = () => {
+  const navigate = useNavigate();
   const isFirstTime = true;
   const [selectedTab, setSelectedTab] = useState<'현황' | '결과'>('현황');
 
+  const handleIntroClick = () => {
+    navigate(webPath.labIntro());
+  };
   return (
     <Container>
       <TabContainer>
@@ -49,7 +55,7 @@ const Lab = () => {
               <GuideText>
                 평소 눈여겨 본 종목이 있다면, 모의매수를 <br />통해 시장 타이밍을 잡아보세요!
               </GuideText>
-              <GuideButton>모의매수 시작 &gt;</GuideButton>
+              <GuideButton onClick={handleIntroClick}>모의매수 시작 &gt;</GuideButton>
             </GuideBox>
           )}
 
@@ -73,7 +79,7 @@ const Lab = () => {
               <>
                 <StatusMessage>
                   아직 진행중인 실험이 없어요 😢<br />
-                  <MessageLink>궁금한 종목 모의매수 하러가기 &gt;</MessageLink>
+                  <MessageLink onClick={handleIntroClick}>궁금한 종목 모의매수 하러가기 &gt;</MessageLink>
                 </StatusMessage>
               </>
             ) : (

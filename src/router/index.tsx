@@ -10,6 +10,9 @@ import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
 import ShortView from '@pages/ShortView/ShortView';
 import Lab from '@pages/Lab/Lab';
+import Intro from '@components/Lab/Intro/Intro';
+import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
+import StockSelection from '@components/Lab/StockSelection/StockSelection';
 
 export const webPath = {
   search: () => '/search',
@@ -21,6 +24,11 @@ export const webPath = {
   registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   lab: () => '/lab',
+  labIntro: () => '/lab/Intro',
+  labMarketSelection: () => '/lab/market/selection',
+  labResult: () => '/lab/result',
+  labStockSearch: () => '/lab/stock/search',
+  labStockSelection: () => '/lab/stock/selection',
 };
 
 const Root = () => {
@@ -38,14 +46,8 @@ const routes = [
     path: '/',
     element: <Root />,
     children: [
-      {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: webPath.search(),
-        children: [{ path: '', element: <Search /> }],
-      },
+      { path: '/', element: <Home />, },
+      { path: webPath.search(), children: [{ path: '', element: <Search /> }], },
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
@@ -53,6 +55,12 @@ const routes = [
       { path: webPath.registerDone(), element: <RegisterDone /> },
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
+      { path: webPath.labIntro(), element: <Intro /> },
+      { path: webPath.labMarketSelection(), element: <MarketSelection /> },
+      { path: webPath.labResult(), element: <Lab /> },
+      { path: webPath.labStockSearch(), element: <Lab /> },
+      { path: webPath.labStockSelection(), element: <StockSelection /> },
+
     ],
   },
   {
