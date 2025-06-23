@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { media, theme } from '@styles/themes';
+import { theme } from '@styles/themes';
 
 export const WrapperStyle = styled.div({
   display: 'flex',

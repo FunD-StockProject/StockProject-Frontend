@@ -96,7 +96,6 @@ export const Highlight = styled.span`
 
 export const StatusMessage = styled.p`
   ${theme.font.body18Medium}
-  margin-top: 100px;
   color: ${theme.colors.sub_gray7};
   text-align: center;
   display: flex;
