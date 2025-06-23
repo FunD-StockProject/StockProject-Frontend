@@ -1,5 +1,17 @@
 import styled from "@emotion/styled";
 import { theme } from "@styles/themes";
+import { keyframes } from '@emotion/react';
+
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+`;
 
 export const SearchModal = styled.div`
   position: fixed;
@@ -12,6 +24,8 @@ export const SearchModal = styled.div`
   padding: 20px 30px;
   box-sizing: border-box;
   overflow-y: auto;
+
+  animation: ${slideUp} 1s ease-in-out;
 `;
 
 export const SearchKeywordSection = styled.div`
@@ -75,6 +89,7 @@ export const SearchModalFooter = styled.div`
 `;
 
 export const SearchModalButton = styled.button`
+  ${theme.font.body18Semibold}
   width: calc(100% - 40px);
   margin: 0 auto;
   padding: 12px 24px;

@@ -46,6 +46,7 @@ const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteIt
     }
   }, [inputValue]);
 
+
   const handleItemClick = (item: AutoCompleteItem) => {
     setSelectedStocks((prev) => {
       const exists = prev.some((s) => s.symbol === item.symbol);
@@ -137,7 +138,7 @@ const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteIt
         <SearchKeywordSection>
           <SearchTitle>검색 결과</SearchTitle>
           <SearchKeywordList>
-            {filteredSearchedStocks.map((stock, index) => (
+            {filteredSearchedStocks.slice(0, 15).map((stock, index) => (
               <SearchKeywordItem
                 key={`${stock.ticker}+${index}`}
                 onMouseDown={(e) => e.preventDefault()}
