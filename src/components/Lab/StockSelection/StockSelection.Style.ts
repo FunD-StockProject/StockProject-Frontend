@@ -10,35 +10,6 @@ export const SectionTitle = styled.div`
   margin-bottom: 8px;
 `;
 
-export const SearchBar = styled.div`
-  background: ${theme.colors.sub_gray11};
-  color:white;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-
-  
-`;
-
-export const SearchInput = styled.input`
-  background: transparent;
-  border: none;
-  outline: none;
-  flex: 1;
-  color: white;
-  
-  &::placeholder{
-    color: ${theme.colors.sub_gray7};
-  }
-`;
-
-export const SearchIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${theme.colors.sub_white};
-`;
 
 export const IndustryBox = styled.div`
   display: flex;
@@ -55,4 +26,33 @@ export const IndustryTag = styled.div<{ selected: boolean }>`
   background: ${({ selected }) => selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
 color: ${({ selected }) => selected ? theme.colors.sub_white : theme.colors.sub_gray6};
   border-radius: 50px;
+`;
+
+export const SelectedStockWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+`;
+
+export const SelectedStockTag = styled.div`
+  ${theme.font.body14Semibold}
+  display: flex;
+  align-items: center;
+  background: ${theme.colors.sub_blue6};
+  color: ${theme.colors.sub_white};
+  padding: 6px 12px;
+  border-radius: 50px;
+  
+`;
+export const SelectedStockSymbolName = styled.div`
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const RemoveStockButton = styled.span`
+  margin-left: 8px;
+  cursor: pointer;
 `;

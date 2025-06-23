@@ -315,14 +315,21 @@ const font = {
     lineHeight: '150%',
     letterSpacing: '0',
   },
+
+  body18Semibold: {
+    fontSize: '18px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
   body16Medium: {
     fontSize: '16px',
     fontWeight: 500,
     lineHeight: '150%',
     letterSpacing: '0',
   },
-  body18Semibold: {
-    fontSize: '18px',
+  body16Semibold: {
+    fontSize: '16px',
     fontWeight: 600,
     lineHeight: '150%',
     letterSpacing: '0',

@@ -67,7 +67,7 @@ const MarketSelection = () => {
             active={isValid}
             disabled={!isValid}
             onClick={() => {
-              navigate(webPath.labStockSelection(), { state: { market: selectedCountry } });
+              navigate(webPath.labStockSelection(), { state: { country: selectedCountry } });
             }}
           >
             다음

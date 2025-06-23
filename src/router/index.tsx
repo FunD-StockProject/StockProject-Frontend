@@ -13,6 +13,8 @@ import Lab from '@pages/Lab/Lab';
 import Intro from '@components/Lab/Intro/Intro';
 import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import StockSelection from '@components/Lab/StockSelection/StockSelection';
+import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
+import Result from '@components/Lab/Result/Result';
 
 export const webPath = {
   search: () => '/search',
@@ -27,8 +29,8 @@ export const webPath = {
   labIntro: () => '/lab/Intro',
   labMarketSelection: () => '/lab/market/selection',
   labResult: () => '/lab/result',
-  labStockSearch: () => '/lab/stock/search',
   labStockSelection: () => '/lab/stock/selection',
+  labStockPurchase: () => '/lab/stock/purchase',
 };
 
 const Root = () => {
@@ -57,9 +59,10 @@ const routes = [
       { path: webPath.lab(), element: <Lab /> },
       { path: webPath.labIntro(), element: <Intro /> },
       { path: webPath.labMarketSelection(), element: <MarketSelection /> },
-      { path: webPath.labResult(), element: <Lab /> },
-      { path: webPath.labStockSearch(), element: <Lab /> },
+      { path: webPath.labResult(), element: <Result /> },
       { path: webPath.labStockSelection(), element: <StockSelection /> },
+      { path: webPath.labStockPurchase(), element: <StockPurchase /> },
+
 
     ],
   },
