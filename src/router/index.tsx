@@ -25,10 +25,10 @@ export const webPath = {
   registerDone: () => '/mypage/register/done',
   lab: () => '/lab',
   labIntro: () => '/lab/Intro',
-  labMarketSelection: () => '/lab/MarketSelection',
-  labResult: () => '/lab/Result',
-  labStockSearch: () => '/lab/StockSearch',
-  labStockSelection: () => '/lab/StockSelection',
+  labMarketSelection: () => '/lab/market/selection',
+  labResult: () => '/lab/result',
+  labStockSearch: () => '/lab/stock/search',
+  labStockSelection: () => '/lab/stock/selection',
 };
 
 const Root = () => {
