@@ -20,6 +20,7 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: true, // 이전 캐시 삭제
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // 필요한 파일만 포함
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB로 상향 조정
         runtimeCaching: [
           {
             urlPattern: ({ request }) =>

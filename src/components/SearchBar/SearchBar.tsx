@@ -96,7 +96,7 @@ const useOutsideClick = (callback: () => void) => {
   return ref;
 };
 
-const SearchBarItemsComponent = ({
+export const SearchBarItemsComponent = ({
   type,
   category,
   resultItems,

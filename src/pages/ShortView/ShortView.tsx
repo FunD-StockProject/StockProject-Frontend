@@ -89,7 +89,6 @@ const ShortView = () => {
   };
 
   const swiped = (direction: string, index: number) => {
-    console.log(direction);
     if (direction === 'down') {
       goBack();
       return;
