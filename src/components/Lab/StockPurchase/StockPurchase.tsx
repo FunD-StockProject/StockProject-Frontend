@@ -4,12 +4,14 @@ import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Descri
 
 import BackLogoSVG from '@assets/backLogo.svg?react';
 import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
+import DownSVG from '@assets/icons/down.svg?react';
+import UpSVG from '@assets/icons/up.svg?react';
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ToastStyle, ScoreDiff } from "./StockPurchase.Style";
 import { useQueryComponent } from "@hooks/useQueryComponent";
-import { useSymbolNameSearchQuery } from "@controllers/query";
-import { StockDetailInfo, } from "@controllers/api.Type";
+import { useStockIdSearchQuery } from "@controllers/query";
+import { StockDetailInfo } from "@controllers/api.Type";
 
 const StockSelection = () => {
   const navigate = useNavigate();
@@ -21,8 +23,16 @@ const StockSelection = () => {
   const country = location.state?.country ?? null;
 
   const currency = country === 'KOREA' ? '₩' : '$';
+  const formatPrice = (price: number) => {
+    return `${currency}${price.toLocaleString()}`;
+  };
   const selectedIndustries = location.state?.selectedIndustries ?? null;
   console.log(selectedIndustries);
+
+  const formatScoreDiff = (scoreDiff: number) => {
+    const sign = scoreDiff > 0 ? '+' : '';
+    return `${sign}${scoreDiff}`;
+  };
 
   const handlePurchase = (symbol: string, name: string, price: number) => {
     setPurchasedStocks(prev => [...prev, symbol]);
@@ -30,14 +40,14 @@ const StockSelection = () => {
     showToast(
       <>
         <PurchaseCheckSVG style={{ marginRight: '6px' }} />
-        {`${truncatedName} ${currency}${price}로 매수 완료되었습니다.`}
+        {`${truncatedName} ${formatPrice(price)}로 매수 완료되었습니다.`}
       </>
     );
   };
 
-  const stockInfos = selectedStocks?.map((stock: any) =>
+  const stockInfos = selectedStocks?.map((stock: StockDetailInfo) =>
     useQueryComponent({
-      query: useSymbolNameSearchQuery(stock.symbolName, stock.country),
+      query: useStockIdSearchQuery(stock.stockId, stock.country),
     })[0]
   ).filter(Boolean) ?? [];
 
@@ -45,7 +55,7 @@ const StockSelection = () => {
     setToast(message);
     setTimeout(() => setToast(null), 3000);
   };
-
+  console.log(stockInfos);
   return (
     <Container>
       <TopBar statusRate={80}>
@@ -64,14 +74,23 @@ const StockSelection = () => {
         <StockGrid>
           {stockInfos?.map((stockInfo: StockDetailInfo, index: number) => {
             const isPurchased = purchasedStocks.includes(stockInfo.symbol);
+            const deltaSVG = stockInfo.scoreDiff === 0 ? null : stockInfo.scoreDiff > 0 ? <UpSVG /> : <DownSVG />;
+
             return (
               <StockCard key={index}>
                 <StockImagePlaceholder />
                 <StockName>{stockInfo.symbolName}</StockName>
-                <StockPrice>{currency}{stockInfo.price} {stockInfo.priceDiffPerCent > 0 ? `+${stockInfo.priceDiffPerCent}` : stockInfo.priceDiffPerCent}</StockPrice>
+                <StockPrice>
+                  {formatPrice(stockInfo.price)}
+                  <ScoreDiff delta={stockInfo.priceDiff}>
+                    &nbsp;({formatScoreDiff(stockInfo.priceDiffPerCent)}%)
+                  </ScoreDiff>
+                </StockPrice>
                 <StockScore>
-                  <span>84점 </span>
-                  <ScoreDiff delta={79}>79점 ▲</ScoreDiff>
+                  <div>{stockInfo.score}점 </div>
+                  <ScoreDiff delta={stockInfo.scoreDiff}>
+                    &nbsp;{formatScoreDiff(stockInfo.scoreDiff)}점 {deltaSVG}
+                  </ScoreDiff>
                 </StockScore>
                 <PurchaseButton
                   onClick={() => handlePurchase(stockInfo.symbol, stockInfo.symbolName, stockInfo.price)}

@@ -5,16 +5,15 @@ import { deltaScoreToColor } from "@utils/ScoreConvert";
 export const StockGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
   margin-top: 16px;
   width: 100%;
 `;
 
 export const StockCard = styled.div`
   background: ${theme.colors.sub_gray11};
-  padding: 10px;
+  padding: 10px 0;
   border-radius: 10px;
-  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,17 +40,31 @@ export const StockName = styled.div`
 `;
 
 export const StockPrice = styled.div`
-  ${theme.font.body14Semibold}
+  ${theme.font.body14Medium}
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
 `;
 
 export const StockScore = styled.div`
   ${theme.font.detail12Semibold}
   margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
 `;
 
 export const ScoreDiff = styled.span<{ delta: number }>`
   color: ${({ delta }) => deltaScoreToColor(delta)};
+
+  svg {
+    height: 0.5em;
+    width: auto;
+    fill: ${({ delta }) => deltaScoreToColor(delta)};
+  }
 `;
 
 export const PurchaseButton = styled.button<{ purchased: boolean }>`

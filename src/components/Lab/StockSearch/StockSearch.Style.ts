@@ -5,7 +5,7 @@ import { keyframes } from '@emotion/react';
 const slideUp = keyframes`
   from {
     transform: translateY(100%);
-    opacity: 0;
+    opacity: 1;
   }
   to {
     transform: translateY(0%);
@@ -25,7 +25,7 @@ export const SearchModal = styled.div`
   box-sizing: border-box;
   overflow-y: auto;
 
-  animation: ${slideUp} 1s ease-in-out;
+  animation: ${slideUp} 0.5s ease-in-out;
 `;
 
 export const SearchKeywordSection = styled.div`

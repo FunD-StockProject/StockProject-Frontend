@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import BackLogo from '@assets/backLogo.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -30,7 +30,6 @@ import {
   RemoveStockButton,
   SelectedStockSymbolName,
 } from './StockSelection.Style';
-import StockSearch from '../StockSearch/StockSearch';
 import { AutoCompleteItem } from '@controllers/api.Type';
 import { webPath } from '@router/index';
 
@@ -41,7 +40,6 @@ const StockSelection = () => {
   const country = location.state?.country ?? null;
   const [selectedStocks, setSelectedStocks] = useState<AutoCompleteItem[]>([]);
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   const toggleIndustry = (label: string) => {
     setSelectedIndustries(prev =>
@@ -49,28 +47,23 @@ const StockSelection = () => {
     );
   };
 
+  useEffect(() => {
+    if (location.state?.selectedStocks) {
+      setSelectedStocks(location.state.selectedStocks);
+    }
+  }, [location.state?.selectedStocks]);
+
   const isValid = selectedIndustries.length > 0 || selectedStocks.length > 0;
 
   return (
     <Container>
       <TopBar statusRate={60}>
-        <BackIcon onClick={() => navigate(-1)}>
+        <BackIcon onClick={() => navigate(webPath.labMarketSelection())}>
           <BackLogo />
         </BackIcon>
         <TopBarTitle>종목 선택</TopBarTitle>
       </TopBar>
       <InnerContainer>
-        {isSearching && (
-          <StockSearch
-            onClose={(selected) => {
-              if (selected && selected.length > 0) {
-                setSelectedStocks(selected);
-              }
-              setIsSearching(false); // 검색창 닫기
-            }}
-            country={country}
-          />
-        )}
         <Title>
           구체적으로 관심있는 <br />
           종목/산업이 있다면 모두 선택해주세요
@@ -79,15 +72,15 @@ const StockSelection = () => {
 
         <Section>
           <SectionTitle>관심 종목</SectionTitle>
-          <SearchBar onClick={() => setIsSearching(true)}>
+          <SearchBar onClick={() => navigate(webPath.labStockSearch(), { state: { selectedStocks, country } })}>
             <SearchInput
               type="text"
               placeholder="종목명 or TICKER를 입력해주세요"
               onFocus={() => {
-                setIsSearching(true);
+                navigate(webPath.labStockSearch(), { state: { selectedStocks, country } });
                 setTimeout(() => {
                   document.activeElement instanceof HTMLElement && document.activeElement.blur();
-                }, 100); // added slight delay to ensure visual smoothness
+                }, 100);
               }}
             />
             <SearchIconWrapper>
@@ -130,7 +123,7 @@ const StockSelection = () => {
         </Section>
 
         <NavButtonContainer>
-          <NavButton onClick={() => navigate(-1)}>이전</NavButton>
+          <NavButton onClick={() => navigate(webPath.labMarketSelection())}>이전</NavButton>
           <NavButton
             next={true}
             active={isValid}

@@ -12,6 +12,8 @@ import { useEffect, useRef, useState } from "react";
 import { AutoCompleteItem } from "@controllers/api.Type";
 
 import { fetchAutoComplete } from "@controllers/api";
+import { useLocation, useNavigate } from "react-router-dom";
+import { webPath } from "@router/index";
 
 const useComponentFocus = (
   initialState: boolean,
@@ -24,8 +26,13 @@ const useComponentFocus = (
   return [isFocus, setIsFocus];
 };
 
-const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteItem[]) => void; country: string }) => {
+const StockSearch = () => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const country = location.state?.country ?? null;
+  const initialSelectedStocks = location.state?.selectedStocks ?? [];
   // const isMobile = useIsMobile();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +40,7 @@ const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteIt
   const filteredStocks = popularStocks.filter(stock => stock.country === country);
 
   const [inputValue, setInputValue] = useState<string>('');
-  const [selectedStocks, setSelectedStocks] = useState<AutoCompleteItem[]>([]);
+  const [selectedStocks, setSelectedStocks] = useState<AutoCompleteItem[]>(initialSelectedStocks);
   const [_isFocusInput, setIsFocusInput] = useComponentFocus(false, inputRef);
   const [isActiveSearchBar, setIsActiveSearchBar] = useState<boolean>(false);
   // const resultContainerRef = useRef<HTMLDivElement>(null);
@@ -90,10 +97,14 @@ const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteIt
     updateActiveSearchBar(true);
   };
 
+  const onClose = () => {
+    navigate(webPath.labStockSelection(), { state: { selectedStocks, country } });
+  };
+
   return (
     <SearchModal>
       <SearchHeader>
-        <CancelSVGWrapper onClick={() => onClose(selectedStocks)}>
+        <CancelSVGWrapper onClick={onClose}>
           <CancelSVG />
         </CancelSVGWrapper>
         <div style={{ flex: 1 }}>
@@ -154,7 +165,7 @@ const StockSearch = ({ onClose, country }: { onClose: (selected?: AutoCompleteIt
         </SearchKeywordSection>
       )}
       <SearchModalFooter>
-        <SearchModalButton onClick={() => onClose(selectedStocks)}>
+        <SearchModalButton onClick={onClose}>
           선택하기 {selectedStocks.length > 0 ? selectedStocks.length : ''}
         </SearchModalButton>
       </SearchModalFooter>
