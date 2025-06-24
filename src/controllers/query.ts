@@ -19,6 +19,7 @@ import {
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
+  fetchRealStockInfo,
   fetchRelevant,
   fetchRisingStocks,
   fetchScore,
@@ -50,6 +51,13 @@ export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) =
   );
 };
 
+export const useStockIdSearchQuery = (stockId: number, country: STOCK_COUNTRY) => {
+  return useQuery<StockDetailInfo>(
+    ['stockIdSearchQuery', stockId, country],
+    () => fetchRealStockInfo(stockId, country),
+    queryOptions,
+  );
+};
 export const useHomeStockFetchQuery = (type: StockType, country: string) => {
   return useQuery<StockInfo>(
     ['homeStockFetch', type, country],

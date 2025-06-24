@@ -7,6 +7,7 @@ export const Container = styled.div`
   color: ${theme.colors.sub_white};
   display: flex;
   flex-direction: column;
+  height: 100vh;
 `;
 
 export const TopBar = styled.div<{ statusRate: number }>`

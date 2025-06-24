@@ -118,6 +118,12 @@ export const fetchSearchSymbolNameMock: StockDetailInfo = {
   price: 0,
   priceDiff: 0,
   priceDiffPerCent: 0,
+  score: 60,
+  scoreDiff: -5,
+  keywords: [
+    "삼성생명",
+    "내"
+  ]
 };
 
 export const fetchScoreMock = {

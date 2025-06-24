@@ -11,6 +11,10 @@ export interface StockDetailInfo {
   price: number;
   priceDiff: number;
   priceDiffPerCent: number;
+
+  score: number,
+  scoreDiff: number,
+  keywords: string[],
 }
 
 export interface StockInfo {

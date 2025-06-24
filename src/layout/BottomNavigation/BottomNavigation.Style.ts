@@ -17,15 +17,9 @@ export const NavContainer = styled('nav')({
 });
 
 export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
-
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  fontFamily: 'Noto Sans KR',
-  fontWeight: 500,
-  fontSize: '10px',
-  lineHeight: '150%',
-  letterSpacing: '0.6px',
   cursor: 'pointer',
   transition: 'color 0.2s ease',
 

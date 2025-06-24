@@ -12,13 +12,14 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const navigate = useNavigate();
 
   const isSearchPage = location.pathname === webPath.search();
+  const isLabPage = location.pathname.startsWith('/lab');
   const isRootPage = location.pathname === '/';
 
   return (
     <StyledMainlayout>
       <MainContent>
         {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
-        <Header />
+        {!isLabPage && <Header />}
         {children}
         {isRootPage && <Footer />}
       </MainContent>
