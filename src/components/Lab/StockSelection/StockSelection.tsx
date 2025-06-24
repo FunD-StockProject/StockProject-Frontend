@@ -42,9 +42,16 @@ const StockSelection = () => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
   const toggleIndustry = (label: string) => {
-    setSelectedIndustries(prev =>
-      prev.includes(label) ? prev.filter(item => item !== label) : [...prev, label]
-    );
+    setSelectedIndustries(prev => {
+      const isSelected = prev.includes(label);
+      if (isSelected) {
+        return prev.filter(item => item !== label); // deselect
+      } else if (prev.length >= 3) {
+        return prev;
+      } else {
+        return [...prev, label];
+      }
+    });
   };
 
   useEffect(() => {
@@ -66,9 +73,11 @@ const StockSelection = () => {
       <InnerContainer>
         <Title>
           구체적으로 관심있는 <br />
-          종목/산업이 있다면 모두 선택해주세요
+          종목/산업이 있다면 모두 선택해주세요.
         </Title>
-        <Description>* 중복 선택도 가능해요!</Description>
+        <Description>
+          관심 산업은 최대 3개까지 선택 가능합니다.
+        </Description>
 
         <Section>
           <SectionTitle>관심 종목</SectionTitle>
