@@ -110,7 +110,7 @@ const StockSelection = () => {
             next={true}
             active={isValid}
             disabled={!isValid}
-            onClick={() => navigate(webPath.labResult(), { state: { purchasedStocks } })}
+            onClick={() => navigate(webPath.labResult(), { state: { purchasedStocks, country } })}
           >
             완료
           </NavButton>

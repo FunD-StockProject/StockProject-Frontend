@@ -3,6 +3,7 @@ import { webPath } from '@router/index';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton } from '../Common.Style';
 import { ReportPreviewPlaceholder } from './Result.Style';
+import { getBusinessDaysLater } from '@utils/getBusinessDaysLater';
 
 const Result = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const Result = () => {
   const isValid = true;
 
   const purchasedStocks = location.state?.purchasedStocks ?? null;
+  const country = location.state?.country ?? null;
+
   console.log(purchasedStocks);
   return (
     <Container>
@@ -22,7 +25,7 @@ const Result = () => {
       <InnerContainer>
         <Title>
           모의 매수 성공! 🎉<br />
-          5영업일 뒤<br />
+          5영업일 뒤, {getBusinessDaysLater(new Date(), 5, country)}<br />
           결과를 알려드릴께요!
         </Title>
         <Description>
