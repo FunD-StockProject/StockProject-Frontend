@@ -35,7 +35,7 @@ const MarketSelection = () => {
         <BackIcon onClick={() => navigate(-1)}>
           <BackLogo />
         </BackIcon>
-        <TopBarTitle>시장 선택</TopBarTitle>
+        <TopBarTitle>포트폴리오 생성하기</TopBarTitle>
       </TopBar>
       <InnerContainer>
         <Title>

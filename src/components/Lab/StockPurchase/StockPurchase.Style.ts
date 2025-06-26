@@ -77,25 +77,3 @@ export const PurchaseButton = styled.button<{ purchased: boolean }>`
   cursor: ${({ purchased }) => (purchased ? 'default' : 'pointer')};
 `;
 
-export const ToastStyle = styled.div`
-  ${theme.font.detail12Semibold}
-  color:${theme.colors.sub_gray2};
-  position: fixed;
-  bottom: 150px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.80);
-  border: 1px solid rgba(73, 80, 87, 0.5);
-  border-radius: 5px;
-  z-index: 1000;
-
-  max-width: 80vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

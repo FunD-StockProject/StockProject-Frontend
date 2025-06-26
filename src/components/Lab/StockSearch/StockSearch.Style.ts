@@ -15,15 +15,17 @@ const slideUp = keyframes`
 
 export const SearchModal = styled.div`
   position: fixed;
-  top: 0;
+  top: 10%;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 90%;
   background: ${theme.colors.sub_black};
   z-index: 1000;
   padding: 20px 30px;
   box-sizing: border-box;
   overflow-y: auto;
+  border : 1px solid ${theme.colors.sub_gray10};
+  border-radius: 16px 16px 0 0 ;
 
   animation: ${slideUp} 0.5s ease-in-out;
 `;
@@ -83,9 +85,15 @@ export const RightArrowSVGWrapper = styled.div`
 `;
 
 export const SearchModalFooter = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
   background: ${theme.colors.sub_black};
   text-align: center;
+  padding: 16px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
 `;
 
 export const SearchModalButton = styled.button`

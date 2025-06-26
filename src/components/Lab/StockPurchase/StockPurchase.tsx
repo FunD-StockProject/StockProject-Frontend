@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { webPath } from "@router/index";
-import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton } from "../Common.Style";
+import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle } from "../Common.Style";
 
 import BackLogoSVG from '@assets/backLogo.svg?react';
 import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
@@ -8,7 +8,7 @@ import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ToastStyle, ScoreDiff } from "./StockPurchase.Style";
+import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff } from "./StockPurchase.Style";
 import { useQueryComponent } from "@hooks/useQueryComponent";
 import { useStockIdSearchQuery } from "@controllers/query";
 import { StockDetailInfo } from "@controllers/api.Type";
@@ -62,7 +62,7 @@ const StockSelection = () => {
         <BackIcon onClick={() => navigate(-1)}>
           <BackLogoSVG />
         </BackIcon>
-        <TopBarTitle>종목 매수</TopBarTitle>
+        <TopBarTitle>포트폴리오 생성하기</TopBarTitle>
       </TopBar>
       <InnerContainer>
         <Title>
@@ -83,7 +83,7 @@ const StockSelection = () => {
                 <StockPrice>
                   {formatPrice(stockInfo.price)}
                   <ScoreDiff delta={stockInfo.priceDiff}>
-                    &nbsp;({formatScoreDiff(stockInfo.priceDiffPerCent)}%)
+                    &nbsp;{formatScoreDiff(stockInfo.priceDiff)}
                   </ScoreDiff>
                 </StockPrice>
                 <StockScore>

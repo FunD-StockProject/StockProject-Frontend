@@ -12,8 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import { AutoCompleteItem } from "@controllers/api.Type";
 
 import { fetchAutoComplete } from "@controllers/api";
-import { useLocation, useNavigate } from "react-router-dom";
-import { webPath } from "@router/index";
 
 const useComponentFocus = (
   initialState: boolean,
@@ -26,14 +24,8 @@ const useComponentFocus = (
   return [isFocus, setIsFocus];
 };
 
-const StockSearch = () => {
+const StockSearch = ({ onClose, country, initialSelectedStocks }: { onClose: (selcted: any) => void, country: string, initialSelectedStocks: AutoCompleteItem[] }) => {
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const country = location.state?.country ?? null;
-  const initialSelectedStocks = location.state?.selectedStocks ?? [];
-  // const isMobile = useIsMobile();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [popularStocks] = usePopularStockFetchQuery();
@@ -43,7 +35,6 @@ const StockSearch = () => {
   const [selectedStocks, setSelectedStocks] = useState<AutoCompleteItem[]>(initialSelectedStocks);
   const [_isFocusInput, setIsFocusInput] = useComponentFocus(false, inputRef);
   const [isActiveSearchBar, setIsActiveSearchBar] = useState<boolean>(false);
-  // const resultContainerRef = useRef<HTMLDivElement>(null);
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
   const filteredSearchedStocks = searchedStocks.filter(stock => stock.country === country);
 
@@ -67,28 +58,6 @@ const StockSearch = () => {
   };
 
   const updateActiveSearchBar = (active: boolean) => {
-    // const onScrollEvent = () => {
-    //   function lockScroll() {
-    //     window.scrollTo(0, 0);
-    //   }
-    //   window.requestAnimationFrame(lockScroll);
-    // };
-
-    // if (isMobile) {
-    //   document.documentElement.style.overflow = active ? 'hidden' : '';
-    //   document.body.style.overflow = active ? 'hidden' : '';
-    //   document.body.style.position = active ? 'fixed' : ''; // iOS Safari
-    //   document.body.style.inset = active ? '0px' : '';
-    //   document.body.style.left = active ? '0px' : '';
-    //   document.body.style.right = active ? '0px' : '';
-    //   window.onscroll = active ? onScrollEvent : null;
-
-    //   if (active) {
-    //     window.scrollTo({ top: 0, behavior: 'smooth' });
-    //   } else {
-    //     resultContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    //   }
-    // }
     setIsActiveSearchBar(active);
   };
 
@@ -97,14 +66,11 @@ const StockSearch = () => {
     updateActiveSearchBar(true);
   };
 
-  const onClose = () => {
-    navigate(webPath.labStockSelection(), { state: { selectedStocks, country } });
-  };
 
   return (
     <SearchModal>
       <SearchHeader>
-        <CancelSVGWrapper onClick={onClose}>
+        <CancelSVGWrapper onClick={() => onClose(selectedStocks)}>
           <CancelSVG />
         </CancelSVGWrapper>
         <div style={{ flex: 1 }}>
@@ -165,7 +131,7 @@ const StockSearch = () => {
         </SearchKeywordSection>
       )}
       <SearchModalFooter>
-        <SearchModalButton onClick={onClose}>
+        <SearchModalButton onClick={() => onClose(selectedStocks)}>
           선택하기 {selectedStocks.length > 0 ? selectedStocks.length : ''}
         </SearchModalButton>
       </SearchModalFooter>

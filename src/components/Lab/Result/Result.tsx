@@ -20,7 +20,7 @@ const Result = () => {
         <BackIcon onClick={() => navigate(-1)}>
           <BackLogoSVG />
         </BackIcon>
-        <TopBarTitle>종목 매수</TopBarTitle>
+        <TopBarTitle>포트폴리오 생성하기</TopBarTitle>
       </TopBar>
       <InnerContainer>
         <Title>
