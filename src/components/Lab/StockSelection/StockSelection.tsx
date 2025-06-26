@@ -16,6 +16,7 @@ import {
   SearchIconWrapper,
   SearchInput,
   Title,
+  ToastStyle,
   TopBar,
   TopBarTitle,
 } from '../Common.Style';
@@ -29,10 +30,25 @@ import {
   SelectedStockTag,
   RemoveStockButton,
   SelectedStockSymbolName,
+  SearchModalOverlay,
 } from './StockSelection.Style';
 import { AutoCompleteItem } from '@controllers/api.Type';
 import { webPath } from '@router/index';
+import WarningSVG from '@assets/icons/warning.svg?react';
+import StockSearch from '../StockSearch/StockSearch';
 
+const industries = {
+  KOREA:
+    [
+      '전기전자', '기계장비', '금속', '음식료 담배', '제약', '운송장비',
+      '유통', '기타금융', '화학', '증권', '이외산업',
+    ],
+  OVERSEA:
+    [
+      '에너지', '소재', '산업재', '임의소비재', '필수소비재', '헬스케어',
+      '금융', 'IT', '화학', '커뮤니케이션', '유틸리티', '부동산', '이외산업',
+    ]
+}
 
 const StockSelection = () => {
   const navigate = useNavigate();
@@ -40,6 +56,11 @@ const StockSelection = () => {
   const country = location.state?.country ?? null;
   const [selectedStocks, setSelectedStocks] = useState<AutoCompleteItem[]>([]);
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [toast, setToast] = useState<React.ReactNode | null>(null);
+
+  const isValid = selectedIndustries.length > 0 || selectedStocks.length > 0;
 
   const toggleIndustry = (label: string) => {
     setSelectedIndustries(prev => {
@@ -47,6 +68,12 @@ const StockSelection = () => {
       if (isSelected) {
         return prev.filter(item => item !== label); // deselect
       } else if (prev.length >= 3) {
+        showToast(
+          <>
+            <WarningSVG style={{ marginRight: '6px' }} />
+            종목은 최대 3개까지만 선택할 수 있어요.
+          </>
+        );
         return prev;
       } else {
         return [...prev, label];
@@ -60,15 +87,33 @@ const StockSelection = () => {
     }
   }, [location.state?.selectedStocks]);
 
-  const isValid = selectedIndustries.length > 0 || selectedStocks.length > 0;
+  const showToast = (message: React.ReactNode) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
 
   return (
     <Container>
+      {isModalOpen && (
+        <>
+          <SearchModalOverlay />
+          <StockSearch
+            onClose={(selected: any) => {
+              if (selected && selected.length > 0) {
+                setSelectedStocks(selected);
+              }
+              setIsModalOpen(false);
+            }}
+            country={country}
+            initialSelectedStocks={selectedStocks}
+          />
+        </>
+      )}
       <TopBar statusRate={60}>
-        <BackIcon onClick={() => navigate(webPath.labMarketSelection())}>
+        <BackIcon onClick={() => navigate(-1)}>
           <BackLogo />
         </BackIcon>
-        <TopBarTitle>종목 선택</TopBarTitle>
+        <TopBarTitle>포트폴리오 생성하기</TopBarTitle>
       </TopBar>
       <InnerContainer>
         <Title>
@@ -81,16 +126,11 @@ const StockSelection = () => {
 
         <Section>
           <SectionTitle>관심 종목</SectionTitle>
-          <SearchBar onClick={() => navigate(webPath.labStockSearch(), { state: { selectedStocks, country } })}>
+          <SearchBar onClick={() => setIsModalOpen(true)}>
             <SearchInput
               type="text"
               placeholder="종목명 or TICKER를 입력해주세요"
-              onFocus={() => {
-                navigate(webPath.labStockSearch(), { state: { selectedStocks, country } });
-                setTimeout(() => {
-                  document.activeElement instanceof HTMLElement && document.activeElement.blur();
-                }, 100);
-              }}
+              onClick={() => setIsModalOpen(true)}
             />
             <SearchIconWrapper>
               <SearchSVG width={20} height={20} />
@@ -115,11 +155,7 @@ const StockSelection = () => {
         <Section>
           <SectionTitle>관심 산업</SectionTitle>
           <IndustryBox>
-            {[
-              '전기전자', '기계장비', '금속', '음식료 담배', '제약', '운송장비',
-              '유통', '기타금융', '화학', '증권', '이외산업',
-            ].map((label) => (
-
+            {industries[country as 'KOREA' | 'OVERSEA'].map((label: string) => (
               <IndustryTag
                 key={label}
                 selected={selectedIndustries.includes(label)}
@@ -142,8 +178,8 @@ const StockSelection = () => {
             선택완료
           </NavButton>
         </NavButtonContainer>
-
       </InnerContainer>
+      {toast && <ToastStyle key={toast.toString()}>{toast}</ToastStyle>}
     </Container>
   );
 };

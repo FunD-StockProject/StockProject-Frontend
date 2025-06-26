@@ -58,3 +58,14 @@ export const RemoveStockButton = styled.span`
 `;
 
 
+export const SearchModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); // 어두운 반투명 배경
+  backdrop-filter: blur(5px); // 흐림 효과 추가
+  -webkit-backdrop-filter: blur(5px); // 사파리 지원
+  z-index: 999;
+`;

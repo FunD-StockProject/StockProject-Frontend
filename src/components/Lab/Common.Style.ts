@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const Container = styled.div`
-  background: ${theme.colors.sub_black};
+  background: black;
   color: ${theme.colors.sub_white};
   display: flex;
   flex-direction: column;
@@ -16,6 +16,7 @@ export const TopBar = styled.div<{ statusRate: number }>`
   align-items: center;
   justify-content: center;
   height: 48px;
+  padding: 24px;
   border-bottom: 4px solid ${theme.colors.sub_gray11};
   
   &::before {
@@ -124,4 +125,28 @@ export const SearchBar = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 12px;
+`;
+
+
+export const ToastStyle = styled.div`
+  ${theme.font.detail12Semibold}
+  color:${theme.colors.sub_gray2};
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.80);
+  border: 1px solid rgba(73, 80, 87, 0.5);
+  border-radius: 5px;
+  z-index: 1000;
+
+  max-width: 80vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
