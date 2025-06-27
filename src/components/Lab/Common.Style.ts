@@ -22,7 +22,7 @@ export const TopBar = styled.div<{ statusRate: number }>`
   &::before {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -4px;
     left: 0;
     height: 4px;
     width: ${({ statusRate }) => `${statusRate}%`};
@@ -149,4 +149,13 @@ export const ToastStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+
+export const Divider = styled.div`
+  background-color: ${theme.colors.sub_gray11};
+  width: calc(100% + 48px);
+  border: none;
+  height: 4px;
+  margin: 24px -24px;
 `;

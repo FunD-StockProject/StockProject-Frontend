@@ -2,12 +2,20 @@ import styled from "@emotion/styled";
 import { theme } from "@styles/themes";
 import { deltaScoreToColor } from "@utils/ScoreConvert";
 
+
+export const SectionTitle = styled.div`
+  ${theme.font.body16Medium};
+  margin-bottom: 8px;
+`;
+
+
 export const StockGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   margin-top: 16px;
   width: 100%;
+  margin-bottom:50px;
 `;
 
 export const StockCard = styled.div`

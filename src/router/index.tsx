@@ -15,7 +15,6 @@ import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
 import Result from '@components/Lab/Result/Result';
-import StockSearch from '@components/Lab/StockSearch/StockSearch';
 
 export const webPath = {
   search: () => '/search',
@@ -27,7 +26,7 @@ export const webPath = {
   registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   lab: () => '/lab',
-  labIntro: () => '/lab/Intro',
+  labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
   labResult: () => '/lab/result',
   labStockSelection: () => '/lab/stock/selection',
@@ -64,8 +63,6 @@ const routes = [
       { path: webPath.labResult(), element: <Result /> },
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
-      { path: webPath.labStockSearch(), element: <StockSearch /> },
-
     ],
   },
   { path: webPath.usage(), element: <Usage />, },

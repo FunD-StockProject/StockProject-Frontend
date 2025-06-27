@@ -9,6 +9,7 @@ import {
   BackIcon,
   Container,
   Description,
+  Divider,
   InnerContainer,
   NavButton,
   NavButtonContainer,
@@ -124,6 +125,7 @@ const StockSelection = () => {
           관심 산업은 최대 3개까지 선택 가능합니다.
         </Description>
 
+        <Divider />
         <Section>
           <SectionTitle>관심 종목</SectionTitle>
           <SearchBar onClick={() => setIsModalOpen(true)}>
@@ -151,6 +153,7 @@ const StockSelection = () => {
             ))}
           </SelectedStockWrapper>
         </Section>
+
 
         <Section>
           <SectionTitle>관심 산업</SectionTitle>
