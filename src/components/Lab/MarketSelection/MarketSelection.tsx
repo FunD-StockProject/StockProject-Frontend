@@ -45,14 +45,22 @@ const MarketSelection = () => {
         {/* <Description>* 중복 선택도 가능해요!</Description> */}
 
         <FlagBox>
-          <FlagButton selected={selectedCountry === 'KOREA'} onClick={() => selectMarket('KOREA')}>
+          <FlagButton
+            selected={selectedCountry === 'KOREA'}
+            dimmed={selectedCountry !== null && selectedCountry !== 'KOREA'}
+            onClick={() => selectMarket('KOREA')}
+          >
             <FlagIcon>
               <KoreaFlag />
             </FlagIcon>
             <FlagLabel selected={selectedCountry === 'KOREA'}>국내</FlagLabel>
           </FlagButton>
 
-          <FlagButton selected={selectedCountry === 'OVERSEA'} onClick={() => selectMarket('OVERSEA')}>
+          <FlagButton
+            selected={selectedCountry === 'OVERSEA'}
+            dimmed={selectedCountry !== null && selectedCountry !== 'OVERSEA'}
+            onClick={() => selectMarket('OVERSEA')}
+          >
             <FlagIcon>
               <UsFlag />
             </FlagIcon>

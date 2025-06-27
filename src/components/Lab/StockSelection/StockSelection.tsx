@@ -143,9 +143,16 @@ const StockSelection = () => {
               <SelectedStockTag key={stock.symbol}>
                 <SelectedStockSymbolName>{stock.symbolName}</SelectedStockSymbolName>
                 <RemoveStockButton
-                  onClick={() =>
-                    setSelectedStocks(prev => prev.filter(s => s.symbol !== stock.symbol))
-                  }
+                  onClick={() => {
+                    const truncatedName = stock.symbolName.length > 14 ? `${stock.symbolName.slice(0, 14)}...` : stock.symbolName;
+                    setSelectedStocks(prev => prev.filter(s => s.symbol !== stock.symbol));
+                    showToast(
+                      <>
+                        <WarningSVG style={{ marginRight: '6px' }} />
+                        {truncatedName} 종목을 삭제하였습니다.
+                      </>
+                    );
+                  }}
                 >
                   <CancelSVG width={10} height={10} />
                 </RemoveStockButton>
@@ -183,7 +190,7 @@ const StockSelection = () => {
         </NavButtonContainer>
       </InnerContainer>
       {toast && <ToastStyle key={toast.toString()}>{toast}</ToastStyle>}
-    </Container>
+    </Container >
   );
 };
 
