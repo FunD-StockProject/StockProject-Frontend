@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { webPath } from "@router/index";
-import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle } from "../Common.Style";
+import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle, Divider } from "../Common.Style";
 
 import BackLogoSVG from '@assets/backLogo.svg?react';
 import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
@@ -8,7 +8,7 @@ import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff } from "./StockPurchase.Style";
+import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff, SectionTitle } from "./StockPurchase.Style";
 import { useQueryComponent } from "@hooks/useQueryComponent";
 import { useStockIdSearchQuery } from "@controllers/query";
 import { StockDetailInfo } from "@controllers/api.Type";
@@ -70,7 +70,11 @@ const StockSelection = () => {
           매수를 진행해주세요.
         </Title>
         <Description>* 주의 사항 안내!</Description>
-        {/* Stock cards */}
+        <Divider />
+
+        <SectionTitle>
+          내가 선택한 종목
+        </SectionTitle>
         <StockGrid>
           {stockInfos?.map((stockInfo: StockDetailInfo, index: number) => {
             const isPurchased = purchasedStocks.includes(stockInfo.symbol);
@@ -83,7 +87,7 @@ const StockSelection = () => {
                 <StockPrice>
                   {formatPrice(stockInfo.price)}
                   <ScoreDiff delta={stockInfo.priceDiff}>
-                    &nbsp;{formatScoreDiff(stockInfo.priceDiff)}
+                    &nbsp;({formatScoreDiff(stockInfo.priceDiffPerCent)}%)
                   </ScoreDiff>
                 </StockPrice>
                 <StockScore>
@@ -104,6 +108,9 @@ const StockSelection = () => {
           })}
         </StockGrid>
 
+        <SectionTitle>
+          내 관심 산업별 추천 종목
+        </SectionTitle>
         <NavButtonContainer>
           <NavButton onClick={() => navigate(-1)}>이전</NavButton>
           <NavButton

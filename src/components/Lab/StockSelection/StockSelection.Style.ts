@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
+
+
 export const Section = styled.div`
   ${theme.font.body16Medium};
   margin-bottom: 20px;

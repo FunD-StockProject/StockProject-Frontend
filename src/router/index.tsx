@@ -26,7 +26,7 @@ export const webPath = {
   registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   lab: () => '/lab',
-  labIntro: () => '/lab/Intro',
+  labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
   labResult: () => '/lab/result',
   labStockSelection: () => '/lab/stock/selection',
@@ -63,7 +63,6 @@ const routes = [
       { path: webPath.labResult(), element: <Result /> },
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
-
     ],
   },
   { path: webPath.usage(), element: <Usage />, },
