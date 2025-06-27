@@ -13,8 +13,8 @@ import {
   fetchSearchWordCloudMock,
 } from './mock';
 
-const baseURL = import.meta.env.VITE_BASE_URL;
-
+// const baseURL = import.meta.env.VITE_BASE_URL;
+const baseURL = '/api';
 const Headers = { 'content-type': 'application/json' };
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
@@ -65,7 +65,7 @@ const fetchSearchSymbolName = (symbolname: string, country: STOCK_COUNTRY) => {
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
-const fetchRealStockInfo = (stockId: number, country: string) => {
+const fetchRealStockInfo = (stockId: number, country: STOCK_COUNTRY) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 

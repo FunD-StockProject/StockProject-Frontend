@@ -125,3 +125,22 @@ export const CancelSVGWrapper = styled.div`
     height: 18px;
   }
 }  `;
+
+export const NoResultSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  text-align: center;
+`;
+
+export const NoResultTitle = styled.div`
+  ${theme.font.body18Medium};
+  color: ${theme.colors.sub_gray7};
+`;
+
+export const NoResultDesc = styled.div`
+  ${theme.font.body14Medium};
+  color: ${theme.colors.sub_gray6};
+`;

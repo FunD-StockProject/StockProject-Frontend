@@ -8,7 +8,7 @@ export const FlagBox = styled.div`
   margin: 40px 0;
 `;
 
-export const FlagButton = styled.button<{ selected: boolean }>`
+export const FlagButton = styled.button<{ selected: boolean; dimmed: boolean }>`
   width: 50%;
   height: 145px;
   background: ${({ selected }) => selected ? theme.colors.primary50 : theme.colors.sub_gray11};
@@ -20,9 +20,10 @@ export const FlagButton = styled.button<{ selected: boolean }>`
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.2s;
   overflow: hidden;
   padding-top: 12px;
+  opacity: ${({ dimmed }) => dimmed ? 0.5 : 1};
 `;
 
 export const FlagIcon = styled.div`

@@ -1,6 +1,6 @@
 import { useAutoComplete, usePopularStockFetchQuery } from "@controllers/query";
 import { SearchBar, SearchInput, SearchIconWrapper } from "../Common.Style";
-import { SearchModal, SearchModalButton, SearchModalFooter, SearchKeywordSection, SearchKeywordList, SearchKeywordItem, RightArrowSVGWrapper, SearchTitle, SearchHeader, CancelSVGWrapper } from "./StockSearch.Style";
+import { SearchModal, SearchModalButton, SearchModalFooter, SearchKeywordSection, SearchKeywordList, SearchKeywordItem, RightArrowSVGWrapper, SearchTitle, SearchHeader, CancelSVGWrapper, NoResultSection, NoResultDesc, NoResultTitle } from "./StockSearch.Style";
 
 import SearchSVG from '@assets/icons/search.svg?react';
 import RightArrowSVG from '@assets/icons/rightArrow.svg?react';
@@ -114,20 +114,34 @@ const StockSearch = ({ onClose, country, initialSelectedStocks }: { onClose: (se
       ) : (
         <SearchKeywordSection>
           <SearchTitle>검색 결과</SearchTitle>
-          <SearchKeywordList>
-            {filteredSearchedStocks.slice(0, 15).map((stock, index) => (
-              <SearchKeywordItem
-                key={`${stock.ticker}+${index}`}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleItemClick(stock)}
-              >
-                <span className="name">{stock.symbolName}</span>
-                <RightArrowSVGWrapper>
-                  {selectedStocks.some(s => s.symbol === stock.symbol) ? <CheckSVG /> : <UncheckSVG />}
-                </RightArrowSVGWrapper>
-              </SearchKeywordItem>
-            ))}
-          </SearchKeywordList>
+          {filteredSearchedStocks.length > 0 ?
+            <>
+              <SearchKeywordList>
+                {filteredSearchedStocks.map((stock, index) => (
+                  <SearchKeywordItem
+                    key={`${stock.ticker}+${index}`}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleItemClick(stock)}
+                  >
+                    <span className="name">{stock.symbolName}</span>
+                    <RightArrowSVGWrapper>
+                      {selectedStocks.some(s => s.symbol === stock.symbol) ? <CheckSVG /> : <UncheckSVG />}
+                    </RightArrowSVGWrapper>
+                  </SearchKeywordItem>
+                ))}
+              </SearchKeywordList>
+            </>
+            : (
+              <NoResultSection>
+                <NoResultTitle>
+                  검색결과가 없어요 😭
+                </NoResultTitle>
+                <NoResultDesc>
+                  다른 종목을 다시 검색해보세요
+                </NoResultDesc>
+              </NoResultSection>
+            )
+          }
         </SearchKeywordSection>
       )}
       <SearchModalFooter>
