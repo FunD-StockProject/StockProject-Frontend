@@ -14,7 +14,8 @@ import {
 } from './mock';
 
 // const baseURL = import.meta.env.VITE_BASE_URL;
-const baseURL = '/api';
+// const baseURL = '/api';
+const baseURL = 'https://api.humanzipyo.com';
 const Headers = { 'content-type': 'application/json' };
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
@@ -122,6 +123,12 @@ const fetchPopularKeywords = (): Promise<string[]> => {
   return fetchData('/keyword/rankings');
 };
 
+// OAuth2
+
+const fetchOAuth2Kakao = () => {
+  return fetchData('/auth/oauth2/kakao');
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -140,4 +147,5 @@ export {
   fetchPopularStocks,
   fetchPopularKeywords,
   fetchStockSummary,
+  fetchOAuth2Kakao,
 };

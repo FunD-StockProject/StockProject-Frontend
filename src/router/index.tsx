@@ -1,20 +1,21 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import Callback from '@pages/Callback/Callback';
+import Lab from '@pages/Lab/Lab';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import Register from '@pages/Register/Register';
 import RegisterDetail from '@pages/RegisterDetail/RegisterDetail';
 import RegisterDone from '@pages/RegisterDone/RegisterDone';
+import ShortView from '@pages/ShortView/ShortView';
 import Usage from '@pages/Usage/Usage';
+import Intro from '@components/Lab/Intro/Intro';
+import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
+import Result from '@components/Lab/Result/Result';
+import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
+import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
-import ShortView from '@pages/ShortView/ShortView';
-import Lab from '@pages/Lab/Lab';
-import Intro from '@components/Lab/Intro/Intro';
-import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
-import StockSelection from '@components/Lab/StockSelection/StockSelection';
-import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
-import Result from '@components/Lab/Result/Result';
 
 export const webPath = {
   search: () => '/search',
@@ -45,12 +46,13 @@ const Root = () => {
 
 const routes = [
   { path: '*', element: <div>404 Not Found</div> },
+  { path: '/login/oauth2/code/kakao', element: <Callback /> },
   {
     path: '/',
     element: <Root />,
     children: [
-      { path: '/', element: <Home />, },
-      { path: webPath.search(), children: [{ path: '', element: <Search /> }], },
+      { path: '/', element: <Home /> },
+      { path: webPath.search(), children: [{ path: '', element: <Search /> }] },
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
@@ -65,9 +67,7 @@ const routes = [
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
     ],
   },
-  { path: webPath.usage(), element: <Usage />, },
-
-
+  { path: webPath.usage(), element: <Usage /> },
 ];
 
 export const router = createBrowserRouter(routes);
