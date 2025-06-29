@@ -80,13 +80,4 @@ export default defineConfig({
       { find: '@assets', replacement: '/src/assets' },
     ],
   },
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'https://api.humanzipyo.com',
-  //       changeOrigin: true,
-  //       rewrite: path => path.replace(/^\/api/, ''),
-  //     },
-  //   },
-  // },
 });

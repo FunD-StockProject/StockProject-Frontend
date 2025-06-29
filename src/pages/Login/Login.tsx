@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
+// import { fetchOAuth2Kakao } from '@controllers/api';
 import CheckCircleSVG from '@assets/icons/checkCircle.svg?react';
 
 const LoginButton = styled.button({
@@ -38,6 +39,12 @@ const Login = () => {
   const [toggleSaveId, setToggleSaveId] = useState(false);
   const [toggleKeepLogin, setToggleKeepLogin] = useState(false);
 
+  const handleKakaoLogin = () => {
+    localStorage.setItem('lastLoginProvider', 'kakao');
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
+    window.location.href = kakaoAuthUrl;
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '16px', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', flexDirection: 'column', margin: '16px 0', gap: '16px' }}>
@@ -50,7 +57,7 @@ const Login = () => {
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <LoginButton>카카오로 로그인</LoginButton>
+          <LoginButton onClick={handleKakaoLogin}>카카오로 로그인</LoginButton>
           <LoginButton>네이버로 로그인</LoginButton>
           <LoginButton>Apple로 로그인</LoginButton>
           <LoginButton>구글로 로그인</LoginButton>

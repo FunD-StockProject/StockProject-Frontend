@@ -122,6 +122,12 @@ const fetchPopularKeywords = (): Promise<string[]> => {
   return fetchData('/keyword/rankings');
 };
 
+// OAuth2
+
+const fetchOAuth2Kakao = () => {
+  return fetchData('/auth/oauth2/kakao');
+};
+
 export {
   fetchScore,
   fetchRelevant,
@@ -140,4 +146,5 @@ export {
   fetchPopularStocks,
   fetchPopularKeywords,
   fetchStockSummary,
+  fetchOAuth2Kakao,
 };
