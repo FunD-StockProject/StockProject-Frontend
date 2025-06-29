@@ -121,9 +121,7 @@ const StockSelection = () => {
           구체적으로 관심있는 <br />
           종목/산업이 있다면 모두 선택해주세요.
         </Title>
-        <Description>
-          관심 산업은 최대 3개까지 선택 가능합니다.
-        </Description>
+        <Description>* 관심 산업은 최대 3개까지 추가 가능해요</Description>
 
         <Divider />
         <Section>
