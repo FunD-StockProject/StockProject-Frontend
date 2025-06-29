@@ -8,6 +8,7 @@ import UsFlag from '@assets/usFlag.svg?react';
 import {
   BackIcon,
   Container,
+  Description,
   InnerContainer,
   NavButton,
   NavButtonContainer,
@@ -42,7 +43,7 @@ const MarketSelection = () => {
           어느 나라 시장의 <br />
           기업을 매수하고 싶나요?
         </Title>
-        {/* <Description>* 중복 선택도 가능해요!</Description> */}
+        <Description>국가 하나만 선택해주세요!</Description>
 
         <FlagBox>
           <FlagButton

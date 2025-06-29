@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchOAuth2Kakao } from '@controllers/api';
+// import { fetchOAuth2Kakao } from '@controllers/api';
 import CheckCircleSVG from '@assets/icons/checkCircle.svg?react';
 
 const LoginButton = styled.button({

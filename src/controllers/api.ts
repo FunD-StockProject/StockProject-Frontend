@@ -13,9 +13,8 @@ import {
   fetchSearchWordCloudMock,
 } from './mock';
 
-// const baseURL = import.meta.env.VITE_BASE_URL;
+const baseURL = import.meta.env.VITE_BASE_URL;
 // const baseURL = '/api';
-const baseURL = 'https://api.humanzipyo.com';
 const Headers = { 'content-type': 'application/json' };
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));

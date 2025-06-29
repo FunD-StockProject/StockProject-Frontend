@@ -67,9 +67,9 @@ const StockSelection = () => {
       <InnerContainer>
         <Title>
           추천 종목을 보고 <br />
-          매수를 진행해주세요.
+          관심있는 종목을 매수하세요
         </Title>
-        <Description>* 주의 사항 안내!</Description>
+        <Description>* 현재 화면에 노출되는 가격으로 매수됩니다.</Description>
         <Divider />
 
         <SectionTitle>
