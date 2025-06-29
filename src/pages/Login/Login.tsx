@@ -41,7 +41,10 @@ const Login = () => {
 
   const handleKakaoLogin = () => {
     localStorage.setItem('lastLoginProvider', 'kakao');
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
+    const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
+    console.log(redirectUri);
+
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${redirectUri}`;
     window.location.href = kakaoAuthUrl;
   };
 
