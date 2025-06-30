@@ -26,7 +26,7 @@ export const IndustryBox = styled.div`
 export const IndustryTag = styled.div<{ selected: boolean }>`
   padding: 8px 16px;
   background: ${({ selected }) => selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
-color: ${({ selected }) => selected ? theme.colors.sub_white : theme.colors.sub_gray6};
+  color: ${({ selected }) => selected ? theme.colors.sub_white : theme.colors.sub_gray6};
   border-radius: 50px;
 `;
 
