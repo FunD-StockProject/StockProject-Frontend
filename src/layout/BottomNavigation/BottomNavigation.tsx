@@ -6,6 +6,7 @@ import LabSVG from '@assets/bottomNav/lab.svg?react';
 import MyPageSVG from '@assets/bottomNav/myPage.svg?react';
 import ShortViewSVG from '@assets/bottomNav/shortView.svg?react';
 import { NavContainer, NavItem } from './BottomNavigation.Style';
+import { useEffect, useState } from 'react';
 
 
 const BottomNavigation = () => {
@@ -22,6 +23,25 @@ const BottomNavigation = () => {
   ];
   const currentPath = location.pathname;
   const activeIndex = navItems.findIndex(item => item.path === currentPath);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsModalOpen(document.body.classList.contains('modal-open'));
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    // 초기 상태 반영
+    setIsModalOpen(document.body.classList.contains('modal-open'));
+
+    return () => observer.disconnect();
+  }, []);
+
+  if (isModalOpen) return null;
 
   const handleClick = (path: string) => {
     navigate(path);
