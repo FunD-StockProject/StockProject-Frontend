@@ -66,7 +66,7 @@ export const Title = styled.div`
 export const Description = styled.p`
   ${theme.font.body14Medium};
   color: ${theme.colors.sub_gray6};
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 `;
 
 export const NavButtonContainer = styled.div`
@@ -88,13 +88,10 @@ export const NavButton = styled.button<{ next?: boolean, active?: boolean }>`
 `;
 
 export const IndustryTag = styled.div<{ selected: boolean }>`
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: ${({ selected }) => selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
-  color: white;
-  border-radius: 16px;
-  font-size: 13px;
-  cursor: pointer;
-  border: none;
+  color: ${({ selected }) => selected ? theme.colors.sub_white : theme.colors.sub_gray6};
+  border-radius: 50px;
 `;
 
 
@@ -159,3 +156,4 @@ export const Divider = styled.div`
   height: 4px;
   margin: 24px -24px;
 `;
+

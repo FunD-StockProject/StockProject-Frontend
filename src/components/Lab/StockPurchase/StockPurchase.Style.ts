@@ -85,3 +85,9 @@ export const PurchaseButton = styled.button<{ purchased: boolean }>`
   cursor: ${({ purchased }) => (purchased ? 'default' : 'pointer')};
 `;
 
+export const IndustryTagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+`;
