@@ -26,7 +26,7 @@ const StockSelection = () => {
   const industries = location.state?.selectedIndustries ?? null;
 
   const [purchasedStocks, setPurchasedStocks] = useState<string[]>([]);
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState<string>();
   const [toast, setToast] = useState<React.ReactNode | null>(null);
 
   const currency = country === 'KOREA' ? '₩' : '$';
@@ -60,14 +60,7 @@ const StockSelection = () => {
   };
 
   const toggleIndustry = (label: string) => {
-    setSelectedIndustries(prev => {
-      const isSelected = prev.includes(label);
-      if (isSelected) {
-        return prev.filter(item => item !== label); // deselect
-      }
-
-      return [...prev, label];
-    });
+    setSelectedIndustry(label);
   };
 
   return (
@@ -130,7 +123,7 @@ const StockSelection = () => {
           {industries.map((label: string) => (
             <IndustryTag
               key={label}
-              selected={selectedIndustries.includes(label)}
+              selected={selectedIndustry === label}
               onClick={() => toggleIndustry(label)}
             >
               {label}
