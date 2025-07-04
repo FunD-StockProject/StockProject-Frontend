@@ -19,6 +19,7 @@ import {
   Title,
   ToastStyle,
   TopBar,
+  IndustryTag,
   TopBarTitle,
 } from '../Common.Style';
 
@@ -26,7 +27,6 @@ import {
   Section,
   SectionTitle,
   IndustryBox,
-  IndustryTag,
   SelectedStockWrapper,
   SelectedStockTag,
   RemoveStockButton,
@@ -121,7 +121,11 @@ const StockSelection = () => {
           구체적으로 관심있는 <br />
           종목/산업이 있다면 모두 선택해주세요.
         </Title>
-        <Description>* 관심 산업은 최대 3개까지 추가 가능해요</Description>
+        <Description>
+          * 검색으로 종목을 직접 추가할 수 있어요. <br />
+          * 원하는 특정 종목이 없다면,  <br />
+          관심 있는 산업을 최대 3개까지 선택해주세요.
+        </Description>
 
         <Divider />
         <Section>
