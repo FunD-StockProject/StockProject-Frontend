@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
+import { fetchAuthRegister } from '@controllers/api';
 import PencilSVG from '@assets/icons/pencil.svg?react';
 import RightArrowSVG from '@assets/icons/rightArrow.svg?react';
 
@@ -267,7 +268,7 @@ const RegisterDetail = () => {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 필드 검사 후
     const errors = validate();
     // 에러 값을 설정하고
@@ -277,6 +278,8 @@ const RegisterDetail = () => {
       return;
     }
 
+    const res = await fetchAuthRegister(values.email, values.name, new Date(values.birth), true, 'KAKAO');
+    console.log(2, res);
     navigate(webPath.registerDone());
   };
 
@@ -332,7 +335,7 @@ const RegisterDetail = () => {
           {errors.name && <RegisterItemError>{errors.name}</RegisterItemError>}
         </RegisterItemContainer>
         <RegisterItemContainer>
-          <RegisterItemTitle>{location.state.type == 'email' ? '아이디 (이메일)' : '이메일'}</RegisterItemTitle>
+          <RegisterItemTitle>{location.state.provider == 'email' ? '아이디 (이메일)' : '이메일'}</RegisterItemTitle>
           <RegisterItemTextField
             type="text"
             placeholder="humanzipyo2024@gmail.com"
@@ -342,7 +345,7 @@ const RegisterDetail = () => {
           />
           {errors.email && <RegisterItemError>{errors.email}</RegisterItemError>}
         </RegisterItemContainer>
-        {location.state.type == 'email' && (
+        {location.state.provider == 'email' && (
           <RegisterItemContainer>
             <RegisterItemTitle>비밀번호</RegisterItemTitle>
             <RegisterItemTextField
@@ -355,7 +358,7 @@ const RegisterDetail = () => {
             {errors.password && <RegisterItemError>{errors.password}</RegisterItemError>}
           </RegisterItemContainer>
         )}
-        {location.state.type == 'email' && (
+        {location.state.provider == 'email' && (
           <RegisterItemContainer>
             <RegisterItemTitle>비밀번호 확인</RegisterItemTitle>
             <RegisterItemTextField

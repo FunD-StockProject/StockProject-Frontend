@@ -124,8 +124,85 @@ const fetchPopularKeywords = (): Promise<string[]> => {
 
 // OAuth2
 
-const fetchOAuth2Kakao = () => {
-  return fetchData('/auth/oauth2/kakao');
+const fetchLoginKakao = (code: string, state: string) => {
+  console.log(encodeURIComponent(code));
+  console.log(encodeURIComponent(state));
+  console.log(new Date().toDateString());
+  return fetchData(`/auth/login/kakao?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`);
+};
+
+const fetchAuthRegister = async (
+  email: string,
+  nickname: string,
+  birth_date: Date,
+  marketing_agreement: boolean,
+  provider: string,
+) => {
+  try {
+    const url = `${baseURL}/auth/register`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        nickname,
+        birth_date: `${birth_date.getFullYear()}-${String(birth_date.getMonth() + 1).padStart(2, '0')}-${String(birth_date.getDate()).padStart(2, '0')}`,
+        marketing_agreement,
+        provider,
+      }),
+      headers: Headers,
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchAuthWithdraw = async () => {
+  console.log(3, localStorage.getItem('access_token'));
+  try {
+    const url = `${baseURL}/auth/withdraw`;
+    const res = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        ...Headers,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchAuthLogout = async () => {
+  try {
+    const url = `${baseURL}/auth/logout`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        'value = refresh_token': localStorage.getItem('refresh_token'),
+      }),
+      headers: {
+        ...Headers,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
 };
 
 export {
@@ -146,5 +223,8 @@ export {
   fetchPopularStocks,
   fetchPopularKeywords,
   fetchStockSummary,
-  fetchOAuth2Kakao,
+  fetchLoginKakao,
+  fetchAuthRegister,
+  fetchAuthLogout,
+  fetchAuthWithdraw,
 };
