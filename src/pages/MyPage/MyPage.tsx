@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchAuthLogout, fetchAuthWithdraw } from '@controllers/api';
+import { fetchAuthLogout } from '@controllers/api';
 import RightArrowSVG from '@assets/icons/rightArrow.svg?react';
 
 const MyPageEventBannerContainer = styled.div({
@@ -229,13 +229,6 @@ const MyPageUserInteraction = () => {
   };
 
   const handleWithdraw = async () => {
-    // const res = await fetchAuthWithdraw();
-    // localStorage.removeItem('access_token');
-    // localStorage.removeItem('refresh_token');
-    // localStorage.removeItem('provider');
-
-    // navigate('/');
-    // console.log(res);
     navigate(webPath.withdraw());
   };
 

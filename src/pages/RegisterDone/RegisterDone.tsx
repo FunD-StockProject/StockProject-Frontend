@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
 const RegisterDone = () => {
-  const navigate = useNavigate();
-
   const handleClickDone = () => {
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
     console.log(redirectUri);

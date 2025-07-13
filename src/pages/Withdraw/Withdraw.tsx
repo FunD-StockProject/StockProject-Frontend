@@ -19,7 +19,7 @@ const Withdraw = () => {
 
   const handleClickWithdraw = async () => {
     if (window.confirm('정말 탈퇴 하시겠어요?')) {
-      const res = await fetchAuthWithdraw();
+      await fetchAuthWithdraw();
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('provider');
