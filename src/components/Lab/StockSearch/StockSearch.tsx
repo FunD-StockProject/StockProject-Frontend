@@ -44,6 +44,14 @@ const StockSearch = ({ onClose, country, initialSelectedStocks }: { onClose: (se
     }
   }, [inputValue]);
 
+  useEffect(() => {
+    document.body.classList.add('modal-open');
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  },);
+
+
 
   const handleItemClick = (item: AutoCompleteItem) => {
     setSelectedStocks((prev) => {
@@ -55,6 +63,7 @@ const StockSearch = ({ onClose, country, initialSelectedStocks }: { onClose: (se
   const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
+    setIsActiveSearchBar(value.length > 0);
   };
 
   const updateActiveSearchBar = (active: boolean) => {
@@ -82,7 +91,7 @@ const StockSearch = ({ onClose, country, initialSelectedStocks }: { onClose: (se
               placeholder="종목명 or TICKER를 입력해주세요"
               onChange={handleSearchValueChange}
               onFocus={handleSearchBarInputFocus}
-              onBlur={() => setIsActiveSearchBar(false)}
+            // onBlur={() => setIsActiveSearchBar(false)}
             />
             <SearchIconWrapper>
               <SearchSVG width={20} height={20} />

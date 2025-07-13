@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { webPath } from "@router/index";
-import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle, Divider } from "../Common.Style";
+import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle, Divider, IndustryTag } from "../Common.Style";
 
 import BackLogoSVG from '@assets/backLogo.svg?react';
 import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
@@ -8,31 +8,34 @@ import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff, SectionTitle } from "./StockPurchase.Style";
+import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff, SectionTitle, IndustryTagWrapper } from "./StockPurchase.Style";
 import { useQueryComponent } from "@hooks/useQueryComponent";
 import { useStockIdSearchQuery } from "@controllers/query";
 import { StockDetailInfo } from "@controllers/api.Type";
 
+const formatScoreDiff = (scoreDiff: number) => {
+  const sign = scoreDiff > 0 ? '+' : '';
+  return `${sign}${scoreDiff}`;
+};
+
 const StockSelection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [purchasedStocks, setPurchasedStocks] = useState<string[]>([]);
-  const [toast, setToast] = useState<React.ReactNode | null>(null);
-  const isValid = purchasedStocks.length > 0;
   const selectedStocks = location.state?.selectedStocks ?? null;
   const country = location.state?.country ?? null;
+  const industries = location.state?.selectedIndustries ?? null;
+
+  const [purchasedStocks, setPurchasedStocks] = useState<string[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState<string>();
+  const [toast, setToast] = useState<React.ReactNode | null>(null);
 
   const currency = country === 'KOREA' ? '₩' : '$';
+  const isValid = purchasedStocks.length > 0;
+
   const formatPrice = (price: number) => {
     return `${currency}${price.toLocaleString()}`;
   };
-  const selectedIndustries = location.state?.selectedIndustries ?? null;
-  console.log(selectedIndustries);
-
-  const formatScoreDiff = (scoreDiff: number) => {
-    const sign = scoreDiff > 0 ? '+' : '';
-    return `${sign}${scoreDiff}`;
-  };
+  console.log(industries);
 
   const handlePurchase = (symbol: string, name: string, price: number) => {
     setPurchasedStocks(prev => [...prev, symbol]);
@@ -55,7 +58,11 @@ const StockSelection = () => {
     setToast(message);
     setTimeout(() => setToast(null), 3000);
   };
-  console.log(stockInfos);
+
+  const toggleIndustry = (label: string) => {
+    setSelectedIndustry(label);
+  };
+
   return (
     <Container>
       <TopBar statusRate={80}>
@@ -69,9 +76,10 @@ const StockSelection = () => {
           추천 종목을 보고 <br />
           관심있는 종목을 매수하세요
         </Title>
-        <Description>* 현재 화면에 노출되는 가격으로 매수됩니다.</Description>
+        <Description>
+          * 현재 화면에 노출되는 가격으로 매수됩니다.
+        </Description>
         <Divider />
-
         <SectionTitle>
           내가 선택한 종목
         </SectionTitle>
@@ -111,6 +119,17 @@ const StockSelection = () => {
         <SectionTitle>
           내 관심 산업별 추천 종목
         </SectionTitle>
+        <IndustryTagWrapper>
+          {industries.map((label: string) => (
+            <IndustryTag
+              key={label}
+              selected={selectedIndustry === label}
+              onClick={() => toggleIndustry(label)}
+            >
+              {label}
+            </IndustryTag>
+          ))}
+        </IndustryTagWrapper>
         <NavButtonContainer>
           <NavButton onClick={() => navigate(-1)}>이전</NavButton>
           <NavButton
