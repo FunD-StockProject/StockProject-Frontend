@@ -8,16 +8,15 @@ export const StyledMainlayout = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   width: '100%',
-  minHeight: '100vh',
+  minHeight: '100dvh',
   backgroundColor: theme.colors.grayscale100,
-
 });
 
 export const MainContent = styled.div({
   position: 'relative',
   overflow: 'auto',
   width: '100%',
-  height: '100%',
+  flexGrow: '1',
   display: 'flex',
   flexDirection: 'column',
 });
@@ -32,4 +31,4 @@ export const BackButton = styled('img')({
   fontSize: '24px',
   width: '30px',
   height: '30px',
-})
+});

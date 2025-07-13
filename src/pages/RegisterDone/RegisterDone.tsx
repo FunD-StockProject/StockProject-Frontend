@@ -1,7 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-
 const RegisterDone = () => {
-  const navigate = useNavigate();
+  const handleClickDone = () => {
+    const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
+    console.log(redirectUri);
+
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${redirectUri}`;
+    window.location.href = kakaoAuthUrl;
+  };
 
   return (
     <div
@@ -32,7 +36,7 @@ const RegisterDone = () => {
           당신의 직감은 얼마나 정확할까요?
         </p>
       </div>
-      <button style={{ height: '42px', fontSize: '15px' }} onClick={() => navigate('/')}>
+      <button style={{ height: '42px', fontSize: '15px' }} onClick={handleClickDone}>
         홈으로 이동
       </button>
     </div>
