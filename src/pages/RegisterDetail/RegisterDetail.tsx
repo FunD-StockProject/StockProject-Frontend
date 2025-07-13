@@ -279,6 +279,7 @@ const RegisterDetail = () => {
     }
 
     const res = await fetchAuthRegister(values.email, values.name, new Date(values.birth), true, 'KAKAO');
+
     console.log(2, res);
     navigate(webPath.registerDone());
   };
