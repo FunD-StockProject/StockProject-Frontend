@@ -46,7 +46,7 @@ const ButtonContainer = styled('div')({
 });
 
 const StyledButton = styled('button')({
-  fontSize: '15px',
+  fontSize: '14px',
   lineHeight: 1.5,
   width: '160px',
   borderRadius: '8px',
@@ -56,6 +56,7 @@ const StyledButton = styled('button')({
 });
 
 const Close24HourButton = styled(StyledButton)({
+  // ...theme.font.body14Regular,
   backgroundColor: theme.colors.primary0,
   color: theme.colors.grayscale90,
   border: `1px solid ${theme.colors.grayscale10}`,

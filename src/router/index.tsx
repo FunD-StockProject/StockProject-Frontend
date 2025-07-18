@@ -17,6 +17,7 @@ import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
+import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 
 export const webPath = {
   search: () => '/search',
@@ -35,6 +36,7 @@ export const webPath = {
   labStockSelection: () => '/lab/stock/selection',
   labStockPurchase: () => '/lab/stock/purchase',
   labStockSearch: () => '/lab/stock/search',
+  labStockRecordSheet: () => '/lab/stock/recordsheet',
 };
 
 const Root = () => {
@@ -68,6 +70,8 @@ const routes = [
       { path: webPath.labResult(), element: <Result /> },
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
+      { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
+
     ],
   },
   { path: webPath.usage(), element: <Usage /> },
