@@ -22,3 +22,13 @@ export interface WordCloudItem {
   orientation: boolean;
   color: number;
 }
+
+export interface ExperimentItem {
+  id: number,
+  name: string,
+  logo: string,
+  buyPrice: number,
+  buyScore: number,
+  currentPrice: number,
+  currentScore: number,
+}
