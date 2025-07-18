@@ -13,26 +13,19 @@ import {
   SummaryLabel,
   SummaryValue,
   StatusSection,
-  StatusTitle,
   StatusMessage,
   MessageLink,
   Tab,
-  ExperimentTable,
-  ExperimentRow,
-  ExperimentCell,
-  ExperimentHeader,
-  ExperimentLogo,
-  PriceText,
-  ExperimentText,
   AddStockButtonWrapper,
   AddStockButton,
-  ExperimentHeaderCell,
 } from './Lab.Style';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import SamsungLogoSVGURL from '@assets/sangsung.svg?url';
 import AddStockSVG from '@assets/icons/addStock.svg?react';
 import { ExperimentItem } from '@ts/Interfaces';
+import ExperimentList from '@components/Lab/StockRecordSheet/ExperimentList/ExpermentList';
+import { StatusTitle } from '@components/Lab/Common.Style';
 
 const mocksummaryMetrics = [
   { label: '총 실험 수', value: 12 },
@@ -49,6 +42,8 @@ const mockExperiments: ExperimentItem[] = [
     buyScore: 50,
     currentPrice: 60000,
     currentScore: 60,
+    autoSellIn: 3,
+    buyDate: '24.11.01',
   },
   {
     id: 2,
@@ -58,6 +53,118 @@ const mockExperiments: ExperimentItem[] = [
     buyScore: 50,
     currentPrice: 60000,
     currentScore: 60,
+    autoSellIn: 2,
+    buyDate: '24.11.05',
+  },
+  {
+    id: 3,
+    name: '애플',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 70000,
+    buyScore: 65,
+    currentPrice: 80000,
+    currentScore: 68,
+    autoSellIn: 1,
+    buyDate: '24.11.10',
+  },
+  {
+    id: 4,
+    name: '테슬라',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 90000,
+    buyScore: 72,
+    currentPrice: 88000,
+    currentScore: 70,
+    autoSellIn: 0,
+    buyDate: '24.11.15',
+  },
+  {
+    id: 5,
+    name: '네이버',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 1000,
+    buyScore: 80,
+    currentPrice: 1300,
+    currentScore: 85,
+    autoSellIn: 2,
+    buyDate: '24.11.18',
+  },
+  {
+    id: 6,
+    name: '카카오',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 600,
+    buyScore: 47,
+    currentPrice: 60000,
+    currentScore: 45,
+    autoSellIn: 3,
+    buyDate: '24.11.',
+  },
+  {
+    id: 7,
+    name: '현대차',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 95000,
+    buyScore: 66,
+    currentPrice: 99000,
+    currentScore: 70,
+    autoSellIn: 4,
+    buyDate: '24.11.23',
+  },
+  {
+    id: 8,
+    name: 'LG화학',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 500000,
+    buyScore: 85,
+    currentPrice: 510000,
+    currentScore: 87,
+    autoSellIn: 0,
+    buyDate: '24.11.26',
+  },
+  {
+    id: 9,
+    name: '마이크로소프트',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 310000,
+    buyScore: 78,
+    currentPrice: 330000,
+    currentScore: 82,
+    autoSellIn: 5,
+    buyDate: '24.11.28',
+  },
+  {
+    id: 10,
+    name: '엔비디아',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 450000,
+    buyScore: 90,
+    currentPrice: 470000,
+    currentScore: 92,
+    autoSellIn: 1,
+    buyDate: '24.12.01',
+  },
+  {
+    id: 11,
+    name: '아마존',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 180000,
+    buyScore: 58,
+    currentPrice: 176000,
+    currentScore: 56,
+    autoSellIn: 2,
+    buyDate: '24.12.03',
+  },
+  {
+    id: 12,
+    name: '구글',
+    logo: SamsungLogoSVGURL,
+    buyPrice: 200000,
+    buyScore: 62,
+    currentPrice: 2000,
+    currentScore: 67,
+    autoSellIn: 4,
+    buyDate: '24.12.05',
   },
 ];
 
@@ -120,7 +227,7 @@ const Lab = () => {
               <SummarySection>
                 <SummaryTitle>모의 매수 현황</SummaryTitle>
                 <SummaryCardContainer>
-                  <SummaryCard>
+                  <SummaryCard onClick={() => navigate(webPath.labStockRecordSheet())}>
                     <SummaryLabel>{mocksummaryMetrics[0].label}</SummaryLabel>
                     <SummaryValue>{mocksummaryMetrics[0].value}회</SummaryValue>
                   </SummaryCard>
@@ -137,50 +244,9 @@ const Lab = () => {
 
               <StatusSection>
                 <StatusTitle>
-                  진행중인 실험 {mockExperiments.length} 개
+                  진행중인 실험 {mockExperiments.length} 회
                 </StatusTitle>
-                <ExperimentTable>
-                  <ExperimentHeader>
-                    <ExperimentHeaderCell>매수일/상태</ExperimentHeaderCell>
-                    <ExperimentHeaderCell style={{ flex: 2 }}>종목명</ExperimentHeaderCell>
-                    <ExperimentHeaderCell>매수시점</ExperimentHeaderCell>
-                    <ExperimentHeaderCell>현재시점</ExperimentHeaderCell>
-                    <ExperimentHeaderCell>수익률</ExperimentHeaderCell>
-                  </ExperimentHeader>
-                  {mockExperiments.map((item) => {
-                    const scoreDiff = item.currentScore - item.buyScore;
-                    const scoreDiffPercent = ((scoreDiff / item.buyScore) * 100).toFixed(0);
-                    return (
-                      <ExperimentRow key={item.id}>
-                        <ExperimentCell>
-                          <div>25.05.06</div>
-                          <PriceText>실험중 (D-2)</PriceText>
-                        </ExperimentCell>
-                        <ExperimentCell style={{ flexDirection: 'row', flex: 2 }}>
-                          <ExperimentLogo src={item.logo} alt="logo" />
-                          <ExperimentText>{item.name}</ExperimentText>
-                        </ExperimentCell>
-                        <ExperimentCell>
-                          <div>{item.buyScore}점</div>
-                          <PriceText>{item.buyPrice.toLocaleString()}</PriceText>
-                        </ExperimentCell>
-                        <ExperimentCell >
-                          <div>{item.currentScore}점</div>
-                          <PriceText>{item.currentPrice.toLocaleString()}</PriceText>
-                        </ExperimentCell>
-                        <ExperimentCell>
-                          <div style={{ textAlign: 'center' }}>
-                            {scoreDiff >= 0 ? '+' : ''}
-                            {scoreDiff.toLocaleString()}점
-                            <PriceText isPositive={scoreDiff >= 0}>
-                              ({scoreDiffPercent}%)
-                            </PriceText>
-                          </div>
-                        </ExperimentCell>
-                      </ExperimentRow>
-                    );
-                  })}
-                </ExperimentTable>
+                <ExperimentList experiment={mockExperiments} />
                 <AddStockButtonWrapper>
                   <AddStockButton onClick={handleIntroClick}>
                     <AddStockSVG />

@@ -15,10 +15,11 @@ export const TopBar = styled.div<{ statusRate: number }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
+  height: 64px;
   padding: 24px;
+  box-sizing: border-box;
   border-bottom: 4px solid ${theme.colors.sub_gray11};
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -157,3 +158,6 @@ export const Divider = styled.div`
   margin: 24px -24px;
 `;
 
+export const StatusTitle = styled.p`
+  ${theme.font.title20Medium}
+`;

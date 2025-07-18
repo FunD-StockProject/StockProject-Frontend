@@ -31,4 +31,6 @@ export interface ExperimentItem {
   buyScore: number,
   currentPrice: number,
   currentScore: number,
+  autoSellIn: number,
+  buyDate: string,
 }
