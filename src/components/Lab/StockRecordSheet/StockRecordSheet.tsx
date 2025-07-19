@@ -9,7 +9,7 @@ import {
   FilterTab,
   SortDropdown,
   TitleContainer,
-} from "./StockRecordSheet.style";
+} from "./StockRecordSheet.Style";
 
 import SamsungLogoSVGURL from '@assets/sangsung.svg?url';
 import { ExperimentItem } from "@ts/Interfaces";
@@ -153,7 +153,7 @@ const mockExperiments: ExperimentItem[] = [
 const StockRecordSheet = () => {
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<'active' | 'completed'>('active');
-  const [sortOption, setSortOption] = useState<'latest' | 'oldest' | 'highReturn' | 'lowReturn'>('latest');
+  const [sortOption, setSortOption] = useState<'latest' | 'oldest' | 'gain'>('latest');
   const filteredExperiments = mockExperiments
     .filter((item) => {
       if (statusFilter === 'active') return item.autoSellIn > 0;
@@ -167,8 +167,7 @@ const StockRecordSheet = () => {
       const returnRateA = (a.currentPrice - a.buyPrice) / a.buyPrice;
       const returnRateB = (b.currentPrice - b.buyPrice) / b.buyPrice;
 
-      if (sortOption === 'highReturn') return returnRateB - returnRateA;
-      if (sortOption === 'lowReturn') return returnRateA - returnRateB;
+      if (sortOption === 'gain') return returnRateB - returnRateA;
       return 0;
     });
   return (
@@ -185,7 +184,7 @@ const StockRecordSheet = () => {
           <StatusTitle>
             총 실험 {mockExperiments.length} 회
           </StatusTitle>
-          <SortDropdown value={sortOption} onChange={(e) => setSortOption(e.target.value as any)}>
+          <SortDropdown value={sortOption} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortOption(e.target.value as 'latest' | 'oldest' | 'gain')}>
             <option value="latest">최신순</option>
             <option value="oldest">오래된 순</option>
             <option value="gain">수익률 순</option>
