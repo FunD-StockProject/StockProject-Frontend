@@ -266,9 +266,152 @@ const MyPageUserInfo = () => {
   );
 };
 
+const MyPageProfileContainer = styled.div({
+  height: '294px',
+  background: 'linear-gradient(180deg, #3457FD 0%, #5270FF 100%)',
+  display: 'flex',
+  alignItems: 'end',
+  padding: '24px',
+  boxSizing: 'border-box',
+  gap: '12px',
+});
+
+const MyPageProfile = ({
+  profileImg,
+  username,
+  useremail,
+}: {
+  profileImg?: string;
+  username?: string;
+  useremail?: string;
+}) => {
+  return (
+    <MyPageProfileContainer>
+      <MyPageProfileImage>
+        <img src={profileImg ?? ProfilePNG} />
+        <EditCircleSVG />
+      </MyPageProfileImage>
+      <MyPageProfileContents>
+        <p>{username}</p>
+        <MyPageProfileContentsButton>
+          <p>{useremail}</p>
+          <RightArrowThickSVG />
+        </MyPageProfileContentsButton>
+      </MyPageProfileContents>
+    </MyPageProfileContainer>
+  );
+};
+
+const MyPageDetailContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '7px',
+  padding: '16px 20px',
+});
+
+const MyPageDetailTitle = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '4px 0',
+
+  ['>p']: {
+    margin: '0',
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#FFFFFF',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+
+    ['>span']: {
+      fontSize: '12px',
+      fontWeight: '500',
+      color: '#C6C7C8',
+    },
+  },
+
+  ['>svg']: {
+    width: '28px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    stroke: '#707374',
+  },
+});
+
+const MyPageDetailGrid = styled.div(
+  ({ count }: { count: number }) => ({
+    gridTemplateColumns: `repeat(${count}, 1fr)`,
+  }),
+  {
+    display: 'grid',
+    columnGap: '12px',
+  },
+);
+
+const MyPageDetailContents = styled.div({
+  padding: '12px',
+  background: '#1D1E1F',
+  display: 'flex',
+  gap: '6px',
+  flexDirection: 'column',
+  alignItems: 'center',
+  borderRadius: '8px',
+
+  ['>p']: {
+    margin: '0',
+
+    ['&.title']: {
+      fontSize: '14px',
+      fontWeight: '600',
+      color: '#FFFFFF',
+    },
+
+    ['&.content']: {
+      fontSize: '14px',
+      fontWeight: '500',
+      color: '#C6C7C8',
+    },
+  },
+});
+
 const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
-  const { profileImg, username, useremail } = {};
+
+  const profileImg = localStorage.getItem('profileImg') ?? undefined;
+  const username = localStorage.getItem('username') ?? '';
+  const useremail = localStorage.getItem('useremail') ?? '';
+
+  const stockDetails = [
+    {
+      title: '관심종목',
+      content: `8개`,
+      onClick: () => {},
+    },
+    {
+      title: '변동알림',
+      content: `7개`,
+      onClick: () => {},
+    },
+  ];
+
+  const labDetails = [
+    {
+      title: '실험 중',
+      content: `8개`,
+      onClick: () => {},
+    },
+    {
+      title: '총 실험 수',
+      content: `20개`,
+      onClick: () => {},
+    },
+    {
+      title: '성공률',
+      content: `62.5%`,
+      onClick: () => {},
+    },
+  ];
 
   const defaultButtons = [
     { text: '서비스 가이드', onClick: () => {} },
@@ -285,30 +428,50 @@ const MyPage = () => {
 
   return (
     <MyPageContainer>
-      <div
-        style={{
-          height: '294px',
-          background: 'linear-gradient(180deg, #3457FD 0%, #5270FF 100%)',
-          display: 'flex',
-          alignItems: 'end',
-          padding: '24px',
-          boxSizing: 'border-box',
-          gap: '12px',
-        }}
-      >
-        <MyPageProfileImage>
-          <img src={ProfilePNG} />
-          <EditCircleSVG />
-        </MyPageProfileImage>
-        <MyPageProfileContents>
-          <p>아직 정보가 없어요!</p>
-          <MyPageProfileContentsButton>
-            <p>로그인을 진행해주세요</p>
-            <RightArrowThickSVG />
-          </MyPageProfileContentsButton>
-        </MyPageProfileContents>
-      </div>
+      {isLogin ? (
+        <MyPageProfile profileImg={profileImg} username={username} useremail={useremail} />
+      ) : (
+        <MyPageProfile username="아직 정보가 없어요!" useremail="로그인을 진행해주세요" />
+      )}
       <MyPageContents>
+        {isLogin && (
+          <>
+            <MyPageDetailContainer>
+              <MyPageDetailTitle>
+                <p>
+                  내 인간지표 <span>| 관심 종목 변동 알림 신청하기</span>
+                </p>
+                <RightArrowThickSVG />
+              </MyPageDetailTitle>
+              <MyPageDetailGrid count={stockDetails.length}>
+                {stockDetails.map((e) => (
+                  <MyPageDetailContents>
+                    <p className="title">{e.title}</p>
+                    <p className="content">{e.content}</p>
+                  </MyPageDetailContents>
+                ))}
+              </MyPageDetailGrid>
+            </MyPageDetailContainer>
+            <span className="divider" />
+            <MyPageDetailContainer>
+              <MyPageDetailTitle>
+                <p>
+                  모의매수 실험 현황 <span>| 내 투자 타이밍은 적절할까</span>
+                </p>
+                <RightArrowThickSVG />
+              </MyPageDetailTitle>
+              <MyPageDetailGrid count={labDetails.length}>
+                {labDetails.map((e) => (
+                  <MyPageDetailContents>
+                    <p className="title">{e.title}</p>
+                    <p className="content">{e.content}</p>
+                  </MyPageDetailContents>
+                ))}
+              </MyPageDetailGrid>
+            </MyPageDetailContainer>
+            <span className="divider" />
+          </>
+        )}
         {defaultButtons.map((e) => (
           <MyPageButton>
             <p>{e.text}</p>
