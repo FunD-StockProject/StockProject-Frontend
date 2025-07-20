@@ -4,7 +4,6 @@ import Lab from '@pages/Lab/Lab';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import Register from '@pages/Register/Register';
-import RegisterDetail from '@pages/RegisterDetail/RegisterDetail';
 import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
 import Usage from '@pages/Usage/Usage';
@@ -13,11 +12,11 @@ import Intro from '@components/Lab/Intro/Intro';
 import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import Result from '@components/Lab/Result/Result';
 import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
+import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
-import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 
 export const webPath = {
   search: () => '/search',
@@ -26,7 +25,6 @@ export const webPath = {
   mypage: () => '/mypage',
   login: () => '/mypage/login',
   register: () => '/mypage/register',
-  registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   withdraw: () => '/mypage/withdraw',
   lab: () => '/lab',
@@ -60,7 +58,6 @@ const routes = [
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
-      { path: webPath.registerDetail(), element: <RegisterDetail /> },
       { path: webPath.registerDone(), element: <RegisterDone /> },
       { path: webPath.withdraw(), element: <Withdraw /> },
       { path: webPath.shortView(), element: <ShortView /> },
@@ -71,7 +68,6 @@ const routes = [
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
-
     ],
   },
   { path: webPath.usage(), element: <Usage /> },

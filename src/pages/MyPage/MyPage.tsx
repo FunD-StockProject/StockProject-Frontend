@@ -423,9 +423,25 @@ const MyPage = () => {
     { text: '개인정보 처리방침', onClick: () => {} },
   ];
 
+  const handleLogout = async () => {
+    if (window.confirm('정말 로그아웃 하시겠어요?')) {
+      const res = await fetchAuthLogout();
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('provider');
+
+      navigate('/');
+      console.log(res);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    navigate(webPath.withdraw());
+  };
+
   const authButtons = [
-    { text: '로그아웃', onClick: () => {} },
-    { text: '계정탈퇴', onClick: () => {} },
+    { text: '로그아웃', onClick: handleLogout },
+    { text: '계정탈퇴', onClick: handleWithdraw },
   ];
 
   const navigate = useNavigate();
@@ -488,7 +504,7 @@ const MyPage = () => {
         ))}
         <span className="divider" />
         {authButtons.map((e) => (
-          <MyPageButton isSub>
+          <MyPageButton isSub onClick={e.onClick}>
             <p>{e.text}</p>
             <RightArrowThickSVG />
           </MyPageButton>

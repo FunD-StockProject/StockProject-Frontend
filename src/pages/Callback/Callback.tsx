@@ -20,7 +20,9 @@ const Callback = () => {
       const provider = location.pathname.split('/').at(-1);
 
       try {
+        console.log(code);
         const res = await fetchLoginKakao(code, state);
+
         console.log('login', res);
 
         localStorage.setItem('access_token', res.access_token);
@@ -30,7 +32,8 @@ const Callback = () => {
 
         navigate('/');
       } catch (err) {
-        navigate(webPath.registerDetail(), {
+        console.log(err);
+        navigate(webPath.register(), {
           state: {
             provider: provider,
             email: null,

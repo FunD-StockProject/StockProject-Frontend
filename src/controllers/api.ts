@@ -25,6 +25,7 @@ const fetchData = async (path: string) => {
   try {
     const url = `${baseURL}${path}`;
     const res = await fetch(url, { method: 'GET', headers: Headers });
+    console.log(await res.json());
     if (!res.ok) {
       throw new Error(`${res.status} Error!!`);
     }
