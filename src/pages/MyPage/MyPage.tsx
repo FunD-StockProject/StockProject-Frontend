@@ -280,10 +280,12 @@ const MyPageProfile = ({
   profileImg,
   username,
   useremail,
+  onClick,
 }: {
   profileImg?: string;
   username?: string;
   useremail?: string;
+  onClick?: () => void;
 }) => {
   return (
     <MyPageProfileContainer>
@@ -293,7 +295,7 @@ const MyPageProfile = ({
       </MyPageProfileImage>
       <MyPageProfileContents>
         <p>{username}</p>
-        <MyPageProfileContentsButton>
+        <MyPageProfileContentsButton onClick={onClick}>
           <p>{useremail}</p>
           <RightArrowThickSVG />
         </MyPageProfileContentsButton>
@@ -426,12 +428,18 @@ const MyPage = () => {
     { text: '계정탈퇴', onClick: () => {} },
   ];
 
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate(webPath.login());
+  };
+
   return (
     <MyPageContainer>
       {isLogin ? (
         <MyPageProfile profileImg={profileImg} username={username} useremail={useremail} />
       ) : (
-        <MyPageProfile username="아직 정보가 없어요!" useremail="로그인을 진행해주세요" />
+        <MyPageProfile username="아직 정보가 없어요!" useremail="로그인을 진행해주세요" onClick={handleLogin} />
       )}
       <MyPageContents>
         {isLogin && (
@@ -540,6 +548,7 @@ const MyPageProfileContents = styled.div({
 const MyPageProfileContentsButton = styled.button({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   width: '100%',
   background: 'none',
   border: 'none',
@@ -577,6 +586,7 @@ const MyPageButton = styled.button(
   {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: '16px 28px',
     width: '100%',
     background: 'none',
