@@ -2,7 +2,13 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import { fetchAuthLogout } from '@controllers/api';
+import EditCircleSVG from '@assets/edit_circle.svg?react';
 import RightArrowSVG from '@assets/icons/rightArrow.svg?react';
+import InstagramSVG from '@assets/instagram.svg?react';
+import LinkedInSVG from '@assets/linkedin.svg?react';
+import ProfilePNG from '@assets/profile.png';
+import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
+import ThreadSVG from '@assets/thread.svg?react';
 
 const MyPageEventBannerContainer = styled.div({
   padding: '24px 12px',
@@ -262,13 +268,182 @@ const MyPageUserInfo = () => {
 
 const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
+  const { profileImg, username, useremail } = {};
+
+  const defaultButtons = [
+    { text: '서비스 가이드', onClick: () => {} },
+    { text: '비즈니스 제안', onClick: () => {} },
+    { text: '고객센터', onClick: () => {} },
+    { text: '서비스 이용약관', onClick: () => {} },
+    { text: '개인정보 처리방침', onClick: () => {} },
+  ];
+
+  const authButtons = [
+    { text: '로그아웃', onClick: () => {} },
+    { text: '계정탈퇴', onClick: () => {} },
+  ];
 
   return (
     <MyPageContainer>
-      <MyPageEventBanner />
-      {!isLogin ? <MyPageLogin /> : <MyPageUserInfo />}
+      <div
+        style={{
+          height: '294px',
+          background: 'linear-gradient(180deg, #3457FD 0%, #5270FF 100%)',
+          display: 'flex',
+          alignItems: 'end',
+          padding: '24px',
+          boxSizing: 'border-box',
+          gap: '12px',
+        }}
+      >
+        <MyPageProfileImage>
+          <img src={ProfilePNG} />
+          <EditCircleSVG />
+        </MyPageProfileImage>
+        <MyPageProfileContents>
+          <p>아직 정보가 없어요!</p>
+          <MyPageProfileContentsButton>
+            <p>로그인을 진행해주세요</p>
+            <RightArrowThickSVG />
+          </MyPageProfileContentsButton>
+        </MyPageProfileContents>
+      </div>
+      <MyPageContents>
+        {defaultButtons.map((e) => (
+          <MyPageButton>
+            <p>{e.text}</p>
+            <RightArrowThickSVG />
+          </MyPageButton>
+        ))}
+        <span className="divider" />
+        {authButtons.map((e) => (
+          <MyPageButton isSub>
+            <p>{e.text}</p>
+            <RightArrowThickSVG />
+          </MyPageButton>
+        ))}
+        <span className="divider" />
+        <MyPageSNSContainer>
+          <InstagramSVG />
+          <LinkedInSVG />
+          <ThreadSVG />
+        </MyPageSNSContainer>
+      </MyPageContents>
+      {/* <MyPageEventBanner />
+      {!isLogin ? <MyPageLogin /> : <MyPageUserInfo />} */}
     </MyPageContainer>
   );
 };
+
+const MyPageProfileImage = styled.div({
+  position: 'relative',
+  width: '64px',
+  height: 'auto',
+  aspectRatio: '1 / 1',
+  display: 'flex',
+
+  ['>img']: {
+    width: '100%',
+    height: '100%',
+  },
+
+  ['>svg']: {
+    position: 'absolute',
+    fill: '#ADB5BD',
+    background: '#495057',
+    borderRadius: '999px',
+    width: '20px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    bottom: '0',
+    right: '0',
+  },
+});
+
+const MyPageProfileContents = styled.div({
+  gap: '4px',
+  flexGrow: '1',
+  display: 'flex',
+  flexDirection: 'column',
+
+  ['>p']: {
+    margin: '0',
+    color: '#FFFFFF',
+    fontSize: '18px',
+    fontWeight: '600',
+  },
+});
+
+const MyPageProfileContentsButton = styled.button({
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '100%',
+  background: 'none',
+  border: 'none',
+  padding: '0',
+
+  ['>p']: {
+    margin: '0',
+    color: '#CBF5FF',
+    fontSize: '16px',
+    fontWeight: '500',
+  },
+
+  ['>svg']: {
+    width: '28px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+  },
+});
+
+const MyPageContents = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  ['>span.divider']: {
+    background: '#1D1E1F',
+    height: '4px',
+  },
+});
+
+const MyPageButton = styled.button(
+  ({ isSub }: { isSub?: true }) => ({
+    ['>p']: {
+      color: isSub ? '#707374' : '#C6C7C8',
+    },
+  }),
+  {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '16px 28px',
+    width: '100%',
+    background: 'none',
+    border: 'none',
+
+    ['>p']: {
+      margin: '0',
+      fontSize: '18px',
+      fontWeight: '600',
+    },
+
+    ['>svg']: {
+      width: '28px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+      stroke: '#707374',
+    },
+  },
+);
+
+const MyPageSNSContainer = styled.div({
+  display: 'flex',
+  padding: '24px 28px',
+  gap: '20px',
+  ['>svg']: {
+    width: '24px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: '#3457FD',
+  },
+});
 
 export default MyPage;
