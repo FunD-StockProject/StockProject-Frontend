@@ -1,13 +1,19 @@
-import HistorySection from "./HistorySection/HistorySection";
-import HumanIndexSection from "./HumanIndexSection/HumanIndexSection";
-import InvestmentPatternSection from "./InvestmentPatternSection/InvestmentPatternSection";
-import { Container, Title, Description, Highlight, } from "./LabResult.Style";
-import ScoreTable from "./ScoreTable/ScoreTable";
+
+import ScoreTable from './ScoreTable/ScoreTable';
+import HumanIndexSection from './HumanIndexSection/HumanIndexSection';
+import InvestmentPatternSection from './InvestmentPatternSection/InvestmentPatternSection';
+import HistorySection from './HistorySection/HistorySection';
 import ExperimentSummary from './ExperimentSummary/ExperimentSummary';
-// import HumanTypeGuide from './HumanTypeGuide/HumanTypeGuide';
+import HumanTypeBottomSheet from './BottomSheet/HumanTypeBottomSheet';
+import QuadrantBottomSheet from './BottomSheet/QuadrantBottomSheet';
+import { useState } from 'react';
+import { Container, Description, Title, Highlight } from './LabResult.Style';
 
 
 const LabResult = () => {
+  const [showHumanTypeSheet, setShowHumanTypeSheet] = useState(false);
+  const [showQuadrantSheet, setShowQuadrantSheet] = useState(false);
+
   // 샘플 데이터
   const scoreTableData = [
     { range: '60점 이하', avg: '-2.3%', median: '-1.8%' },
@@ -59,20 +65,41 @@ const LabResult = () => {
         다음 매수 때는, <Highlight>✨70~80점 구간</Highlight>에 주목해보세요!
       </Description>
       <ScoreTable data={scoreTableData} />
-      <ExperimentSummary
-        totalExperiments={experimentSummaryData.totalExperiments}
-        highestProfit={experimentSummaryData.highestProfit}
-        lowestProfit={experimentSummaryData.lowestProfit}
+      <ExperimentSummary {...experimentSummaryData} />
+      <HumanIndexSection
+        userScore={humanIndexData.userScore}
+        userType={humanIndexData.userType}
+        userNickName="김철수"
+        successRate={humanIndexData.successRate}
+        maintainRate={humanIndexData.maintainRate}
+        purchasedCount={humanIndexData.purchasedCount}
+        profitCount={humanIndexData.profitCount}
+        onShowTypes={() => setShowHumanTypeSheet(true)}
       />
-      <HumanIndexSection {...humanIndexData} userNickName="뚜루미" />
-      {/* <HumanTypeGuide /> */}
-      <InvestmentPatternSection {...investmentPatternData} />
+
+      <InvestmentPatternSection
+        patternType={investmentPatternData.patternType}
+        userNickName="김철수"
+        onShowQuadrant={() => setShowQuadrantSheet(true)}
+      />
+
       <HistorySection
         data={historyData}
         patternType={investmentPatternData.patternType}
         patternDescription={investmentPatternData.patternDescription}
+        onShowQuadrant={() => setShowQuadrantSheet(true)}
       />
 
+
+      <HumanTypeBottomSheet
+        isOpen={showHumanTypeSheet}
+        onClose={() => setShowHumanTypeSheet(false)}
+      />
+
+      <QuadrantBottomSheet
+        isOpen={showQuadrantSheet}
+        onClose={() => setShowQuadrantSheet(false)}
+      />
     </Container>
   );
 };

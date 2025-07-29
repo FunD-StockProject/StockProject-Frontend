@@ -1,7 +1,6 @@
 import { ChartContainer } from './ScatterChart.Style';
 import { theme } from '@styles/themes';
 import { ReactElement, useMemo } from 'react';
-import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 
 interface ScatterDataPoint {
   x: number; // 인간지표
@@ -15,9 +14,9 @@ interface ScatterChartProps {
 }
 
 function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
-  const width = 400;
-  const height = 300;
-  const margin = { top: 40, right: 40, bottom: 40, left: 40 };
+  const width = 350;
+  const height = 250;
+  const margin = { top: 0, right: 0, bottom: 0, left: 0 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
@@ -40,7 +39,7 @@ function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
     }
   };
 
-  const highlightQuadrant = getHighlightQuadrant(patternType);
+  const highlightQuadrant = patternType && getHighlightQuadrant(patternType);
 
   const points = useMemo(() => {
     return data.map((point, i) => (
@@ -55,7 +54,7 @@ function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
           x={xScale(point.x) + 8}
           y={yScale(point.y) - 4}
           textAnchor="start"
-          fill={theme.colors.sub_gray7}
+          fill={theme.colors.sub_white}
           fontSize="12"
           fontWeight="500"
         >
@@ -160,17 +159,6 @@ function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
           인간지표
         </text>
 
-        {/* 설명 텍스트 (오른쪽 상단) */}
-
-        <text
-          x={width - margin.right}
-          y={margin.top - 50}
-          textAnchor="end"
-          fill="rgba(255,255,255,0.6)"
-          fontSize="12"
-        >
-          <QuestionMarkSVG /> 각 사분면은 무슨 패턴이에요?
-        </text>
       </svg>
     </ChartContainer>
   );

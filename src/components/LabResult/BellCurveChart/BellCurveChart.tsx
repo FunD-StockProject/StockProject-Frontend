@@ -11,12 +11,13 @@ import {
   ReferenceLine,
   ReferenceDot,
 } from 'recharts';
-
+import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 interface BellCurveChartProps {
   userScore: number;
   userType: string;
   successRate: string;
   maintainRate: string;
+  onShowTypes?: () => void;
 }
 
 interface DataPoint {
@@ -24,7 +25,7 @@ interface DataPoint {
   y: number;
 }
 
-function BellCurveChart({ userScore, userType, successRate, maintainRate }: BellCurveChartProps): ReactElement {
+function BellCurveChart({ userScore, userType, successRate, maintainRate, onShowTypes }: BellCurveChartProps): ReactElement {
   // 정규분포 데이터 생성
   const data = useMemo(() => {
     const points: DataPoint[] = [];
@@ -42,14 +43,32 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate }: Bell
   return (
     <ChartContainer>
       <TooltipContainer style={{ position: 'absolute', top: '30px', left: '0px', zIndex: 10 }}>
-        <p>이는 <span style={{ color: 'red' }}>성공률이 {successRate}</span>이며,</p>
+        <p>이는 <span style={{ color: theme.colors.red }}>성공률이 {successRate}</span>이며,</p>
         <p>전체 유저 중 {maintainRate}가</p>
-        <p><span style={{ color: 'red' }}> {getTypeEmoji(userType)}인간 아님  지표</span>에 해당됩니다.</p>
+        <p><span style={{ color: theme.colors.red }}> {getTypeEmoji(userType)}인간 아님  지표</span>에 해당됩니다.</p>
       </TooltipContainer>
+
+      {onShowTypes && (
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          zIndex: 10,
+          background: 'none',
+          border: 'none',
+          color: theme.colors.sub_gray5,
+          fontSize: '14px',
+          fontWeight: 600,
+          cursor: 'pointer'
+        }} onClick={onShowTypes}>
+          <QuestionMarkSVG />다른 유형은 뭐가 있어요?
+        </div>
+      )}
+
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart
           data={data}
-        // margin={{ top: 20, right: 30, left: 30, bottom: 30 }}
+          margin={{ top: 20, right: 30, left: 30, bottom: 30 }}
         >
           <defs>
             <linearGradient id="bellCurveGradient" x1="0" y1="0" x2="0" y2="1">
@@ -87,7 +106,7 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate }: Bell
             y={userYPosition}
             r={4}
             fill={theme.colors.sub_blue6}
-            stroke="#fff"
+            stroke={theme.colors.sub_white}
             strokeWidth={2}
           />
         </AreaChart>
@@ -95,5 +114,4 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate }: Bell
     </ChartContainer>
   );
 }
-
 export default BellCurveChart; 

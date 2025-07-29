@@ -16,7 +16,7 @@ export const HUMAN_TYPE_LIST = [
   },
   {
     type: "역행 투자형",
-    emoji: "🪃",
+    emoji: "📉",
     description: "점수 낮을 때 매수 → 손실",
     background: theme.colors.sub_blue8,
   },

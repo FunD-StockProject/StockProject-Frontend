@@ -2,28 +2,45 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const SectionContainer = styled.div`
-  
-  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
 `;
 
-export const Title = styled.div`
+export const Title = styled.h3`
   ${theme.font.title20Semibold};
-  margin-bottom: 10px;
   color: ${theme.colors.sub_white};
+  margin-bottom: 16px;
 `;
 
 export const PatternDisplay = styled.div`
-  ${theme.font.body18Semibold}
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 `;
 
 export const PatternBadge = styled.span<{ background: string }>`
   background: ${props => props.background};
   color: ${theme.colors.sub_white};
   padding: 4px 12px;
-  height: 32px;
-  display: inline-flex;
+  border-radius: 16px;
+  font-weight: 600;
+`;
+
+export const QuestionButton = styled.button`
+  background: none;
+  border: none;
+  color: ${theme.colors.sub_blue6};
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
   align-items: center;
-  border-radius: 50px;
-  margin: 0 4px;
-  ${theme.font.body16Medium};
+  gap: 4px;
+  
+  &:hover {
+    text-decoration: underline;
+  }
 `;

@@ -10,6 +10,22 @@ export const Title = styled.h3`
   ${theme.font.title20Semibold};
   color: ${theme.colors.sub_white};
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  button {
+    background: none;
+    border: none;
+    color: ${theme.colors.sub_blue6};
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export const TypeDisplay = styled.div`
@@ -21,7 +37,7 @@ export const TypeDisplay = styled.div`
 
 export const TypeBadge = styled.span<{ color: string }>`
   background: ${props => props.color};
-  color: #fff;
+  color: ${theme.colors.sub_white};
   padding: 4px 12px;
   border-radius: 16px;
   font-weight: 600;
@@ -60,6 +76,7 @@ export const UserNameText = styled.span`
 
   display: flex;
   gap: 6px;
+  align-items: center;
 `;
 
 export const NumberBadge = styled.span`
@@ -68,10 +85,8 @@ export const NumberBadge = styled.span`
   padding: 4px 8px;
   border-radius: 50px;
   ${theme.font.body14Medium}
-  font-weight: 600;
 `;
 
 export const HighlightedText = styled.span`
   color: ${theme.colors.grayscale50};
-  font-weight: 600;
 `; 
