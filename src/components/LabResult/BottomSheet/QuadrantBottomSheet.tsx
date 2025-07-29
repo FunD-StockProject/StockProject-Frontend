@@ -1,49 +1,13 @@
 import BottomSheet from './BottomSheet';
 import ScatterChart from '../ScatterChart/ScatterChart';
-import { LegendContainer, LegendTitle, LegendGrid, LegendCell, QuadrantChart, QuadrantTitle, QuadrantGrid, QuadrantDescription } from './QuadrantBottomSheet.Style';
-import { theme } from '@styles/themes';
-import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
+import { LegendContainer, LegendTitle, LegendGrid, LegendCell, QuadrantChart, } from './QuadrantBottomSheet.Style';
+
 import { HUMAN_TYPE_LIST } from '@constants/patternTypes';
 
 interface QuadrantBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const QUADRANT_DATA = [
-  {
-    position: 'top-left',
-    title: '◆ 가치 선점형',
-    description: ': 인간지표 낮을 때 매수',
-    result: '→ 수익',
-    arrow: '↑',
-    iconColor: '#3B82F6' // 파란색
-  },
-  {
-    position: 'top-right',
-    title: '✓ 트렌드 선점형',
-    description: ': 인간지표 높을 때 매수',
-    result: '→ 수익',
-    arrow: '↑',
-    iconColor: '#10B981' // 초록색
-  },
-  {
-    position: 'bottom-left',
-    title: ',📉 역행 투자형',
-    description: ': 인간지표 낮을 때 매수',
-    result: '→ 손실',
-    arrow: '↓',
-    iconColor: '#8B4513' // 갈색
-  },
-  {
-    position: 'bottom-right',
-    title: '! 후행 추종형',
-    description: ': 인간지표 높을 때 매수',
-    result: '→ 손실',
-    arrow: '↓',
-    iconColor: '#EF4444' // 빨간색
-  }
-];
 
 function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
   return (
@@ -79,7 +43,7 @@ function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
             <div style={{ marginBottom: '20px' }}>
               <ScatterChart
                 data={[]}
-                patternType="" onShowQuadrant={() => { }} />
+                patternType="" />
             </div>
             {/* 사분면 설명 추가 */}
             <div style={{
