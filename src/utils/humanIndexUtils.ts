@@ -4,10 +4,10 @@ import { theme } from "@styles/themes";
 export const getTypeEmoji = (type: string): string => {
   switch (type) {
     case '완전 인간 아님': return '😱';
-    case '인간 아님': return '😞';
+    case '인간 아님': return '🙁';
     case '평범 인간': return '😐';
-    case '인간 맞음': return '🙂';
-    case '인간 완전 맞음': return '😂';
+    case '인간 맞음': return '☺️';
+    case '인간 완전 맞음': return '😆';
     default: return '🚨';
   }
 };

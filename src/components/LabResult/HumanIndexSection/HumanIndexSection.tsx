@@ -1,17 +1,15 @@
-import { useState } from 'react';
+
 import BellCurveChart from '../BellCurveChart/BellCurveChart';
 import {
   SectionContainer,
   Title,
   TypeDisplay,
   TypeBadge,
-  InfoButton,
   SummaryText,
   UserNameText,
   Highlight
 } from './HumanIndexSection.Style';
-import info from '@assets/info.svg';
-import { getTypeColor } from '@utils/humanIndexUtils';
+import { getTypeColor, getTypeEmoji } from '@utils/humanIndexUtils';
 
 interface HumanIndexSectionProps {
   userScore: number;
@@ -34,17 +32,12 @@ function HumanIndexSection({
   profitCount,
   onShowTypes
 }: HumanIndexSectionProps) {
-  const [showTooltip, setShowTooltip] = useState(false);
-
   return (
     <SectionContainer>
-      <Title>인간지표</Title>
+      <Title>나의 인간지표는?</Title>
       <TypeDisplay>
         <UserNameText>{userNickName}님은</UserNameText>
-        <TypeBadge color={getTypeColor(userType)}>{userType}</TypeBadge>
-        <InfoButton onClick={() => setShowTooltip(!showTooltip)}>
-          <img src={info} alt="info" />
-        </InfoButton>
+        <TypeBadge color={getTypeColor(userType)}> {getTypeEmoji(userType)} {userType} </TypeBadge> 지표!
       </TypeDisplay>
       <BellCurveChart
         userScore={userScore}

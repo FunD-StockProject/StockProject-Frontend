@@ -1,5 +1,5 @@
 import { getTypeEmoji } from '@utils/humanIndexUtils';
-import { ChartContainer, TooltipContainer } from './BellCurveChart.Style';
+import { ChartContainer, TooltipContainer, QuestionButton } from './BellCurveChart.Style';
 import { theme } from '@styles/themes';
 import { ReactElement, useMemo } from 'react';
 import {
@@ -49,20 +49,9 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate, onShow
       </TooltipContainer>
 
       {onShowTypes && (
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          zIndex: 10,
-          background: 'none',
-          border: 'none',
-          color: theme.colors.sub_gray5,
-          fontSize: '14px',
-          fontWeight: 600,
-          cursor: 'pointer'
-        }} onClick={onShowTypes}>
+        <QuestionButton onClick={onShowTypes}>
           <QuestionMarkSVG />다른 유형은 뭐가 있어요?
-        </div>
+        </QuestionButton>
       )}
 
       <ResponsiveContainer width="100%" height={300}>
