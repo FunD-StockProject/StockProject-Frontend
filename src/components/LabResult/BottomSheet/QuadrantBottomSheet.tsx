@@ -56,7 +56,7 @@ function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
               zIndex: 5
             }}>
               {/* Top-Left Quadrant */}
-              <div style={{ position: 'absolute', top: '60px', left: '40px', maxWidth: '120px' }}>
+              <div style={{ position: 'absolute', top: '40px', left: '40px', maxWidth: '120px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
                   {HUMAN_TYPE_LIST[0].emoji} {HUMAN_TYPE_LIST[0].type}
                 </div>
@@ -76,7 +76,7 @@ function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
               </div>
 
               {/* Top-Right Quadrant */}
-              <div style={{ position: 'absolute', top: '60px', right: '80px', maxWidth: '120px' }}>
+              <div style={{ position: 'absolute', top: '40px', right: '50px', maxWidth: '120px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
                   {HUMAN_TYPE_LIST[1].emoji} {HUMAN_TYPE_LIST[1].type}
                 </div>
@@ -96,7 +96,7 @@ function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
               </div>
 
               {/* Bottom-Left Quadrant */}
-              <div style={{ position: 'absolute', bottom: '60px', left: '40px', maxWidth: '120px' }}>
+              <div style={{ position: 'absolute', bottom: '30px', left: '40px', maxWidth: '120px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
                   {HUMAN_TYPE_LIST[2].emoji} {HUMAN_TYPE_LIST[2].type}
                 </div>
@@ -116,7 +116,7 @@ function QuadrantBottomSheet({ isOpen, onClose }: QuadrantBottomSheetProps) {
               </div>
 
               {/* Bottom-Right Quadrant */}
-              <div style={{ position: 'absolute', bottom: '60px', right: '80px', maxWidth: '120px' }}>
+              <div style={{ position: 'absolute', bottom: '30px', right: '50px', maxWidth: '120px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
                   {HUMAN_TYPE_LIST[3].emoji} {HUMAN_TYPE_LIST[3].type}
                 </div>

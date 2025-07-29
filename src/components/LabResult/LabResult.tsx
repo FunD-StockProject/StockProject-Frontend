@@ -37,11 +37,11 @@ const LabResult = () => {
   };
 
   const historyData = [
-    { x: -30, y: 15, label: '0418' },
-    { x: -20, y: 12, label: '0420' },
-    { x: -25, y: -8, label: '0419' },
-    { x: 35, y: 18, label: '0421' },
-    { x: 40, y: -10, label: '0422' }
+    { x: -10, y: 15, label: '0418' },
+    { x: -20, y: 22, label: '0420' },
+    { x: 10, y: -15, label: '0419' },
+    { x: 30, y: 18, label: '0421' },
+    { x: 25, y: -10, label: '0422' }
   ];
 
   const experimentSummaryData = {

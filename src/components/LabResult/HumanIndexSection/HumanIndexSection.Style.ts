@@ -6,7 +6,7 @@ export const SectionContainer = styled.div`
   margin-bottom: 24px;
 `;
 
-export const Title = styled.h3`
+export const Title = styled.div`
   ${theme.font.title20Semibold};
   color: ${theme.colors.sub_white};
   margin-bottom: 16px;
@@ -29,6 +29,7 @@ export const Title = styled.h3`
 `;
 
 export const TypeDisplay = styled.div`
+  ${theme.font.body18Medium};
   display: flex;
   align-items: center;
   gap: 8px;

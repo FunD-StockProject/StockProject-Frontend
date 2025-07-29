@@ -16,12 +16,12 @@ interface ScatterChartProps {
 function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
   const width = 350;
   const height = 250;
-  const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+  const margin = { top: 50, right: 0, bottom: 0, left: 0 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
   const xScale = (x: number) => margin.left + ((x + 50) / 100) * innerWidth;
-  const yScale = (y: number) => margin.top + ((20 - y) / 40) * innerHeight;
+  const yScale = (y: number) => margin.top + ((50 - y) / 100) * innerHeight;
 
   // patternType에 따른 하이라이트 사분면 결정
   const getHighlightQuadrant = (patternType?: string) => {
@@ -101,16 +101,16 @@ function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
     let path = '';
     switch (highlightQuadrant) {
       case 'top-left':
-        path = `M ${xScale(-50)} ${yScale(0) - 5} L ${xScale(0) - 5} ${yScale(0) - 5} L ${xScale(0) - 5} ${yScale(20) - 5} L ${xScale(-50)} ${yScale(20) - 5} Z`;
+        path = `M ${xScale(-50)} ${yScale(0) - 5} L ${xScale(0) - 5} ${yScale(0) - 5} L ${xScale(0) - 5} ${yScale(50) - 5} L ${xScale(-50)} ${yScale(50) - 5} Z`;
         break;
       case 'top-right':
-        path = `M ${xScale(0) + 5} ${yScale(0) - 5} L ${xScale(50)} ${yScale(0) - 5} L ${xScale(50)} ${yScale(20) - 5} L ${xScale(0) + 5} ${yScale(20) - 5} Z`;
+        path = `M ${xScale(0) + 5} ${yScale(0) - 5} L ${xScale(50)} ${yScale(0) - 5} L ${xScale(50)} ${yScale(50) - 5} L ${xScale(0) + 5} ${yScale(50) - 5} Z`;
         break;
       case 'bottom-left':
-        path = `M ${xScale(-50)} ${yScale(-20)} L ${xScale(0) - 5} ${yScale(-20)} L ${xScale(0) - 5} ${yScale(0) + 5} L ${xScale(-50)} ${yScale(0) + 5} Z`;
+        path = `M ${xScale(-50)} ${yScale(-50)} L ${xScale(0) - 5} ${yScale(-50)} L ${xScale(0) - 5} ${yScale(0) + 5} L ${xScale(-50)} ${yScale(0) + 5} Z`;
         break;
       case 'bottom-right':
-        path = `M ${xScale(0) + 5} ${yScale(-20) + 5} L ${xScale(50)} ${yScale(-20) + 5} L ${xScale(50)} ${yScale(0) + 5} L ${xScale(0) + 5} ${yScale(0) + 5} Z`;
+        path = `M ${xScale(0) + 5} ${yScale(-50) + 5} L ${xScale(50)} ${yScale(-50) + 5} L ${xScale(50)} ${yScale(0) + 5} L ${xScale(0) + 5} ${yScale(0) + 5} Z`;
         break;
       default:
         return null;
@@ -149,8 +149,8 @@ function ScatterChart({ data, patternType }: ScatterChartProps): ReactElement {
 
         {/* x축 레이블 (3시 - 오른쪽 중앙) */}
         <text
-          x={width - margin.right}
-          y={height / 2 + 30}
+          x={width - margin.right - 10}
+          y={height / 2 + 60}
           textAnchor="end"
           fill={theme.colors.sub_gray6}
           fontSize="15"

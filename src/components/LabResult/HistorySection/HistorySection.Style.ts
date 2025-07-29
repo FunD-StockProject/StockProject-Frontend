@@ -29,7 +29,6 @@ export const PatternTitle = styled.h4`
 export const PatternDescription = styled.p`
   ${theme.font.body14Regular};
   color: ${theme.colors.sub_white};
-  line-height: 1.6;
   margin-bottom: 16px;
 `;
 

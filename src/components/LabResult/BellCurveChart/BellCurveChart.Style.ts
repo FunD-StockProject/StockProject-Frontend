@@ -3,11 +3,9 @@ import { theme } from '@styles/themes';
 
 export const ChartContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 300px;
   position: relative;
-  padding: 12px 10px;
-  box-sizing: border-box;
-  background-color: rgba(255,255,255,0.05);
+  margin-bottom: 10px;
 `;
 
 export const TooltipContainer = styled.div`
@@ -39,23 +37,19 @@ export const TooltipBubble = styled.div<{ isVisible: boolean }>`
   z-index: 20;
 `;
 
-export const QuestionButton = styled.button`
+export const QuestionButton = styled.div`
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  color: ${theme.colors.grayscale50};
-  font-size: 12px;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  color: ${theme.colors.sub_gray5};
+  font-size: 10px;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
-  z-index: 20;
-  
-  &:hover {
-    color: ${theme.colors.sub_white};
-  }
+  text-decoration: underline;
 `;
 
 
