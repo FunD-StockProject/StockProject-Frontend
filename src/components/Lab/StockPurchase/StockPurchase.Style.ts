@@ -78,7 +78,7 @@ export const ScoreDiff = styled.span<{ delta: number }>`
 export const PurchaseButton = styled.button<{ purchased: boolean }>`
   padding: 8px 16px;
   background-color: ${({ purchased }) => (purchased ? '#3451FF' : '#000')};
-  color: white;
+  color: ${theme.colors.sub_white};
   border: none;
   border-radius: 8px;
   font-weight: bold;
