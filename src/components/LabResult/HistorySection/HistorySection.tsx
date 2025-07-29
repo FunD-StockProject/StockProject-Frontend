@@ -2,7 +2,6 @@
 
 import ScatterChart from '../ScatterChart/ScatterChart';
 import { SectionContainer, Title, PatternTitle, PatternDescription, QuadrantButton } from './HistorySection.Style';
-import { HUMAN_TYPE_LIST } from '@constants/patternTypes';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 interface HistoryDataPoint {
   x: number; // 인간지표
