@@ -43,15 +43,23 @@ export const InfoButton = styled.button`
 `;
 
 export const SummaryText = styled.p`
-  ${theme.font.body14Regular};
+  ${theme.font.body14Medium};
   color: ${theme.colors.sub_white};
-  text-align: center;
-  margin-top: 16px;
+  text-align: flex-start;
+`;
+
+export const Highlight = styled.span`
+  background: ${theme.colors.grayscale80};
+  border-radius: 16px;
+  padding: 4px 12px;
 `;
 
 export const UserNameText = styled.span`
-  ${theme.font.body14Regular};
+  ${theme.font.body18Semibold};
   color: ${theme.colors.sub_white};
+
+  display: flex;
+  gap: 6px;
 `;
 
 export const NumberBadge = styled.span`

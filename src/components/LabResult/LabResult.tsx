@@ -64,7 +64,7 @@ const LabResult = () => {
         highestProfit={experimentSummaryData.highestProfit}
         lowestProfit={experimentSummaryData.lowestProfit}
       />
-      <HumanIndexSection {...humanIndexData} userNickName="" />
+      <HumanIndexSection {...humanIndexData} userNickName="뚜루미" />
       {/* <HumanTypeGuide /> */}
       <InvestmentPatternSection {...investmentPatternData} />
       <HistorySection

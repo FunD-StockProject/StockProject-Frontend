@@ -49,7 +49,7 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate }: Bell
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart
           data={data}
-          margin={{ top: 60, right: 0, left: 0, bottom: 20 }}
+        // margin={{ top: 20, right: 30, left: 30, bottom: 30 }}
         >
           <defs>
             <linearGradient id="bellCurveGradient" x1="0" y1="0" x2="0" y2="1">
@@ -64,7 +64,7 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate }: Bell
             domain={[0, 10]}
             ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
             tickFormatter={(value) => `${value}`}
-            stroke="rgba(255,255,255,0.5)"
+            stroke="none"
             tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
             allowDataOverflow={false}
           />

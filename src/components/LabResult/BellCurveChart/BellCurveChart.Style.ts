@@ -3,10 +3,11 @@ import { theme } from '@styles/themes';
 
 export const ChartContainer = styled.div`
   width: 100%;
-  height: 300px;
-  margin: 20px 0;
+  height: 100%;
   position: relative;
-  overflow: hidden;
+  padding: 12px 10px;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.05);
 `;
 
 export const TooltipContainer = styled.div`

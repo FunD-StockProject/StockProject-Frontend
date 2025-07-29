@@ -4,7 +4,8 @@ import {
   TypeDisplay,
   TypeBadge,
   SummaryText,
-  UserNameText
+  UserNameText,
+  Highlight
 } from './HumanIndexSection.Style';
 import BellCurveChart from '../BellCurveChart/BellCurveChart';
 import { getTypeColor, getTypeEmoji } from '@utils/humanIndexUtils';
@@ -33,10 +34,10 @@ function HumanIndexSection({
     <SectionContainer>
       <Title>인간지표</Title>
       <TypeDisplay>
-        <UserNameText>{userNickName}님은</UserNameText>
-        <TypeBadge color={getTypeColor(userType)}>{getTypeEmoji(userType)}{userType}</TypeBadge>
-        지표
-
+        <UserNameText>{userNickName}님은
+          <TypeBadge color={getTypeColor(userType)}>{getTypeEmoji(userType)}{userType}</TypeBadge>
+          지표!
+        </UserNameText>
       </TypeDisplay>
       <BellCurveChart
         userScore={userScore}
@@ -45,7 +46,7 @@ function HumanIndexSection({
         maintainRate={maintainRate}
       />
       <SummaryText>
-        전체 {purchasedCount}번의 매수 중 {profitCount}번 수익을 보았어요
+        <Highlight>{purchasedCount}개</Highlight> 종목을 사서, <Highlight>{profitCount}개</Highlight> 오르는 당신의 유형
       </SummaryText>
     </SectionContainer>
   );
