@@ -1,0 +1,69 @@
+import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
+
+export const SectionContainer = styled.div`
+  width: 100%;
+  margin-bottom: 24px;
+`;
+
+export const Title = styled.h3`
+  ${theme.font.title20Semibold};
+  color: ${theme.colors.sub_white};
+  margin-bottom: 16px;
+`;
+
+export const TypeDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+`;
+
+export const TypeBadge = styled.span<{ color: string }>`
+  background: ${props => props.color};
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+`;
+
+export const InfoButton = styled.button`
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const SummaryText = styled.p`
+  ${theme.font.body14Regular};
+  color: ${theme.colors.sub_white};
+  text-align: center;
+  margin-top: 16px;
+`;
+
+export const UserNameText = styled.span`
+  ${theme.font.body14Regular};
+  color: ${theme.colors.sub_white};
+`;
+
+export const NumberBadge = styled.span`
+  background: ${theme.colors.grayscale80};
+  color: ${theme.colors.sub_white};
+  padding: 4px 8px;
+  border-radius: 50px;
+  ${theme.font.body14Medium}
+  font-weight: 600;
+`;
+
+export const HighlightedText = styled.span`
+  color: ${theme.colors.grayscale50};
+  font-weight: 600;
+`; 
