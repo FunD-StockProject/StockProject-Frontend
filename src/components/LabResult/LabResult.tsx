@@ -4,7 +4,7 @@ import InvestmentPatternSection from "./InvestmentPatternSection/InvestmentPatte
 import { Container, Title, Description, Highlight, } from "./LabResult.Style";
 import ScoreTable from "./ScoreTable/ScoreTable";
 import ExperimentSummary from './ExperimentSummary/ExperimentSummary';
-import HumanTypeGuide from './HumanTypeGuide/HumanTypeGuide';
+// import HumanTypeGuide from './HumanTypeGuide/HumanTypeGuide';
 
 
 const LabResult = () => {
