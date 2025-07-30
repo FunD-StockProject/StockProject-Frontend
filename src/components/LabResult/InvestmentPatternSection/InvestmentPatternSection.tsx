@@ -15,7 +15,7 @@ function InvestmentPatternSection({ patternType, userNickName = "" }: Investment
       <PatternDisplay>
         {userNickName ? `${userNickName}님은 ` : "당신은 "}
         <PatternBadge background={humanType?.background || '#5270FF'}>
-          {humanType?.emoji} {humanType?.type} 지표
+          {humanType?.emoji} {humanType?.type}
         </PatternBadge>
         에 속하는 경우가 많아요
       </PatternDisplay>
