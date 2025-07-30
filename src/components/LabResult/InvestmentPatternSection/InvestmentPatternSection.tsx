@@ -4,10 +4,9 @@ import { SectionContainer, Title, PatternBadge, PatternDisplay, QuestionButton }
 interface InvestmentPatternSectionProps {
   patternType: string;
   userNickName?: string;
-  onShowQuadrant?: () => void;
 }
 
-function InvestmentPatternSection({ patternType, userNickName = "", onShowQuadrant }: InvestmentPatternSectionProps) {
+function InvestmentPatternSection({ patternType, userNickName = "" }: InvestmentPatternSectionProps) {
   const humanType = HUMAN_TYPE_LIST.find(item => item.type === patternType);
 
   return (
@@ -16,14 +15,9 @@ function InvestmentPatternSection({ patternType, userNickName = "", onShowQuadra
       <PatternDisplay>
         {userNickName ? `${userNickName}님은 ` : "당신은 "}
         <PatternBadge background={humanType?.background || '#5270FF'}>
-          {humanType?.emoji} {humanType?.type}
+          {humanType?.emoji} {humanType?.type} 지표
         </PatternBadge>
         에 속하는 경우가 많아요
-        {onShowQuadrant && (
-          <QuestionButton onClick={onShowQuadrant}>
-            ◆ {patternType}이란?
-          </QuestionButton>
-        )}
       </PatternDisplay>
     </SectionContainer>
   );
