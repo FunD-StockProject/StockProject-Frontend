@@ -2,9 +2,8 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const SectionContainer = styled.div`
-  background: rgba(255,255,255,0.05);
   border-radius: 12px;
-  padding: 16px;
+  
   margin-bottom: 20px;
 `;
 
@@ -15,6 +14,7 @@ export const Title = styled.h3`
 `;
 
 export const PatternDisplay = styled.div`
+  ${theme.font.body16Medium};
   display: flex;
   align-items: center;
   gap: 8px;
