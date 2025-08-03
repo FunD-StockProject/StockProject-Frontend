@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
+import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/api';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
 import RightArrowSVG from '@assets/icons/rightArrow.svg?react';
@@ -424,23 +425,23 @@ const MyPage = () => {
   ];
 
   const handleLogout = async () => {
-    if (window.confirm('정말 로그아웃 하시겠어요?')) {
-      const res = await fetchAuthLogout();
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('provider');
+    const res = await fetchAuthLogout();
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('provider');
 
-      navigate('/');
-      console.log(res);
-    }
+    navigate('/');
+    console.log(res);
   };
 
   const handleWithdraw = async () => {
     navigate(webPath.withdraw());
   };
 
+  const [LogoutModal, openLogoutModal] = ConfirmModal('정말 로그아웃 하시겠어요?', handleLogout);
+
   const authButtons = [
-    { text: '로그아웃', onClick: handleLogout },
+    { text: '로그아웃', onClick: openLogoutModal },
     { text: '계정탈퇴', onClick: handleWithdraw },
   ];
 
@@ -452,6 +453,7 @@ const MyPage = () => {
 
   return (
     <MyPageContainer>
+      <LogoutModal />
       {isLogin ? (
         <MyPageProfile profileImg={profileImg} username={username} useremail={useremail} />
       ) : (
