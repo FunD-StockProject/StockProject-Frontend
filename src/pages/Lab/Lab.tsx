@@ -26,6 +26,7 @@ import AddStockSVG from '@assets/icons/addStock.svg?react';
 import { ExperimentItem } from '@ts/Interfaces';
 import ExperimentList from '@components/Lab/StockRecordSheet/ExperimentList/ExpermentList';
 import { StatusTitle } from '@components/Lab/Common.Style';
+import LabResult from '@components/LabResult/LabResult';
 
 const mocksummaryMetrics = [
   { label: '총 실험 수', value: 12 },
@@ -256,7 +257,7 @@ const Lab = () => {
             </>
           )}
         </>
-      ) : <div>매수 결과</div>}
+      ) : <LabResult></LabResult>}
     </Container>
   );
 };

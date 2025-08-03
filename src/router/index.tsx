@@ -1,5 +1,6 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import Callback from '@pages/Callback/Callback';
+import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
@@ -28,6 +29,7 @@ export const webPath = {
   register: () => '/mypage/register',
   registerDone: () => '/mypage/register/done',
   withdraw: () => '/mypage/withdraw',
+  favorites: () => '/favorites',
   withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
   labIntro: () => '/lab/intro',
@@ -57,6 +59,7 @@ const routes = [
     children: [
       { path: '/', element: <Home /> },
       { path: webPath.search(), children: [{ path: '', element: <Search /> }] },
+      { path: webPath.favorites(), element: <Favorites /> },
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },

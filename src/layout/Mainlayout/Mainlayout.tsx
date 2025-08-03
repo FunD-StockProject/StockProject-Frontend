@@ -15,12 +15,13 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isLabPage = location.pathname.startsWith('/lab');
   const isMyPage = location.pathname.startsWith('/mypage');
   const isRootPage = location.pathname === '/';
+  const isFavoritesPage = location.pathname.startsWith('/favorites');
 
   return (
     <StyledMainlayout>
       <MainContent>
         {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
-        {!isLabPage && !isMyPage && <Header />}
+        {!(isLabPage || isFavoritesPage || isMyPage) && <Header />}
         {children}
         {isRootPage && <Footer />}
       </MainContent>
