@@ -79,7 +79,6 @@ const LabResult = () => {
 
       <InvestmentPatternSection
         patternType={investmentPatternData.patternType}
-        userNickName="김철수"
       />
 
       <HistorySection

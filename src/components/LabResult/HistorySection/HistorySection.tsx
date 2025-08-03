@@ -3,6 +3,7 @@
 import ScatterChart from '../ScatterChart/ScatterChart';
 import { SectionContainer, Title, PatternTitle, PatternDescription, QuadrantButton } from './HistorySection.Style';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
+import { HUMAN_TYPE_LIST } from '@constants/patternTypes';
 interface HistoryDataPoint {
   x: number; // 인간지표
   y: number; // 수익률
@@ -22,6 +23,7 @@ function HistorySection({
   patternDescription,
   onShowQuadrant
 }: HistorySectionProps) {
+  const humanType = HUMAN_TYPE_LIST.find(item => item.type === patternType);
 
   return (
     <SectionContainer>
@@ -33,7 +35,7 @@ function HistorySection({
       <ScatterChart data={data} patternType={patternType} />
       <PatternTitle>◆ {patternType}이란?</PatternTitle>
       <PatternDescription>
-        {patternDescription}
+        {humanType?.emoji} {patternDescription}
       </PatternDescription>
     </SectionContainer>
   );

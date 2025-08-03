@@ -8,19 +8,28 @@ export const ChartContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-export const TooltipContainer = styled.div`
-  background: ${theme.colors.sub_white};
-  border-radius: 400px;
-  padding: 10px 19px;
-  color: ${theme.colors.sub_black};
-  font-size: 10px;
-  line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+export const TooltipContainer = styled.div<{ left: number }>`
+  ${theme.font.detail12Semibold}
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 403.43px;
+  padding: 10px 16px;
+  color: ${theme.colors.sub_white};
+  backdrop-filter: blur(10px);
+  position: absolute;
+  z-index: 10;
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: ${({ left }) => `${left}px`};
+  transform: translateX(-50%);
   
   p {
     margin: 0;
-    white-space: nowrap;
-    font-weight: 500;
+    opacity: 0.8;
+    font-size: 10px;
   }
 `;
 
@@ -28,7 +37,6 @@ export const TooltipBubble = styled.div<{ isVisible: boolean }>`
   font-size: 12px;
   position: absolute;
   top: 50px;
-  left: 10px;
   background-color: ${theme.colors.sub_white};
   padding: 10px 19px;
   border-radius: 400px;
@@ -51,7 +59,6 @@ export const QuestionButton = styled.div`
   gap: 4px;
   text-decoration: underline;
 `;
-
 
 export const CutoffReferenceLine = styled.line`
   stroke: blue;

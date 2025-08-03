@@ -30,6 +30,7 @@ export const PatternDescription = styled.p`
   ${theme.font.body14Regular};
   color: ${theme.colors.sub_white};
   margin-bottom: 16px;
+  white-space: pre-line;
 `;
 
 export const QuestionButton = styled.button`

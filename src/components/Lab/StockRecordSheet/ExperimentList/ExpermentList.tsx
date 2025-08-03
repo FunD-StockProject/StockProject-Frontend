@@ -1,53 +1,59 @@
 
 
 import { ExperimentItem } from "@ts/Interfaces";
-import { ExperimentTable, ExperimentHeader, ExperimentHeaderCell, ExperimentRow, ExperimentCell, ExperimentLogo, ExperimentText, PriceText, } from "./ExpeimentList.Style";
+import { ExperimentContainer, ExperimentCard, RankNumber, CompanyLogo, CompanyName, DateStatus, DetailsButton, DataContainer, PriceText } from "./ExpeimentList.Style";
+import { useState } from "react";
+import ExperimentDetailBottomSheet from "./ExperimentDetailBottomSheet";
 
 const ExperimentList = ({ experiment }: { experiment: ExperimentItem[] }) => {
+  const [selectedExperiment, setSelectedExperiment] = useState<ExperimentItem | null>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  const handleDetailsClick = (experiment: ExperimentItem) => {
+    setSelectedExperiment(experiment);
+    setIsBottomSheetOpen(true);
+  };
+
+  const handleCloseBottomSheet = () => {
+    setIsBottomSheetOpen(false);
+    setSelectedExperiment(null);
+  };
 
   return (
-    <ExperimentTable>
-      <ExperimentHeader>
-        <ExperimentHeaderCell>매수일/상태</ExperimentHeaderCell>
-        <ExperimentHeaderCell style={{ flex: 2 }}>종목명</ExperimentHeaderCell>
-        <ExperimentHeaderCell>매수시점</ExperimentHeaderCell>
-        <ExperimentHeaderCell>현재시점</ExperimentHeaderCell>
-        <ExperimentHeaderCell>수익률</ExperimentHeaderCell>
-      </ExperimentHeader>
-      {experiment.map((item) => {
-        const scoreDiff = item.currentScore - item.buyScore;
-        const scoreDiffPercent = ((scoreDiff / item.buyScore) * 100).toFixed(0);
-        return (
-          <ExperimentRow key={item.id}>
-            <ExperimentCell>
-              <div>{item.buyDate}</div>
-              {item.autoSellIn > 0 ? <PriceText>실험중 (D-{item.autoSellIn})</PriceText> : <PriceText>완료</PriceText>}
-            </ExperimentCell>
-            <ExperimentCell style={{ flexDirection: 'row', flex: 2 }}>
-              <ExperimentLogo src={item.logo} alt="logo" />
-              <ExperimentText>{item.name}</ExperimentText>
-            </ExperimentCell>
-            <ExperimentCell>
-              <div>{item.buyScore}점</div>
-              <PriceText>{item.buyPrice.toLocaleString()}</PriceText>
-            </ExperimentCell>
-            <ExperimentCell >
-              <div>{item.currentScore}점</div>
-              <PriceText>{item.currentPrice.toLocaleString()}</PriceText>
-            </ExperimentCell>
-            <ExperimentCell>
-              <div style={{ textAlign: 'center' }}>
-                {scoreDiff >= 0 ? '+' : ''}
-                {scoreDiff.toLocaleString()}점
-                <PriceText isPositive={scoreDiff >= 0}>
-                  ({scoreDiffPercent}%)
-                </PriceText>
-              </div>
-            </ExperimentCell>
-          </ExperimentRow>
-        );
-      })}
-    </ExperimentTable>
+    <>
+      <ExperimentContainer>
+        {experiment.map((item, index) => {
+          const scoreDiff = item.currentScore - item.buyScore;
+          const scoreDiffPercent = ((scoreDiff / item.buyScore) * 100).toFixed(0);
+          const daysAgo = item.autoSellIn > 0 ? item.autoSellIn + 3 : 8; // 임시 계산
+
+          return (
+            <ExperimentCard key={item.id}>
+              <RankNumber>{index + 1}</RankNumber>
+              <CompanyLogo src={item.logo} alt="logo" />
+              <DataContainer>
+                <CompanyName>{item.name}</CompanyName>
+                <DateStatus>
+                  {item.buyDate}({item.autoSellIn > 0 ? '실험중' : '완료'})
+                </DateStatus>
+                <span>
+                  {daysAgo}일전보다 <PriceText isPositive={scoreDiff > 0} >
+                    {scoreDiff >= 0 ? '+' : ''}{scoreDiffPercent}%
+                  </PriceText>
+                </span>
+              </DataContainer>
+              <DetailsButton onClick={() => handleDetailsClick(item)}>자세히</DetailsButton>
+            </ExperimentCard>
+          );
+        })}
+      </ExperimentContainer>
+
+      <ExperimentDetailBottomSheet
+        experiment={selectedExperiment}
+        isOpen={isBottomSheetOpen}
+        onClose={handleCloseBottomSheet}
+      />
+    </>
   )
 };
 
