@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
 
 // 추후에 반응형 수정
 

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchAuthRegister, fetchOAuth2Login } from '@controllers/api';
+import { fetchAuthRegister } from '@controllers/api';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import CheckSVG from '@assets/check.svg?react';
 import EditCircleSVG from '@assets/edit_circle.svg?react';

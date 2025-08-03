@@ -1,45 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { fetchAuthWithdraw } from '@controllers/api';
-import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import BlueCheckSVG from '@assets/checkCircle.svg?react';
-
-const RegisterHeaderContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  gap: '9px',
-
-  ['>div']: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '8px 20px',
-    boxSizing: 'border-box',
-    gap: '12px',
-
-    ['>svg,>span']: {
-      width: '32px',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-    },
-
-    ['>p']: {
-      margin: '0',
-      fontSize: '18px',
-      fontWeight: '600',
-      color: '#FFFFFF',
-      flexGrow: '1',
-      textAlign: 'center',
-    },
-  },
-
-  ['>span.divider']: {
-    background: '#1D1E1F',
-    height: '4px',
-  },
-});
 
 const RegisterContainer = styled.div({
   display: 'flex',
