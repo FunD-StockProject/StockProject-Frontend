@@ -80,32 +80,38 @@ export const Avatar = styled.div`
   margin: 10px 0;
 `;
 
+export const SVGContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${theme.colors.sub_gray11};
+  border-radius: 12px;
+`;
+
 export const ActionButtons = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  text-align: center;
+  gap: 20px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 24px; 
 `;
 
-export const ActionButton = styled.button`
-  background: ${theme.colors.sub_gray11};
-  color: ${theme.colors.sub_white};
-  border: none;
-  padding: 16px;
+export const ActionButton = styled.div`
+  ${theme.font.body18Medium};
+  background-color: ${theme.colors.sub_gray11};
+  color: ${theme.colors.sub_gray6};
+  padding: 20px 12px;
+  box-sizing: border-box;
   border-radius: 12px;
-  ${theme.font.body14Medium};
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.2s ease;
+  text-align: center;
 `;
 
 export const ActionButtonPrimary = styled(ActionButton)`
-  background: ${theme.colors.sub_blue5};
-  
-  &:hover {
-    background: ${theme.colors.sub_blue6};
-  }
+  background: ${theme.colors.sub_gray2};
+  color: ${theme.colors.sub_black};
 `;
 
 export const StockList = styled.div`
