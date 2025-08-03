@@ -7,14 +7,75 @@ import ExperimentSummary from './ExperimentSummary/ExperimentSummary';
 import HumanTypeBottomSheet from './BottomSheet/HumanTypeBottomSheet';
 import QuadrantBottomSheet from './BottomSheet/QuadrantBottomSheet';
 import { useState } from 'react';
-import { Container, Description, Title, Highlight } from './LabResult.Style';
-
+import {
+  Container,
+  Description,
+  Title,
+  Highlight,
+  EmptyStateContainer,
+  EmptyStateTitle,
+  EmptyStateSubtitle,
+  EmptyStateDescription,
+  StartButton,
+  GlowEffect
+} from './LabResult.Style';
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
 
 const LabResult = () => {
   const [showHumanTypeSheet, setShowHumanTypeSheet] = useState(false);
   const [showQuadrantSheet, setShowQuadrantSheet] = useState(false);
+  const navigate = useNavigate();
 
-  // 샘플 데이터
+  // 실험 상태 체크 (실제로는 API에서 가져올 데이터)
+  const hasOngoingExperiments = false; // 진행중인 실험이 있는지
+  const hasCompletedExperiments = false; // 완료된 실험이 있는지
+  const daysUntilCompletion = 1; // 실험 완료까지 남은 일수
+
+  const handleStartMockPurchase = () => {
+    navigate(webPath.labIntro());
+  };
+
+  // 진행중인 실험이 없을 때
+  if (!hasOngoingExperiments && !hasCompletedExperiments) {
+    return (
+      <Container>
+        <EmptyStateContainer>
+          <EmptyStateTitle>
+            진행중인 실험이 없어요😊
+          </EmptyStateTitle>
+          <EmptyStateSubtitle>
+            지금 바로 나만의 포트폴리오를 만들어볼까요?
+          </EmptyStateSubtitle>
+          <StartButton onClick={handleStartMockPurchase}>
+            모의매수 시작하기
+          </StartButton>
+        </EmptyStateContainer>
+      </Container>
+    );
+  }
+
+  // 진행중인 실험이 있지만 완료된 실험이 없을 때
+  if (hasOngoingExperiments && !hasCompletedExperiments) {
+    return (
+      <Container>
+        <EmptyStateContainer>
+          <EmptyStateTitle>
+            아직 완성된 실험이 없어요
+          </EmptyStateTitle>
+          <EmptyStateSubtitle>
+            실험 완료까지 D-{daysUntilCompletion}남았어요!
+          </EmptyStateSubtitle>
+          <EmptyStateDescription>
+            조금만 기다려주세요
+          </EmptyStateDescription>
+          <GlowEffect />
+        </EmptyStateContainer>
+      </Container>
+    );
+  }
+
+  // 완료된 실험이 있을 때 (기존 결과 화면)
   const scoreTableData = [
     { range: '60점 이하', avg: '-2.3%', median: '-1.8%' },
     { range: '60-70점', avg: '1.2%', median: '0.9%' },
@@ -56,8 +117,6 @@ const LabResult = () => {
     }
   };
 
-
-
   return (
     <Container>
       <Title>실험 결과</Title>
@@ -87,7 +146,6 @@ const LabResult = () => {
         patternDescription={investmentPatternData.patternDescription}
         onShowQuadrant={() => setShowQuadrantSheet(true)}
       />
-
 
       <HumanTypeBottomSheet
         isOpen={showHumanTypeSheet}

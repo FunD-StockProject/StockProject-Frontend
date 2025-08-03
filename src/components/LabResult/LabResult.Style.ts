@@ -34,3 +34,65 @@ export const Highlight = styled.span`
   margin: 0 6px;
 `;
 
+// 빈 상태 화면 스타일
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  color: white;
+`;
+
+export const EmptyStateTitle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+`;
+
+export const EmptyStateSubtitle = styled.div`
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 16px;
+`;
+
+export const EmptyStateDescription = styled.div`
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+`;
+
+export const StartButton = styled.button`
+  background: ${theme.colors.sub_white};
+  border: none;
+  border-radius: 500px;
+  padding: 16px 32px;
+  color: ${theme.colors.sub_black};
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+export const GlowEffect = styled.div`
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+`;
+
