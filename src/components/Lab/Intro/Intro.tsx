@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import {
-  StepBox,
-  StepLabel,
-  StepImage,
-} from './Intro.Style';
+import { StepImage } from './Intro.Style';
 import BackLogo from '@assets/backLogo.svg?react';
 import { webPath } from '@router/index';
 import { BackIcon, Container, Description, InnerContainer, NavButton, NavButtonContainer, Title, TopBar, TopBarTitle } from '../Common.Style';
+import IntroImg1 from '@assets/lab/lab-intro-1.png';
+import IntroImg2 from '@assets/lab/lab-intro-2.png';
+import IntroImg3 from '@assets/lab/lab-intro-3.png';
 
 const Intro = () => {
   const navigate = useNavigate();
@@ -30,20 +29,11 @@ const Intro = () => {
           잠재된 투자 심리를 분석해드릴게요
         </Description>
 
-        <StepBox>
-          <StepLabel>STEP1</StepLabel>
-          <StepImage>STEP 1 이미지 예정</StepImage>
-        </StepBox>
+        <StepImage src={IntroImg1} />
 
-        <StepBox>
-          <StepLabel>STEP2</StepLabel>
-          <StepImage>STEP 2 콘텐츠 예정</StepImage>
-        </StepBox>
+        <StepImage src={IntroImg2} />
 
-        <StepBox>
-          <StepLabel>STEP3</StepLabel>
-          <StepImage>STEP 3 콘텐츠 예정</StepImage>
-        </StepBox>
+        <StepImage src={IntroImg3} />
         <NavButtonContainer>
           <NavButton onClick={() => navigate(-1)}>이전</NavButton>
           <NavButton next={true} active={true} onClick={() => navigate(webPath.labMarketSelection())}>다음</NavButton>
