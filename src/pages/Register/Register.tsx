@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchAuthRegister } from '@controllers/api';
+import { fetchAuthRegister, fetchOAuth2Login } from '@controllers/api';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import CheckSVG from '@assets/check.svg?react';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
@@ -192,10 +192,11 @@ const termInputs: TermInputItem[] = [
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [values, setValues] = useState({
     name: '',
-    email: '',
+    email: location.state?.email,
     birth: '',
   });
 
@@ -434,11 +435,15 @@ const RegisterButton = styled.button({
   width: '100%',
   fontSize: '18px',
   fontWeight: '600',
-  color: '#101010',
   height: '48px',
   borderRadius: '8px',
   padding: '10px 0px',
   border: 'none',
+  background: '#3457FD',
+  color: 'white',
+  [':disabled']: {
+    color: '#101010',
+  },
 });
 
 const RegisterHeaderContainer = styled.div({

@@ -22,8 +22,17 @@ const Callback = () => {
       try {
         console.log(code);
         const res = await fetchLoginKakao(code, state);
-
         console.log('login', res);
+
+        if (res.state === 'NEED_REGISTER') {
+          navigate(webPath.register(), {
+            state: {
+              provider: provider,
+              email: res.email,
+            },
+          });
+          return;
+        }
 
         localStorage.setItem('access_token', res.access_token);
         localStorage.setItem('refresh_token', res.refresh_token);

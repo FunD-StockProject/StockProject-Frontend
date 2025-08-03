@@ -125,11 +125,32 @@ const fetchPopularKeywords = (): Promise<string[]> => {
 
 // OAuth2
 
+export const fetchOAuth2Login = async (_code: string, _state: string, provider: string) => {
+  const code = encodeURIComponent(_code);
+  const state = encodeURIComponent(_state);
+
+  const url = `${baseURL}/auth/login/${provider}?code=${code}&state=${state}`;
+
+  try {
+    const res = await fetch(url, { method: 'GET', headers: Headers });
+    const data = await res.json();
+    if (data.state) return data;
+    if (!res.ok) {
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
 const fetchLoginKakao = (code: string, state: string) => {
-  console.log(encodeURIComponent(code));
-  console.log(encodeURIComponent(state));
-  console.log(new Date().toDateString());
-  return fetchData(`/auth/login/kakao?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`);
+  // console.log(encodeURIComponent(code));
+  // console.log(encodeURIComponent(state));
+  // console.log(new Date().toDateString());
+  // return fetchData(`/auth/login/kakao?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`);
+  return fetchOAuth2Login(code, state, 'kakao');
 };
 
 const fetchAuthRegister = async (
@@ -186,6 +207,7 @@ const fetchAuthWithdraw = async () => {
 const fetchAuthLogout = async () => {
   try {
     const url = `${baseURL}/auth/logout`;
+    console.log(localStorage.getItem('refresh_token'), localStorage.getItem('access_token'));
     const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
