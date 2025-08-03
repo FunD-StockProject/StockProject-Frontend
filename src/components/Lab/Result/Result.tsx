@@ -2,8 +2,9 @@ import BackLogoSVG from '@assets/backLogo.svg?react';
 import { webPath } from '@router/index';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton } from '../Common.Style';
-import { ReportPreviewPlaceholder } from './Result.Style';
+import { ReportPreviewPlaceholder, Image } from './Result.Style';
 import { getBusinessDaysLater } from '@utils/getBusinessDaysLater';
+import IntroResult from '@assets/lab/lab-result.png';
 
 const Result = () => {
   const navigate = useNavigate();
@@ -33,7 +34,9 @@ const Result = () => {
           실험실 홈에서 언제든 변경할 수 있어요!
         </Description>
 
-        <ReportPreviewPlaceholder />
+        <ReportPreviewPlaceholder >
+          <Image src={IntroResult} />
+        </ReportPreviewPlaceholder>
 
         <NavButtonContainer>
           <NavButton
