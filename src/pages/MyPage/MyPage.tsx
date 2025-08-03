@@ -425,13 +425,13 @@ const MyPage = () => {
 
   const handleLogout = async () => {
     if (window.confirm('정말 로그아웃 하시겠어요?')) {
-      // const res = await fetchAuthLogout();
+      const res = await fetchAuthLogout();
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('provider');
 
       navigate('/');
-      // console.log(res);
+      console.log(res);
     }
   };
 
