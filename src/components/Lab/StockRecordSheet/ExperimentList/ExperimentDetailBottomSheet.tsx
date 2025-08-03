@@ -2,7 +2,7 @@ import { ExperimentItem } from "@ts/Interfaces";
 import { CompanyLogo, CompanyName } from "./ExpeimentList.Style";
 import { BottomSheetOverlay, BottomSheetContainer, BottomSheetContent, HeaderSection, SummarySection, SummaryTable, SummaryRow, SummaryCell, SummaryLabel, SummaryValue, GraphSection, GraphContainer, CloseButton } from "./ExperimentDetailBottomSheet.Style";
 import { useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, ReferenceLine } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { theme } from "@styles/themes";
 
 interface ExperimentDetailBottomSheetProps {
@@ -47,55 +47,7 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
     }
   }, [experiment]);
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      const scoreDiff = data.score - experiment.buyScore;
-      const priceDiffPercent = ((data.price - experiment.buyPrice) / experiment.buyPrice * 100);
 
-      return (
-        <div style={{
-          background: 'rgba(255,255,255,0.12)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: '400px',
-          padding: '20px 10px',
-          color: 'white',
-          fontSize: '12px',
-          minWidth: '160px',
-          backdropFilter: 'blur(10px)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          position: 'absolute',
-          top: '120px',
-          right: '40px',
-          zIndex: 1000
-        }}>
-          <div style={{ marginBottom: '4px' }}>
-            <span style={{ color: 'rgba(255,255,255,0.8)' }}>인간지표 | </span>
-            <span style={{ color: 'white' }}>{data.score}점</span>
-            <span style={{ color: scoreDiff >= 0 ? '#FF6B6B' : '#4A90E2' }}>
-              {' '}({scoreDiff >= 0 ? '+' : ''}{scoreDiff}점)
-            </span>
-          </div>
-          <div style={{ marginBottom: '4px' }}>
-            <span style={{ color: 'rgba(255,255,255,0.8)' }}>수익률 | </span>
-            <span style={{ color: 'white' }}>{priceDiffPercent.toFixed(1)}%</span>
-            <span style={{ color: priceDiffPercent >= 0 ? '#FF6B6B' : '#4A90E2' }}>
-              {' '}({priceDiffPercent >= 0 ? '+' : ''}{priceDiffPercent.toFixed(1)}%)
-            </span>
-          </div>
-          <div style={{
-            fontSize: '10px',
-            color: 'rgba(255,255,255,0.6)',
-            marginTop: '4px',
-            fontStyle: 'italic'
-          }}>
-            *()는 매수시점 대비
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <BottomSheetOverlay onClick={onClose}>
