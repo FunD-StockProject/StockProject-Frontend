@@ -1,24 +1,24 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import Callback from '@pages/Callback/Callback';
+import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import Register from '@pages/Register/Register';
-import RegisterDetail from '@pages/RegisterDetail/RegisterDetail';
 import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
-import Favorites from '@pages/Favorites/Favorites';
+import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
 import Intro from '@components/Lab/Intro/Intro';
 import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import Result from '@components/Lab/Result/Result';
 import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
+import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
-import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 
 export const webPath = {
   search: () => '/search',
@@ -27,10 +27,10 @@ export const webPath = {
   mypage: () => '/mypage',
   login: () => '/mypage/login',
   register: () => '/mypage/register',
-  registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   withdraw: () => '/mypage/withdraw',
   favorites: () => '/favorites',
+  withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
   labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
@@ -63,9 +63,9 @@ const routes = [
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
-      { path: webPath.registerDetail(), element: <RegisterDetail /> },
       { path: webPath.registerDone(), element: <RegisterDone /> },
       { path: webPath.withdraw(), element: <Withdraw /> },
+      { path: webPath.withdrawDone(), element: <WithdrawDone /> },
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
       { path: webPath.labIntro(), element: <Intro /> },
@@ -74,7 +74,6 @@ const routes = [
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
-
     ],
   },
   { path: webPath.usage(), element: <Usage /> },

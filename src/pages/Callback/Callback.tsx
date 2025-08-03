@@ -1,17 +1,21 @@
+import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchAuthLogout, fetchAuthRegister, fetchAuthWithdraw, fetchLoginKakao } from '@controllers/api';
+import { fetchLoginKakao } from '@controllers/api';
+import BlueAlert from '@assets/blueAlert.svg?react';
+import Loading from '@assets/loading.png';
 
 const Callback = () => {
   const navigate = useNavigate();
 
   const [isMounted, setIsMounted] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!isMounted) return;
 
-    const tmp = async () => {
+    (async () => {
       const location = window.location;
       const searchParams = new URLSearchParams(location.search);
       const code = searchParams.get('code') ?? '';
@@ -20,26 +24,39 @@ const Callback = () => {
       const provider = location.pathname.split('/').at(-1);
 
       try {
+        console.log(code);
         const res = await fetchLoginKakao(code, state);
-        console.log('login', res);
+        console.log(res);
+
+        if (res.state === 'NEED_REGISTER') {
+          navigate(webPath.register(), {
+            state: {
+              provider: provider,
+              email: res.email,
+            },
+          });
+          return;
+        }
 
         localStorage.setItem('access_token', res.access_token);
         localStorage.setItem('refresh_token', res.refresh_token);
+        localStorage.setItem('useremail', res.email);
+        localStorage.setItem('username', res.nickname);
         localStorage.setItem('provider', provider ?? '');
         localStorage.setItem('recent_login_provider', provider ?? '');
 
         navigate('/');
       } catch (err) {
-        navigate(webPath.registerDetail(), {
+        console.log(err);
+        setError('error');
+        navigate(webPath.register(), {
           state: {
             provider: provider,
             email: null,
           },
         });
       }
-    };
-
-    tmp();
+    })();
 
     console.log(123);
   }, [isMounted]);
@@ -48,44 +65,43 @@ const Callback = () => {
     setIsMounted(true);
   }, []);
 
-  const handleLogin = async () => {
-    const location = window.location;
-    const searchParams = new URLSearchParams(location.search);
-    const code = searchParams.get('code') ?? '';
-    const redirectUri = window.location.origin + window.location.pathname;
-    const state = btoa(redirectUri);
-
-    const res = await fetchLoginKakao(code, state);
-    console.log('login', res);
-
-    localStorage.setItem('access_token', res.access_token);
-    localStorage.setItem('refresh_token', res.refresh_token);
-  };
-
-  const handleRegister = async () => {
-    const res = await fetchAuthRegister('iparkssi@naver.com', '현수', new Date('1999-12-13'), true, 'KAKAO');
-    console.log(2, res);
-  };
-
-  const handleLogout = async () => {
-    const res = await fetchAuthLogout();
-    console.log(res);
-  };
-
-  const handleWithdraw = async () => {
-    console.log(localStorage.getItem('access_token'));
-    const res = await fetchAuthWithdraw();
-    console.log(res);
-  };
-
   return (
-    <div>
-      <div onClick={handleLogin}>로그인</div>
-      <div onClick={handleRegister}>회원가입</div>
-      <div onClick={handleLogout}>로그아웃</div>
-      <div onClick={handleWithdraw}>회원탈퇴</div>
-    </div>
+    <CallBackContainer>
+      {!error ? <img src={Loading} /> : <BlueAlert />}
+      <p className="title">{!error ? '잠시만 기다려주세요' : '앗! 로그인에 실패했어요 😭'}</p>
+      <p className="desc">{!error ? '‘카카오톡’에서 로그인 정보를 불러오고 있어요' : '로그인을 다시 시도해주세요'}</p>
+    </CallBackContainer>
   );
 };
+
+const CallBackContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '10px',
+  flexGrow: '1',
+  justifyContent: 'center',
+
+  ['>svg']: {
+    width: '72px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: '#3457FD',
+  },
+
+  ['>p']: {
+    margin: '0',
+
+    ['&.title']: {
+      fontSize: '20px',
+      fontWeight: '600',
+    },
+
+    ['&.desc']: {
+      fontSize: '14px',
+      fontWeight: '500',
+    },
+  },
+});
 
 export default Callback;

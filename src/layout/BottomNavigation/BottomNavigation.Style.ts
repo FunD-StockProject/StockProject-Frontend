@@ -5,15 +5,14 @@ export const NavContainer = styled('nav')({
   display: 'flex',
   position: 'fixed',
   bottom: 0,
-  left: '50%',
-  transform: 'translateX(-50%)',
   width: '100%',
   maxWidth: '1280px',
-  height: '64px',
   backgroundColor: theme.colors.sub_black,
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  zIndex: 10,
+  padding: '20px 33px 30px',
+  boxSizing: 'border-box',
+  zIndex: '10',
 });
 
 export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({

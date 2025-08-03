@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
 
 // 추후에 반응형 수정
 
@@ -9,7 +8,8 @@ export const StyledMainlayout = styled.div({
   alignItems: 'center',
   width: '100%',
   minHeight: '100dvh',
-  backgroundColor: theme.colors.grayscale100,
+  // backgroundColor: theme.colors.grayscale100,
+  background: '#101010',
 });
 
 export const MainContent = styled.div({
@@ -19,6 +19,7 @@ export const MainContent = styled.div({
   flexGrow: '1',
   display: 'flex',
   flexDirection: 'column',
+  marginBottom: '96px',
 });
 
 export const BackButton = styled('img')({
