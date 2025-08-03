@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+import { fetchAuthWithdraw } from '@controllers/api';
 import AlarmSVG from '@assets/alarm.svg?react';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import HeartSVG from '@assets/heart.svg?react';
@@ -24,10 +25,14 @@ const Withdraw = () => {
   };
 
   const handleWithdraw = async () => {
+    await fetchAuthWithdraw();
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('provider');
     navigate(webPath.withdrawDone());
   };
 
-  const [LogoutModal, openLogoutModal] = ConfirmModal('정말 로그아웃 하시겠어요?', handleWithdraw);
+  const [LogoutModal, openLogoutModal] = ConfirmModal('정말 탈퇴 하시겠어요?', handleWithdraw);
 
   return (
     <RegisterContainer>
