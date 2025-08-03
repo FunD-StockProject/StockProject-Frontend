@@ -1,7 +1,6 @@
-import { getTypeEmoji } from '@utils/humanIndexUtils';
 import { ChartContainer, TooltipContainer, QuestionButton } from './BellCurveChart.Style';
 import { theme } from '@styles/themes';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AreaChart,
   Area,
@@ -14,7 +13,6 @@ import {
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 interface BellCurveChartProps {
   userScore: number;
-  userType: string;
   successRate: string;
   maintainRate: string;
   onShowTypes?: () => void;
@@ -25,7 +23,9 @@ interface DataPoint {
   y: number;
 }
 
-function BellCurveChart({ userScore, userType, successRate, maintainRate, onShowTypes }: BellCurveChartProps): ReactElement {
+function BellCurveChart({ userScore, successRate, maintainRate, onShowTypes }: BellCurveChartProps): ReactElement {
+  const [tooltipX, setTooltipX] = useState<number>(0);
+  const chartRef = useRef<HTMLDivElement>(null);
   // 정규분포 데이터 생성
   const data = useMemo(() => {
     const points: DataPoint[] = [];
@@ -39,15 +39,23 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate, onShow
 
   // 사용자 점수에 해당하는 y값 계산
   const userYPosition = Math.exp(-Math.pow((userScore - 5) / 1.5, 2) / 2) / (1.5 * Math.sqrt(2 * Math.PI)) * 100;
+  useEffect(() => {
+    const container = chartRef.current;
+    if (container) {
+      const width = container.clientWidth;
+      const left = (userScore / 10) * width;
+      setTooltipX(left);
+    }
+  }, [userScore]);
 
   return (
-    <ChartContainer>
-      <TooltipContainer style={{ position: 'absolute', top: '30px', left: '0px', zIndex: 10 }}>
-        <p>이는 <span style={{ color: theme.colors.red }}>성공률이 {successRate}</span>이며,</p>
-        <p>전체 유저 중 {maintainRate}가</p>
-        <p><span style={{ color: theme.colors.red }}> {getTypeEmoji(userType)}인간 아님  지표</span>에 해당됩니다.</p>
+    <ChartContainer id="bell-curve-container" ref={chartRef}>
+      <TooltipContainer left={tooltipX} id="tooltip-container">
+        <div style={{ textAlign: 'center' }}>
+          성공률 {successRate}
+          <p>(전체 유저 중 {maintainRate})</p>
+        </div>
       </TooltipContainer>
-
       {onShowTypes && (
         <QuestionButton onClick={onShowTypes}>
           <QuestionMarkSVG />다른 유형은 뭐가 있어요?
@@ -61,9 +69,10 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate, onShow
         >
           <defs>
             <linearGradient id="bellCurveGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={theme.colors.sub_blue6} stopOpacity={0.9} />
-              <stop offset="50%" stopColor={theme.colors.sub_blue6} stopOpacity={0.6} />
-              <stop offset="100%" stopColor={theme.colors.sub_blue6} stopOpacity={0.2} />
+              <stop offset="0%" stopColor={theme.colors.sub_blue6} stopOpacity={0.8} />
+              <stop offset="30%" stopColor={theme.colors.sub_blue6} stopOpacity={0.6} />
+              <stop offset="70%" stopColor={theme.colors.sub_blue6} stopOpacity={0.4} />
+              <stop offset="100%" stopColor={theme.colors.sub_blue6} stopOpacity={0.1} />
             </linearGradient>
           </defs>
           <XAxis
@@ -103,4 +112,4 @@ function BellCurveChart({ userScore, userType, successRate, maintainRate, onShow
     </ChartContainer>
   );
 }
-export default BellCurveChart; 
+export default BellCurveChart;

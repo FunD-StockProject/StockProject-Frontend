@@ -21,7 +21,7 @@ export const Container = styled.div`
 export const TabContainer = styled.div`
   ${theme.font.body18Semibold}
   display: flex;
-  border-bottom: 1px solid ${theme.colors.sub_gray6};
+  border-bottom: 1px solid ${theme.colors.sub_gray8};
   padding: 0 24px;
 `;
 

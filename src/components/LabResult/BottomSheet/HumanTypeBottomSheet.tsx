@@ -54,7 +54,6 @@ function HumanTypeBottomSheet({ isOpen, onClose }: HumanTypeBottomSheetProps) {
             <BellCurveContainer>
               <BellCurveChart
                 userScore={selectedTypeData.userScore}
-                userType={selectedTypeData.name}
                 successRate={selectedTypeData.range}
                 maintainRate="N%"
               />

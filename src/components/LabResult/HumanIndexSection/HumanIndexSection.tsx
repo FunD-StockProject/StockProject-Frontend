@@ -41,7 +41,6 @@ function HumanIndexSection({
       </TypeDisplay>
       <BellCurveChart
         userScore={userScore}
-        userType={userType}
         successRate={successRate}
         maintainRate={maintainRate}
         onShowTypes={onShowTypes}
