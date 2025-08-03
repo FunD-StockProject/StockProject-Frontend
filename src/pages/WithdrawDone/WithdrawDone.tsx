@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
+import { fetchAuthWithdraw } from '@controllers/api';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import BlueCheckSVG from '@assets/checkCircle.svg?react';
 
@@ -74,6 +76,7 @@ const RegisterDoneContents = styled.div({
     ['&.desc']: {
       fontSize: '14px',
       fontWeight: '500',
+      color: '#CED4DA',
     },
   },
 });
@@ -99,73 +102,33 @@ const RegisterButton = styled.button({
   },
 });
 
-const RegisterDone = () => {
-  const handleClickDone = () => {
-    const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
-    console.log(redirectUri);
+const WithdrawDone = () => {
+  const navigate = useNavigate();
 
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${redirectUri}`;
-    window.location.href = kakaoAuthUrl;
+  const handleClickDone = async () => {
+    await fetchAuthWithdraw();
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('provider');
+    navigate('/');
   };
 
   return (
     <RegisterContainer>
-      <RegisterHeaderContainer>
-        <div>
-          <ArrowLeftSVG />
-          <p>회원가입</p>
-          <span />
-        </div>
-        <span className="divider" />
-      </RegisterHeaderContainer>
       <RegisterDoneContents>
         <BlueCheckSVG />
-        <p className="title">회원가입 완료 🎉</p>
+        <p className="title">회원 탈퇴 완료 🥲</p>
         <p className="desc">
-          인간지표에 오신걸 환영합니다.
+          그동안 인간지표와 함께해주셔서 감사합니다.
           <br />
-          민심을 읽고, 타이밍을 실험하세요.
-          <br />
-          당신의 직감은 얼마나 정확할까요?
+          다시 감정지표가 궁금해질 땐 언제든 돌아오세요!
         </p>
       </RegisterDoneContents>
       <RegisterButtonContainer>
-        <RegisterButton onClick={handleClickDone}>홈으로 이동</RegisterButton>
+        <RegisterButton onClick={handleClickDone}>탈퇴 완료</RegisterButton>
       </RegisterButtonContainer>
     </RegisterContainer>
-    // <div
-    //   style={{
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     width: '100%',
-    //     padding: '24px',
-    //     boxSizing: 'border-box',
-    //     height: '100%',
-    //     // flexGrow: '1',
-    //     justifyContent: 'center',
-    //     gap: '64px',
-    //   }}
-    // >
-    //   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
-    //     <p style={{ textAlign: 'center', fontWeight: '700', fontSize: '15px', margin: '0' }}>환영합니다!</p>
-    //     <div
-    //       style={{
-    //         width: '160px',
-    //         border: '1px solid white',
-    //         aspectRatio: '1 / 1',
-    //       }}
-    //     ></div>
-    //     <p style={{ textAlign: 'center', fontSize: '15px', margin: '0' }}>
-    //       민심을 읽고, 타이밍을 실험하세요.
-    //       <br />
-    //       당신의 직감은 얼마나 정확할까요?
-    //     </p>
-    //   </div>
-    //   <button style={{ height: '42px', fontSize: '15px' }} onClick={handleClickDone}>
-    //     홈으로 이동
-    //   </button>
-    // </div>
   );
 };
 
-export default RegisterDone;
+export default WithdrawDone;

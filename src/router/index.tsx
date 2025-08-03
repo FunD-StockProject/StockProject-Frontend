@@ -8,6 +8,7 @@ import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
+import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
 import Intro from '@components/Lab/Intro/Intro';
 import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import Result from '@components/Lab/Result/Result';
@@ -27,6 +28,7 @@ export const webPath = {
   register: () => '/mypage/register',
   registerDone: () => '/mypage/register/done',
   withdraw: () => '/mypage/withdraw',
+  withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
   labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
@@ -60,6 +62,7 @@ const routes = [
       { path: webPath.register(), element: <Register /> },
       { path: webPath.registerDone(), element: <RegisterDone /> },
       { path: webPath.withdraw(), element: <Withdraw /> },
+      { path: webPath.withdrawDone(), element: <WithdrawDone /> },
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
       { path: webPath.labIntro(), element: <Intro /> },
