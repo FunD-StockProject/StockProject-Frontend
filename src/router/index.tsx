@@ -9,6 +9,7 @@ import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
+import Favorites from '@pages/Favorites/Favorites';
 import Intro from '@components/Lab/Intro/Intro';
 import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
 import Result from '@components/Lab/Result/Result';
@@ -29,6 +30,7 @@ export const webPath = {
   registerDetail: () => '/mypage/register/detail',
   registerDone: () => '/mypage/register/done',
   withdraw: () => '/mypage/withdraw',
+  favorites: () => '/favorites',
   lab: () => '/lab',
   labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
@@ -57,6 +59,7 @@ const routes = [
     children: [
       { path: '/', element: <Home /> },
       { path: webPath.search(), children: [{ path: '', element: <Search /> }] },
+      { path: webPath.favorites(), element: <Favorites /> },
       { path: webPath.mypage(), element: <MyPage /> },
       { path: webPath.login(), element: <Login /> },
       { path: webPath.register(), element: <Register /> },
