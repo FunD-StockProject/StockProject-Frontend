@@ -28,8 +28,8 @@ const LabResult = () => {
   const navigate = useNavigate();
 
   // 실험 상태 체크 (실제로는 API에서 가져올 데이터)
-  const hasOngoingExperiments = false; // 진행중인 실험이 있는지
-  const hasCompletedExperiments = false; // 완료된 실험이 있는지
+  const hasOngoingExperiments = true; // 진행중인 실험이 있는지
+  const hasCompletedExperiments = true; // 완료된 실험이 있는지
   const daysUntilCompletion = 1; // 실험 완료까지 남은 일수
 
   const handleStartMockPurchase = () => {
