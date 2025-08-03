@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import AppleLoginPNG from '@assets/appleLogin.png';
 import CloseSVG from '@assets/close.svg?react';
 import GoogleLoginPNG from '@assets/googleLogin.png';
@@ -88,6 +89,8 @@ const LoginPageButtonItemContainer = styled.div({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const handleKakaoLogin = () => {
     localStorage.setItem('lastLoginProvider', 'kakao');
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
@@ -120,10 +123,14 @@ const Login = () => {
     },
   ];
 
+  const handleCancelLogin = () => {
+    navigate(-1);
+  };
+
   return (
     <LoginPageContainer>
       <LoginPageCloseWrapper>
-        <CloseSVG />
+        <CloseSVG onClick={handleCancelLogin} />
       </LoginPageCloseWrapper>
       <LoginPageBannerContainer>
         <LogoWithTitleWhiteSVG />

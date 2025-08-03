@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { fetchAuthWithdraw } from '@controllers/api';
 import BlueCheckSVG from '@assets/checkCircle.svg?react';
 
 const RegisterContainer = styled.div({
@@ -68,10 +67,6 @@ const WithdrawDone = () => {
   const navigate = useNavigate();
 
   const handleClickDone = async () => {
-    await fetchAuthWithdraw();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('provider');
     navigate('/');
   };
 
