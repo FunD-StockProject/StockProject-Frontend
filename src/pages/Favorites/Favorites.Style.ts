@@ -52,33 +52,7 @@ export const EmptyState = styled.div`
   gap: 20px;
 `;
 
-export const ChatBubble = styled.div`
-  background: ${theme.colors.sub_white};
-  color: ${theme.colors.sub_black};
-  padding: 12px 16px;
-  border-radius: 18px;
-  ${theme.font.body14Regular};
-  align-self: flex-start;
-  max-width: 200px;
-`;
 
-export const ChatBubbleRight = styled(ChatBubble)`
-  align-self: flex-end;
-  background: ${theme.colors.sub_blue5};
-  color: ${theme.colors.sub_white};
-`;
-
-export const Avatar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: ${theme.colors.sub_gray7};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  margin: 10px 0;
-`;
 
 export const SVGContainer = styled.div`
   width: 100%;

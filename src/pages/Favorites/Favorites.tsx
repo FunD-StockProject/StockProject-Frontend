@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
-import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ChatBubble, Avatar, ChatBubbleRight, ActionButtons, ActionButton, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription, ModalButtons, ModalButton, ModalButtonPrimary, SVGContainer } from './Favorites.Style';
+import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ActionButtons, ActionButton, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription, ModalButtons, ModalButton, ModalButtonPrimary, SVGContainer } from './Favorites.Style';
 import NoResultSVG from '@assets/noResult.svg?react';
 
 interface Stock {
