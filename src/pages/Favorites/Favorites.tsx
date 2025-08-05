@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
-import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ChatBubble, Avatar, ChatBubbleRight, ActionButtons, ActionButton, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription, ModalButtons, ModalButton, ModalButtonPrimary } from './Favorites.Style';
-
+import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ActionButtons, ActionButton, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription, ModalButtons, ModalButton, ModalButtonPrimary, SVGContainer } from './Favorites.Style';
+import NoResultSVG from '@assets/noResult.svg?react';
 
 interface Stock {
   id: string;
@@ -82,7 +82,7 @@ const Favorites = () => {
     setSelectedStockId(null);
   };
 
-  const isEmpty = stocks.length === 0;
+  const isEmpty = stocks.length !== 0;
 
   return (
     <Container>
@@ -106,13 +106,9 @@ const Favorites = () => {
       <Content>
         {isEmpty ? (
           <EmptyState>
-            <ChatBubble>
-              관심종목이 없어요.
-            </ChatBubble>
-            <Avatar>👤</Avatar>
-            <ChatBubbleRight>
-              인간지표를 탐색하세요!
-            </ChatBubbleRight>
+            <SVGContainer>
+              <NoResultSVG />
+            </SVGContainer>
             <ActionButtons>
               <ActionButton>
                 + 종목 직접 추가하기
