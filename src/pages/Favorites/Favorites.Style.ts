@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 export const Container = styled.div`
-  min-height: 100vh;
   background: ${theme.colors.sub_black};
   color: ${theme.colors.sub_white};
   padding: 0;
@@ -22,6 +21,12 @@ export const HeaderTitle = styled.div`
   color: ${theme.colors.sub_white};
   flex: 1;
   margin-left: 15px;
+`;
+
+export const HeaderContainer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const EditButton = styled.span`
@@ -53,7 +58,6 @@ export const EmptyState = styled.div`
 `;
 
 
-
 export const SVGContainer = styled.div`
   width: 100%;
   height: 200px;
@@ -79,13 +83,23 @@ export const ActionButton = styled.div`
   color: ${theme.colors.sub_gray6};
   padding: 20px 12px;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 10px;
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 `;
 
 export const ActionButtonPrimary = styled(ActionButton)`
+  ${theme.font.body18Semibold}
   background: ${theme.colors.sub_gray2};
   color: ${theme.colors.sub_black};
+  
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const StockList = styled.div`
@@ -95,18 +109,21 @@ export const StockList = styled.div`
   margin-bottom: 20px;
 `;
 
+export const StockContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  
+`;
 export const StockItem = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
+  padding: 20px;
   background: ${theme.colors.sub_gray11};
   border-radius: 12px;
   transition: background 0.2s ease;
-  
-  &:hover {
-    background: ${theme.colors.sub_gray9};
-  }
+  width: 100%;
 `;
 
 export const StockInfo = styled.div`
@@ -117,8 +134,12 @@ export const StockInfo = styled.div`
 `;
 
 export const StockName = styled.div`
-  ${theme.font.body16Semibold};
+  ${theme.font.title20Semibold};
   color: ${theme.colors.sub_white};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const StockPriceRow = styled.div`
@@ -128,13 +149,12 @@ export const StockPriceRow = styled.div`
 `;
 
 export const StockPrice = styled.div`
-  ${theme.font.body14Medium};
+  ${theme.font.body16Medium};
   color: ${theme.colors.sub_white};
 `;
 
 export const StockChange = styled.div`
-  ${theme.font.body14Regular};
-  color: ${theme.colors.danger};
+  ${theme.font.body16Medium};
 `;
 
 export const StockScoreRow = styled.div`
@@ -167,18 +187,24 @@ export const Checkbox = styled.input`
   height: 20px;
   cursor: pointer;
   accent-color: ${theme.colors.sub_gray1};
+  margin-right: 12px;
+  align-self: center;
 `;
 
 export const DeleteButton = styled.button`
+  position: fixed;
+  bottom: 120px;
+  left: 0;
+  right: 0;
   background: ${theme.colors.sub_gray1};
   color: ${theme.colors.sub_black};
   border: none;
-  padding: 16px;
-  border-radius: 12px;
-  ${theme.font.body14Medium};
+  padding: 10px 0;
+  border-radius: 8px;
+  ${theme.font.body18Semibold};
   cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
+  margin: 0 20px;
+  z-index: 100;
 `;
 
 export const Modal = styled.div`
@@ -217,14 +243,14 @@ export const ModalTitle = styled.h3`
   ${theme.font.body18Semibold};
   color: ${theme.colors.sub_black};
   margin: 0 0 12px 0;
-  text-align: center;
+  text-align: left;
 `;
 
 export const ModalDescription = styled.p`
   ${theme.font.body14Regular};
   color: ${theme.colors.sub_gray6};
   margin: 0 0 24px 0;
-  text-align: center;
+  text-align: left;
   line-height: 1.4;
 `;
 
@@ -238,9 +264,10 @@ export const ModalButton = styled.button`
   background: ${theme.colors.sub_gray2};
   color: ${theme.colors.sub_gray7}; 
   border: none;
-  padding: 12px;
+  padding:  12px 0;
   border-radius: 500px;
-  ${theme.font.body14Medium};
+  font-size: 18px;
+  font-weight: 700;
   cursor: pointer;
 `;
 
