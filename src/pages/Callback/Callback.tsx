@@ -54,6 +54,7 @@ const Callback = () => {
             provider: provider,
             email: null,
           },
+          replace: true,
         });
       }
     })();
