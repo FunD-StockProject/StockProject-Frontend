@@ -354,7 +354,7 @@ const Register = () => {
     <RegisterContainer>
       <RegisterHeaderContainer>
         <div>
-          <ArrowLeftSVG />
+          <ArrowLeftSVG onClick={() => navigate(-1)} />
           <p>회원가입</p>
           <span />
         </div>

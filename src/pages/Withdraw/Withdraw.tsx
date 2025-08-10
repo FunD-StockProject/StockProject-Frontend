@@ -39,7 +39,7 @@ const Withdraw = () => {
       <LogoutModal />
       <RegisterHeaderContainer>
         <div>
-          <ArrowLeftSVG />
+          <ArrowLeftSVG onClick={() => navigate(-1)} />
           <p>회원 탈퇴</p>
           <span />
         </div>
