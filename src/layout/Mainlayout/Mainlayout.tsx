@@ -22,7 +22,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
     <StyledMainlayout>
       <MainContent>
         {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
-        {!(isLabPage || isFavoritesPage || isMyPage) && <Header />}
+        {!(isLabPage || isFavoritesPage || isMyPage || isShortViewPage) && <Header />}
         {children}
         {isRootPage && <Footer />}
       </MainContent>
