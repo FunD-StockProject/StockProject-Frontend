@@ -19,7 +19,7 @@ export const MainContent = styled.div({
   flexGrow: '1',
   display: 'flex',
   flexDirection: 'column',
-  marginBottom: '96px',
+  marginBottom: '72px',
 });
 
 export const BackButton = styled('img')({

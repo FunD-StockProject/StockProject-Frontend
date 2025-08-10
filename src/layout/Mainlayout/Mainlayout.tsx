@@ -15,6 +15,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isLabPage = location.pathname.startsWith('/lab');
   const isMyPage = location.pathname.startsWith('/mypage');
   const isRootPage = location.pathname === '/';
+  const isShortViewPage = location.pathname === webPath.shortView();
   const isFavoritesPage = location.pathname.startsWith('/favorites');
 
   return (
