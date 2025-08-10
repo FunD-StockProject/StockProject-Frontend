@@ -102,7 +102,7 @@ export const CategoryTagListStyle = styled.div({
 export const CategoryTagItemStyle = styled.div({
   border: '1px solid #FFF',
   borderRadius: '16px',
-  padding: '10px 12px'
+  padding: '10px 12px',
 });
 
 export const ButtonGroupStyle = styled.div({
@@ -137,10 +137,16 @@ export const IconButtonGroupStyle = styled.div({
 export const ToastStyle = styled.div({
   marginTop: '20px',
   padding: '8px 16px',
-  background: '#333',
+  background: 'rgba(0, 0, 0, 0.8)',
+  border: '1px solid rgba(73, 80, 87, 0.5)',
   color: 'white',
   borderRadius: '6px',
   zIndex: '1000',
+  position: 'absolute',
+  bottom: '0',
+  marginBottom: '12px',
+  width: 'calc(100% - 40px)',
+  boxSizing: 'border-box',
 });
 
 export const EndMessageStyle = styled.div({

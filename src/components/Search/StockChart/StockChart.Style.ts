@@ -5,6 +5,7 @@ export const StockChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '18px',
+  height: '100%',
 
   [media[0]]: {
     gap: '12px',
@@ -187,6 +188,7 @@ export const StockChartCanvasRefContainer = styled.canvas({
 
 export const StockChartViewContainer = styled.div({
   display: 'flex',
+  flexGrow: '1',
 
   fontSize: '15px',
 

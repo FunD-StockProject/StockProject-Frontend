@@ -1,36 +1,29 @@
-import { useState, useRef, useMemo, createRef } from 'react';
-import {
-  WrapperStyle,
-  CardStyle,
-  ToastStyle,
-  EndMessageStyle,
-  TitleStyle,
-  PriceWrapperStyle,
-  ImagePlaceholderStyle,
-  ScoreStyle,
-  CategoryTagListStyle,
-  IconButtonGroupStyle,
-  CategoryTagItemStyle,
-} from './ShortView.Style';
-import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
+import styled from '@emotion/styled';
+import { useEffect, useRef, useState } from 'react';
 import { STOCK_COUNTRY } from '@ts/Types';
-import TinderCard from 'react-tinder-card'
+import StockChart from '@components/Search/StockChart/StockChart';
+import CrossSVG from '@assets/icons/cross.svg?react';
+import HeartSVG from '@assets/icons/heart.svg?react';
+import MagnifierSVG from '@assets/icons/magnifier.svg?react';
+import MoneySVG from '@assets/icons/money.svg?react';
+import { ToastStyle } from './ShortView.Style';
 
 interface StockCard {
   id: string;
+  stockId: number;
   symbolName: string;
   currentPrice: number;
   priceChange: number;
   score: number;
   scoreChange: number;
-  country: STOCK_COUNTRY
+  country: STOCK_COUNTRY;
   tags: string[];
 }
 
 const mockStocks: StockCard[] = [
   {
     id: '1',
+    stockId: 0,
     symbolName: '삼성전자',
     currentPrice: 71500,
     priceChange: 1200,
@@ -41,6 +34,7 @@ const mockStocks: StockCard[] = [
   },
   {
     id: '2',
+    stockId: 0,
     symbolName: '네이버',
     currentPrice: 205000,
     priceChange: -1500,
@@ -51,6 +45,7 @@ const mockStocks: StockCard[] = [
   },
   {
     id: '3',
+    stockId: 0,
     symbolName: '카카오',
     currentPrice: 61000,
     priceChange: 500,
@@ -61,161 +56,410 @@ const mockStocks: StockCard[] = [
   },
 ];
 
-
-const stopAndCall = (fn: () => void) => (e: React.SyntheticEvent) => {
-  e.stopPropagation();
-  fn();
-};
-
 const ShortView = () => {
-  const [currentIndex, setCurrentIndex] = useState(mockStocks.length - 1);
-  const [toast, setToast] = useState<string | null>(null);
-  const currentIndexRef = useRef<number>(currentIndex);
-  const navigate = useNavigate();
+  const [favoriteList, setFavoriteList] = useState<string[]>([]);
 
-  // refs for each card
-  const childRefs = useMemo(() => Array(mockStocks.length).fill(0).map(() => createRef<any>()), []);
+  const [drag, setDrag] = useState<any>({ x: 0, direction: 'none' });
+  const [width, setWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [currentIdx, setCurrentIdx] = useState(2);
 
-  const currentStock = mockStocks[currentIndex];
-  const canGoBack = currentIndex < mockStocks.length - 1;
+  useEffect(() => {
+    const w = containerRef.current?.clientWidth;
+    setWidth(w ?? 0);
+  }, []);
 
-  const updateIndex = (val: number) => {
-    setCurrentIndex(val);
+  const onPointerDown = (e: React.PointerEvent) => {
+    setDrag({
+      startX: e.clientX,
+      x: 0,
+      active: true,
+      direction: 'none',
+    });
   };
 
-  const showToast = (message: string) => {
-    setToast(message);
-    setTimeout(() => setToast(null), 3000);
+  const onPointerMove = (e: React.TouchEvent) => {
+    if (!drag.active) return;
+    setDrag({
+      ...drag,
+      x: e.touches[0].clientX - drag.startX,
+      active: true,
+    });
   };
 
-  const swiped = (direction: string, index: number) => {
-    if (direction === 'down') {
-      goBack();
+  const onPointerUp = () => {
+    const direction = drag.x > width / 2 ? 'right' : drag.x < -width / 2 ? 'left' : 'none';
+
+    if (direction === 'left') {
+      handleClickNeverSeen();
+      return;
+    } else if (direction === 'right') {
+      handleClickPurchase();
       return;
     }
 
-    if (direction === 'right') {
-      showToast(`${mockStocks[index].symbolName} 모의 매수 등록했어요!`);
-    } else if (direction === 'left') {
-      showToast(`${mockStocks[index].symbolName}은(는) 다시 안볼게요 👋`);
+    setDrag({
+      startX: 0,
+      x: 0,
+      active: false,
+      direction: direction,
+    });
+  };
+
+  const [toast, setToast] = useState<{
+    content: React.ReactNode;
+    display: boolean;
+    fadeout: boolean;
+  }>({ content: null, display: false, fadeout: false });
+
+  const showToast = (content: React.ReactNode) => {
+    setToast({
+      content: content,
+      display: true,
+      fadeout: false,
+    });
+
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, fadeout: true }));
+
+      setTimeout(() => {
+        setToast((prev) => ({ ...prev, display: false, fadeout: false }));
+      }, 500);
+    }, 2000);
+  };
+
+  const handleClickFavorite = (symbolName: string) => {
+    if (favoriteList.findIndex((e) => e === symbolName)) {
+      setFavoriteList((prev) => [...prev, symbolName]);
+      showToast(
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            fontSize: '12px',
+            fontWeight: '600',
+            color: '#F0F0F1',
+          }}
+        >
+          <HeartSVG fill="#EB003B" />
+          관심 등록 완료! 민심 급변 시 알림 드릴게요
+        </div>,
+      );
+    } else {
+      setFavoriteList((prev) => prev.filter((e) => e !== symbolName));
     }
-
-    updateIndex(index - 1);
-  };
-  const outOfFrame = (idx: number) => {
-    if (currentIndexRef.current >= idx) {
-      requestAnimationFrame(() => childRefs[idx].current?.restoreCard());
-    }
   };
 
-  const swipe = async (dir: string) => {
-    if (currentIndex < 0) return;
-    await childRefs[currentIndex].current.swipe(dir);
+  const handleClickNeverSeen = () => {
+    setDrag({
+      startX: 0,
+      x: 0,
+      active: false,
+      direction: 'left',
+    });
+
+    setTimeout(() => {
+      setCurrentIdx((prev) => prev - 1);
+      setDrag({
+        startX: 0,
+        x: 0,
+        active: false,
+        direction: 'none',
+      });
+    }, 250);
   };
 
-  const goBack = async () => {
-    if (!canGoBack) return;
-    const newIndex = currentIndex + 1;
-    updateIndex(newIndex);
-    await childRefs[newIndex].current?.restoreCard();
+  const handleClickPurchase = () => {
+    setDrag({
+      startX: 0,
+      x: 0,
+      active: false,
+      direction: 'right',
+    });
 
+    setTimeout(() => {
+      setCurrentIdx((prev) => prev - 1);
+      setDrag({
+        startX: 0,
+        x: 0,
+        active: false,
+        direction: 'none',
+      });
+    }, 250);
   };
 
-  const handleAddToFavorites = () => {
-    if (!currentStock) return;
-    showToast(`${currentStock.symbolName}을(를) 관심 종목에 추가했어요!`);
-  };
+  console.log(currentIdx);
 
+  console.log(drag);
 
-  const handleSearchStock = () => {
-    if (!currentStock) return;
-    const symbolName = currentStock.symbolName;
-    const country = currentStock.country;
-    navigate(webPath.search(), { state: { symbolName, country } });
-  };
+  const liveTransform = `translate3d(${drag.x}px, 0, 0) rotate(${(drag.x / width) * 30}deg) scale(${drag.active ? 1.05 : 1})`;
 
   return (
-    <WrapperStyle>
-      {mockStocks.length > 0 && currentIndex >= 0 ? (
-        <>
-          {mockStocks.map((stock, index) => (
-            <TinderCard
-              key={stock.id}
-              ref={childRefs[index]}
-              className="swipe"
-              onSwipe={(dir) => swiped(dir, index)}
-              preventSwipe={canGoBack ? [] : ['down']}
-              onCardLeftScreen={() => outOfFrame(currentIndex)}
-            >
-              <CardStyle
-                isVisible={index <= currentIndex}
-                isCurrent={index === currentIndex}
+    <ShortViewContainer>
+      <ShortViewContent
+        ref={containerRef}
+        onPointerDown={onPointerDown}
+        onTouchMove={onPointerMove}
+        onTouchEnd={onPointerUp}
+      >
+        {mockStocks.map(
+          (e, i) =>
+            (i == currentIdx || i == currentIdx - 1) && (
+              <ShortViewItemCard
+                isTop={i == currentIdx}
+                active={drag.active}
+                style={{
+                  transform:
+                    i == currentIdx
+                      ? drag.direction == 'right'
+                        ? `translate3d(${width * 2}px, 0, 0) rotate(${((width * 2) / width) * 30}deg) scale(${drag.active ? 1.05 : 1})`
+                        : drag.direction == 'left'
+                          ? `translate3d(${-width * 2}px, 0, 0) rotate(${((-width * 2) / width) * 30}deg) scale(${drag.active ? 1.05 : 1})`
+                          : liveTransform
+                      : '',
+                }}
               >
-                <TitleStyle>{stock.symbolName}</TitleStyle>
-                <PriceWrapperStyle>
-                  <span style={{ fontSize: '16px' }}>₩{stock.currentPrice.toLocaleString()}</span>&nbsp;
-                  <span style={{ color: stock.priceChange >= 0 ? 'red' : 'blue', fontSize: '12px' }}>
-                    <span style={{ marginRight: '4px' }}>{stock.priceChange >= 0 ? '+' : ''}{stock.priceChange.toLocaleString()}</span>
-                    <span>({((stock.priceChange / (stock.currentPrice - stock.priceChange)) * 100).toFixed(2)}%)</span>
-                  </span>
-                </PriceWrapperStyle>
-                <ImagePlaceholderStyle>img</ImagePlaceholderStyle>
-                <ScoreStyle>
-                  <span>{stock.score}</span>
-                  <span style={{ color: stock.scoreChange > 0 ? 'red' : 'blue' }}>
-                    {`${stock.scoreChange > 0 ? '+' : ''}${stock.scoreChange}점 ${stock.scoreChange > 0 ? '▲' : '▼'}`}
-                  </span>
-                </ScoreStyle>
-                <CategoryTagListStyle>
-                  {stock.tags.map((tag) => (
-                    <CategoryTagItemStyle key={tag}>{tag}</CategoryTagItemStyle>
-                  ))}
-                </CategoryTagListStyle>
-                <IconButtonGroupStyle>
-                  <button
-                    type="button"
-                    onClick={stopAndCall(handleAddToFavorites)}
-                    onTouchStart={stopAndCall(handleAddToFavorites)}
-                    disabled={!currentStock}
-                  >
-                    🤍
-                  </button>
-                  <button
-                    type="button"
-                    onClick={stopAndCall(() => swipe('left'))}
-                    onTouchStart={stopAndCall(() => swipe('left'))}
-                    disabled={!currentStock}
-                  >
-                    다신 안보기
-                  </button>
-                  <button
-                    type="button"
-                    onClick={stopAndCall(() => swipe('right'))}
-                    onTouchStart={stopAndCall(() => swipe('right'))}
-                    disabled={!currentStock}
-                  >
-                    모의 매수
-                  </button>
-                  <button
-                    type="button"
-                    onClick={stopAndCall(handleSearchStock)}
-                    onTouchStart={stopAndCall(handleSearchStock)}
-                    disabled={!currentStock}
-                  >
-                    🔍
-                  </button>
-                </IconButtonGroupStyle>
-              </CardStyle>
-            </TinderCard>
-          ))}
-        </>
-      ) : (
-        <EndMessageStyle>모든 종목을 확인했어요!</EndMessageStyle>
-      )
-      }
-      {toast && <ToastStyle key={toast}>{toast}</ToastStyle>}
-    </WrapperStyle >
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    padding: '12px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <StockChart stockId={e.stockId} symbolName={e.symbolName} country={e.country} />
+                </div>
+                <ShortViewItemInfoBox>
+                  <ShortViewItemInfoTitle>
+                    <img src="https://yt3.googleusercontent.com/Yoj44lPMte0uwM0vzH7uQynVMdpfhU4WxZMyBEC7k6mEYovAKPqW4FCbqLeW8eIhexEx8-c9=s900-c-k-c0x00ffffff-no-rj" />
+                    <p>{e.symbolName}</p>
+                  </ShortViewItemInfoTitle>
+                  <ShortViewItemContents>
+                    <ShortViewItemInfoDesc>
+                      <ShortViewItemDeltaText delta={1}>
+                        ₩ 55,300 <span>+200(0.36%)</span>
+                      </ShortViewItemDeltaText>
+                      <ShortViewItemDeltaText delta={1}>
+                        85점 <span>+79점</span>
+                      </ShortViewItemDeltaText>
+                    </ShortViewItemInfoDesc>
+                    <ShortViewItemOther>
+                      <ShortViewItemTagContainer>
+                        <p>#관세</p>
+                        <p>#민주당</p>
+                        <p>#국내주식</p>
+                      </ShortViewItemTagContainer>
+                      <MagnifierSVG />
+                    </ShortViewItemOther>
+                  </ShortViewItemContents>
+                </ShortViewItemInfoBox>
+              </ShortViewItemCard>
+            ),
+        )}
+      </ShortViewContent>
+      <ShortViewButtonContainer>
+        <ShortViewButton type="stroke" color="light" size="large" onClick={handleClickNeverSeen}>
+          <CrossSVG />
+        </ShortViewButton>
+        <ShortViewButton
+          type="fill"
+          color="dark"
+          size="small"
+          onClick={() => handleClickFavorite(mockStocks[currentIdx].symbolName)}
+        >
+          <HeartSVG
+            style={{
+              fill: favoriteList.findIndex((e) => e === mockStocks[currentIdx].symbolName) !== -1 ? '#EB003B' : '',
+            }}
+          />
+        </ShortViewButton>
+        <ShortViewButton type="fill" color="primary" size="large" onClick={handleClickPurchase}>
+          <MoneySVG />
+        </ShortViewButton>
+      </ShortViewButtonContainer>
+      {toast.display && (
+        <ToastStyle
+          style={{
+            opacity: toast.fadeout ? '0' : '1',
+            transition: 'opacity .5s ease',
+          }}
+        >
+          {toast.content}
+        </ToastStyle>
+      )}
+    </ShortViewContainer>
   );
 };
+
+const ShortViewContainer = styled.div({
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: '1',
+  alignItems: 'center',
+  padding: '20px',
+  gap: '24px',
+  background: '#101010',
+  overflow: 'hidden',
+});
+
+const ShortViewContent = styled.div({
+  flexGrow: '1',
+  width: '100%',
+  position: 'relative',
+});
+
+const ShortViewItemCard = styled.div(
+  ({ isTop, active }: { isTop: boolean; active?: boolean }) => ({
+    boxShadow: isTop ? '0px 4px 50px 0px rgba(255, 255, 255, 0.12)' : '',
+    transition: isTop && active ? 'box-shadow .25s ease' : 'all .25s ease',
+  }),
+  {
+    borderRadius: '10px',
+    position: 'absolute',
+    background: '#101010',
+    width: '100%',
+    height: '100%',
+  },
+);
+
+const ShortViewItemInfoBox = styled.div({
+  width: '100%',
+  position: 'absolute',
+  bottom: '0',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  padding: '20px',
+  boxSizing: 'border-box',
+});
+
+const ShortViewItemInfoTitle = styled.div({
+  display: 'flex',
+  padding: '4px 6px',
+  gap: '10px',
+
+  ['>img']: {
+    width: '32px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    objectFit: 'cover',
+    borderRadius: '999px',
+  },
+
+  ['>p']: {
+    margin: '0',
+    fontSize: '24px',
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+});
+
+const ShortViewItemContents = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const ShortViewItemInfoDesc = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  alignItems: 'start',
+});
+
+const ShortViewItemDeltaText = styled.p(
+  ({ delta }: { delta: number }) => ({
+    ['>span']: {
+      color: delta > 0 ? '#EB003B' : 'blue',
+    },
+  }),
+  {
+    margin: '0',
+    fontSize: '14px',
+    fontWeight: '500',
+    color: '#FFFFFF',
+    background: 'rgba(255, 255, 255, 0.1)',
+    padding: '4px 10px',
+    borderRadius: '999px',
+    ['>span']: {},
+  },
+);
+
+const ShortViewItemOther = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+
+  ['>svg']: {
+    width: '24px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    padding: '12px',
+    borderRadius: '999px',
+    background: '#1D1E1F',
+    fill: '#9A9C9E',
+    flexShrink: '0',
+  },
+});
+
+const ShortViewItemTagContainer = styled.div({
+  display: 'flex',
+  gap: '6px',
+  flexGrow: '1',
+  overflow: 'hidden',
+
+  ['>p']: {
+    margin: '0',
+    fontSize: '14px',
+    fontWeight: '500',
+    color: '#C6C7C8',
+    background: 'rgba(255, 255, 255, 0.1)',
+    padding: '4px 10px',
+    borderRadius: '999px',
+    whiteSpace: 'nowrap',
+  },
+});
+
+const ShortViewButtonContainer = styled.div({
+  display: 'flex',
+  gap: '20px',
+  alignItems: 'center',
+});
+
+const ShortViewButton = styled.div(
+  ({
+    color,
+    size,
+    type,
+  }: {
+    color: 'light' | 'dark' | 'primary';
+    size: 'small' | 'large';
+    type: 'fill' | 'stroke';
+  }) => ({
+    background: color === 'light' ? '#303033' : color === 'dark' ? '#1D1E1F' : '#3457FD',
+    width: size === 'small' ? '52px' : '64px',
+
+    ['>svg']: {
+      fill: type !== 'fill' ? 'auto' : color === 'light' ? '#C6C7C8' : color === 'dark' ? '#525658' : '#FFFFFF',
+      stroke: type !== 'stroke' ? 'auto' : color === 'light' ? '#C6C7C8' : color === 'dark' ? '#525658' : '#FFFFFF',
+    },
+  }),
+  {
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    borderRadius: '999px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    ['>svg']: {
+      width: '28px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+    },
+  },
+);
 
 export default ShortView;
