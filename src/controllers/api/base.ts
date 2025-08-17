@@ -23,20 +23,61 @@ const fetchData = async (path: string) => {
 const fetchAuthData = async (path: string, init: RequestInit = {}) => {
   try {
     const url = `${baseURL}${path}`;
-    const token = localStorage.getItem('access_token');
-    const res = await fetch(url, {
+    let token = localStorage.getItem('access_token');
+    let res = await fetch(url, {
       method: 'GET',
       ...init,
       headers: {
         ...Headers,
+        // 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
         ...(init.headers as any),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
+      credentials: 'include', // 쿠키 포함
     });
+
+    // 토큰 만료 처리
+    if (res.status === 401) {
+      const reissueRes = await fetch(`${baseURL}/auth/reissue`, {
+        method: 'POST',
+        // headers: {
+        //   'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
+        // },
+        credentials: 'include',
+      });
+
+      if (!reissueRes.ok) {
+        throw new Error('토큰 재발급 실패. 재로그인 필요');
+      }
+
+      const { accessToken } = await reissueRes.json();
+      localStorage.setItem('access_token', accessToken);
+      token = accessToken;
+
+      // 원래 요청 재시도
+      res = await fetch(url, {
+        method: 'GET',
+        ...init,
+        headers: {
+          ...Headers,
+          // 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
+          ...(init.headers as any),
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: 'include',
+      });
+    }
+
     const data = await res.json();
     if (!res.ok) {
+      try {
+        console.error('API error body:', data);
+      } catch (_) {
+        // ignore
+      }
       throw new Error(`${res.status} Error!!`);
     }
+
     await wait(0);
     return data;
   } catch (error) {
@@ -44,6 +85,11 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
   }
 };
 
-export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+}
 
+export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
 
