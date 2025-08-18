@@ -36,35 +36,45 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
       credentials: 'include', // 쿠키 포함
     });
 
-    // 토큰 만료 처리
     if (res.status === 401) {
+      const refreshToken = localStorage.getItem("refresh_token");
+
       const reissueRes = await fetch(`${baseURL}/auth/reissue`, {
-        method: 'POST',
-        // headers: {
-        //   'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
-        // },
-        credentials: 'include',
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // 필요 시 CSRF 헤더도 추가
+          // "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") || "",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          refresh_token: refreshToken,
+        }),
       });
 
       if (!reissueRes.ok) {
-        throw new Error('토큰 재발급 실패. 재로그인 필요');
+        throw new Error("토큰 재발급 실패. 재로그인 필요");
       }
 
-      const { accessToken } = await reissueRes.json();
-      localStorage.setItem('access_token', accessToken);
+      const { accessToken, refreshToken: newRefreshToken } = await reissueRes.json();
+
+      // 새 토큰 저장
+      localStorage.setItem("access_token", accessToken);
+      if (newRefreshToken) {
+        localStorage.setItem("refresh_token", newRefreshToken);
+      }
       token = accessToken;
 
       // 원래 요청 재시도
       res = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         ...init,
         headers: {
           ...Headers,
-          // 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
           ...(init.headers as any),
           Authorization: `Bearer ${token}`,
         },
-        credentials: 'include',
+        credentials: "include",
       });
     }
 
@@ -85,11 +95,11 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
   }
 };
 
-function getCookie(name: string) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
-}
+// function getCookie(name: string) {
+//   const value = `; ${document.cookie}`;
+//   const parts = value.split(`; ${name}=`);
+//   if (parts.length === 2) return parts.pop()?.split(';').shift();
+// }
 
 export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
 

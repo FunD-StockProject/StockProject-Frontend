@@ -79,8 +79,8 @@ const Favorites = () => {
           }
           description={
             <>
-              👋 로그인하면 아래와 같은 기능을 사용할 수 있어요
-              <br />· 관심 종목의 심리가 급등/급락할 때 알림을 받을 수 있어요.
+              👋 로그인을 하면 심리가 급등/급락할 때
+              <br />알림을 받을 수 있어요
             </>
           }
           buttonText="회원가입 / 로그인 하기"
@@ -112,11 +112,11 @@ const Favorites = () => {
               <SVGContainer>
                 <NoResultSVG />
               </SVGContainer>
-              <ActionButtons>
+              {isLogin && <ActionButtons>
                 <ActionButtonPrimary>
                   <SearchSVG /> 다양한 종목 둘러보기
                 </ActionButtonPrimary>
-              </ActionButtons>
+              </ActionButtons>}
             </EmptyState>
           ) : (
             <>

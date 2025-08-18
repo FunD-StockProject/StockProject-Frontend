@@ -1,5 +1,5 @@
 import { FavoriteStock } from '@controllers/api.Type';
-import { enableMock, fetchAuthData } from './base';
+import { fetchAuthData } from './base';
 
 // POST /preference/bookmark/{stock_id}
 export const postBookmark = (stockId: number | string) =>
@@ -24,10 +24,3 @@ export const fetchBookmarkList = (): Promise<FavoriteStock[]> =>
 // GET /preference/bookmark/count
 export const fetchBookmarkCount = (): Promise<number> =>
   fetchAuthData(`/preference/bookmark/count`);
-
-// (Optional) simple mock fallbacks if you ever toggle enableMock
-// You can remove this block if you don't plan to mock
-if (enableMock) {
-  // @ts-ignore keep file tree consistent if someone enables mocks globally
-  console.debug('[favorites] enableMock=true — real network calls are bypassed');
-}

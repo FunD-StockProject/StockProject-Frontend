@@ -53,8 +53,7 @@ export const EmptyState = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  gap: 20px;
+  gap: 24px;
 `;
 
 
@@ -74,14 +73,13 @@ export const ActionButtons = styled.div`
   text-align: center;
   gap: 20px;
   width: 100%;
-  margin-top: 24px; 
 `;
 
 export const ActionButton = styled.div`
   ${theme.font.body18Medium};
   background-color: ${theme.colors.sub_gray11};
   color: ${theme.colors.sub_gray6};
-  padding: 20px 12px;
+  padding: 12px 20px;
   box-sizing: border-box;
   border-radius: 10px;
   text-align: center;
