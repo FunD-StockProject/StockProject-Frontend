@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Description, Overlay, PrimaryButton, Title } from './NoLoginWrapper.style';
+import { Description, Overlay, PrimaryButton, SecondaryButton, Title } from './NoLoginWrapper.style';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 
@@ -9,6 +9,7 @@ export interface NoLoginWrapperProps {
   buttonText: string;
   children?: ReactNode;
   className?: string;
+  SecondaryButtonText?: string;
 }
 
 const NoLoginWrapper = ({
@@ -17,11 +18,16 @@ const NoLoginWrapper = ({
   buttonText,
   children,
   className,
+  SecondaryButtonText,
 }: NoLoginWrapperProps) => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(webPath.login());
   }
+  const handleSecondaryClick = () => {
+    navigate('/');
+  }
+
   return (
     <Overlay className={className} aria-live="polite" role="dialog" aria-modal="true">
       <Title>{title}</Title>
@@ -30,6 +36,9 @@ const NoLoginWrapper = ({
       <PrimaryButton type="button" onClick={handleClick}>
         {buttonText}
       </PrimaryButton>
+      {SecondaryButtonText && <SecondaryButton type="button" onClick={handleSecondaryClick}>
+        {SecondaryButtonText}
+      </SecondaryButton>}
     </Overlay>
   );
 };
