@@ -77,3 +77,16 @@ export interface PopularStocks {
 }
 
 export type PERIOD_CODE = 'D' | 'W' | 'M';
+
+export interface FavoriteStock {
+  id: string;
+  name: string;
+  price: number;
+  change: number;
+  score: number
+  scoreChange: number;
+  isNotificationOn: boolean;
+  isSelected?: boolean;
+  symbolName: string;
+  country: STOCK_COUNTRY
+}
