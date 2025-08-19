@@ -11,14 +11,8 @@ export const Overlay = styled.div({
   gap: '20px',
   zIndex: 50,
   color: theme.colors.sub_black,
-  // 배경 반투명
-  // background: 'rgba(255, 255, 255, 0.90)',
-
-  // 블러 효과 (투명 배경 위에 적용됨)
-  backdropFilter: 'blur(10px)',
-
-  // 사파리 지원용
-  WebkitBackdropFilter: 'blur(10px)',
+  backdropFilter: 'blur(30px)',
+  WebkitBackdropFilter: 'blur(30px)',
 });
 
 
@@ -46,4 +40,17 @@ export const PrimaryButton = styled.button({
   borderRadius: '500px',
   boxSizing: 'border-box',
   background: theme.colors.sub_white,
+  width: '220px',
+});
+
+export const SecondaryButton = styled.button({
+  width: '220px',
+  ...theme.font.body18Semibold,
+  color: theme.colors.sub_gray5,
+  appearance: 'none',
+  border: 0,
+  padding: '10px 24px',
+  borderRadius: '500px',
+  boxSizing: 'border-box',
+  background: theme.colors.sub_gray9,
 });
