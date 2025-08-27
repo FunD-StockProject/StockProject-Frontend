@@ -4,6 +4,7 @@ import { media, theme } from '../../styles/themes';
 const SearchResultContainer = styled.div({
   background: theme.colors.primary100,
   width: '100%',
+  overflowX: 'hidden',
 });
 
 const SearchResultContents = styled.div({
@@ -18,8 +19,9 @@ const SearchResultContents = styled.div({
   maxWidth: '1280px',
 
   [media[0]]: {
+    padding: '20px 20px',
     gap: '32px',
-    padding: '20px 0px',
+    boxSizing: 'border-box',
   },
 });
 
@@ -33,6 +35,7 @@ const StockRelevantContainer = styled.div({
 });
 
 const SearchResultInfo = styled.div({
+  ...theme.font.detail12Semibold,
   display: 'flex',
   padding: '16px',
 
@@ -40,33 +43,28 @@ const SearchResultInfo = styled.div({
   alignItems: 'center',
   gap: '4px',
   borderRadius: '10px',
-  backgroundColor: theme.colors.grayscale100,
+  backgroundColor: theme.colors.sub_gray11,
+  color: theme.colors.sub_gray5,
 
-  margin: '0 32px',
-  color: theme.colors.grayscale20,
-  fontSize: '17px',
-  fontWeight: '500',
-
-  [media[0]]: {
-    height: '25px',
-    fontSize: '11px',
-    padding: '12px',
-    margin: '0 20px',
-  },
 });
 
-const MockTradeButtonWrapper = styled.div({
-  position: 'fixed',
-  bottom: '20px',
-  left: '50%',
-  transform: 'translateX(-50%)',
+const MockTradeButtonWrapper = styled.button({
+  ...theme.font.body18Semibold,
   backgroundColor: theme.colors.primary50,
-  color: theme.colors.primary0,
+  color: theme.colors.sub_white,
   padding: '12px 24px',
   borderRadius: '12px',
   cursor: 'pointer',
-  width: 'calc(100% - 80px)',
+  width: 'calc(100%- 40px)',
   textAlign: 'center',
+});
+
+export const Divider = styled.div({
+  backgroundColor: theme.colors.sub_gray11,
+  height: '4px',
+  width: '100vw',
+  marginLeft: '-10px',
+  marginRight: '-10px',
 });
 
 export {

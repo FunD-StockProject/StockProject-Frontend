@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { media, theme, themeColor } from '@styles/themes';
 
@@ -11,40 +12,37 @@ const ContentsItemContainer = styled.div({
   },
 });
 
-const ContentsItemTitle = styled.div(({ color }: { color?: themeColor }) => ({
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
+const ContentsItemTitle = styled.div<{ color?: themeColor }>(
+  ({ color }) =>
+    css({
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: '8px',
+      color: theme.colors.grayscale10,
+      ...theme.font.title20Semibold,
 
-  color: theme.colors.grayscale10,
-  fontWeight: '700',
-  fontSize: '32px',
+      ['.btn_info']: {
+        height: '0.8em',
+        marginLeft: '4px',
+        cursor: 'pointer',
+      },
 
-  ['.btn_info']: {
-    height: '0.8em',
-    marginLeft: '4px',
+      ['svg']: {
+        width: 'auto',
+        height: '0.9em',
+        fill: color ? theme.colors[color] : '',
+      },
 
-    cursor: 'pointer',
-  },
+      [media[0]]: {
+        gap: '6px',
 
-  ['svg']: {
-    width: 'auto',
-    height: '0.9em',
-
-    fill: color ? theme.colors[color] : '',
-  },
-
-  [media[0]]: {
-    gap: '6px',
-    padding: '0 20px',
-
-    fontSize: '24px',
-
-    ['.btn_info']: {
-      marginLeft: '0px',
-    },
-  },
-}));
+        ['.btn_info']: {
+          marginLeft: '0px',
+        },
+      },
+    })
+);
 
 const ContentsItemContent = styled.div({
   display: 'flex',
@@ -54,8 +52,25 @@ const ContentsItemContent = styled.div({
 
   [media[0]]: {
     margin: '0 0px',
-    padding: '0 20px',
   },
+});
+
+
+export const DetailText = styled.div({
+  ...theme.font.detail12Medium,
+  color: theme.colors.sub_gray6,
+});
+
+export const TitleDetailText = styled.div({
+  ...theme.font.body14Medium,
+  color: theme.colors.sub_gray8,
+});
+
+export const ContentsItemTitleSeparator = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
 });
 
 export { ContentsItemContainer, ContentsItemTitle, ContentsItemContent };
