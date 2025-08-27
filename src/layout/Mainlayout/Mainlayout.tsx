@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { detectPWA } from '@utils/Detector';
 import { webPath } from '@router/index';
 import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
+import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
 import leftArrow from '@assets/leftArrow.svg';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -21,11 +23,13 @@ const Mainlayout = ({ children }: LayoutProps) => {
   return (
     <StyledMainlayout>
       <MainContent>
-        {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />}
-        {!(isLabPage || isFavoritesPage || isMyPage || isShortViewPage) && <Header />}
+        {/* {isSearchPage && <BackButton src={leftArrow} onClick={() => navigate(-1)} />} */}
+        {/* {!(isLabPage || isFavoritesPage || isMyPage || isShortViewPage) && <Header />} */}
         {children}
         {isRootPage && <Footer />}
       </MainContent>
+
+      {isRootPage && !detectPWA() && <PWAInfoPopUp />}
       {!isSearchPage && <BottomNavigation />}
     </StyledMainlayout>
   );

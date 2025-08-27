@@ -3,7 +3,7 @@ import { theme } from '@styles/themes';
 
 const PWAInfoContainer = styled.div({
   position: 'fixed',
-  bottom: '64px',
+  bottom: '0px',
   borderRadius: '12px 12px 0 0',
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
   zIndex: 1000,
@@ -13,7 +13,7 @@ const PWAInfoContainer = styled.div({
   color: 'black',
   fontFamily: 'Pretendard',
   fontStyle: 'normal',
-  pointerEvents: 'auto'
+  pointerEvents: 'auto',
 });
 
 const DetailContainer = styled('div')({

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { STOCK_COUNTRY } from '@ts/Types';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
 import { useIndexScoreQuery } from '@controllers/query';
@@ -12,44 +13,55 @@ const stockIndices = [
   ['공포탐욕지수 ', 'S&P 500', '나스닥'],
 ];
 
-const IndexScore = ({ tabIndex }: { tabIndex: number }) => {
+const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
   const [indexScores, suspend] = useQueryComponent({ query: useIndexScoreQuery() });
 
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const togglePopup = () => setPopupOpen((prev) => !prev);
+  // const [isPopupOpen, setPopupOpen] = useState(false);
+  // const togglePopup = () => setPopupOpen((prev) => !prev);
 
-  const entries = Object.entries(indexScores ?? []);
-
-  const transformed = entries.reduce<{ score: number; delta: number }[]>((acc, _, i) => {
+  const transformed = Object.values(indexScores ?? []).reduce<{ score: number; delta: number }[]>((acc, _, i, arr) => {
     if (i % 2 === 0) {
       acc.push({
-        score: entries[i][1] as number,
-        delta: entries[i + 1]?.[1] as number,
+        score: arr[i] as number,
+        delta: arr[i + 1] as number,
       });
     }
     return acc;
   }, []);
+  console.log(transformed);
 
-  const splitIndex = transformed.length / 2;
-  const result = tabIndex === 0 ? transformed.slice(0, splitIndex) : transformed.slice(splitIndex);
+  // const splitIndex = transformed.length / 2;
+  // const result = tabIndex === 0 ? transformed.slice(0, splitIndex) : transformed.slice(splitIndex);
 
-  if (suspend) return null;
+  const result = transformed.slice(...(country === 'KOREA' ? [0, 3] : [3, 6]));
+  console.log(result);
+  // if (suspend) return null;
+
+  // return (
+  //   <IndicesContainer>
+  //     {result.map(({ score, delta }, idx) => (
+  //       <IndexItem key={stockIndices[tabIndex][idx]}>
+  //         <IndexInfoContainer>
+  //           {stockIndices[tabIndex][idx]}
+  //           {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
+  //         </IndexInfoContainer>
+  //         <IndexDeltaScore delta={delta}>
+  //           {Math.abs(score)}점 {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
+  //         </IndexDeltaScore>
+  //       </IndexItem>
+  //     ))}
+  //     {isPopupOpen && <FearPopUp onClose={togglePopup} />}
+  //   </IndicesContainer>
+  // );
 
   return (
-    <IndicesContainer>
-      {result.map(({ score, delta }, idx) => (
-        <IndexItem key={stockIndices[tabIndex][idx]}>
-          <IndexInfoContainer>
-            {stockIndices[tabIndex][idx]}
-            {idx === 0 && <InfoSVG className="btn_info" onClick={togglePopup} />}
-          </IndexInfoContainer>
-          <IndexDeltaScore delta={delta}>
-            {Math.abs(score)}점 {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
-          </IndexDeltaScore>
-        </IndexItem>
-      ))}
-      {isPopupOpen && <FearPopUp onClose={togglePopup} />}
-    </IndicesContainer>
+    <div
+      style={{
+        padding: '0 20px',
+      }}
+    >
+      asd
+    </div>
   );
 };
 
