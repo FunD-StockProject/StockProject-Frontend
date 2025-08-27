@@ -1,4 +1,4 @@
-import { Backdrop, CloseButton, ConfirmButton, PopUpContainer } from './CommonPopUp.style';
+import { CloseButton, ConfirmButton, PopUpContainer } from './CommonPopUp.style';
 
 const CommonPopUp = ({ children, onClose }: { children: any; onClose: () => void }) => (
   <PopUpContainer>

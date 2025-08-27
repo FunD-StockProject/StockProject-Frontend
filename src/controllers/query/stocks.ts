@@ -19,11 +19,23 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from '../api';
-import { AutoCompleteItem, IndexScoreInfo, PERIOD_CODE, PopularItems, StockInfo, StockTableInfo } from '../api.Type';
+import {
+  AutoCompleteItem,
+  IndexScoreInfo,
+  PERIOD_CODE,
+  PopularItems,
+  StockDetailInfo,
+  StockInfo,
+  StockTableInfo,
+} from '../api.Type';
 import { STOCK_FETCH_FUNCTIONS, queryOptions } from './common';
 
 export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) => {
-  return useQuery(['symbolNameSearch', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
+  return useQuery<StockDetailInfo>(
+    ['symbolNameSearch', name, country],
+    () => fetchSearchSymbolName(name, country),
+    queryOptions,
+  );
 };
 
 export const useStockIdSearchQuery = (stockId: number, country: STOCK_COUNTRY) => {
@@ -76,11 +88,10 @@ export const useStockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => 
 };
 
 export const useRelevantStockFetchQuery = (id: number) => {
-  const { data } = useQuery<StockInfo[]>(['relevantStockFetch', id], () => fetchRelevant(id), {
+  return useQuery<StockInfo[]>(['relevantStockFetch', id], () => fetchRelevant(id), {
     ...queryOptions,
     enabled: id != undefined,
   });
-  return [data] as const;
 };
 
 const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts', import.meta.url), { type: 'module' });

@@ -19,7 +19,13 @@ import {
   StockCardContainer,
 } from './StockCard.Style';
 
-const LargeStockCard = ({ stock: { symbolName, score }, country }: { stock: StockInfo; country: STOCK_COUNTRY }) => {
+export const LargeStockCard = ({
+  stock: { symbolName, score },
+  country,
+}: {
+  stock: StockInfo;
+  country: STOCK_COUNTRY;
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -55,7 +61,7 @@ const LargeStockCard = ({ stock: { symbolName, score }, country }: { stock: Stoc
   );
 };
 
-const SmallStockCard = ({
+export const SmallStockCard = ({
   stock: { stockId, symbolName, score, diff, keywords },
   country,
 }: {

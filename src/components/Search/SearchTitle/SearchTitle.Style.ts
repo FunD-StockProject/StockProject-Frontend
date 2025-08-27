@@ -17,10 +17,13 @@ export const SearchTitleContainer = styled.div({
 
   [media[0]]: {
     gap: '24px',
-    padding: '0 20px',
   },
 });
 
+export const SearchTitlePriceText = styled.div({
+  color: theme.colors.sub_white,
+}
+)
 export const SearchTitleHeaderContainer = styled.div({
   display: 'flex',
   alignItems: 'end',
@@ -101,6 +104,7 @@ export const SearchTitleBodyTitle = styled.div({
 });
 
 export const SearchTitleBodyTitleText = styled.div({
+  ...theme.font.heading24Semibold,
   position: 'relative',
 
   overflow: 'hidden',
@@ -142,50 +146,23 @@ export const SearchTitleBodyTitleSVG = styled.div({
 });
 
 export const SearchTitleBodySubtitle = styled.div({
+  ...theme.font.body14Medium,
+  color: theme.colors.sub_gray4,
   display: 'flex',
   flexDirection: 'column',
-
-  fontSize: '15px',
-
-  [media[0]]: {
-    fontSize: '11px',
-  },
 });
 
 export const SearchTitleFooterContainer = styled.div({
   display: 'flex',
-  gap: '12px',
+  gap: '4px',
 });
 
-export const SearchTitleFooterItems = styled.div(
-  {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-    padding: '12px 18px',
-
-    fontWeight: '700',
-    fontSize: '17px',
-    lineHeight: '1',
-
-    background: theme.colors.grayscale100,
-    borderRadius: '8px',
-
-    ['span']: {
-      fontWeight: '500',
-      fontSize: '15px',
-    },
-
-    [media[0]]: {
-      padding: '8px 12px',
-
-      fontSize: '15px',
-
-      ['span']: {
-        fontSize: '13px',
-      },
-    },
-  },
+export const SearchTitleFooterItems = styled.div({
+  ...theme.font.body14Medium,
+  color: theme.colors.sub_gray4,
+  display: 'flex',
+  alignItems: 'center',
+},
   ({ delta }: { delta?: themeColor }) => ({
     ['span']: {
       color: theme.colors[delta ?? 'primary0'],

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { deltaScoreToColor } from '@utils/ScoreConvert';
 import {
   Modal,
@@ -47,16 +47,21 @@ import {
 
 const Favorites = () => {
   const isLogin = !!localStorage.getItem('access_token');
-  const { data: list = [] } = useBookmarkListQuery();
+  const { data } = useBookmarkListQuery();
   const [isEditMode, setIsEditMode] = useState(false);
-  const [stocks, setStocks] = useState<FavoriteStock[]>(list);
+  const [stocks, setStocks] = useState<FavoriteStock[]>([]);
+
+  useEffect(() => {
+    setStocks(data ?? []);
+  }, [data]);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 
   const selectedCount = stocks.filter((stock) => stock.isSelected).length;
   const isEmpty = stocks.length === 0;
-
+  console.log(isEmpty);
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
     if (isEditMode) {
@@ -166,7 +171,7 @@ const Favorites = () => {
                       <StockItem key={stock.id}>
                         <StockInfo>
                           <StockName>
-                            {stock.name}
+                            {stock.symbolName}
                             {!isEditMode && (
                               <NotificationIcon
                                 isActive={stock.isNotificationOn}
@@ -180,15 +185,15 @@ const Favorites = () => {
                             <StockPrice>
                               {concurrency} {stock.price.toLocaleString()}
                             </StockPrice>
-                            <StockChange style={{ color: deltaScoreToColor(stock.change) }}>
-                              {stock.change}%
+                            <StockChange style={{ color: deltaScoreToColor(stock.priceDiffPerCent) ?? 'white' }}>
+                              {stock.priceDiffPerCent}%
                             </StockChange>
                           </StockPriceRow>
                           <StockScoreRow>
-                            <StockScore>{stock.score}</StockScore>
-                            <StockScoreChange style={{ color: deltaScoreToColor(stock.scoreChange) }}>
-                              {stock.scoreChange > 0 ? '+' : ''}
-                              {stock.scoreChange}
+                            <StockScore>{stock.score}점</StockScore>
+                            <StockScoreChange style={{ color: deltaScoreToColor(stock.diff) ?? 'white' }}>
+                              {stock.diff > 0 ? '+' : ''}
+                              {stock.diff}
                             </StockScoreChange>
                           </StockScoreRow>
                         </StockInfo>

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 
 const FooterContainer = styled.div({
-  background: theme.colors.primary50,
+  background: theme.colors.sub_gray11,
   width: '100%',
 });
 
@@ -11,7 +11,7 @@ const FooterContents = styled.div({
   flexDirection: 'column',
   width: '100%',
   maxWidth: '1280px',
-  padding: '60px',
+  padding: '32px 20px',
   boxSizing: 'border-box',
   margin: '0 auto',
   height: '100%',
@@ -21,7 +21,6 @@ const FooterContents = styled.div({
 
   [media[0]]: {
     gap: '24px',
-    padding: '60px 20px',
     fontSize: '13px',
   },
 });
@@ -41,7 +40,7 @@ const FooterTitle = styled.div({
 
   [media[0]]: {
     gap: '12px',
-    fontSize: '32px',
+    fontSize: '17px',
 
     ['svg']: {
       height: '28px',
@@ -55,30 +54,30 @@ const FooterButtonContainer = styled.div({
   gap: '12px',
 
   [media[0]]: {
-    gap: '8px',
+    gap: '12px',
   },
 });
 
 const FooterButtonItemContainer = styled.div({
+  ...theme.font.body16Medium,
   display: 'flex',
-  background: theme.colors.primary0,
+  background: theme.colors.sub_black,
   padding: '12px 18px',
   borderRadius: '8px',
   gap: '8px',
   alignItems: 'center',
-  color: theme.colors.primary100,
-  fontSize: '18px',
+  color: theme.colors.sub_gray3,
   cursor: 'pointer',
 
   ['img']: {
     height: '1.5em',
   },
 
-  '&:hover': {
-    background: theme.colors.cornflowerblue,
-    color: 'white',
-    transition: '.1s',
-  },
+  // '&:hover': {
+  //   background: theme.colors.cornflowerblue,
+  //   color: 'white',
+  //   transition: '.1s',
+  // },
 
   [media[0]]: {
     gap: '8px',

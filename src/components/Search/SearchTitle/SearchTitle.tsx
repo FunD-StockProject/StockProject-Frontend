@@ -6,22 +6,20 @@ import { RESULT_TYPE } from '@ts/Types';
 import { deltaColor } from '@utils/Delta';
 import { StockDetailInfo } from '@controllers/api.Type';
 import { useStockSummaryQuery } from '@controllers/query';
-import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
   SearchTitleBody,
   SearchTitleBodySubtitle,
   SearchTitleBodyTitle,
   SearchTitleBodyTitleAnimatedText,
-  SearchTitleBodyTitleSVG,
   SearchTitleBodyTitleText,
   SearchTitleContainer,
   SearchTitleFooterContainer,
   SearchTitleFooterItems,
+  SearchTitlePriceText,
 } from './SearchTitle.Style';
 
 const BASE_DELAY = 1500;
 
-const priceDiff = (diff: number) => `${(diff < 0 ? '-' : '+') + Math.abs(diff).toLocaleString()}`;
 
 const SearchTitle = ({
   stockInfo,
@@ -32,8 +30,8 @@ const SearchTitle = ({
 }) => {
   const { state } = useLocation();
 
-  const money = stockInfo.country === 'KOREA' ? '₩' : '$';
-
+  const concurrency = stockInfo.country === "KOREA" ? '₩' : '$'
+  const symbol = stockInfo.priceDiff > 0 ? '+' : stockInfo.priceDiff < 0 ? '-' : '';
   const titleTextRef = useRef<HTMLDivElement>(null);
 
   const [animated, setAnimated] = useState<boolean>(false);
@@ -98,25 +96,23 @@ const SearchTitle = ({
                   {stockInfo.symbolName}
                 </SearchTitleBodyTitleAnimatedText>
               </AnimatePresence>
+              <SearchTitlePriceText>{concurrency}{stockInfo.price.toLocaleString()}</SearchTitlePriceText>
             </SearchTitleBodyTitleText>
-            <SearchTitleBodyTitleSVG>
-              <ZipyoSVG />
-            </SearchTitleBodyTitleSVG>
           </SearchTitleBodyTitle>
+          <SearchTitleFooterContainer>
+            <SearchTitleFooterItems>{MARKET_CODES[stockInfo.exchangeNum]} |</SearchTitleFooterItems>
+            <SearchTitleFooterItems>{stockInfo.symbol} |</SearchTitleFooterItems>
+            <SearchTitleFooterItems delta={deltaColor(stockInfo.priceDiff)}>
+              <span>{symbol} {stockInfo.price.toLocaleString()}
+                {`(${Math.abs(stockInfo.priceDiffPerCent)}%)`}</span>
+            </SearchTitleFooterItems>
+          </SearchTitleFooterContainer>
           <SearchTitleBodySubtitle>
             {summary.map((e, i) => (
               <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
             ))}
           </SearchTitleBodySubtitle>
         </SearchTitleBody>
-        <SearchTitleFooterContainer>
-          <SearchTitleFooterItems>{MARKET_CODES[stockInfo.exchangeNum]}</SearchTitleFooterItems>
-          <SearchTitleFooterItems>{stockInfo.symbol}</SearchTitleFooterItems>
-          <SearchTitleFooterItems delta={deltaColor(stockInfo.priceDiff)}>
-            {money} {stockInfo.price.toLocaleString()}
-            <span>{`${priceDiff(stockInfo.priceDiff)}(${stockInfo.priceDiffPerCent}%)`}</span>
-          </SearchTitleFooterItems>
-        </SearchTitleFooterContainer>
       </SearchTitleContainer>
     )
   );
