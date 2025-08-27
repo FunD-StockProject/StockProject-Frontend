@@ -2,12 +2,13 @@ import { useState } from 'react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
 import { deltaScoreToColor } from '@utils/ScoreConvert';
-import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ActionButtons, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, Modal, ModalOverlay, ModalContent, ModalTitle, ModalDescription, ModalButtons, ModalButton, ModalButtonPrimary, SVGContainer, HeaderContainer, StockContainer } from './Favorites.Style';
+import { Container, Header, HeaderTitle, UpdateInfo, EditButton, Content, EmptyState, ActionButtons, ActionButtonPrimary, StockList, StockItem, Checkbox, StockInfo, StockName, StockPriceRow, StockPrice, StockChange, StockScoreRow, StockScore, StockScoreChange, NotificationIcon, DeleteButton, SVGContainer, HeaderContainer, StockContainer } from './Favorites.Style';
 import NoResultSVG from '@assets/noResult.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import { useBookmarkListQuery } from '@controllers/query/favorites';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
+import { Modal, ModalButton, ModalButtonPrimary, ModalButtons, ModalContent, ModalDescription, ModalOverlay, ModalTitle } from '@components/Modal/Common.Style';
 
 
 const Favorites = () => {
