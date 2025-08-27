@@ -35,11 +35,15 @@ const LargeStockCardHeader = styled.div({
   gap: '8px',
   alignItems: 'center',
   padding: '12px 12px 8px',
+  overflow: 'hidden',
 
   ['>p']: {
     ...theme.font.title20Semibold,
     color: theme.colors.sub_gray3,
     margin: '0px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 });
 
@@ -48,6 +52,7 @@ const LargeStockCardHeaderImage = styled.div({
   height: '24px',
   borderRadius: '50%',
   background: 'red',
+  flexShrink: '0',
 });
 
 const LargeStockCardContent = styled.div({
@@ -112,14 +117,20 @@ const SmallStockCardContent = styled.div({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  minWidth: '0px',
 });
 
 const SmallStockCardContentTitle = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  overflow: 'hidden',
+  width: '100%',
 
   ['>p']: {
     margin: '0px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     ...theme.font.body18Semibold,
     color: theme.colors.primary0,
   },

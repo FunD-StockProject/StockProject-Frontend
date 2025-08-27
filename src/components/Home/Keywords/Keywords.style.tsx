@@ -4,7 +4,7 @@ import { media, theme } from '@styles/themes';
 const KeywordsContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: '20px',
+  gap: '16px',
 });
 
 const TitleWrapper = styled.div({

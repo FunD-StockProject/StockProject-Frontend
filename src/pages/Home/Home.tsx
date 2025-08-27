@@ -2,23 +2,14 @@ import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { STOCK_COUNTRY } from '@ts/Types';
 import CardList from '@components/CardList/CardList';
-// import CardList from '@components/CardList/CardList';
-// import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+import Banner from '@components/Home/Banner/Banner';
 import IndexScore from '@components/Home/IndexScore/IndexScore';
-// import Keywords from '@components/Home/Keywords/Keywords';
-// import StockTable from '@components/Home/StockTable/StockTable';
+import Keywords from '@components/Home/Keywords/Keywords';
+import StockTable from '@components/Home/StockTable/StockTable';
 import AlarmSVG from '@assets/icons/alarm.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
-// import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
-  HomeAdContainer,
-  HomeAdItem,
-  HomeAdItemButton,
-  HomeAdItemContent,
-  HomeAdItemDescription,
-  HomeAdItemIndex,
-  HomeAdItemTitle,
   HomeContainer,
   HomeContents,
   HomeHeaderButtonContainer,
@@ -77,75 +68,20 @@ const Home = () => {
       </HomeHeaderContainer>
       <HomeTabMenuContainer>
         {tabMenu.map((e, i) => (
-          <HomeTabMenuLabel>
+          <HomeTabMenuLabel key={`TAB_MENU_${e.key}`}>
             <input value={e.key} name="radio" type="radio" defaultChecked={i == 0} onChange={handleTabChange} />
             <div className="tab_text">{e.text}</div>
           </HomeTabMenuLabel>
         ))}
       </HomeTabMenuContainer>
-      <HomeAdContainer>
-        {Array.from({ length: 5 }).map((_, index, arr) => (
-          <HomeAdItem key={index}>
-            <HomeAdItemContent>
-              <div>
-                <HomeAdItemTitle>인간지표 앱 출시</HomeAdItemTitle>
-                <HomeAdItemDescription>보다 더 편리하게 사용해보세요</HomeAdItemDescription>
-              </div>
-              <HomeAdItemButton>인간지표 SNS →</HomeAdItemButton>
-            </HomeAdItemContent>
-            <HomeAdItemIndex>
-              <b>{index + 1}</b> / {arr.length}
-            </HomeAdItemIndex>
-            <span />
-            <span />
-            <span />
-          </HomeAdItem>
-        ))}
-      </HomeAdContainer>
-
+      <Banner />
       <HomeContents>
         <IndexScore country={country} />
         <CardList type="HOT" country={country} />
         <CardList type="RISING" country={country} />
         <CardList type="DESCENT" country={country} />
-        {/* <ContentsItemContainer>
-          <ContentsItemTitle color="primary50">
-            지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한
-            <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => togglePopup(0)} />
-          </ContentsItemTitle>
-          <CardList name={'HOT'} country={country} />
-          <ContentsItemContent>
-            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
-          </ContentsItemContent>
-          {isPopupOpen[0] && <HotPopUp onClose={() => togglePopup(0)} />}
-        </ContentsItemContainer>
-        <ContentsItemContainer>
-          <ContentsItemTitle color="red">
-            지금 민심 <StyledSpan color="red">떡상</StyledSpan> 중인
-            <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => togglePopup(1)} />
-          </ContentsItemTitle>
-          <CardList name={'RISING'} country={country} />
-          <ContentsItemContent>
-            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
-          </ContentsItemContent>
-          {isPopupOpen[1] && <RisingPopUp onClose={() => togglePopup(1)} />}
-        </ContentsItemContainer>
-        <ContentsItemContainer>
-          <ContentsItemTitle color="blue">
-            지금 민심 <StyledSpan color="blue">떡락</StyledSpan> 중인
-            <ZipyoSVG />
-            <InfoSVG className="btn_info" onClick={() => togglePopup(2)} />
-          </ContentsItemTitle>
-          <CardList name={'DESCENT'} country={country} />
-          <ContentsItemContent>
-            <StyledText>매일 {updateTime[tabIndex]}시 업데이트됩니다.</StyledText>
-          </ContentsItemContent>
-          {isPopupOpen[2] && <DescentPopUp onClose={() => togglePopup(2)} />}
-        </ContentsItemContainer>
         <StockTable country={country} />
-        <Keywords country={country} /> */}
+        <Keywords country={country} />
       </HomeContents>
     </HomeContainer>
   );

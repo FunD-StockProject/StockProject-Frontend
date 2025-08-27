@@ -65,4 +65,18 @@ const deltaScoreToColor = (deltaScore: number): string | null => {
   }
 };
 
-export { scoreToImage, scoreToText, scoreToIndex, deltaScoreToColor };
+const diffToValue = (diff: number): string => {
+  const diffSign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+  return diffSign + Math.abs(diff);
+};
+
+const diffToPercent = (
+  value: number,
+  diff: number,
+  option: { fixed?: number; sign?: boolean } = { fixed: 2, sign: true },
+): string => {
+  const diffSign = option.sign ? (diff > 0 ? '+' : diff < 0 ? '-' : '') : '';
+  return diffSign + (Math.abs(value / (value - diff)) * 100).toFixed(option.fixed) + '%';
+};
+
+export { scoreToImage, scoreToText, scoreToIndex, deltaScoreToColor, diffToValue, diffToPercent };

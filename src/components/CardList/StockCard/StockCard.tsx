@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY, STOCK_TYPE } from '@ts/Types';
-import { scoreToImage, scoreToText } from '@utils/ScoreConvert';
+import { diffToPercent, diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import { StockInfo } from '@controllers/api.Type';
@@ -56,7 +56,7 @@ const LargeStockCard = ({ stock: { symbolName, score }, country }: { stock: Stoc
 };
 
 const SmallStockCard = ({
-  stock: { symbolName, score, diff, keywords },
+  stock: { stockId, symbolName, score, diff, keywords },
   country,
 }: {
   stock: StockInfo;
@@ -70,9 +70,6 @@ const SmallStockCard = ({
 
   const scoreImage = scoreToImage(score);
 
-  const diffSign = diff > 0 ? '+' : diff < 0 ? '-' : '';
-  const diffPercent = (Math.abs(score / (score - diff)) * 100).toFixed(1);
-
   return (
     <SmallStockCardContainer onClick={handleClick}>
       <img src={scoreImage} />
@@ -82,11 +79,13 @@ const SmallStockCard = ({
           <SmallStockCardContentScore delta={diff}>
             {score}점
             <span>
-              {diffSign + Math.abs(diff)}점({diffSign + diffPercent}%)
+              {diffToValue(diff)}점({diffToPercent(score, diff, { fixed: 1 })})
             </span>
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
-        <SmallStockCardContentKeywords>{keywords?.map((e) => <p>#{e}</p>)}</SmallStockCardContentKeywords>
+        <SmallStockCardContentKeywords>
+          {keywords?.map((e) => <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>)}
+        </SmallStockCardContentKeywords>
       </SmallStockCardContent>
     </SmallStockCardContainer>
   );
@@ -95,18 +94,18 @@ const SmallStockCard = ({
 const StockCard = ({ type, country }: { type: STOCK_TYPE; country: STOCK_COUNTRY }) => {
   const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
 
-  if (suspend) return null;
-
   return (
-    <StockCardContainer>
-      {curStocks?.map((stock: StockInfo) =>
-        type === 'HOT' ? (
-          <LargeStockCard stock={stock} country={country} />
-        ) : (
-          <SmallStockCard stock={stock} country={country} />
-        ),
-      )}
-    </StockCardContainer>
+    suspend || (
+      <StockCardContainer>
+        {curStocks?.map((stock: StockInfo) =>
+          type === 'HOT' ? (
+            <LargeStockCard key={`LARGE_STOCK_CARD_${stock.stockId}`} stock={stock} country={country} />
+          ) : (
+            <SmallStockCard key={`SMALL_STOCK_CARD_${stock.stockId}`} stock={stock} country={country} />
+          ),
+        )}
+      </StockCardContainer>
+    )
   );
 };
 
