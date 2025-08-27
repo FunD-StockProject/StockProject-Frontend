@@ -1,9 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD } from '@ts/Constants';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { STOCK_COUNTRY, STOCK_TYPE } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
-import { StockType } from '@components/Common/Common.Type';
-import { AutoCompleteItem, IndexScoreInfo, PERIOD_CODE, PopularItems, StockInfo, StockTableInfo } from '../api.Type';
 import {
   // fetchAutoComplete,
   fetchIndexScore,
@@ -20,8 +19,8 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from '../api';
-import { queryOptions, STOCK_FETCH_FUNCTIONS } from './common';
-import { useEffect, useState } from 'react';
+import { AutoCompleteItem, IndexScoreInfo, PERIOD_CODE, PopularItems, StockInfo, StockTableInfo } from '../api.Type';
+import { STOCK_FETCH_FUNCTIONS, queryOptions } from './common';
 
 export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) => {
   return useQuery(['symbolNameSearch', name, country], () => fetchSearchSymbolName(name, country), queryOptions);
@@ -31,7 +30,7 @@ export const useStockIdSearchQuery = (stockId: number, country: STOCK_COUNTRY) =
   return useQuery(['stockIdSearchQuery', stockId, country], () => fetchRealStockInfo(stockId, country), queryOptions);
 };
 
-export const useHomeStockFetchQuery = (type: StockType, country: string) => {
+export const useHomeStockFetchQuery = (type: STOCK_TYPE, country: STOCK_COUNTRY) => {
   return useQuery(['homeStockFetch', type, country], () => STOCK_FETCH_FUNCTIONS[type](country), queryOptions);
 };
 
@@ -40,7 +39,11 @@ export const useScoreQuery = (id: number, country: STOCK_COUNTRY) => {
 };
 
 export const useChartInfoQuery = (id: number, periodCode: PERIOD_CODE, startDate: string) => {
-  return useQuery(['chartInfo', id, periodCode, startDate], () => fetchStockChart(id, periodCode, startDate, '2025-12-30'), queryOptions);
+  return useQuery(
+    ['chartInfo', id, periodCode, startDate],
+    () => fetchStockChart(id, periodCode, startDate, '2025-12-30'),
+    queryOptions,
+  );
 };
 
 export const useKeywordsQuery = (country: string) => {
@@ -48,7 +51,11 @@ export const useKeywordsQuery = (country: string) => {
 };
 
 export const useStockTableInfoQuery = (category: string, country: string) => {
-  return useQuery<StockTableInfo>(['stockTableInfo', category, country], () => fetchStockTable(category, country), queryOptions);
+  return useQuery<StockTableInfo>(
+    ['stockTableInfo', category, country],
+    () => fetchStockTable(category, country),
+    queryOptions,
+  );
 };
 
 export const useIndexScoreQuery = () => {
@@ -60,7 +67,11 @@ export const useKeywordSearchQuery = (keywordName: string) => {
 };
 
 export const useStockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
-  const { data = [] } = useQuery<string[]>(['stockSummary', symbol, country], () => fetchStockSummary(symbol, country), queryOptions);
+  const { data = [] } = useQuery<string[]>(
+    ['stockSummary', symbol, country],
+    () => fetchStockSummary(symbol, country),
+    queryOptions,
+  );
   return [data] as const;
 };
 
@@ -74,7 +85,12 @@ export const useRelevantStockFetchQuery = (id: number) => {
 
 const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts', import.meta.url), { type: 'module' });
 
-export const useWordCloudQuery = (symbol: string, country: STOCK_COUNTRY, { width, height }: any, isMobile: boolean) => {
+export const useWordCloudQuery = (
+  symbol: string,
+  country: STOCK_COUNTRY,
+  { width, height }: any,
+  isMobile: boolean,
+) => {
   const [wordCloud, setWordCloud] = useState<any>([]);
   const queryClient = useQueryClient();
 
@@ -129,9 +145,10 @@ export const useStockChartQuery = (stockId: number, period: string) => {
           Object.keys(CHART_MOVING_AVERAGE_COLOR).map((range) => [
             range,
             {
-              price: Array.from({ length: Math.min(~~range, i + 1) }, (_, j) => Number(arr[i - j].closePrice)).reduce(
-                (acc, e) => acc + e,
-              ) / Math.min(~~range, i + 1),
+              price:
+                Array.from({ length: Math.min(~~range, i + 1) }, (_, j) => Number(arr[i - j].closePrice)).reduce(
+                  (acc, e) => acc + e,
+                ) / Math.min(~~range, i + 1),
             },
           ]),
         ),
@@ -146,7 +163,15 @@ export const useStockChartQuery = (stockId: number, period: string) => {
     return newChartData;
   };
 
-  const fetchData = async ({ lastDate, priceInfos, chartData }: { lastDate: string; priceInfos: any[]; chartData: any[] }) => {
+  const fetchData = async ({
+    lastDate,
+    priceInfos,
+    chartData,
+  }: {
+    lastDate: string;
+    priceInfos: any[];
+    chartData: any[];
+  }) => {
     fetchStockChart(stockId, period as PERIOD_CODE, firstDate, lastDate).then((e) => {
       const newPriceInfos = [...[...e.priceInfos].reverse(), ...priceInfos];
       const lastPriceDate = formatLocalDateToDate(newPriceInfos[0].localDate);
@@ -210,7 +235,9 @@ export const useAutoComplete = (
     results: [],
   });
 
-  const { data = [] } = useQuery<AutoCompleteItem[]>(['AutoComplete', value, key], () => results, { placeholderData: [] });
+  const { data = [] } = useQuery<AutoCompleteItem[]>(['AutoComplete', value, key], () => results, {
+    placeholderData: [],
+  });
 
   const queryClient = useQueryClient();
 
@@ -232,5 +259,3 @@ export const useAutoComplete = (
 
   return [data, fetchData];
 };
-
-

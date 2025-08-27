@@ -1,50 +1,38 @@
+import { STOCK_COUNTRY_TEXT, STOCK_UPDATE_TIME } from '@ts/Constants';
 import { STOCK_COUNTRY } from '@ts/Types';
-import { useIsMobile } from '@hooks/useIsMobile';
-import { useQueryComponent } from '@hooks/useQueryComponent';
-import StockCard from '@components/CardList/StockCard/StockCard';
-import { StockType } from '@components/Common/Common.Type';
-import SlideView from '@components/SlideView/SlideView';
-import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
-import { StockInfo } from '@controllers/api.Type';
-import { useHomeStockFetchQuery } from '@controllers/query';
+import useModal from '@hooks/useModal';
+import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
+import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
+import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
+import InfoSVG from '@assets/icons/info.svg?react';
+import { CardListContainer, CardListHeader } from './CardList.Style';
+import StockCard from './StockCard/StockCard';
 
-const CardList = ({ name, country }: { name: StockType; country: STOCK_COUNTRY }) => {
-  const isHot = name === 'HOT';
-  const isMobile = useIsMobile();
-  const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(name, country) });
+type CardListType = 'HOT' | 'RISING' | 'DESCENT';
+const cardListTitle: Record<CardListType, string> = {
+  HOT: '가장 HOT 한',
+  RISING: '🔥지금 민심 떡상 중인',
+  DESCENT: '💧지금 민심 떡락 중인',
+};
+
+const CardList = ({ type, country }: { type: CardListType; country: STOCK_COUNTRY }) => {
+  const { Modal, openModal } = useModal({
+    Component: type === 'HOT' ? HotPopUp : type === 'RISING' ? RisingPopUp : DescentPopUp,
+  });
 
   return (
-    suspend ||
-    (curStocks && (
-      <SlideView
-        key={`${name}_${country}`}
-        keyName={name}
-        list={isHot ? StockHot(curStocks, country) : StockRisingDescend(curStocks, country)}
-        count={isHot || isMobile ? 1 : 3}
-      />
-    ))
+    <CardListContainer>
+      <CardListHeader>
+        <p className="title">
+          {cardListTitle[type]} {type === 'HOT' && `${STOCK_COUNTRY_TEXT[country]}지표`}
+        </p>
+        <InfoSVG onClick={openModal} />
+        <p className="update-time">어제 {STOCK_UPDATE_TIME[country]} 기준</p>
+        <Modal />
+      </CardListHeader>
+      <StockCard type={type} country={country} />
+    </CardListContainer>
   );
-};
-
-const StockRisingDescend = (curStocks: StockInfo[], country: STOCK_COUNTRY) => {
-  return curStocks.map((stock: StockInfo) => {
-    return <StockCard stockInfo={stock} country={country} />;
-  });
-};
-
-const StockHot = (curStocks: StockInfo[], country: STOCK_COUNTRY) => {
-  return curStocks.map((stock: StockInfo) => {
-    return (
-      <ScoreSlotMachine
-        stockName={stock.symbolName}
-        active={true}
-        stockScore={stock.score}
-        tabIndex={0}
-        stockDiff={stock.diff}
-        country={country}
-      />
-    );
-  });
 };
 
 export default CardList;

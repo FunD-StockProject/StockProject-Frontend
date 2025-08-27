@@ -2,23 +2,18 @@ import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 
 const PopUpContainer = styled('div')({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '568px',
+  width: '100%',
   height: 'auto',
   background: theme.colors.grayscale30,
   color: theme.colors.primary100,
   borderRadius: '12px',
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-  zIndex: 1000,
   fontFamily: 'Pretendard',
 
   [media[0]]: {
-    width: '90%',
     ['svg']: {
       width: '40%',
     },
@@ -105,8 +100,8 @@ const CloseButton = styled('button')({
   color: theme.colors.grayscale100,
 
   [media[0]]: {
-    top: '12px',
-    right: '0px',
+    top: '8px',
+    right: '8px',
   },
 });
 

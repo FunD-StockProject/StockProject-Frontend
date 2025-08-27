@@ -1,55 +1,111 @@
 import { useNavigate } from 'react-router-dom';
-import { STOCK_COUNTRY } from '@ts/Types';
-import { deltaColor } from '@utils/Delta';
-import { scoreToImage } from '@utils/ScoreConvert';
+import { STOCK_COUNTRY, STOCK_TYPE } from '@ts/Types';
+import { scoreToImage, scoreToText } from '@utils/ScoreConvert';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import { StockInfo } from '@controllers/api.Type';
-import DownSVG from '@assets/icons/down.svg?react';
-import UpSVG from '@assets/icons/up.svg?react';
+import { useHomeStockFetchQuery } from '@controllers/query';
 import {
+  LargeStockCardContainer,
+  LargeStockCardContent,
+  LargeStockCardContentTextContainer,
+  LargeStockCardHeader,
+  LargeStockCardHeaderImage,
+  SmallStockCardContainer,
+  SmallStockCardContent,
+  SmallStockCardContentKeywords,
+  SmallStockCardContentScore,
+  SmallStockCardContentTitle,
   StockCardContainer,
-  StockCardImage,
-  StockCardKeywords,
-  StockCardTitle,
-  StockCardTitleContents,
-  StockCardTitleName,
-  StockCardTitleScore,
 } from './StockCard.Style';
 
-const signedNumber = (value: number) => {
-  const sign = value > 0 ? '+' : value < 0 ? '-' : '';
-  return sign + Math.abs(value);
-};
-
-const StockCard = ({ stockInfo, country }: { stockInfo: StockInfo; country: STOCK_COUNTRY }) => {
+const LargeStockCard = ({ stock: { symbolName, score }, country }: { stock: StockInfo; country: STOCK_COUNTRY }) => {
   const navigate = useNavigate();
-  const { symbolName, score, diff, keywords } = stockInfo;
-  const deltaSVG = !diff ? ' -' : diff > 0 ? <UpSVG /> : <DownSVG />;
-  const scoreImage = scoreToImage(score);
 
   const handleClick = () => {
     navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
   };
 
+  const scoreImage = scoreToImage(score);
+  const scoreText = scoreToText(score);
+
   return (
-    <StockCardContainer onClick={handleClick}>
-      <StockCardImage>
+    <LargeStockCardContainer onClick={handleClick}>
+      <LargeStockCardHeader>
+        <LargeStockCardHeaderImage>
+          <img src={''} />
+        </LargeStockCardHeaderImage>
+        <p>{symbolName}</p>
+      </LargeStockCardHeader>
+      <hr />
+      <LargeStockCardContent>
         <img src={scoreImage} />
-      </StockCardImage>
-      <StockCardTitle>
-        <StockCardTitleContents>
-          <StockCardTitleName>{symbolName}</StockCardTitleName>
-          <StockCardTitleScore diffColor={deltaColor(diff)}>
+        <LargeStockCardContentTextContainer>
+          <div>
+            <p className="title">민심 키워드</p>
+            <p className="content">{scoreText}</p>
+          </div>
+          <div>
+            <p className="title">민심 점수</p>
+            <p className="content">{score}점</p>
+          </div>
+        </LargeStockCardContentTextContainer>
+      </LargeStockCardContent>
+    </LargeStockCardContainer>
+  );
+};
+
+const SmallStockCard = ({
+  stock: { symbolName, score, diff, keywords },
+  country,
+}: {
+  stock: StockInfo;
+  country: STOCK_COUNTRY;
+}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+  };
+
+  const scoreImage = scoreToImage(score);
+
+  const diffSign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+  const diffPercent = (Math.abs(score / (score - diff)) * 100).toFixed(1);
+
+  return (
+    <SmallStockCardContainer onClick={handleClick}>
+      <img src={scoreImage} />
+      <SmallStockCardContent>
+        <SmallStockCardContentTitle>
+          <p className="name">{symbolName}</p>
+          <SmallStockCardContentScore delta={diff}>
             {score}점
             <span>
-              {signedNumber(diff)}점{deltaSVG}
+              {diffSign + Math.abs(diff)}점({diffSign + diffPercent}%)
             </span>
-          </StockCardTitleScore>
-        </StockCardTitleContents>
-        <StockCardKeywords>
-          {keywords?.map((e, i) => <span key={`Relevant_Keywords_${symbolName}_${i}`}>{e}</span>)}
-        </StockCardKeywords>
-      </StockCardTitle>
+          </SmallStockCardContentScore>
+        </SmallStockCardContentTitle>
+        <SmallStockCardContentKeywords>{keywords?.map((e) => <p>#{e}</p>)}</SmallStockCardContentKeywords>
+      </SmallStockCardContent>
+    </SmallStockCardContainer>
+  );
+};
+
+const StockCard = ({ type, country }: { type: STOCK_TYPE; country: STOCK_COUNTRY }) => {
+  const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
+
+  if (suspend) return null;
+
+  return (
+    <StockCardContainer>
+      {curStocks?.map((stock: StockInfo) =>
+        type === 'HOT' ? (
+          <LargeStockCard stock={stock} country={country} />
+        ) : (
+          <SmallStockCard stock={stock} country={country} />
+        ),
+      )}
     </StockCardContainer>
   );
 };
