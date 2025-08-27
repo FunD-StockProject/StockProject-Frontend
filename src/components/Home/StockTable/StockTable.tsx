@@ -51,9 +51,9 @@ const StockTable = ({ country }: { country: string }) => {
       </HomeItemTtile>
       <StockTableContent>
         <StockTableTabContainer>
-          {StockTableTab.map(({ key, text }) => (
-            <StockTableTabLabel>
-              <input type="radio" name="table_tab" value={key} onChange={handleTabChange} />
+          {StockTableTab.map(({ key, text }, idx) => (
+            <StockTableTabLabel key={`STOCK_TABLE_TAB_${key}`}>
+              <input type="radio" name="table_tab" value={key} defaultChecked={idx === 0} onChange={handleTabChange} />
               <span>{text}</span>
             </StockTableTabLabel>
           ))}
@@ -68,8 +68,8 @@ const StockTable = ({ country }: { country: string }) => {
               </tr>
             </thead>
             <tbody>
-              {stockTable?.map((stock: StockTableInfo, index: number) => (
-                <tr key={index} onClick={handleClick(stock.symbolName)}>
+              {stockTable?.map((stock: StockTableInfo) => (
+                <tr key={`STOCK_TABLE_ITEM_${tableTab}_${stock.stockId}`} onClick={handleClick(stock.symbolName)}>
                   <StockTableItemSymbol>
                     <img src="" />
                     <p>{stock.symbolName}</p>
@@ -84,6 +84,7 @@ const StockTable = ({ country }: { country: string }) => {
                     <p className="score">{stock.score}점</p>
                     <p className="diff">({diffToPercent(stock.score, stock.scoreDiff, { fixed: 0 })})</p>
                   </StockTableItemScore>
+                  //구분선 추가해야함
                 </tr>
               ))}
             </tbody>

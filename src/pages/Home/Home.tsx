@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { useState } from 'react';
 import { STOCK_COUNTRY } from '@ts/Types';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
@@ -16,8 +15,6 @@ import {
   HomeHeaderContainer,
   HomeTabMenuContainer,
   HomeTabMenuLabel,
-  StyledSpan,
-  StyledText,
 } from './Home.Style';
 
 const tabMenu = [
@@ -27,31 +24,6 @@ const tabMenu = [
 
 const Home = () => {
   const [country, setCountry] = useState<STOCK_COUNTRY>('KOREA');
-
-  const [isPopupOpen, setPopupOpen] = useState([false, false, false]);
-  const hotStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
-  const risingStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
-  const descentStocksApiRef = useRef({} as React.ContextType<typeof VisibilityContext>);
-
-  const togglePopup = (index: number) => {
-    setPopupOpen((prev) => prev.map((value, idx) => (idx === index ? !value : value)));
-  };
-
-  // const handleTab = (index: number) => {
-  //   if (tabIndex === index) {
-  //     return;
-  //   }
-
-  //   setTabIndex(index);
-  //   localStorage.setItem('LAST_TAB_INDEX', index.toString());
-  //   const currentScrollPosition = window.scrollY;
-
-  //   const refs = [hotStocksApiRef, risingStocksApiRef, descentStocksApiRef];
-  //   const refsCheck = refs.some((ref) => !ref.current || Object.keys(ref.current).length === 0);
-  //   if (!refsCheck) refs.forEach((ref) => ref.current.scrollToItem(ref.current.getItemByIndex('0')));
-
-  //   window.scrollTo(0, currentScrollPosition);
-  // };
 
   const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCountry(e.target.value as STOCK_COUNTRY);

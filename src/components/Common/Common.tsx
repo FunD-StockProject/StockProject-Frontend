@@ -97,16 +97,20 @@ const StyledSVG = ({
 
 const Container = styled.div({
   display: 'flex',
+  flexDirection: 'column',
   boxSizing: 'border-box',
   width: '100%',
   height: '100%',
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: '16px',
-  padding: '15%',
+  overflow: 'hidden',
 
-  ['svg']: {
+  ['>img']: {
+    objectFit: 'contain',
+    objectPosition: 'center',
+
     width: '100%',
+    height: '100%',
   },
 });
 

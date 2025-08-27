@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { media, theme, themeColor } from '@styles/themes';
+import { media, theme } from '@styles/themes';
 
 const HomeContainer = styled.div({
   width: '100%',
@@ -98,27 +98,6 @@ const HomeContents = styled.div({
   },
 });
 
-const StyledSpan = styled.span((props: { color?: themeColor }) => ({
-  color: props.color ? theme.colors[props.color] : '#000000',
-}));
-
-const StyledText = styled.div({
-  margin: '0px 4px',
-
-  color: theme.colors.grayscale60,
-  fontWeight: '500',
-  fontSize: '15px',
-  fontFamily: 'Pretendard',
-  fontStyle: 'normal',
-  lineHeight: '1.5',
-
-  [media[0]]: {
-    margin: '-10px 4px',
-
-    fontSize: '11px',
-  },
-});
-
 export {
   HomeContainer,
   HomeHeaderContainer,
@@ -126,6 +105,4 @@ export {
   HomeTabMenuContainer,
   HomeTabMenuLabel,
   HomeContents,
-  StyledSpan,
-  StyledText,
 };

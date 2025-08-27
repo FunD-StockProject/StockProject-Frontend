@@ -1,24 +1,20 @@
-import { useState } from 'react';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { STOCK_COUNTRY } from '@ts/Types';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
 import { useKeywordsQuery } from '@controllers/query';
 import InfoSVG from '@assets/info.svg?react';
 import { HomeItemTtile } from '../Title/Title.Style';
-import { KeywordItem, KeywordItemConainer, KeywordList, KeywordsContainer } from './Keywords.style';
+import { KeywordItem, KeywordsContainer, KeywordsGrid } from './Keywords.style';
 
-const Keywords = ({ country }: { country: string }) => {
+const Keywords = ({ country }: { country: STOCK_COUNTRY }) => {
   const [keywords, suspend] = useQueryComponent({ query: useKeywordsQuery(country) });
-
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const togglePopup = () => setPopupOpen((prev) => !prev);
-
-  const updateTime = STOCK_UPDATE_TIME[country];
-
   const { Modal, openModal } = useModal({
     Component: KeywordPopUp,
   });
+
+  const updateTime = STOCK_UPDATE_TIME[country];
 
   return (
     <KeywordsContainer>
@@ -28,18 +24,15 @@ const Keywords = ({ country }: { country: string }) => {
         <p className="update-time">어제 {updateTime} 기준</p>
         <Modal />
       </HomeItemTtile>
-      <KeywordList>
-        <KeywordItemConainer>
-          {suspend ||
-            (keywords &&
-              keywords.map((keyword: string, index: number) => (
-                <KeywordItem key={index} onClick={() => {}}>
-                  {keyword.toLocaleUpperCase()}
-                </KeywordItem>
-              )))}
-        </KeywordItemConainer>
-      </KeywordList>
-      {isPopupOpen && <KeywordPopUp onClose={togglePopup} />}
+      {suspend || (
+        <KeywordsGrid>
+          {keywords?.map((keyword: string) => (
+            <KeywordItem key={`KEYWORD_ITEM_${country}_${keyword}`}>
+              <p>{keyword}</p>
+            </KeywordItem>
+          ))}
+        </KeywordsGrid>
+      )}
     </KeywordsContainer>
   );
 };
