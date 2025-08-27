@@ -25,7 +25,6 @@ export const fetchRelevant = async (id: number) => {
 };
 
 export const fetchHotStocks = async (country: string) => {
-  // return fetchScoreCardMock;
   return fetchData(`/stock/hot/${country}`);
 };
 

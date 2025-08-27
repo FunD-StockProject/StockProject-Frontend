@@ -35,7 +35,7 @@ export const useHomeStockFetchQuery = (type: StockType, country: string) => {
   return useQuery(['homeStockFetch', type, country], () => STOCK_FETCH_FUNCTIONS[type](country), queryOptions);
 };
 
-export const useScoreQuery = (id: number, country: string) => {
+export const useScoreQuery = (id: number, country: STOCK_COUNTRY) => {
   return useQuery(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
