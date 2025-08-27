@@ -14,16 +14,15 @@ import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import SlideView from '@components/SlideView/SlideView';
 import ScoreSlotMachine from '@components/StockSlotMachine/StockSlotMachine';
 import { StockInfo } from '@controllers/api.Type';
-import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
+import { useRelevantStockFetchQuery, useStockIdSearchQuery, useSymbolNameSearchQuery } from '@controllers/query';
 import AlertSVG from '@assets/alert.svg?react';
 import InfoSVG from '@assets/info.svg?react';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { MockTradeButtonWrapper, SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 
-const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: string }) => {
-  const [score, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
+const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: STOCK_COUNTRY }) => {
+  const [data, suspend] = useQueryComponent({ query: useStockIdSearchQuery(stockId, country) });
   const [isPopupOpen, setPopupOpen] = useState(false);
-
   const togglePopup = () => setPopupOpen((prev) => !prev);
 
   return (
@@ -34,7 +33,7 @@ const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; cou
         <InfoSVG className="btn_info" onClick={togglePopup} />
       </ContentsItemTitle>
       <ContentsItemContent>
-        {suspend || (score && <ScoreSlotMachine stockScore={score.score} country={country} />)}
+        {suspend || (data && <ScoreSlotMachine stockScore={data.score} country={country} stockDiff={data.scoreDiff} />)}
       </ContentsItemContent>
       {isPopupOpen && <ZipyoPopup onClose={togglePopup} />}
     </ContentsItemContainer>

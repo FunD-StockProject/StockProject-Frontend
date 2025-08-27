@@ -1,5 +1,15 @@
 import { useState } from 'react';
 import { deltaScoreToColor } from '@utils/ScoreConvert';
+import {
+  Modal,
+  ModalButton,
+  ModalButtonPrimary,
+  ModalButtons,
+  ModalContent,
+  ModalDescription,
+  ModalOverlay,
+  ModalTitle,
+} from '@components/Modal/Common.Style';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
 import { useBookmarkListQuery } from '@controllers/query/favorites';
@@ -19,14 +29,6 @@ import {
   Header,
   HeaderContainer,
   HeaderTitle,
-  Modal,
-  ModalButton,
-  ModalButtonPrimary,
-  ModalButtons,
-  ModalContent,
-  ModalDescription,
-  ModalOverlay,
-  ModalTitle,
   NotificationIcon,
   SVGContainer,
   StockChange,

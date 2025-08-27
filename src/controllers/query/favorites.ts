@@ -5,11 +5,21 @@ import { deleteBookmark, deleteHide, fetchBookmarkCount, fetchBookmarkList, post
 
 // ----- Queries -----
 export const useBookmarkListQuery = () => {
-  return useQuery(['bookmarkList'], fetchBookmarkList, queryOptions);
+  return useQuery(
+    ['bookmarkList'],
+    fetchBookmarkList,
+    {
+      ...queryOptions,
+      enabled: !!localStorage.getItem('access_token'),
+    }
+  );
 };
 
 export const useBookmarkCountQuery = () => {
-  return useQuery<number>(['bookmarkCount'], fetchBookmarkCount, queryOptions);
+  return useQuery<number>(['bookmarkCount'], fetchBookmarkCount, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
 };
 
 // ----- Mutations -----

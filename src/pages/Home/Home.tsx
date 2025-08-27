@@ -1,20 +1,22 @@
+import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { STOCK_COUNTRY_TEXT, STOCK_UPDATE_TIME } from '@ts/Constants';
 import { STOCK_COUNTRY } from '@ts/Types';
-import CardList from '@components/CardList/CardList';
-import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
+// import CardList from '@components/CardList/CardList';
+// import { ContentsItemContainer, ContentsItemContent, ContentsItemTitle } from '@components/Common/ContentsItem.Style';
 import IndexScore from '@components/Home/IndexScore/IndexScore';
-import Keywords from '@components/Home/Keywords/Keywords';
-import StockTable from '@components/Home/StockTable/StockTable';
-import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
-import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
-import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
+import { theme } from '@styles/themes';
+// import Keywords from '@components/Home/Keywords/Keywords';
+// import StockTable from '@components/Home/StockTable/StockTable';
+// import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
+// import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
+// import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
 import AlarmSVG from '@assets/icons/alarm.svg?react';
+import InfoSVG from '@assets/icons/info.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
-import InfoSVG from '@assets/info.svg?react';
 import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
-import ZipyoSVG from '@assets/zipyo.svg?react';
+// import ZipyoSVG from '@assets/zipyo.svg?react';
 import {
   HomeAdContainer,
   HomeAdItem,
@@ -38,6 +40,66 @@ const tabMenu = [
   { key: 'OVERSEA', text: '해외주식' },
 ];
 const updateTime = [STOCK_UPDATE_TIME.KOREA, STOCK_UPDATE_TIME.OVERSEA];
+
+type CardListType = 'HOT' | 'RISING' | 'DESCENT';
+const cardListTitle: Record<CardListType, string> = {
+  HOT: '가장 HOT 한',
+  RISING: '🔥지금 민심 떡상 중인',
+  DESCENT: '💧지금 민심 떡락 중인',
+};
+
+const CardListContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+});
+
+const CardListHeader = styled.div({
+  display: 'flex',
+  padding: '0px 20px',
+  gap: '6px',
+  alignItems: 'center',
+
+  ['>p']: {
+    margin: '0px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+
+    ['&.title']: {
+      ...theme.font.title20Semibold,
+      color: theme.colors.sub_gray1,
+      flexShrink: '0',
+    },
+
+    ['&.update-time']: {
+      ...theme.font.body14Regular,
+      color: theme.colors.sub_gray8,
+      marginLeft: 'auto',
+    },
+  },
+
+  ['>svg']: {
+    width: '18px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: theme.colors.sub_gray6,
+  },
+});
+
+const CardList = ({ type, country }: { type: CardListType; country: STOCK_COUNTRY }) => {
+  return (
+    <CardListContainer>
+      <CardListHeader>
+        <p className="title">
+          {cardListTitle[type]} {type === 'HOT' && `${STOCK_COUNTRY_TEXT[country]}지표`}
+        </p>
+        <InfoSVG />
+        <p className="update-time">어제 {STOCK_UPDATE_TIME[country]} 기준</p>
+      </CardListHeader>
+    </CardListContainer>
+  );
+};
 
 const Home = () => {
   const [country, setCountry] = useState<STOCK_COUNTRY>('KOREA');
@@ -110,6 +172,9 @@ const Home = () => {
 
       <HomeContents>
         <IndexScore country={country} />
+        <CardList type="HOT" country={country} />
+        <CardList type="RISING" country={country} />
+        <CardList type="DESCENT" country={country} />
         {/* <ContentsItemContainer>
           <ContentsItemTitle color="primary50">
             지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한
