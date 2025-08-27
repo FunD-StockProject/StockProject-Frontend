@@ -3,6 +3,7 @@ import businessSVG from '@assets/footer/footer_business.svg';
 import commentSVG from '@assets/footer/footer_comment.svg';
 import developerSVG from '@assets/footer/footer_developer.svg';
 import dictSVG from '@assets/footer/footer_dict.svg';
+import termSVG from '@assets/footer/footer_term.svg';
 import InstagramSVG from '@assets/footer/footer_instagram.svg?react';
 import LinkedInSVG from '@assets/footer/footer_linkedin.svg?react';
 import ThreadsSVG from '@assets/footer/footer_threads.svg?react';
@@ -61,6 +62,10 @@ const openThreads = () => {
   window.open('https://www.threads.net/@humanzipyo');
 };
 
+const openTermModal = () => {
+  window.open('https://balanced-bun-351.notion.site/Terms-of-Service-17412e0c80b880259849c17228046794?pvs=4');
+};
+
 const Footer = () => {
   return (
     <>
@@ -68,13 +73,14 @@ const Footer = () => {
         <FooterContents>
           <FooterTitle>
             About
-            <LogoSVG />
+            <LogoSVG width={80} height={21} />
           </FooterTitle>
           <FooterButtonContainer>
-            <FooterButton img={dictSVG} str="데이터 추출 방식 자세히 보기" onClick={openDictionaryModel} />
-            <FooterButton img={commentSVG} str="서비스 의견 남기기" onClick={openSurveyWindow} />
+            <FooterButton img={dictSVG} str="서비스 가이드" onClick={openDictionaryModel} />
             <FooterButton img={businessSVG} str="비즈니스 제안" onClick={openBusinessProposal} />
-            <FooterButton img={developerSVG} str="만든이들" onClick={openCreatorsInfoModal} />
+            <FooterButton img={commentSVG} str="고객센터" onClick={openSurveyWindow} />
+            <FooterButton img={termSVG} str="서비스 이용약관" onClick={openTermModal} />
+            <FooterButton img={developerSVG} str="개인정보 처리방침" onClick={openCreatorsInfoModal} />
           </FooterButtonContainer>
           <FooterIconsContainer>
             <InstagramSVG onClick={openInstagram} />
