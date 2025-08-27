@@ -91,6 +91,28 @@ const LoginPageButtonItemContainer = styled.div({
 const Login = () => {
   const navigate = useNavigate();
 
+
+  const handleGoogleLogin = () => {
+    localStorage.setItem('lastLoginProvider', 'google');
+    const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
+    console.log(redirectUri);
+
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=openid%20email%20profile&access_type=offline&prompt=consent`;
+
+    window.location.href = googleAuthUrl;
+  };
+
+  const handleAppleLogin = () => {
+    const state = crypto.randomUUID();
+    localStorage.setItem('lastLoginProvider', 'apple');
+    localStorage.setItem('oauth_state', state);
+
+    const redirectUri = `${window.location.origin}/login/oauth2/code/apple`;
+    const appleAuthUrl = `https://appleid.apple.com/auth/authorize?client_id=${import.meta.env.VITE_APPLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&response_mode=query&state=apple_login`;
+
+    window.location.href = appleAuthUrl;
+  };
+
   const handleKakaoLogin = () => {
     localStorage.setItem('lastLoginProvider', 'kakao');
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
@@ -104,17 +126,17 @@ const Login = () => {
     {
       key: 'google',
       img: GoogleLoginPNG,
-      method: () => {},
+      method: handleGoogleLogin,
     },
     {
       key: 'naver',
       img: NaverLoginPNG,
-      method: () => {},
+      method: () => { },
     },
     {
       key: 'apple',
       img: AppleLoginPNG,
-      method: () => {},
+      method: handleAppleLogin,
     },
     {
       key: 'kakao',
