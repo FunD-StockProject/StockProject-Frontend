@@ -55,13 +55,13 @@ const scoreToIndex = (score: number): number => {
   return result;
 };
 
-const deltaScoreToColor = (deltaScore: number): string => {
+const deltaScoreToColor = (deltaScore: number): string | null => {
   if (deltaScore > 0) {
-    return theme.colors.red;
+    return theme.colors.sub_red;
   } else if (deltaScore < 0) {
-    return theme.colors.sub_blue6;
+    return theme.colors.sub_blue5;
   } else {
-    return theme.colors.grayscale20;
+    return null;
   }
 };
 

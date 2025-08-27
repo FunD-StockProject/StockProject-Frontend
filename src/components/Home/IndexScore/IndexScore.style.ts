@@ -1,83 +1,70 @@
 import styled from '@emotion/styled';
 import { deltaScoreToColor } from '@utils/ScoreConvert';
-import { media, theme } from '@styles/themes';
+import { theme } from '@styles/themes';
 
-const IndicesContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '8px',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  whiteSpace: 'nowrap',
+const IndexScoreContainer = styled.div({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '10px',
+  padding: '0 20px',
 });
 
-const IndexItem = styled.div({
+const IndexScoreItem = styled.div({
+  minWidth: '0',
   display: 'flex',
-  flex: 1,
-  gap: '4px',
-  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  flexDirection: 'column',
+  backgroundColor: theme.colors.sub_gray11,
+  borderRadius: '4px',
+  padding: '10px 12px',
   boxSizing: 'border-box',
-  padding: '18px 24px',
+});
 
-  color: theme.colors.primary0,
-  fontFamily: 'Pretendard',
-  fontStyle: 'normal',
-  lineHeight: '1.5',
+const IndexScoreItemHeader = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  overflow: 'hidden',
+  width: '100%',
 
-  background: theme.colors.grayscale100,
-  borderRadius: '8px',
+  ['>p']: {
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_gray1,
+    margin: '0px',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
 
-  [media[0]]: {
-    flexDirection: 'column',
-    gap: '8px',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    padding: '12px',
+  ['>svg']: {
+    flexShrink: '0',
+    width: '16px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: theme.colors.sub_gray6,
   },
 });
 
-const IndexInfoContainer = styled.div({
-  display: 'flex',
-  gap: '4px',
-  alignItems: 'center',
+const IndexScoreItemScore = styled.div(
+  ({ delta }: { delta: number }) => ({
+    ['>p']: {
+      color: deltaScoreToColor(delta) ?? theme.colors.sub_white,
+    },
 
-  fontWeight: '500',
-  fontSize: '18px',
+    ['>svg']: {
+      fill: deltaScoreToColor(delta) ?? theme.colors.sub_gray10,
+    },
+  }),
+  {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
 
-  [media[0]]: {
-    fontWeight: '700',
-    fontSize: '11px',
+    ['>p']: {
+      ...theme.font.heading24Semibold,
+      margin: '0px',
+    },
   },
+);
 
-  ['svg']: {
-    width: 'auto',
-    height: '1.25em',
-  },
-});
-
-const IndexDeltaScore = styled.div(({ delta }: { delta: number }) => ({
-  display: 'flex',
-  gap: '4px',
-  alignItems: 'center',
-
-  color: deltaScoreToColor(delta),
-  fontWeight: '700',
-  fontSize: '32px',
-  lineHeight: '1',
-
-  [media[0]]: {
-    margin: '0 4px',
-
-    fontSize: '24px',
-  },
-
-  ['svg']: {
-    width: 'auto',
-    height: '0.5em',
-
-    fill: deltaScoreToColor(delta),
-  },
-}));
-
-export { IndicesContainer, IndexInfoContainer, IndexItem, IndexDeltaScore };
+export { IndexScoreContainer, IndexScoreItem, IndexScoreItemHeader, IndexScoreItemScore };

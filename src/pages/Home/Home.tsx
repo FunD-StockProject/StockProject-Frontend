@@ -109,7 +109,7 @@ const Home = () => {
       </HomeAdContainer>
 
       <HomeContents>
-        {/* <IndexScore country={country} /> */}
+        <IndexScore country={country} />
         {/* <ContentsItemContainer>
           <ContentsItemTitle color="primary50">
             지금 가장<StyledSpan color="primary50">HOT</StyledSpan> 한

@@ -125,6 +125,8 @@ const colors = {
   /** #162672 */ sub_blue9: '#162672',
   /** #0B1339 */ sub_blue10: '#0B1339',
   /** #020202 */ sub_blue11: '#020202',
+
+  /** #EB003B */ sub_red: '#EB003B',
 };
 
 const Display = {
