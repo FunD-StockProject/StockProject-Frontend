@@ -82,9 +82,9 @@ export interface FavoriteStock {
   id: string;
   name: string;
   price: number;
-  change: number;
+  priceDiffPerCent: number;
   score: number
-  scoreChange: number;
+  diff: number;
   isNotificationOn: boolean;
   isSelected?: boolean;
   symbolName: string;

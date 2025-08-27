@@ -20,6 +20,7 @@ import InfoSVG from '@assets/icons/info.svg?react';
 import { Divider, MockTradeButtonWrapper, SearchResultContainer, SearchResultContents, SearchResultInfo } from './Search.Style';
 import SearchHeader from '@layout/SearchHeader/SearchHeader';
 import { theme } from '@styles/themes';
+import { useAddBookmarkMutation } from '@controllers/query/favorites';
 
 
 const SearchResultHumanIndicator = ({ stockId, country }: { stockId: number; country: STOCK_COUNTRY }) => {
@@ -62,6 +63,7 @@ const Search = () => {
   const [heartColor, setHeartColor] = useState(theme.colors.red);
   const [bellColor, setBellColor] = useState(theme.colors.red);
   const isMobile = useIsMobile();
+  const { mutate: mutateBookMark } = useAddBookmarkMutation()
 
   const [stockInfo] = useQueryComponent({
     query: useSymbolNameSearchQuery(state?.symbolName, state?.country),
@@ -73,6 +75,7 @@ const Search = () => {
   const togglePopup = () => setPopupOpen((prev) => !prev);
   const [curRelevantStocks] = useRelevantStockFetchQuery(stockInfo?.stockId);
   const onHeartClick = () => {
+    mutateBookMark(stockInfo?.stockId!);
     setHeartColor(heartColor === theme.colors.red ? theme.colors.sub_gray6 : theme.colors.red);
   };
 
