@@ -11,7 +11,7 @@ export const SlideItemContainer = styled.div({
   overflowY: 'hidden',
   boxSizing: 'border-box',
   width: '100%',
-  padding: '0px 24px',
+  // padding: '0px 24px',
 
   msOverflowStyle: 'none',
   scrollBehavior: 'auto',
@@ -23,7 +23,7 @@ export const SlideItemContainer = styled.div({
   },
 
   [media[0]]: {
-    padding: '0px 16px',
+    // padding: '0px 16px',
   },
 });
 
