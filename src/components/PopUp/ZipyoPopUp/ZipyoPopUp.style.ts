@@ -1,172 +1,139 @@
 import styled from '@emotion/styled';
-import { media, theme, themeColor } from '@styles/themes';
+import { theme } from '@styles/themes';
 
-const PopUpContainer = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '568px',
-  height: 'auto',
-  background: theme.colors.grayscale30,
-  color: theme.colors.primary100,
-  borderRadius: '12px',
-  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-  zIndex: 1000,
-  fontFamily: 'Pretendard',
-
-  [media[0]]: {
-    width: '90%',
-    ['svg']: {
-      width: '40%',
-    },
-  },
+const ZipyoPopUpDescription = styled.p({
+  ...theme.font.body16Semibold,
+  color: theme.colors.sub_gray10,
+  margin: '0px',
 });
 
-const PopUpImage = styled('ul')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+const ZipyoPopUpGuageChart = styled.div({
   gap: '8px',
-  padding: 0,
-  listStyle: 'none',
-
-  ['div']: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'left',
-    justifyContent: 'space-between',
-    gap: '8px',
-    flex: 1,
-    height: '160px',
-
-    ['p']: {
-      textAlign: 'center',
-      fontWeight: '700',
-      fontSize: '16px',
-      margin: 0,
-      background: theme.colors.grayscale90,
-      color: theme.colors.primary0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-      borderRadius: '8px',
-      width: '100%',
-    },
-
-    ['img']: {
-      height: '100%',
-      width: '100%',
-      borderRadius: '8px',
-    },
-  },
-
-  [media[0]]: {
-    ['div']: {
-      height: '120px',
-      ['img']: {
-        height: '100%',
-        width: '100%',
-        borderRadius: '8px',
-      },
-    },
-  },
-});
-
-const PopUpDetailContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
-  background: theme.colors.grayscale10,
-  borderRadius: '8px',
-  padding: '16px',
-  marginTop: '12px',
-
-  [media[0]]: {
-    padding: '12px', // 모바일 내부 여백 축소
-    marginTop: '8px',
-  },
-});
-
-const PopUpDetail = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-
-  ['span']: {
-    fontSize: '14px',
-    color: theme.colors.grayscale100,
-  },
-
-  [media[0]]: {
-    ['span']: {
-      fontSize: '9px',
-    },
-  },
-});
-
-const PopUpDetailNumber = styled.div(({ color }: { color?: themeColor }) => ({
-  width: '24px',
-  height: '24px',
-  display: 'flex',
+  boxSizing: 'border-box',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '14px',
-  fontWeight: '700',
-  borderRadius: '4px',
-  background: color ? theme.colors[color] : theme.colors.primary40,
-  color: theme.colors.primary0,
-
-  [media[0]]: {
-    width: '20px', // 모바일 크기 축소
-    height: '20px',
-    fontSize: '12px',
-  },
-}));
-
-const ConfirmButton = styled('div')({
-  textAlign: 'center',
-  fontWeight: '500',
-  fontSize: '16px',
-  cursor: 'pointer',
-  background: theme.colors.primary50,
-  color: theme.colors.primary0,
-  borderRadius: '0 0 12px 12px',
-  padding: '27px 0',
-
-  [media[0]]: {
-    fontSize: '14px', // 모바일 글자 크기 축소
-    padding: '16px 0', // 모바일 패딩 축소
-  },
 });
 
-const Backdrop = styled('div')({
-  position: 'fixed',
-  top: 0,
-  left: 0,
+const ZipyoPopUpGuageChartInner = styled.div({
+  width: '110%',
+  left: '50%',
+  marginTop: '-5%',
+});
+
+const ZipyoPopUpScoreTextContainer = styled.div({
+  display: 'flex',
+  padding: '0px 12px',
   width: '100%',
-  height: '100%',
-  background: 'rgba(0, 0, 0, 0.5)',
-  zIndex: 999,
+  boxSizing: 'border-box',
 });
 
-const CloseButton = styled('button')({
-  position: 'absolute',
-  top: '12px',
-  right: '12px',
-  background: 'none',
-  border: 'none',
-  fontSize: '18px',
-  cursor: 'pointer',
-  color: theme.colors.grayscale100,
+const ScoreTextBackgroundColors = ['#11193E', '#121C46', '#141F53', '#1F359B', '#304CD1'];
 
-  [media[0]]: {
-    top: '12px',
-    right: '0px',
+const ZipyoPopUpScoreText = styled.div(
+  ({ index }: { index: number }) => ({
+    background: ScoreTextBackgroundColors[index],
+  }),
+  {
+    ...theme.font.detail10Medium,
+    color: theme.colors.sub_gray2,
+    textAlign: 'center',
+    width: '100%',
+    margin: '0px',
+    whiteSpace: 'nowrap',
+    minWidth: '0',
+  },
+);
+
+const ZipyoPopUpScoreRangeContainer = styled.div({
+  display: 'flex',
+  gap: '4px',
+  padding: '0px 4px',
+  width: '100%',
+  boxSizing: 'border-box',
+});
+
+const ZipyoPopUpScoreRange = styled.span({
+  ...theme.font.detail10Medium,
+  color: theme.colors.sub_gray9,
+  textAlign: 'center',
+  width: '100%',
+  margin: '0px',
+  background: theme.colors.sub_white,
+  borderRadius: '2px',
+  position: 'relative',
+
+  ['::before']: {
+    content: '""',
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    bottom: '100%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+
+    borderStyle: 'solid',
+    borderWidth: '0px 4px 6px 4px',
+    borderColor: `transparent transparent ${theme.colors.sub_white} transparent `,
   },
 });
 
-export { PopUpContainer, PopUpImage, PopUpDetailContainer, PopUpDetail, PopUpDetailNumber, ConfirmButton, Backdrop, CloseButton };
+const ZipyoPopUpHowToContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  padding: '16px 12px',
+  background: theme.colors.sub_white,
+  borderRadius: '8px',
+  alignItems: 'flex-start',
+
+  ['>button']: {
+    background: theme.colors.sub_blue5,
+    padding: '6px 10px',
+    borderRadius: '4px',
+    border: 'none',
+
+    ...theme.font.detail12Semibold,
+    color: theme.colors.grayscale5,
+  },
+});
+
+const ZipyoPopUpHowToTextContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+
+  ['>p']: {
+    margin: '0px',
+
+    ['&.title']: {
+      ...theme.font.detail12Semibold,
+      color: theme.colors.sub_gray11,
+    },
+
+    ['&.description']: {
+      ...theme.font.detail12Medium,
+      color: theme.colors.sub_gray10,
+    },
+  },
+});
+
+const ZipyoPopUpWarningText = styled.p({
+  ...theme.font.detail12Semibold,
+  color: theme.colors.sub_blue7,
+  margin: '0px',
+});
+
+export {
+  ZipyoPopUpDescription,
+  ZipyoPopUpGuageChart,
+  ZipyoPopUpGuageChartInner,
+  ZipyoPopUpScoreTextContainer,
+  ZipyoPopUpScoreText,
+  ZipyoPopUpScoreRangeContainer,
+  ZipyoPopUpScoreRange,
+  ZipyoPopUpHowToContainer,
+  ZipyoPopUpHowToTextContainer,
+  ZipyoPopUpWarningText,
+};

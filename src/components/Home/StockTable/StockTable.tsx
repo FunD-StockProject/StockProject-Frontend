@@ -10,6 +10,7 @@ import { HomeItemTtile } from '../Title/Title.Style';
 import {
   StockTableContainer,
   StockTableContent,
+  StockTableItem,
   StockTableItemPrice,
   StockTableItemScore,
   StockTableItemSymbol,
@@ -69,23 +70,26 @@ const StockTable = ({ country }: { country: string }) => {
             </thead>
             <tbody>
               {stockTable?.map((stock: StockTableInfo) => (
-                <tr key={`STOCK_TABLE_ITEM_${tableTab}_${stock.stockId}`} onClick={handleClick(stock.symbolName)}>
+                <StockTableItem
+                  key={`STOCK_TABLE_ITEM_${tableTab}_${stock.stockId}`}
+                  onClick={handleClick(stock.symbolName)}
+                >
                   <StockTableItemSymbol>
-                    <img src="" />
+                    <img src={''} />
                     <p>{stock.symbolName}</p>
                   </StockTableItemSymbol>
                   <StockTableItemPrice delta={stock.priceDiff}>
                     <p className="price">{stock.price.toLocaleString()}</p>
                     <p className="diff">
-                      {diffToValue(stock.priceDiff)}({diffToPercent(stock.price, stock.priceDiff, { sign: false })})
+                      {diffToValue(stock.priceDiff)}(
+                      {diffToPercent(stock.price, stock.priceDiff, { fixed: 2, sign: false })})
                     </p>
                   </StockTableItemPrice>
                   <StockTableItemScore delta={stock.scoreDiff}>
                     <p className="score">{stock.score}점</p>
-                    <p className="diff">({diffToPercent(stock.score, stock.scoreDiff, { fixed: 0 })})</p>
+                    <p className="diff">({diffToPercent(stock.score, stock.scoreDiff, { sign: true, fixed: 0 })})</p>
                   </StockTableItemScore>
-                  //구분선 추가해야함
-                </tr>
+                </StockTableItem>
               ))}
             </tbody>
           </StockTableTable>

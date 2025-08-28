@@ -9,11 +9,12 @@ const ModalOverlay = styled.div({
   height: '100%',
   background: 'rgba(0, 0, 0, 0.5)',
   zIndex: 1000,
-  padding: '20px',
+  padding: '40px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   boxSizing: 'border-box',
+  backdropFilter: 'blur(4px)',
 });
 
 const useModal = ({ Component }: { Component: ({ onClose }: { onClose: () => void }) => React.ReactNode }) => {

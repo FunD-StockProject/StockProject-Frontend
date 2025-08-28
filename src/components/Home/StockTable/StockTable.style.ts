@@ -63,11 +63,19 @@ const StockTableTable = styled.table({
   },
 });
 
+const StockTableItem = styled.tr({
+  padding: '9px 0',
+
+  ['&:not(:last-of-type)']: {
+    borderBottom: `1px solid ${theme.colors.grayscale90}`,
+  },
+});
+
 const StockTableItemSymbol = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  // minWidth: '0',
+  minWidth: '0',
 
   ['>img']: {
     width: '26px',
@@ -90,13 +98,14 @@ const StockTableItemSymbol = styled.div({
 
 const StockTableItemPrice = styled.div(
   ({ delta }: { delta: number }) => ({
-    ['>p&.diff']: {
+    ['>p.diff']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
     },
   }),
   {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
 
     ['>p']: {
       margin: '0',
@@ -115,12 +124,14 @@ const StockTableItemPrice = styled.div(
 
 const StockTableItemScore = styled.div(
   ({ delta }: { delta: number }) => ({
-    ['>p&.diff']: {
+    ['>p.diff']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
     },
   }),
   {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: '2px',
 
     ['>p']: {
@@ -144,6 +155,7 @@ export {
   StockTableTabContainer,
   StockTableTabLabel,
   StockTableTable,
+  StockTableItem,
   StockTableItemSymbol,
   StockTableItemPrice,
   StockTableItemScore,

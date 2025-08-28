@@ -13,6 +13,7 @@ export const NavContainer = styled('nav')({
   padding: '20px 33px 30px',
   boxSizing: 'border-box',
   zIndex: '10',
+  boxShadow: '0px -2px 10px 0px rgba(255, 255, 255, 0.05)',
 });
 
 export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({

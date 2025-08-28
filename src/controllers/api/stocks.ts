@@ -1,6 +1,6 @@
 import { WordFrequency } from '@ts/Interfaces';
 import { STOCK_COUNTRY } from '@ts/Types';
-import { PERIOD_CODE, PopularStocks, StockDetailInfo, StockInfo } from '../api.Type';
+import { PERIOD_CODE, PopularStocks, StockDetailInfo } from '../api.Type';
 import {
   fetchChartMock,
   fetchIndexScoreMock,

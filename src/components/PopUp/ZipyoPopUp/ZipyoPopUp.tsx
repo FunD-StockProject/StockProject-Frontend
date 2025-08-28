@@ -1,50 +1,75 @@
+import GuageChart from '@components/Search/GuageChart/GuageChart';
 import LogoSVG from '@assets/logo_blue.svg?react';
-import badPNG from '@assets/stockScore/bad.png';
 import CommonPopUp from '../CommonPopUp';
-import { PopUpContent, PopUpTitle } from '../CommonPopUp.style';
-import { PopUpDetail, PopUpDetailContainer, PopUpDetailNumber, PopUpImage } from './ZipyoPopUp.style';
+import { PopUpTitle } from '../CommonPopUp.style';
+import {
+  ZipyoPopUpDescription,
+  ZipyoPopUpGuageChart,
+  ZipyoPopUpGuageChartInner,
+  ZipyoPopUpHowToContainer,
+  ZipyoPopUpHowToTextContainer,
+  ZipyoPopUpScoreRange,
+  ZipyoPopUpScoreRangeContainer,
+  ZipyoPopUpScoreText,
+  ZipyoPopUpScoreTextContainer,
+  ZipyoPopUpWarningText,
+} from './ZipyoPopUp.style';
 
-const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
-  <CommonPopUp onClose={onClose}>
-    <PopUpTitle>
-      <LogoSVG />
-      점수란
-    </PopUpTitle>
-    <PopUpContent>
-      인간지표만의 알고리즘을 사용하여 주식 관련 커뮤니티의 댓글을 분석해 민심을 점수화했어요. 점수는 하루에 한 번씩 업데이트돼요.
-      <PopUpImage>
-        <div>
-          <PopUpDetailNumber color={'grayscale80'}>1</PopUpDetailNumber>
-          <p>"극대노"</p>
-        </div>
-        <div>
-          <PopUpDetailNumber color={'grayscale80'}>2</PopUpDetailNumber>
-          <img src={badPNG} alt="민심 이미지" />
-        </div>
-        <div>
-          <PopUpDetailNumber color={'grayscale80'}>3</PopUpDetailNumber>
-          <p style={{ fontSize: '2em' }}>14점</p>
-        </div>
-      </PopUpImage>
-      <PopUpDetailContainer>
-        <PopUpDetail>
-          <PopUpDetailNumber>1</PopUpDetailNumber>
-          <span>민심 점수를 한 단어로 설명하는 키워드에요</span>
-        </PopUpDetail>
-        <PopUpDetail>
-          <PopUpDetailNumber>2</PopUpDetailNumber>
-          <span>민심 점수에 해당하는 이미지에요.</span>
-        </PopUpDetail>
-        <PopUpDetail>
-          <PopUpDetailNumber>3</PopUpDetailNumber>
-          <span>
-            인간지표만의 알고리즘으로 도출된 종목에 대한 민심 점수에요. <br />
-            점수가 높을수록 현재 개미들의 민심이 좋다는 것을 의미해요.
-          </span>
-        </PopUpDetail>
-      </PopUpDetailContainer>
-    </PopUpContent>
-  </CommonPopUp>
-);
+const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => {
+  const scoreText = ['대곰탕', '곰탕', '어?', '호황', '대호황'];
+  const scoreRange = [
+    [0, 30],
+    [30, 40],
+    [40, 50],
+    [50, 70],
+    [70, 100],
+  ];
+
+  return (
+    <CommonPopUp onClose={onClose}>
+      <PopUpTitle>
+        <LogoSVG />
+        점수란
+      </PopUpTitle>
+      <ZipyoPopUpDescription>
+        인간지표는 개미들의 ‘민심 온도계’예요. 점수는 총 5단계로, 높을수록 시장 분위기가 들떠 있거나 과열된 상태를
+        뜻해요.
+      </ZipyoPopUpDescription>
+      <ZipyoPopUpGuageChart>
+        <ZipyoPopUpGuageChartInner>
+          <GuageChart score={60} />
+        </ZipyoPopUpGuageChartInner>
+        <ZipyoPopUpScoreTextContainer>
+          {scoreText.map((e, index) => {
+            return (
+              <ZipyoPopUpScoreText key={`ZIPYO_POPUP_SCORE_TEXT_${index}`} index={index}>
+                LV{index + 1}. {e}
+              </ZipyoPopUpScoreText>
+            );
+          })}
+        </ZipyoPopUpScoreTextContainer>
+        <ZipyoPopUpScoreRangeContainer>
+          {scoreRange.map((e, index) => {
+            return (
+              <ZipyoPopUpScoreRange key={`ZIPYO_POPUP_SCORE_RANGE_${index}`}>
+                {e[0]}~{e[1]}점
+              </ZipyoPopUpScoreRange>
+            );
+          })}
+        </ZipyoPopUpScoreRangeContainer>
+      </ZipyoPopUpGuageChart>
+      <ZipyoPopUpHowToContainer>
+        <ZipyoPopUpHowToTextContainer>
+          <p className="title">점수는 어떻게 산출되나요?</p>
+          <p className="description">
+            대규모 감정분석 모델을 통해 각종 커뮤니티에서 투자자들 반응을 긍/부정으로 파악하여 점수를 산출해요
+          </p>
+        </ZipyoPopUpHowToTextContainer>
+        <button>산출 방식 자세히 보기 → </button>
+      </ZipyoPopUpHowToContainer>
+      <ZipyoPopUpWarningText>*공식 지표가 아니므로 참고 용도로 활용해 주세요</ZipyoPopUpWarningText>
+    </CommonPopUp>
+  );
+};
 
 export default ZipyoPopUp;

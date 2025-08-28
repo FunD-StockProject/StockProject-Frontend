@@ -372,6 +372,12 @@ const font = {
     lineHeight: '150%',
     letterSpacing: '0',
   },
+  detail10Medium: {
+    fontSize: '10px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
 };
 
 const theme = {

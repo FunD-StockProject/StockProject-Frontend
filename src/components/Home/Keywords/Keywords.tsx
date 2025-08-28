@@ -26,7 +26,7 @@ const Keywords = ({ country }: { country: STOCK_COUNTRY }) => {
       </HomeItemTtile>
       {suspend || (
         <KeywordsGrid>
-          {keywords?.map((keyword: string) => (
+          {keywords?.slice(0, 9).map((keyword: string) => (
             <KeywordItem key={`KEYWORD_ITEM_${country}_${keyword}`}>
               <p>{keyword}</p>
             </KeywordItem>

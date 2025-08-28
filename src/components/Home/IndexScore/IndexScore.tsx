@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { STOCK_COUNTRY } from '@ts/Types';
+import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
 import { useIndexScoreQuery } from '@controllers/query';
@@ -10,9 +10,6 @@ import { IndexScoreContainer, IndexScoreItem, IndexScoreItemHeader, IndexScoreIt
 
 const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
   const [indexScores, suspend] = useQueryComponent({ query: useIndexScoreQuery() });
-
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const togglePopup = () => setPopupOpen((prev) => !prev);
 
   const transformed = Object.values(indexScores ?? []).reduce<{ score: number; delta: number }[]>((acc, _, i, arr) => {
     if (i % 2 === 0) {
@@ -29,13 +26,17 @@ const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
 
   if (suspend) return null;
 
+  const { Modal, openModal } = useModal({
+    Component: FearPopUp,
+  });
+
   return (
     <IndexScoreContainer>
       {stockIndexScores.map(({ score, delta }, idx) => (
         <IndexScoreItem key={idx}>
           <IndexScoreItemHeader>
             <p>{stockIndexNames[idx]}</p>
-            {idx === 0 && <InfoSVG onClick={togglePopup} />}
+            {idx === 0 && <InfoSVG onClick={openModal} />}
           </IndexScoreItemHeader>
           <IndexScoreItemScore delta={delta}>
             <p>{score}</p>
@@ -43,7 +44,7 @@ const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
           </IndexScoreItemScore>
         </IndexScoreItem>
       ))}
-      {isPopupOpen && <FearPopUp onClose={togglePopup} />}
+      <Modal />
     </IndexScoreContainer>
   );
 };

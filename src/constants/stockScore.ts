@@ -4,7 +4,9 @@ import goodPNG from '../assets/stockScore/good.png';
 import normalPNG from '../assets/stockScore/normal.png';
 import poorPNG from '../assets/stockScore/poor.png';
 
-const stockScoreTitle = {
+export type StockScoreTitle = 'perfect' | 'excellent' | 'good' | 'normal' | 'poor' | 'bad' | 'fuck';
+
+const stockScoreTitle: Record<StockScoreTitle, string> = {
   perfect: 's',
   excellent: '대호황',
   good: '호황',
