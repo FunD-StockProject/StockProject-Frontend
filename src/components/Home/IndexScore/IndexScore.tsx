@@ -24,11 +24,11 @@ const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
   const stockIndexNames = country === 'KOREA' ? ['공포지수', '코스피', '코스닥'] : ['공포지수', 'S&P 500', '나스닥'];
   const stockIndexScores = transformed.slice(...(country === 'KOREA' ? [0, 3] : [3, 6]));
 
-  if (suspend) return null;
-
   const { Modal, openModal } = useModal({
     Component: FearPopUp,
   });
+
+  if (suspend) return null;
 
   return (
     <IndexScoreContainer>
