@@ -1,37 +1,30 @@
+import styled from '@emotion/styled';
 import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
-import { deltaColor } from '@utils/Delta';
+import Button from '@components/Common/Button';
 import { StockDetailInfo } from '@controllers/api.Type';
 import { useStockSummaryQuery } from '@controllers/query';
+import { theme } from '@styles/themes';
+import KoreaPNG from '@assets/flags/korea.png';
+import AlertSVG from '@assets/icons/alert.svg?react';
 import {
-  SearchTitleBody,
-  SearchTitleBodySubtitle,
-  SearchTitleBodyTitle,
-  SearchTitleBodyTitleAnimatedText,
-  SearchTitleBodyTitleText,
   SearchTitleContainer,
-  SearchTitleFooterContainer,
-  SearchTitleFooterItems,
-  SearchTitlePriceText,
+  SearchTitleDescriptionContainer,
+  SearchTitleDetailContainer,
+  SearchTitleDetailSymbol,
+  SearchTitleHeaderContainer,
+  SearchTitleHeaderText,
+  SearchTitleHeaderTextAnimated,
 } from './SearchTitle.Style';
 
 const BASE_DELAY = 1500;
 
-
-const SearchTitle = ({
-  stockInfo,
-}: {
-  stockInfo: StockDetailInfo;
-  resultMode: RESULT_TYPE;
-  onClick: (e: any) => void;
-}) => {
+const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockInfo: StockDetailInfo }) => {
   const { state } = useLocation();
 
-  const concurrency = stockInfo.country === "KOREA" ? '₩' : '$'
-  const symbol = stockInfo.priceDiff > 0 ? '+' : stockInfo.priceDiff < 0 ? '-' : '';
   const titleTextRef = useRef<HTMLDivElement>(null);
 
   const [animated, setAnimated] = useState<boolean>(false);
@@ -41,8 +34,25 @@ const SearchTitle = ({
     instant: BASE_DELAY,
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
+  const concurrency = country === 'KOREA' ? '₩' : '$';
 
-  const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  useEffect(() => {
+    if (titleTextRef.current) {
+      const { offsetWidth, scrollWidth } = titleTextRef.current;
+      setAnimated(scrollWidth > offsetWidth);
+      setAnimationDelay({
+        ...animationDelay,
+        animate: BASE_DELAY * (scrollWidth / offsetWidth - 1) * 2,
+      });
+    }
+  }, [state]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (animated) cycleAnimation();
+    }, animationDelay[animation]);
+    return () => clearInterval(interval);
+  }, [animation, animated]);
 
   const variants: Variants = {
     initial: {
@@ -66,53 +76,97 @@ const SearchTitle = ({
     },
   };
 
-  useEffect(() => {
-    if (titleTextRef.current) {
-      const { offsetWidth, scrollWidth } = titleTextRef.current;
-      setAnimated(scrollWidth > offsetWidth);
-      setAnimationDelay({
-        ...animationDelay,
-        animate: BASE_DELAY * (scrollWidth / offsetWidth - 1) * 2,
-      });
-    }
-  }, [state]);
+  return (
+    <SearchTitleHeaderContainer>
+      <SearchTitleHeaderText ref={titleTextRef}>
+        {symbolName}
+        <AnimatePresence>
+          <SearchTitleHeaderTextAnimated variants={variants} animate={animation}>
+            {symbolName}
+          </SearchTitleHeaderTextAnimated>
+        </AnimatePresence>
+      </SearchTitleHeaderText>
+      <p className="price">
+        {concurrency}
+        {price.toLocaleString()}
+      </p>
+    </SearchTitleHeaderContainer>
+  );
+};
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (animated) cycleAnimation();
-    }, animationDelay[animation]);
-    return () => clearInterval(interval);
-  }, [animation, animated]);
+const SearchTitleDetail = ({
+  stockInfo: { exchangeNum, symbol, priceDiff, priceDiffPerCent },
+}: {
+  stockInfo: StockDetailInfo;
+}) => {
+  const marketCode = MARKET_CODES[exchangeNum];
+
+  const diffSign = priceDiff > 0 ? '+' : priceDiff < 0 ? '-' : '';
+  const diffPercentText = Math.abs(priceDiffPerCent).toFixed(2);
+  const diffValueText = diffSign + Math.abs(priceDiff).toLocaleString();
+
+  return (
+    <SearchTitleDetailContainer delta={priceDiff}>
+      <span className="market-code">{marketCode}</span>
+      <SearchTitleDetailSymbol>
+        <p>{symbol}</p>
+        <img src={KoreaPNG} alt="arrow" />
+      </SearchTitleDetailSymbol>
+      <span className="price-diff">
+        {diffValueText}
+        {`(${diffPercentText}%)`}
+      </span>
+    </SearchTitleDetailContainer>
+  );
+};
+
+const SearchTitleAlertContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+  padding: '12px 16px',
+  background: theme.colors.sub_gray11,
+  justifyContent: 'center',
+  borderRadius: '5px',
+  border: `1px solid ${theme.colors.sub_gray10}`,
+
+  ['>p']: {
+    ...theme.font.detail12Semibold,
+    color: theme.colors.sub_gray5,
+    margin: '0',
+  },
+
+  ['>svg']: {
+    width: '20px',
+    height: '20px',
+    flexShrink: 0,
+  },
+});
+
+const SearchTitle = ({
+  stockInfo,
+}: {
+  stockInfo: StockDetailInfo;
+  resultMode: RESULT_TYPE;
+  onClick: (e: any) => void;
+}) => {
+  const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
 
   return (
     stockInfo && (
       <SearchTitleContainer>
-        <SearchTitleBody>
-          <SearchTitleBodyTitle>
-            <SearchTitleBodyTitleText ref={titleTextRef}>
-              {stockInfo.symbolName}
-              <AnimatePresence>
-                <SearchTitleBodyTitleAnimatedText variants={variants} animate={animation}>
-                  {stockInfo.symbolName}
-                </SearchTitleBodyTitleAnimatedText>
-              </AnimatePresence>
-              <SearchTitlePriceText>{concurrency}{stockInfo.price.toLocaleString()}</SearchTitlePriceText>
-            </SearchTitleBodyTitleText>
-          </SearchTitleBodyTitle>
-          <SearchTitleFooterContainer>
-            <SearchTitleFooterItems>{MARKET_CODES[stockInfo.exchangeNum]} |</SearchTitleFooterItems>
-            <SearchTitleFooterItems>{stockInfo.symbol} |</SearchTitleFooterItems>
-            <SearchTitleFooterItems delta={deltaColor(stockInfo.priceDiff)}>
-              <span>{symbol} {stockInfo.price.toLocaleString()}
-                {`(${Math.abs(stockInfo.priceDiffPerCent)}%)`}</span>
-            </SearchTitleFooterItems>
-          </SearchTitleFooterContainer>
-          <SearchTitleBodySubtitle>
-            {summary.map((e, i) => (
-              <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
-            ))}
-          </SearchTitleBodySubtitle>
-        </SearchTitleBody>
+        <SearchTitleName stockInfo={stockInfo} />
+        <SearchTitleDetail stockInfo={stockInfo} />
+        <SearchTitleDescriptionContainer>
+          {summary.map((e, i) => (
+            <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
+          ))}
+        </SearchTitleDescriptionContainer>
+        <SearchTitleAlertContainer>
+          <AlertSVG />
+          <p>인간지표는 공식 지표가 아니므로 참고 용도로만 활용해주세요</p>
+        </SearchTitleAlertContainer>
+        <Button>모의 매수하기</Button>
       </SearchTitleContainer>
     )
   );

@@ -1,101 +1,100 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import { StockTableInfo } from '@controllers/api.Type';
 import { useStockTableInfoQuery } from '@controllers/query';
-import HumanIndexSVG from '@assets/HumanIndex.svg?react';
+import { HomeItemTtile } from '../Title/Title.Style';
 import {
-  DeltaScore,
-  HeaderItem,
-  StockData,
-  StockInfo, // StockLogo,
-  StockName,
   StockTableContainer,
-  StockTableTitle,
-  StyledTabMenu,
-  TableHeaderContainer,
-  TableRow,
+  StockTableContent,
+  StockTableItem,
+  StockTableItemPrice,
+  StockTableItemScore,
+  StockTableItemSymbol,
+  StockTableTabContainer,
+  StockTableTabLabel,
+  StockTableTable,
 } from './StockTable.style';
 
-const tabMenu = ['시가총액', '거래량', '급상승', '급하락'];
-const categories = ['MARKET', 'VOLUME', 'RISING', 'DESCENT'];
+const StockTableTab = [
+  { key: 'MARKET', text: '거래대금' },
+  { key: 'VOLUME', text: '거래량' },
+  { key: 'RISING', text: '급상승' },
+  { key: 'DESCENT', text: '급하락' },
+];
 
 const StockTable = ({ country }: { country: string }) => {
   const navigate = useNavigate();
-  const [tabIndex, setTabIndex] = useState<number>(0);
+
+  const [tableTab, setTableTab] = useState<string>('MARKET');
 
   const updateTime = STOCK_UPDATE_TIME[country];
   const [stockTable, suspend] = useQueryComponent({
-    query: useStockTableInfoQuery(categories[tabIndex], country),
+    query: useStockTableInfoQuery(tableTab, country),
   });
 
-  const handleClick = (name: string) => {
+  const handleClick = (name: string) => () => {
     navigate(webPath.search(), { state: { symbolName: name, country: country } });
   };
 
-  const handleTab = (index: number) => {
-    if (tabIndex === index) {
-      return;
-    }
-
-    setTabIndex(index);
+  const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTableTab(e.target.value);
   };
 
   return (
     <StockTableContainer>
-      <StockTableTitle>
-        <div>
-          종목 차트별 <HumanIndexSVG />
-        </div>
-        <span>매일 {updateTime}시 업데이트됩니다.</span>
-      </StockTableTitle>
-      <StyledTabMenu>
-        {tabMenu.map((el, index) => (
-          <li
-            key={index}
-            className={index === tabIndex ? 'submenu focused' : 'submenu'}
-            onClick={() => handleTab(index)}
-          >
-            {el}
-          </li>
-        ))}
-      </StyledTabMenu>
-
-      <TableHeaderContainer>
-        <HeaderItem>종목</HeaderItem>
-        <HeaderItem>주가</HeaderItem>
-        <HeaderItem>인간지표</HeaderItem>
-      </TableHeaderContainer>
-      {suspend ||
-        (stockTable &&
-          stockTable.map((stock: StockTableInfo, index: number) => {
-            return (
-              <TableRow key={index} onClick={() => handleClick(stock.symbolName)}>
-                <StockData>
-                  <StockInfo>
-                    {/* <StockLogo /> */}
-                    <StockName>{stock.symbolName}</StockName>
-                  </StockInfo>
-                </StockData>
-                <StockData>
-                  <span>{stock.price.toLocaleString()}</span>
-                  <DeltaScore delta={stock.priceDiff}>
-                    {stock.priceDiff > 0 ? '+' : ''}
-                    {stock.priceDiff.toLocaleString()}({Math.abs(stock.priceDiffPerCent)}%)
-                  </DeltaScore>
-                </StockData>
-                <StockData>
-                  <span>{stock.score}점 </span>
-                  <DeltaScore delta={stock.scoreDiff}>
-                    ({stock.scoreDiff > 0 ? '+' : ''}
-                    {stock.scoreDiff})
-                  </DeltaScore>
-                </StockData>
-              </TableRow>
-            );
-          }))}
+      <HomeItemTtile>
+        <p className="title">종목 차트별 인간지표 TOP5</p>
+        <p className="update-time">어제 {updateTime} 기준</p>
+      </HomeItemTtile>
+      <StockTableContent>
+        <StockTableTabContainer>
+          {StockTableTab.map(({ key, text }, idx) => (
+            <StockTableTabLabel key={`STOCK_TABLE_TAB_${key}`}>
+              <input type="radio" name="table_tab" value={key} defaultChecked={idx === 0} onChange={handleTabChange} />
+              <span>{text}</span>
+            </StockTableTabLabel>
+          ))}
+        </StockTableTabContainer>
+        {suspend || (
+          <StockTableTable>
+            <thead>
+              <tr>
+                <th>종목</th>
+                <th>주가</th>
+                <th>인간지표</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stockTable?.map((stock: StockTableInfo) => (
+                <StockTableItem
+                  key={`STOCK_TABLE_ITEM_${tableTab}_${stock.stockId}`}
+                  onClick={handleClick(stock.symbolName)}
+                >
+                  <StockTableItemSymbol>
+                    <img src={''} />
+                    <p>{stock.symbolName}</p>
+                  </StockTableItemSymbol>
+                  <StockTableItemPrice delta={stock.priceDiff}>
+                    <p className="price">{stock.price.toLocaleString()}</p>
+                    <p className="diff">
+                      {diffToValue(stock.priceDiff)}(
+                      {diffToPercent(stock.price, stock.priceDiff, { fixed: 2, sign: false })})
+                    </p>
+                  </StockTableItemPrice>
+                  <StockTableItemScore delta={stock.scoreDiff}>
+                    <p className="score">{stock.score}점</p>
+                    <p className="diff">({diffToPercent(stock.score, stock.scoreDiff, { sign: true, fixed: 0 })})</p>
+                  </StockTableItemScore>
+                </StockTableItem>
+              ))}
+            </tbody>
+          </StockTableTable>
+        )}
+      </StockTableContent>
     </StockTableContainer>
   );
 };

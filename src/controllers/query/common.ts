@@ -1,4 +1,4 @@
-import { StockType } from '@components/Common/Common.Type';
+import { STOCK_TYPE } from '@ts/Types';
 import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../api';
 
 export const queryOptions = {
@@ -6,10 +6,9 @@ export const queryOptions = {
   staleTime: 1000,
 };
 
-export const STOCK_FETCH_FUNCTIONS: Record<StockType, (country: string) => Promise<any>> = {
+export const STOCK_FETCH_FUNCTIONS: Record<STOCK_TYPE, (country: string) => Promise<any>> = {
   HOT: fetchHotStocks,
   RISING: fetchRisingStocks,
   DESCENT: fetchDescentStocks,
+  RELATED: () => Promise.resolve([]),
 };
-
-

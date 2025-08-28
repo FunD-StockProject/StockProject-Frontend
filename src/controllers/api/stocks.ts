@@ -1,7 +1,6 @@
 import { WordFrequency } from '@ts/Interfaces';
 import { STOCK_COUNTRY } from '@ts/Types';
-import { PERIOD_CODE, PopularStocks } from '../api.Type';
-import { enableMock, fetchData } from './base';
+import { PERIOD_CODE, PopularStocks, StockDetailInfo } from '../api.Type';
 import {
   fetchChartMock,
   fetchIndexScoreMock,
@@ -13,6 +12,7 @@ import {
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
 } from '../mock';
+import { enableMock, fetchData } from './base';
 
 export const fetchScore = async (id: number, country: string) => {
   if (enableMock) return fetchScoreMock;
@@ -38,8 +38,8 @@ export const fetchDescentStocks = async (country: string) => {
   return fetchData(`/stock/descent/${country}`);
 };
 
-export const fetchSearchSymbolName = (symbolname: string, country: STOCK_COUNTRY) => {
-  if (enableMock) return fetchSearchSymbolNameMock;
+export const fetchSearchSymbolName = (symbolname: string, country: STOCK_COUNTRY): Promise<StockDetailInfo> => {
+  if (enableMock) return Promise.resolve(fetchSearchSymbolNameMock);
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
@@ -70,12 +70,7 @@ export const fetchSearchWordCloud = (symbol: string, country: string): Promise<W
   return fetchData(`/wordcloud/${symbol}/${country}`);
 };
 
-export const fetchStockChart = async (
-  id: number,
-  periodCode: PERIOD_CODE,
-  startDate: string,
-  endDate: string,
-) => {
+export const fetchStockChart = async (id: number, periodCode: PERIOD_CODE, startDate: string, endDate: string) => {
   if (enableMock) return fetchChartMock;
   return fetchData(`/stock/${id}/chart/{country}?periodCode=${periodCode}&startDate=${startDate}&endDate=${endDate}`);
 };
@@ -96,5 +91,3 @@ export const fetchPopularStocks = (): Promise<PopularStocks[]> => {
 export const fetchPopularKeywords = (): Promise<string[]> => {
   return fetchData('/keyword/rankings');
 };
-
-

@@ -55,14 +55,29 @@ const scoreToIndex = (score: number): number => {
   return result;
 };
 
-const deltaScoreToColor = (deltaScore: number): string => {
+const deltaScoreToColor = (deltaScore: number): string | null => {
   if (deltaScore > 0) {
-    return theme.colors.red;
+    return theme.colors.sub_red;
   } else if (deltaScore < 0) {
-    return theme.colors.sub_blue6;
+    return theme.colors.sub_blue5;
   } else {
-    return theme.colors.grayscale20;
+    return null;
   }
 };
 
-export { scoreToImage, scoreToText, scoreToIndex, deltaScoreToColor };
+const diffToValue = (diff: number): string => {
+  const diffSign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+  return diffSign + Math.abs(diff).toLocaleString();
+};
+
+const diffToPercent = (
+  value: number,
+  diff: number,
+  option: { fixed?: number; sign?: boolean } = { fixed: 2, sign: true },
+): string => {
+  const diffSign = option.sign ? (diff > 0 ? '+' : diff < 0 ? '-' : '') : '';
+
+  return diffSign + (Math.abs(value / (value - diff) - 1) * 100).toFixed(option.fixed) + '%';
+};
+
+export { scoreToImage, scoreToText, scoreToIndex, deltaScoreToColor, diffToValue, diffToPercent };

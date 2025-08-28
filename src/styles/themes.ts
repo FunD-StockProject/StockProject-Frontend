@@ -125,6 +125,8 @@ const colors = {
   /** #162672 */ sub_blue9: '#162672',
   /** #0B1339 */ sub_blue10: '#0B1339',
   /** #020202 */ sub_blue11: '#020202',
+
+  /** #EB003B */ sub_red: '#EB003B',
 };
 
 const Display = {
@@ -366,6 +368,12 @@ const font = {
   },
   detail12Medium: {
     fontSize: '12px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail10Medium: {
+    fontSize: '10px',
     fontWeight: 500,
     lineHeight: '150%',
     letterSpacing: '0',

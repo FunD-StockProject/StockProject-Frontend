@@ -12,8 +12,8 @@ const SEARCH_CATEGORY_TEXT: Record<SEARCH_CATEGORY, string> = {
 };
 
 const STOCK_UPDATE_TIME: Record<string, string> = {
-  KOREA: '17',
-  OVERSEA: '06',
+  KOREA: '17:00',
+  OVERSEA: '06:00',
 };
 
 const MARKET_CODES: Record<string, string> = {

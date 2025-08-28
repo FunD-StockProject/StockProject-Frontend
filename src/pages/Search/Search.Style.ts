@@ -19,58 +19,111 @@ const SearchResultContents = styled.div({
   maxWidth: '1280px',
 
   [media[0]]: {
-    padding: '20px 20px',
-    gap: '32px',
+    padding: '24px 0px',
+    gap: '45px',
     boxSizing: 'border-box',
   },
 });
 
-const StockRelevantContainer = styled.div({
+const SearchResultItemTtile = styled.div({
+  padding: '0px 20px',
   display: 'flex',
-  gap: '28px',
+  flexDirection: 'column',
+  gap: '4px',
 
-  [media[0]]: {
-    gap: '14px',
+  ['>div.title-container']: {
+    display: 'flex',
+    gap: '6px',
+    alignItems: 'center',
+
+    ['>p']: {
+      margin: '0px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+
+      ['&.title']: {
+        ...theme.font.title20Semibold,
+        color: theme.colors.sub_gray2,
+        flexShrink: '0',
+      },
+
+      ['&.update-time']: {
+        ...theme.font.body14Regular,
+        color: theme.colors.sub_gray8,
+        marginLeft: 'auto',
+      },
+    },
+  },
+
+  ['>div.info-container']: {
+    display: 'flex',
+    gap: '4px',
+    alignItems: 'center',
+
+    ['>p']: {
+      ...theme.font.detail12Medium,
+      color: theme.colors.sub_gray6,
+      margin: '0px',
+    },
+
+    ['>svg']: {
+      width: '14px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+      fill: theme.colors.sub_gray6,
+      flexShrink: '0',
+    },
   },
 });
 
-const SearchResultInfo = styled.div({
-  ...theme.font.detail12Semibold,
+const SearchResultChartContainer = styled.div({
   display: 'flex',
-  padding: '16px',
-
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '4px',
-  borderRadius: '10px',
-  backgroundColor: theme.colors.sub_gray11,
-  color: theme.colors.sub_gray5,
-
+  flexDirection: 'column',
+  gap: '10px',
 });
 
-const MockTradeButtonWrapper = styled.button({
-  ...theme.font.body18Semibold,
-  backgroundColor: theme.colors.primary50,
-  color: theme.colors.sub_white,
-  padding: '12px 24px',
-  borderRadius: '12px',
-  cursor: 'pointer',
-  width: 'calc(100%- 40px)',
-  textAlign: 'center',
+const SearchResultChartContents = styled.div({
+  padding: '0px 20px',
 });
 
-export const Divider = styled.div({
+const SearchResultWordCloudContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+});
+
+const SearchResultWordCloudContents = styled.div({
+  padding: '0px 20px',
+});
+
+const SearchResultRelevantContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+});
+
+const SearchResultGaugeChartContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+});
+
+const Divider = styled.div({
   backgroundColor: theme.colors.sub_gray11,
   height: '4px',
   width: '100vw',
-  marginLeft: '-10px',
-  marginRight: '-10px',
 });
 
 export {
   SearchResultContainer,
   SearchResultContents,
-  StockRelevantContainer,
-  SearchResultInfo,
-  MockTradeButtonWrapper,
+  SearchResultItemTtile,
+  SearchResultChartContainer,
+  SearchResultChartContents,
+  SearchResultWordCloudContainer,
+  SearchResultWordCloudContents,
+  SearchResultRelevantContainer,
+  SearchResultGaugeChartContainer,
+  Divider,
 };

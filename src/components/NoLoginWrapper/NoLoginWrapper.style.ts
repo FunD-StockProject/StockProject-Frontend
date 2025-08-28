@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { theme } from "@styles/themes";
+import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
 
 export const Overlay = styled.div({
   position: 'absolute',
@@ -15,7 +15,6 @@ export const Overlay = styled.div({
   WebkitBackdropFilter: 'blur(30px)',
 });
 
-
 export const Title = styled.div({
   ...theme.font.title20Semibold,
   color: theme.colors.grayscale20,
@@ -29,7 +28,6 @@ export const Description = styled.div({
   textAlign: 'center',
   margin: '0 0 20px 0',
 });
-
 
 export const PrimaryButton = styled.button({
   ...theme.font.body18Semibold,
