@@ -68,11 +68,11 @@ const GetnerateWordCloud = (params: {
 
   FontOffCtx.font = `${maxFontSize}px "PretendardBlack"`;
 
-  frequencies.every(({ word, freq }) => {
+  frequencies.every(({ word, freq }, index) => {
     word = word.toUpperCase();
     const textWidth = FontOffCtx.measureText(word).width / maxFontSize;
 
-    const { fontSize, orientation, posX, posY } = wasm.getPosition(startFontSize, textWidth);
+    const { fontSize, orientation, posX, posY } = wasm.getPosition(startFontSize, textWidth, index === 0);
 
     if (fontSize < minFontSize) return true;
     startFontSize = fontSize;

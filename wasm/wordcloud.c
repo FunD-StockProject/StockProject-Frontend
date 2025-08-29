@@ -22,7 +22,7 @@ char *grid;
 
 int sum_width, sum_height;
 
-// EMSCRIPTEN_KEEPALIVE
+EMSCRIPTEN_KEEPALIVE
 void initSize(int w, int h) {
   width = w;
   height = h;
@@ -37,7 +37,7 @@ void initSize(int w, int h) {
   return;
 }
 
-// EMSCRIPTEN_KEEPALIVE
+EMSCRIPTEN_KEEPALIVE
 void initClear(int _margin, int _random_state, int _min_font_size) {
   margin = _margin;
   random_state = _random_state;
@@ -111,12 +111,12 @@ int checkPosition(int font_size, double text_width, int orientation) {
   return hits[random_state % hits_idx];
 }
 
-// EMSCRIPTEN_KEEPALIVE
-TextPosition* getPosition(int font_size, double text_width) {
+EMSCRIPTEN_KEEPALIVE
+TextPosition* getPosition(int font_size, double text_width, int is_first) {
   TextPosition *res = (TextPosition*)malloc(sizeof(TextPosition));
   srand(time(NULL));
-  int orientation = ((rand() % 100) >= (0.9 * 100)) ? TRUE : FALSE;
-  int tried_other_orientation = FALSE;
+  int orientation = is_first ? FALSE : ((rand() % 100) >= (0.9 * 100)) ? TRUE : FALSE;
+  int tried_other_orientation = is_first ? TRUE : FALSE;
 
   while (font_size >= min_font_size) {
     int pos = checkPosition(font_size, text_width, orientation);
@@ -134,15 +134,15 @@ TextPosition* getPosition(int font_size, double text_width) {
       tried_other_orientation = TRUE;
     } else {
       font_size -= 1;
-      orientation = ((rand() % 100) >= (0.9 * 100)) ? TRUE : FALSE;
-      tried_other_orientation = FALSE;
+      orientation = is_first ? FALSE : ((rand() % 100) >= (0.9 * 100)) ? TRUE : FALSE;
+      tried_other_orientation = is_first ? TRUE : FALSE;
     }
   }
 
   return res; 
 }
 
-// EMSCRIPTEN_KEEPALIVE
+EMSCRIPTEN_KEEPALIVE
 void Update(char* data, int x, int y, int w, int h) {
   for(int i = y; i < height; i++) {
     int gridY = i * width;

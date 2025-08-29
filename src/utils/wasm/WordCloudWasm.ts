@@ -17,16 +17,22 @@ export async function LoadWordCloudWASM(width: number, height: number): Promise<
       },
     })
       .then(({ exports }) => {
-        exports.initSize(width, height);
-        const arrayPtr = exports.malloc(width * height);
+        // console.log('WASM exports:', exports);
+        // console.log('Available functions:', Object.keys(exports));
+
+        // 타입 안전성을 위한 타입 단언
+        const wasmExports = exports as any;
+
+        wasmExports.initSize(width, height);
+        const arrayPtr = wasmExports.malloc(width * height);
 
         resolve({
-          ...exports,
+          ...wasmExports,
           initClear: (margin: number, randomState: number, minFontSize: number) =>
-            exports.initClear(margin, randomState, minFontSize),
-          getPosition: (fontSize: number, textWidth: number) => {
-            const ptr = exports.getPosition(fontSize, textWidth);
-            const memory = new Uint8Array(exports.memory.buffer);
+            wasmExports.initClear(margin, randomState, minFontSize),
+          getPosition: (fontSize: number, textWidth: number, isFirst: boolean) => {
+            const ptr = wasmExports.getPosition(fontSize, textWidth, isFirst ? 1 : 0);
+            const memory = new Uint8Array(wasmExports.memory.buffer);
 
             return {
               fontSize: new DataView(memory.buffer).getInt32(ptr, true),
@@ -36,9 +42,9 @@ export async function LoadWordCloudWASM(width: number, height: number): Promise<
             };
           },
           Update: (data: Uint8Array, x: number, y: number, w: number, h: number) => {
-            const memory = new Uint8Array(exports.memory.buffer);
+            const memory = new Uint8Array(wasmExports.memory.buffer);
             memory.set(data, arrayPtr);
-            exports.Update(arrayPtr, x, y, w, h);
+            wasmExports.Update(arrayPtr, x, y, w, h);
           },
         });
       })
