@@ -193,12 +193,13 @@ const termInputs: TermInputItem[] = [
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  console.log(location.state?.provider);
   const [values, setValues] = useState({
     name: '',
     email: location.state?.email,
     birth: '',
   });
+
 
   const [terms, setTerms] = useState<TermState>({
     agreeTerm: false,
@@ -250,9 +251,9 @@ const Register = () => {
     const formatted =
       name === 'birth'
         ? value
-            .replace(/\D/g, '')
-            .slice(0, 8)
-            .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
+          .replace(/\D/g, '')
+          .slice(0, 8)
+          .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
         : value;
 
     setValues((prev) => ({
@@ -344,7 +345,8 @@ const Register = () => {
       return;
     }
 
-    const res = await fetchAuthRegister(values.email, values.name, new Date(values.birth), true, 'KAKAO');
+    const res = await fetchAuthRegister(values.email, values.name, new Date(values.birth), true, location.state?.provider);
+
 
     console.log(2, res);
     navigate(webPath.registerDone());
@@ -367,7 +369,7 @@ const Register = () => {
         </RegisterContentProfileImage>
         <RegisterContentListContainer>
           {valueInputs.map((e) => (
-            <RegisterContentInputContainer>
+            <RegisterContentInputContainer key={e.key}>
               <p>
                 {e.title}
                 {e.essential ? '*' : '(선택)'}
