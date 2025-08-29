@@ -17,9 +17,10 @@ const StockCardContainer = styled.div({
 
 const LargeStockCardContainer = styled.div({
   flexShrink: '0',
-  display: 'block',
+  // display: 'block',
+  display: 'flex',
   flexDirection: 'column',
-  width: '300px',
+  width: '100%',
   scrollSnapAlign: 'center',
   background: theme.colors.sub_gray11,
   borderRadius: '8px',
@@ -98,7 +99,7 @@ const LargeStockCardContentTextContainer = styled.div({
 const SmallStockCardContainer = styled.div({
   flexShrink: '0',
   display: 'flex',
-  width: '300px',
+  width: '100%',
   scrollSnapAlign: 'center',
   background: theme.colors.sub_gray11,
   borderRadius: '8px',

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ResultInfo } from '@ts/Constants';
-import { RESULT_TYPE, STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
+import { RESULT_TYPE } from '@ts/Types';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import SearchHeader from '@layout/SearchHeader/SearchHeader';
@@ -97,7 +98,7 @@ const SearchResultWordCloud = ({ stockInfo }: { stockInfo: StockDetailInfo }) =>
   );
 };
 
-const StockRelevant = ({ stockId, country }: { stockId: number; country: STOCK_COUNTRY }) => {
+const StockRelevant = ({ stockId, country }: { stockId: number; country: StockCountryKey }) => {
   const [curRelevantStocks, suspend] = useQueryComponent({ query: useRelevantStockFetchQuery(stockId) });
 
   if (suspend) return null;
@@ -112,7 +113,7 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: STOCK_C
       </SearchResultItemTtile>
       <StockCardContainer>
         {curRelevantStocks?.map((e: StockInfo) => {
-          return <SmallStockCard stock={e} country={country} />;
+          return <SmallStockCard key={`RELEVANT_STOCK_${e.stockId}`} stock={e} country={country} />;
         })}
       </StockCardContainer>
     </SearchResultRelevantContainer>

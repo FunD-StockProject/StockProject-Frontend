@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
 import StockChart from '@components/Search/StockChart/StockChart';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import HeartSVG from '@assets/icons/heart.svg?react';
@@ -16,7 +16,7 @@ interface StockCard {
   priceChange: number;
   score: number;
   scoreChange: number;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
   tags: string[];
 }
 

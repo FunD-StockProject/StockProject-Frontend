@@ -42,7 +42,7 @@ const HomeHeaderButtonContainer = styled.div({
 const HomeTabMenuContainer = styled.div({
   display: 'flex',
   gap: '4px',
-  padding: '0 20px',
+  padding: '24px 20px 0px',
 });
 
 const HomeTabMenuLabel = styled.label({

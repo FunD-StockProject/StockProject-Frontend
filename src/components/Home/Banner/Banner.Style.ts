@@ -8,6 +8,11 @@ const HomeAdContainer = styled.div({
   width: '100%',
   height: '240px',
   scrollSnapType: 'x mandatory',
+
+  msOverflowStyle: 'none',
+  ['::-webkit-scrollbar']: {
+    display: 'none',
+  },
 });
 
 const HomeAdItem = styled.div({

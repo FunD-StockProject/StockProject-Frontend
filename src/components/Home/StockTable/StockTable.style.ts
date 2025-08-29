@@ -71,7 +71,7 @@ const StockTableItem = styled.tr({
   },
 });
 
-const StockTableItemSymbol = styled.div({
+const StockTableItemSymbol = styled.td({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
@@ -96,7 +96,7 @@ const StockTableItemSymbol = styled.div({
   },
 });
 
-const StockTableItemPrice = styled.div(
+const StockTableItemPrice = styled.td(
   ({ delta }: { delta: number }) => ({
     ['>p.diff']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
@@ -122,7 +122,7 @@ const StockTableItemPrice = styled.div(
   },
 );
 
-const StockTableItemScore = styled.div(
+const StockTableItemScore = styled.td(
   ({ delta }: { delta: number }) => ({
     ['>p.diff']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,

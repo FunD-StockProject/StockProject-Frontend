@@ -6,7 +6,8 @@ import {
   MAX_MIN,
   PERIOD_CODE_TEXT,
 } from '@ts/Constants';
-import { PERIOD_CODE, STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
+import { PERIOD_CODE } from '@ts/Types';
 import { drawLine, drawRect, setLineWidth } from '@utils/Canvas';
 import { formatDateISO, getDateLabel } from '@utils/Date';
 import { deltaColor } from '@utils/Delta';
@@ -181,7 +182,7 @@ const StockChartView = ({
   chartData: any[];
   updateChart: any;
   period: PERIOD_CODE;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
 }) => {
   const isMobile = useIsMobile();
 
@@ -1143,7 +1144,7 @@ const StockChart = ({
 }: {
   stockId: number;
   symbolName: string;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState<PERIOD_CODE>('D');
 

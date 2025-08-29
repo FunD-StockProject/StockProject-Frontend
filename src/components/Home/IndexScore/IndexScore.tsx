@@ -1,4 +1,4 @@
-import { STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
@@ -8,7 +8,7 @@ import InfoSVG from '@assets/icons/info.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import { IndexScoreContainer, IndexScoreItem, IndexScoreItemHeader, IndexScoreItemScore } from './IndexScore.style';
 
-const IndexScore = ({ country }: { country: STOCK_COUNTRY }) => {
+const IndexScore = ({ country }: { country: StockCountryKey }) => {
   const [indexScores, suspend] = useQueryComponent({ query: useIndexScoreQuery() });
 
   const transformed = Object.values(indexScores ?? []).reduce<{ score: number; delta: number }[]>((acc, _, i, arr) => {

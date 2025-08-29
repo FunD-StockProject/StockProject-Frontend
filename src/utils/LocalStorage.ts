@@ -1,11 +1,13 @@
-import { SEARCH_CATEGORY } from '@ts/Types';
+import { SearchCategoryKey } from '@ts/SearchCategory';
 
-const setItemLocalStorage = (key: string, data: any) => {
+type LocalStorageKey = 'RecentStocks' | 'RecentKeywords';
+
+const setItemLocalStorage = (key: LocalStorageKey, data: any) => {
   const value = typeof data === 'object' ? JSON.stringify(data) : String(data);
   localStorage.setItem(key, value);
 };
 
-const getItemLocalStorage = (key: string, initial?: any) => {
+const getItemLocalStorage = (key: LocalStorageKey, initial?: any) => {
   const data = localStorage.getItem(key);
 
   if (!data) return initial;
@@ -16,11 +18,11 @@ const getItemLocalStorage = (key: string, initial?: any) => {
   }
 };
 
-const isExistItemLocalStorage = (key: string) => {
+const isExistItemLocalStorage = (key: LocalStorageKey) => {
   return localStorage.getItem(key) ? true : false;
 };
 
-export const STORAGE_RECENT_ITEMS: Record<SEARCH_CATEGORY, string> = {
+export const STORAGE_RECENT_ITEMS: Record<SearchCategoryKey, string> = {
   STOCK: 'RecentStocks',
   KEYWORD: 'RecentKeywords',
 };

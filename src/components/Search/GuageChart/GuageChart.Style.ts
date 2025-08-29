@@ -43,17 +43,27 @@ const GuageChartItem = styled.div({
 const GuageChartItemArc = styled.span(
   ({ index, selected }: { index: number; selected: boolean }) => ({
     width: selected ? '80%' : '75%',
-    background: `conic-gradient(from ${-90 + index * 36}deg, ${selected ? theme.colors.sub_blue6 : ARC_COLORS[index]} 0deg, ${selected ? theme.colors.sub_blue6 : ARC_COLORS[index]} 36deg, transparent 36deg),
-  radial-gradient(circle at center, transparent 50%, transparent 50%)`,
     opacity: selected ? 1 : 0.5,
-    filter: selected ? `drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.5))` : 'none',
+    filter: selected ? `drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5))` : 'none',
+
+    ['::after']: {
+      background: `conic-gradient(from ${-90 + index * 36}deg, ${selected ? theme.colors.sub_blue6 : ARC_COLORS[index]} 0deg, ${selected ? theme.colors.sub_blue6 : ARC_COLORS[index]} 36deg, transparent 36deg),
+      radial-gradient(circle at center, transparent 50%, transparent 50%)`,
+    },
   }),
   {
     position: 'absolute',
     height: 'auto',
     aspectRatio: '1 / 1',
-    borderRadius: '50%',
-    mask: `radial-gradient(closest-side, transparent calc(40%), #000 0)`,
+
+    ['::after']: {
+      content: '""',
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      mask: `radial-gradient(closest-side, transparent calc(40%), #000 0)`,
+    },
   },
 );
 

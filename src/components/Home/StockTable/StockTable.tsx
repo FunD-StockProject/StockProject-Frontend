@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { StockCountryKey } from '@ts/StockCountry';
 import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
@@ -26,7 +27,7 @@ const StockTableTab = [
   { key: 'DESCENT', text: '급하락' },
 ];
 
-const StockTable = ({ country }: { country: string }) => {
+const StockTable = ({ country }: { country: StockCountryKey }) => {
   const navigate = useNavigate();
 
   const [tableTab, setTableTab] = useState<string>('MARKET');
