@@ -1,13 +1,19 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchLoginKakao } from '@controllers/api';
+import {
+  fetchLoginKakao,
+  fetchLoginGoogle,
+  fetchLoginNaver,
+  fetchLoginApple,
+} from '@controllers/api';
 import BlueAlert from '@assets/blueAlert.svg?react';
 import Loading from '@assets/loading.png';
 
 const Callback = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
@@ -16,24 +22,35 @@ const Callback = () => {
     if (!isMounted) return;
 
     (async () => {
-      const location = window.location;
       const searchParams = new URLSearchParams(location.search);
       const code = searchParams.get('code') ?? '';
-      const redirectUri = window.location.origin + window.location.pathname;
+      const redirectUri = window.location.origin + location.pathname;
       const state = btoa(redirectUri);
+
       const provider = location.pathname.split('/').at(-1);
 
       try {
-        console.log(code);
-        const res = await fetchLoginKakao(code, state);
-        console.log(res);
+        let res: any;
+        switch (provider) {
+          case 'kakao':
+            res = await fetchLoginKakao(code, state);
+            break;
+          case 'google':
+            res = await fetchLoginGoogle(code, state);
+            break;
+          case 'naver':
+            res = await fetchLoginNaver(code, state);
+            break;
+          case 'apple':
+            res = await fetchLoginApple(code, state);
+            break;
+          default:
+            throw new Error(`Unknown OAuth provider: ${provider}`);
+        }
 
         if (res.state === 'NEED_REGISTER') {
           navigate(webPath.register(), {
-            state: {
-              provider: provider,
-              email: res.email,
-            },
+            state: { provider, email: res.email },
           });
           return;
         }
@@ -42,25 +59,20 @@ const Callback = () => {
         localStorage.setItem('refresh_token', res.refresh_token);
         localStorage.setItem('useremail', res.email);
         localStorage.setItem('username', res.nickname);
-        localStorage.setItem('provider', provider ?? '');
-        localStorage.setItem('recent_login_provider', provider ?? '');
+        localStorage.setItem('provider', provider);
+        localStorage.setItem('recent_login_provider', provider);
 
         navigate('/');
       } catch (err) {
-        console.log(err);
+        console.error(err);
         setError('error');
         navigate(webPath.register(), {
-          state: {
-            provider: provider,
-            email: null,
-          },
+          state: { provider, email: null },
           replace: true,
         });
       }
     })();
-
-    console.log(123);
-  }, [isMounted]);
+  }, [isMounted, location.pathname, navigate]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -68,9 +80,15 @@ const Callback = () => {
 
   return (
     <CallBackContainer>
-      {!error ? <img src={Loading} /> : <BlueAlert />}
-      <p className="title">{!error ? '잠시만 기다려주세요' : '앗! 로그인에 실패했어요 😭'}</p>
-      <p className="desc">{!error ? '‘카카오톡’에서 로그인 정보를 불러오고 있어요' : '로그인을 다시 시도해주세요'}</p>
+      {!error ? <img src={Loading} alt="Loading" /> : <BlueAlert />}
+      <p className="title">
+        {!error ? '잠시만 기다려주세요' : '앗! 로그인에 실패했어요 😭'}
+      </p>
+      <p className="desc">
+        {!error
+          ? '로그인 정보를 불러오고 있어요'
+          : '로그인을 다시 시도해주세요'}
+      </p>
     </CallBackContainer>
   );
 };
@@ -80,27 +98,25 @@ const CallBackContainer = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   gap: '10px',
-  flexGrow: '1',
+  flexGrow: 1,
   justifyContent: 'center',
 
   ['>svg']: {
     width: '72px',
-    height: 'auto',
     aspectRatio: '1 / 1',
     fill: '#3457FD',
   },
 
   ['>p']: {
-    margin: '0',
+    margin: 0,
 
     ['&.title']: {
       fontSize: '20px',
-      fontWeight: '600',
+      fontWeight: 600,
     },
-
     ['&.desc']: {
       fontSize: '14px',
-      fontWeight: '500',
+      fontWeight: 500,
     },
   },
 });

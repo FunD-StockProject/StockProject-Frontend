@@ -20,7 +20,11 @@ export const fetchOAuth2Login = async (_code: string, _state: string, provider: 
   }
 };
 
+
 export const fetchLoginKakao = (code: string, state: string) => fetchOAuth2Login(code, state, 'kakao');
+export const fetchLoginGoogle = (code: string, state: string) => fetchOAuth2Login(code, state, 'google');
+export const fetchLoginNaver = (code: string, state: string) => fetchOAuth2Login(code, state, 'naver');
+export const fetchLoginApple = (code: string, state: string) => fetchOAuth2Login(code, state, 'apple');
 
 export const fetchAuthRegister = async (
   email: string,

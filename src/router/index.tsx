@@ -53,6 +53,10 @@ const Root = () => {
 const routes = [
   { path: '*', element: <div>404 Not Found</div> },
   { path: '/login/oauth2/code/kakao', element: <Callback /> },
+  { path: '/login/oauth2/code/google', element: <Callback /> },
+  { path: '/login/oauth2/code/naver', element: <Callback /> },
+  { path: '/login/oauth2/code/apple', element: <Callback /> },
+
   {
     path: '/',
     element: <Root />,
