@@ -1,5 +1,5 @@
 const baseURL = import.meta.env.VITE_BASE_URL;
-const Headers = { 'content-type': 'application/json' } as const;
+const Headers = { 'Content-Type': 'application/json' } as const;
 
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 

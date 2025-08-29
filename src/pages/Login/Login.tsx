@@ -95,31 +95,73 @@ const Login = () => {
   const handleGoogleLogin = () => {
     localStorage.setItem('lastLoginProvider', 'google');
     const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
-    console.log(redirectUri);
+    const state = crypto.randomUUID(); // CSRF 방지
+    localStorage.setItem('oauth_state', state);
 
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=openid%20email%20profile&access_type=offline&prompt=consent`;
+    const params = new URLSearchParams({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      redirect_uri: redirectUri,
+      response_type: 'code',
+      scope: 'openid email profile',
+      access_type: 'offline',
+      prompt: 'consent',
+      include_granted_scopes: 'true',
+      state,
+    });
 
-    window.location.href = googleAuthUrl;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  };
+
+  const handleNaverLogin = () => {
+    localStorage.setItem('lastLoginProvider', 'naver');
+    const redirectUri = `${window.location.origin}/login/oauth2/code/naver`;
+    const state = crypto.randomUUID();
+    localStorage.setItem('oauth_state', state);
+
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: import.meta.env.VITE_NAVER_CLIENT_ID, // <- VITE_ 접두어
+      redirect_uri: redirectUri,
+      state,
+    });
+
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?${params.toString()}`;
   };
 
   const handleAppleLogin = () => {
     const state = crypto.randomUUID();
+    const nonce = crypto.randomUUID(); // 권장
     localStorage.setItem('lastLoginProvider', 'apple');
     localStorage.setItem('oauth_state', state);
 
     const redirectUri = `${window.location.origin}/login/oauth2/code/apple`;
-    const appleAuthUrl = `https://appleid.apple.com/auth/authorize?client_id=${import.meta.env.VITE_APPLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&response_mode=query&state=apple_login`;
+    const params = new URLSearchParams({
+      client_id: import.meta.env.VITE_APPLE_CLIENT_ID, // Service ID
+      redirect_uri: redirectUri,
+      response_type: 'code',          // 필요 시 'code id_token' 조합 사용
+      response_mode: 'query',         // form_post도 가능(서버 처리에 맞춰 선택)
+      scope: 'name email',
+      state,
+      nonce,
+    });
 
-    window.location.href = appleAuthUrl;
+    window.location.href = `https://appleid.apple.com/auth/authorize?${params.toString()}`;
   };
 
   const handleKakaoLogin = () => {
     localStorage.setItem('lastLoginProvider', 'kakao');
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
-    console.log(redirectUri);
+    const state = crypto.randomUUID();
+    localStorage.setItem('oauth_state', state);
 
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${redirectUri}`;
-    window.location.href = kakaoAuthUrl;
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: import.meta.env.VITE_KAKAO_API_KEY,
+      redirect_uri: redirectUri,
+      state,
+    });
+
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params.toString()}`;
   };
 
   const loginProviders = [
@@ -131,7 +173,7 @@ const Login = () => {
     {
       key: 'naver',
       img: NaverLoginPNG,
-      method: () => { },
+      method: handleNaverLogin
     },
     {
       key: 'apple',
