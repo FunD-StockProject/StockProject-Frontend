@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { WordCloudItem } from '@ts/Interfaces';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
 import { useIsMobile } from '@hooks/useIsMobile';
 import LoadingComponent from '@components/Common/LoadingComponent';
 import { useWordCloudQuery } from '@controllers/query';
@@ -32,7 +32,7 @@ const StockWordCloudContents = ({
   );
 };
 
-const StockWordCloud = ({ symbol, country }: { symbol: string; country: STOCK_COUNTRY }) => {
+const StockWordCloud = ({ symbol, country }: { symbol: string; country: StockCountryKey }) => {
   const { state } = useLocation();
   const isMobile = useIsMobile();
 

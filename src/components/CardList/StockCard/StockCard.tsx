@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { STOCK_COUNTRY, STOCK_TYPE } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
+import { STOCK_TYPE } from '@ts/Types';
 import { diffToPercent, diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
@@ -24,7 +25,7 @@ export const LargeStockCard = ({
   country,
 }: {
   stock: StockInfo;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
 }) => {
   const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ export const SmallStockCard = ({
   country,
 }: {
   stock: StockInfo;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
 }) => {
   const navigate = useNavigate();
 
@@ -97,7 +98,7 @@ export const SmallStockCard = ({
   );
 };
 
-const StockCard = ({ type, country }: { type: STOCK_TYPE; country: STOCK_COUNTRY }) => {
+const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryKey }) => {
   const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
 
   return (

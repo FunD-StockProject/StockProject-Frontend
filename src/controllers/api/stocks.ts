@@ -1,5 +1,5 @@
 import { WordFrequency } from '@ts/Interfaces';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
 import { PERIOD_CODE, PopularStocks, StockDetailInfo } from '../api.Type';
 import {
   fetchChartMock,
@@ -38,12 +38,12 @@ export const fetchDescentStocks = async (country: string) => {
   return fetchData(`/stock/descent/${country}`);
 };
 
-export const fetchSearchSymbolName = (symbolname: string, country: STOCK_COUNTRY): Promise<StockDetailInfo> => {
+export const fetchSearchSymbolName = (symbolname: string, country: StockCountryKey): Promise<StockDetailInfo> => {
   if (enableMock) return Promise.resolve(fetchSearchSymbolNameMock);
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
-export const fetchRealStockInfo = (stockId: number, country: STOCK_COUNTRY) => {
+export const fetchRealStockInfo = (stockId: number, country: StockCountryKey) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
@@ -61,7 +61,7 @@ export const fetchIndexScore = () => {
   return fetchData(`/score/index`);
 };
 
-export const fetchStockSummary = (symbol: string, country: STOCK_COUNTRY) => {
+export const fetchStockSummary = (symbol: string, country: StockCountryKey) => {
   return fetchData(`/stock/summary/${symbol}/${country}`);
 };
 

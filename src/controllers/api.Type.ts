@@ -1,4 +1,4 @@
-import { STOCK_COUNTRY } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
 
 export interface StockDetailInfo {
   stockId: number;
@@ -6,15 +6,15 @@ export interface StockDetailInfo {
   symbolName: string;
   securityName: string;
   exchangeNum: string;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
 
   price: number;
   priceDiff: number;
   priceDiffPerCent: number;
 
-  score: number,
-  scoreDiff: number,
-  keywords: string[],
+  score: number;
+  scoreDiff: number;
+  keywords: string[];
 }
 
 export interface StockInfo {
@@ -61,7 +61,7 @@ export interface AutoCompleteItem {
   symbolName: string;
   keywordNames: string[];
   keyword: string;
-  country: STOCK_COUNTRY;
+  country: StockCountryKey;
   value: string;
 }
 
@@ -83,10 +83,10 @@ export interface FavoriteStock {
   name: string;
   price: number;
   priceDiffPerCent: number;
-  score: number
+  score: number;
   diff: number;
   isNotificationOn: boolean;
   isSelected?: boolean;
   symbolName: string;
-  country: STOCK_COUNTRY
+  country: StockCountryKey;
 }

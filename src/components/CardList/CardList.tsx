@@ -1,5 +1,5 @@
-import { STOCK_COUNTRY_TEXT, STOCK_UPDATE_TIME } from '@ts/Constants';
-import { STOCK_COUNTRY } from '@ts/Types';
+import { STOCK_UPDATE_TIME } from '@ts/Constants';
+import { STOCK_COUNTRY_MAP, StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
 import { HomeItemTtile } from '@components/Home/Title/Title.Style';
 import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
@@ -16,13 +16,13 @@ const cardListTitle: Record<CardListType, string> = {
   DESCENT: '💧지금 민심 떡락 중인',
 };
 
-const CardList = ({ type, country }: { type: CardListType; country: STOCK_COUNTRY }) => {
+const CardList = ({ type, country }: { type: CardListType; country: StockCountryKey }) => {
   const { Modal, openModal } = useModal({
     Component: type === 'HOT' ? HotPopUp : type === 'RISING' ? RisingPopUp : DescentPopUp,
   });
 
   const updateTime = STOCK_UPDATE_TIME[country];
-  const title = `${cardListTitle[type]} ${type === 'HOT' ? `${STOCK_COUNTRY_TEXT[country]}지표` : ''}`;
+  const title = `${cardListTitle[type]} ${type === 'HOT' ? `${STOCK_COUNTRY_MAP[country].text}지표` : ''}`;
 
   return (
     <CardListContainer>

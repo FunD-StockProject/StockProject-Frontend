@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD } from '@ts/Constants';
-import { STOCK_COUNTRY, STOCK_TYPE } from '@ts/Types';
+import { StockCountryKey } from '@ts/StockCountry';
+import { STOCK_TYPE } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import {
   // fetchAutoComplete,
@@ -30,7 +31,7 @@ import {
 } from '../api.Type';
 import { STOCK_FETCH_FUNCTIONS, queryOptions } from './common';
 
-export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) => {
+export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
   return useQuery<StockDetailInfo>(
     ['symbolNameSearch', name, country],
     () => fetchSearchSymbolName(name, country),
@@ -38,15 +39,15 @@ export const useSymbolNameSearchQuery = (name: string, country: STOCK_COUNTRY) =
   );
 };
 
-export const useStockIdSearchQuery = (stockId: number, country: STOCK_COUNTRY) => {
+export const useStockIdSearchQuery = (stockId: number, country: StockCountryKey) => {
   return useQuery(['stockIdSearchQuery', stockId, country], () => fetchRealStockInfo(stockId, country), queryOptions);
 };
 
-export const useHomeStockFetchQuery = (type: STOCK_TYPE, country: STOCK_COUNTRY) => {
+export const useHomeStockFetchQuery = (type: STOCK_TYPE, country: StockCountryKey) => {
   return useQuery(['homeStockFetch', type, country], () => STOCK_FETCH_FUNCTIONS[type](country), queryOptions);
 };
 
-export const useScoreQuery = (id: number, country: STOCK_COUNTRY) => {
+export const useScoreQuery = (id: number, country: StockCountryKey) => {
   return useQuery(['score', id, country], () => fetchScore(id, country), queryOptions);
 };
 
@@ -78,7 +79,7 @@ export const useKeywordSearchQuery = (keywordName: string) => {
   return useQuery<string[]>(['keywordSearch', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
 };
 
-export const useStockSummaryQuery = (symbol: string, country: STOCK_COUNTRY) => {
+export const useStockSummaryQuery = (symbol: string, country: StockCountryKey) => {
   const { data = [] } = useQuery<string[]>(
     ['stockSummary', symbol, country],
     () => fetchStockSummary(symbol, country),
@@ -98,7 +99,7 @@ const WordCloudWorker = new Worker(new URL('@utils/worker/GenerateWordCloud.ts',
 
 export const useWordCloudQuery = (
   symbol: string,
-  country: STOCK_COUNTRY,
+  country: StockCountryKey,
   { width, height }: any,
   isMobile: boolean,
 ) => {
@@ -225,7 +226,7 @@ export const usePopularStockFetchQuery = () => {
   return [data] as const;
 };
 
-export const PopularKeywordQuery = () => {
+export const usePopularKeywordQuery = () => {
   const { data = [] } = useQuery(
     ['PopularKeywordFetch'],
     async () => {

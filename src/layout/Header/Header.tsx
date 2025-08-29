@@ -1,11 +1,9 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import SearchBar from '@components/SearchBar/SearchBar';
+import { useNavigate } from 'react-router-dom';
 import LogoSVG from '@assets/logo_white.svg?react';
 import { HeaderContainer, HeaderContents, HeaderLogo } from './Header.Style';
 
 const Header = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   return (
     <HeaderContainer>
@@ -13,7 +11,6 @@ const Header = () => {
         <HeaderLogo onClick={() => navigate('/')}>
           <LogoSVG />
         </HeaderLogo>
-        {['/'].includes(location.pathname) && <SearchBar />}
       </HeaderContents>
     </HeaderContainer>
   );
