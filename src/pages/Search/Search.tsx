@@ -112,7 +112,7 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: STOCK_C
       </SearchResultItemTtile>
       <StockCardContainer>
         {curRelevantStocks?.map((e: StockInfo) => {
-          return <SmallStockCard stock={e} country={country} />;
+          return <SmallStockCard key={`RELEVANT_STOCK_${e.stockId}`} stock={e} country={country} />;
         })}
       </StockCardContainer>
     </SearchResultRelevantContainer>

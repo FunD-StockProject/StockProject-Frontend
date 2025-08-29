@@ -22,7 +22,6 @@ const useModal = ({ Component }: { Component: ({ onClose }: { onClose: () => voi
   const modalRef = useRef<HTMLDivElement>(null);
 
   const openModal = () => {
-    console.log('openModal');
     setIsOpen(true);
   };
 
