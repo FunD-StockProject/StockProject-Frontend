@@ -15,6 +15,16 @@ const StockCardContainer = styled.div({
   },
 });
 
+const StockCardItem = styled.div({
+  flexShrink: '0',
+  display: 'flex',
+  width: '300px',
+  scrollSnapAlign: 'center',
+  background: theme.colors.sub_gray11,
+  borderRadius: '8px',
+});
+
+//
 const LargeStockCardContainer = styled.div({
   flexShrink: '0',
   // display: 'block',
@@ -170,6 +180,7 @@ const SmallStockCardContentKeywords = styled.div({
 
 export {
   StockCardContainer,
+  StockCardItem,
   LargeStockCardContainer,
   LargeStockCardHeader,
   LargeStockCardHeaderImage,

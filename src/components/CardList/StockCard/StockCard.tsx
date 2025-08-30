@@ -18,6 +18,7 @@ import {
   SmallStockCardContentScore,
   SmallStockCardContentTitle,
   StockCardContainer,
+  StockCardItem,
 } from './StockCard.Style';
 
 export const LargeStockCard = ({
@@ -104,13 +105,15 @@ const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryK
   return (
     suspend || (
       <StockCardContainer>
-        {curStocks?.map((stock: StockInfo) =>
-          type === 'HOT' ? (
-            <LargeStockCard key={`LARGE_STOCK_CARD_${stock.stockId}`} stock={stock} country={country} />
-          ) : (
-            <SmallStockCard key={`SMALL_STOCK_CARD_${stock.stockId}`} stock={stock} country={country} />
-          ),
-        )}
+        {curStocks?.map((stock: StockInfo) => (
+          <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
+            {type === 'HOT' ? (
+              <LargeStockCard stock={stock} country={country} />
+            ) : (
+              <SmallStockCard stock={stock} country={country} />
+            )}
+          </StockCardItem>
+        ))}
       </StockCardContainer>
     )
   );

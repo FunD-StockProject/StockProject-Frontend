@@ -178,15 +178,19 @@ const StockChartView = ({
   updateChart,
   period,
   country,
+  chartHeight,
+  chartInteractive = true,
 }: {
   chartData: any[];
   updateChart: any;
   period: PERIOD_CODE;
   country: StockCountryKey;
+  chartHeight?: { price: string; score: string };
+  chartInteractive?: boolean;
 }) => {
   const isMobile = useIsMobile();
 
-  const initialBarSize = isMobile ? 4 : 8;
+  const initialBarSize = isMobile ? 2 : 8;
 
   const GRID_GAP = {
     X: !isMobile ? 120 : 60,
@@ -265,7 +269,7 @@ const StockChartView = ({
 
     setCanvasPos({
       curr: {
-        x: width - GRID_GAP.X,
+        x: width - GRID_GAP.X / 2,
       },
       prev: {
         x: 0,
@@ -438,6 +442,8 @@ const StockChartView = ({
     if (!priceLabel) return;
     const scoreLabel = scoreLabelRef.current;
     if (!scoreLabel) return;
+
+    if (!chartInteractive) return;
 
     if (!isMobile) {
       charContainer.addEventListener('mousedown', handleCanvasPointerDown);
@@ -972,7 +978,7 @@ const StockChartView = ({
     <StockChartViewContainer>
       <StockChartItemContainer grow>
         <StockChartItemCanvasContainer>
-          <StockChartItemContent type="price">
+          <StockChartItemContent type="price" chartHeight={chartHeight}>
             <StockChartCanvasRefContainer ref={priceCanvasRef} />
             {extremePrice &&
               Object.entries(extremePrice).map(([key, value]: [string, any]) => (
@@ -1008,7 +1014,7 @@ const StockChartView = ({
               </StockChartInfoHeaderItem>
             </StockChartInfoHeader>
           </StockChartItemContent>
-          <StockChartItemContent type="score">
+          <StockChartItemContent type="score" chartHeight={chartHeight}>
             <StockChartCanvasRefContainer ref={scoreCanvasRef} />
             <StockChartInfoHeader>
               <StockChartInfoHeaderItem>
@@ -1033,44 +1039,49 @@ const StockChartView = ({
         </StockChartItemContent>
       </StockChartItemContainer>
       <StockChartItemContainer>
-        <StockChartItemContent type="price" ref={priceLabelRef}>
-          <ChartLabelBase>{priceGrid[priceGrid.length - 1]?.priceStr}</ChartLabelBase>
-          {priceGrid.map((e: any) => (
-            <ChartLabel key={e.valueStr} y={e.pos.y}>
-              {e.valueStr}
-            </ChartLabel>
-          ))}
-          {lastPriceItem && (
-            <ChartLabel strokeRect fillText y={lastPriceItem.pos.y} color={deltaColor(lastPriceItem.delta)}>
-              {lastPriceItem.priceStr}
-            </ChartLabel>
-          )}
-          {recentPriceItem && (
-            <ChartLabel fillRect y={recentPriceItem.pos.y} color={deltaColor(recentPriceItem.delta)}>
-              {recentPriceItem.priceStr}
-            </ChartLabel>
-          )}
-          {mousePosInfo?.priceStr && (
-            <ChartLabel fillRect y={mousePosInfo.pos.y} color="blue">
-              {mousePosInfo.priceStr}
-            </ChartLabel>
-          )}
-        </StockChartItemContent>
-        <StockChartItemContent type="score" ref={scoreLabelRef}>
-          <ChartLabelBase>100</ChartLabelBase>
-          {scoreGrid.map(
-            (e: any) =>
-              e.valueStr !== '' && (
-                <ChartLabel key={'score' + e.valueStr} y={e.pos.y}>
-                  {e.valueStr}
-                </ChartLabel>
-              ),
-          )}
-          {mousePosInfo?.scoreStr && (
-            <ChartLabel fillRect y={mousePosInfo.pos.y - priceCanvasSize.height} color="blue">
-              {mousePosInfo.scoreStr}
-            </ChartLabel>
-          )}
+        <StockChartItemCanvasContainer>
+          <StockChartItemContent type="price" ref={priceLabelRef} chartHeight={chartHeight}>
+            <ChartLabelBase>{priceGrid[priceGrid.length - 1]?.priceStr}</ChartLabelBase>
+            {priceGrid.map((e: any) => (
+              <ChartLabel key={e.valueStr} y={e.pos.y}>
+                {e.valueStr}
+              </ChartLabel>
+            ))}
+            {lastPriceItem && (
+              <ChartLabel strokeRect fillText y={lastPriceItem.pos.y} color={deltaColor(lastPriceItem.delta)}>
+                {lastPriceItem.priceStr}
+              </ChartLabel>
+            )}
+            {recentPriceItem && (
+              <ChartLabel fillRect y={recentPriceItem.pos.y} color={deltaColor(recentPriceItem.delta)}>
+                {recentPriceItem.priceStr}
+              </ChartLabel>
+            )}
+            {mousePosInfo?.priceStr && (
+              <ChartLabel fillRect y={mousePosInfo.pos.y} color="blue">
+                {mousePosInfo.priceStr}
+              </ChartLabel>
+            )}
+          </StockChartItemContent>
+          <StockChartItemContent type="score" ref={scoreLabelRef} chartHeight={chartHeight}>
+            <ChartLabelBase>100</ChartLabelBase>
+            {scoreGrid.map(
+              (e: any) =>
+                e.valueStr !== '' && (
+                  <ChartLabel key={'score' + e.valueStr} y={e.pos.y}>
+                    {e.valueStr}
+                  </ChartLabel>
+                ),
+            )}
+            {mousePosInfo?.scoreStr && (
+              <ChartLabel fillRect y={mousePosInfo.pos.y - priceCanvasSize.height} color="blue">
+                {mousePosInfo.scoreStr}
+              </ChartLabel>
+            )}
+          </StockChartItemContent>
+        </StockChartItemCanvasContainer>
+        <StockChartItemContent>
+          <br />
         </StockChartItemContent>
       </StockChartItemContainer>
     </StockChartViewContainer>
@@ -1141,14 +1152,25 @@ const StockChart = ({
   stockId,
   symbolName,
   country,
+  chartHeight,
+  chartInteractive,
 }: {
   stockId: number;
   symbolName: string;
   country: StockCountryKey;
+  chartHeight?: { price: string; score: string };
+  chartInteractive?: boolean;
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState<PERIOD_CODE>('D');
 
   const [chartData, updateChartData] = useStockChartQuery(stockId, selectedPeriod);
+
+  const handlePeriodClick = (period: PERIOD_CODE) => (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(period);
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedPeriod(period);
+  };
 
   return (
     <StockChartContainer>
@@ -1159,14 +1181,21 @@ const StockChart = ({
             <StockChartHeaderItem
               key={i}
               background={key == selectedPeriod ? 'grayscale90' : 'transparent'}
-              onClick={() => setSelectedPeriod(key)}
+              onPointerDown={handlePeriodClick(key)}
             >
               {value}
             </StockChartHeaderItem>
           ))}
         </StockChartHeaderContents>
       </StockChartHeader>
-      <StockChartView chartData={chartData} updateChart={updateChartData} period={selectedPeriod} country={country} />
+      <StockChartView
+        chartData={chartData}
+        updateChart={updateChartData}
+        period={selectedPeriod}
+        country={country}
+        chartHeight={chartHeight}
+        chartInteractive={chartInteractive}
+      />
     </StockChartContainer>
   );
 };

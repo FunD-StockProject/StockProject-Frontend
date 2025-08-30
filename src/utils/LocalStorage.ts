@@ -1,6 +1,6 @@
 import { SearchCategoryKey } from '@ts/SearchCategory';
 
-type LocalStorageKey = 'RecentStocks' | 'RecentKeywords';
+type LocalStorageKey = 'access_token' | 'RecentStocks' | 'RecentKeywords' | 'ShortViewTutorial';
 
 const setItemLocalStorage = (key: LocalStorageKey, data: any) => {
   const value = typeof data === 'object' ? JSON.stringify(data) : String(data);

@@ -1,156 +1,127 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
-export const WrapperStyle = styled.div({
+const ShortViewContainer = styled.div({
+  flexGrow: '1',
   display: 'flex',
   flexDirection: 'column',
-  width: '100%',
-  minHeight: '100vh',
-  background: theme.colors.primary50,
-  margin: '0 auto',
-  position: 'relative',
+  padding: '20px 20px 40px',
+  gap: '28px',
+  boxSizing: 'border-box',
   overflow: 'hidden',
 });
 
-interface CardStyleProps {
-  isVisible: boolean;
-  isCurrent: boolean;
-}
-
-export const CardStyle = styled.div<CardStyleProps>(({ isVisible, isCurrent }) => ({
-  width: '100%',
-  maxWidth: '480px',
-  // height: 'calc(100vh - 68px - 64px)',
-  padding: '20px',
-  boxSizing: 'border-box',
-  border: '1px solid #888',
-  backgroundColor: '#000',
-  display: isVisible ? 'flex' : 'none',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '24px',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  right: 0,
-  transition: isCurrent ? 'transform 0.3s ease-in-out' : 'none',
-  willChange: 'transform, opacity',
-  opacity: isVisible ? 1 : 0,
-  pointerEvents: isCurrent ? 'auto' : 'none',
-  transform: isCurrent ? 'translate(-50%, 0%) scale(1)' : 'translate(-50%, 0%) scale(0.97)',
-}));
-
-export const LogoStyle = styled.div({
-  width: '100%',
-  textAlign: 'center',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  borderBottom: '1px solid #666',
-  paddingBottom: '6px',
-  color: '#ccc',
-});
-
-export const TitleStyle = styled.h2({
-  marginTop: '8px',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  alignSelf: 'flex-start',
-  marginBottom: '8px',
-});
-
-export const PriceWrapperStyle = styled.div({
-  alignSelf: 'flex-start',
-  fontSize: '14px',
+const ShortViewButtonContainer = styled.div({
+  position: 'relative',
   display: 'flex',
-  flexDirection: 'row',
+  gap: '20px',
   alignItems: 'center',
-  gap: '8px',
-  padding: '8px 12px',
-  border: '1px solid #aaa',
-  borderRadius: '10px',
-  backgroundColor: '#111',
-  color: '#fff',
-  marginTop: '0px',
-});
-
-export const ImagePlaceholderStyle = styled.div({
-  width: '100%',
-  height: '160px',
-  backgroundColor: '#f5f5f5',
-  display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
-  color: '#999',
-  fontSize: '14px',
 });
 
-export const ScoreStyle = styled.div({
+const ShortViewButton = styled.div({
   display: 'flex',
-  alignItems: 'center',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  gap: '6px',
-  alignSelf: 'flex-start',
-});
+  borderRadius: '999px',
 
-export const CategoryTagListStyle = styled.div({
-  display: 'flex',
-  gap: '16px',
-  alignSelf: 'flex-start',
-});
+  ['>svg']: {
+    height: 'auto',
+    aspectRatio: '1 / 1',
+  },
 
-export const CategoryTagItemStyle = styled.div({
-  border: '1px solid #FFF',
-  borderRadius: '16px',
-  padding: '10px 12px',
-});
+  ['&.cross']: {
+    padding: '18px',
+    background: theme.colors.sub_gray10,
 
-export const ButtonGroupStyle = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '16px',
+    ['>svg']: {
+      width: '28px',
+      fill: theme.colors.sub_gray5,
+    },
+  },
 
-  button: {
-    padding: '8px 12px',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
+  ['&.heart, &.heart-active']: {
+    padding: '14px',
+    background: theme.colors.sub_gray11,
+
+    ['>svg']: {
+      width: '24px',
+    },
+  },
+
+  ['&.heart']: {
+    ['>svg']: {
+      fill: theme.colors.sub_gray8,
+    },
+  },
+
+  ['&.heart-active']: {
+    ['>svg']: {
+      fill: theme.colors.sub_red,
+    },
+  },
+
+  ['&.money']: {
+    padding: '18px',
+    background: theme.colors.sub_blue6,
+
+    ['>svg']: {
+      width: '28px',
+      fill: theme.colors.sub_white,
+    },
   },
 });
 
-export const IconButtonGroupStyle = styled.div({
-  display: 'flex',
-  justifyContent: 'space-around',
-  width: '100%',
-  marginTop: '16px',
-  touchAction: 'manipulation',
+const ShortViewContent = styled.div({
+  position: 'relative',
+  flexGrow: '1',
+});
 
-  button: {
-    border: 'none',
-    background: 'transparent',
-    fontSize: '12px',
-    color: 'white',
-    cursor: 'pointer',
+const ShortViewToast = styled.div(
+  ({ closing }: { closing: boolean }) => ({
+    opacity: closing ? 0 : 1,
+    transition: 'opacity 0.3s ease-in-out',
+  }),
+  {
+    position: 'absolute',
+    bottom: '-16px',
+    background: 'rgba(0, 0, 0, 0.75)',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    borderRadius: '5px',
+    border: '1px solid rgba(73, 80, 87, 0.5)',
+    padding: '12px 16px',
+    boxSizing: 'border-box',
+    backdropFilter: 'blur(5px)',
+    boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.5)',
+    gap: '10px',
+
+    ['>svg']: {
+      width: '24px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+
+      ['&.check']: {
+        fill: theme.colors.sub_gray2,
+      },
+
+      ['&.heart']: {
+        fill: theme.colors.sub_red,
+      },
+    },
+
+    ['>p']: {
+      margin: '0',
+      ...theme.font.detail12Semibold,
+      color: theme.colors.sub_gray2,
+
+      ['&.cancel']: {
+        color: theme.colors.sub_gray5,
+        textDecoration: 'underline',
+        marginLeft: 'auto',
+        cursor: 'pointer',
+      },
+    },
   },
-});
+);
 
-export const ToastStyle = styled.div({
-  marginTop: '20px',
-  padding: '8px 16px',
-  background: 'rgba(0, 0, 0, 0.8)',
-  border: '1px solid rgba(73, 80, 87, 0.5)',
-  color: 'white',
-  borderRadius: '6px',
-  zIndex: '1000',
-  position: 'absolute',
-  bottom: '0',
-  marginBottom: '12px',
-  width: 'calc(100% - 40px)',
-  boxSizing: 'border-box',
-});
-
-export const EndMessageStyle = styled.div({
-  fontSize: '16px',
-  marginTop: '40px',
-  color: '#666',
-});
+export { ShortViewContainer, ShortViewButtonContainer, ShortViewButton, ShortViewContent, ShortViewToast };

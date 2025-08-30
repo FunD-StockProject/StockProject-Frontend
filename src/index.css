@@ -49,7 +49,7 @@ html {
 
 body {
   display: flex;
-  place-items: center;
+
   margin: 0px;
   background-color: #000000;
   min-width: 320px;
