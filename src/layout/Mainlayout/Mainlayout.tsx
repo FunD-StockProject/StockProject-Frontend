@@ -1,11 +1,10 @@
 import { useLocation } from 'react-router-dom';
 import { detectPWA } from '@utils/Detector';
 import { webPath } from '@router/index';
-// import { webPath } from '@router/index';
 import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
+import Header from '@layout/Header/Header';
 import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
 import Footer from '../Footer/Footer';
-// import Header from '../Header/Header';
 import { LayoutProps } from './Mainlayout.Props';
 import { MainContent, StyledMainlayout } from './Mainlayout.Style';
 
@@ -28,7 +27,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   return (
     <StyledMainlayout>
       <MainContent>
-        {/* {!(isLabPage || isFavoritesPage || isMyPage || isShortViewPage) && <Header />} */}
+        <Header location={location.pathname} />
         {children}
         {isRootPage && <Footer />}
       </MainContent>

@@ -1,16 +1,63 @@
+import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import LogoSVG from '@assets/logo_white.svg?react';
-import { HeaderContainer, HeaderContents, HeaderLogo } from './Header.Style';
+import { webPath } from '@router/index';
+import { theme } from '@styles/themes';
+import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 
-const Header = () => {
+const HeaderContainer = styled.div({
+  paddingBottom: '8px',
+  borderBottom: `4px solid ${theme.colors.sub_gray11}`,
+});
+
+const HeaderContents = styled.div({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '8px 20px',
+  gap: '12px',
+
+  ['>svg']: {
+    width: '32px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    cursor: 'pointer',
+    fill: theme.colors.sub_gray5,
+  },
+
+  ['>p']: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_white,
+    margin: '0',
+  },
+});
+
+const Header = ({ location, onBefore }: { location: string; onBefore?: () => void }) => {
   const navigate = useNavigate();
+
+  const headerTitle = {
+    [webPath.register()]: '회원가입',
+    [webPath.favorites()]: '관심',
+    ['searchBar']: '검색',
+  };
+
+  const handleBefore = () => {
+    if (onBefore) {
+      onBefore();
+    } else {
+      navigate(-1);
+    }
+  };
+
+  if (!headerTitle[location]) return null;
 
   return (
     <HeaderContainer>
       <HeaderContents>
-        <HeaderLogo onClick={() => navigate('/')}>
-          <LogoSVG />
-        </HeaderLogo>
+        <ArrowLeftSVG onClick={handleBefore} />
+        <p>{headerTitle[location]}</p>
       </HeaderContents>
     </HeaderContainer>
   );
