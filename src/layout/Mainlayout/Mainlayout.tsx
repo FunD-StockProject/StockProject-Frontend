@@ -26,7 +26,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
 
   return (
     <StyledMainlayout>
-      <MainContent>
+      <MainContent isNavActive={isBottomNavigationVisible}>
         <Header location={location.pathname} />
         {children}
         {isRootPage && <Footer />}
