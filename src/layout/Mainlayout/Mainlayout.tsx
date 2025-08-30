@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { detectPWA } from '@utils/Detector';
+import { webPath } from '@router/index';
 // import { webPath } from '@router/index';
 import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
 import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
@@ -18,6 +19,12 @@ const Mainlayout = ({ children }: LayoutProps) => {
   // const isShortViewPage = location.pathname === webPath.shortView();
   // const isFavoritesPage = location.pathname.startsWith('/favorites');
 
+  const isLoginPage = location.pathname.startsWith(webPath.login());
+  const isRegisterPage = location.pathname.startsWith(webPath.register());
+  const isWithdrawPage = location.pathname.startsWith(webPath.withdraw());
+
+  const isBottomNavigationVisible = !isLoginPage && !isRegisterPage && !isWithdrawPage;
+
   return (
     <StyledMainlayout>
       <MainContent>
@@ -27,7 +34,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
       </MainContent>
 
       {isRootPage && !detectPWA() && <PWAInfoPopUp />}
-      <BottomNavigation />
+      {isBottomNavigationVisible && <BottomNavigation />}
     </StyledMainlayout>
   );
 };

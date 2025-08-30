@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import AppleLoginPNG from '@assets/appleLogin.png';
 import CloseSVG from '@assets/close.svg?react';
@@ -6,91 +5,16 @@ import GoogleLoginPNG from '@assets/googleLogin.png';
 import KakaoLoginPNG from '@assets/kakaoLogin.png';
 import LogoWithTitleWhiteSVG from '@assets/logo_with_title_white.svg?react';
 import NaverLoginPNG from '@assets/naverLogin.png';
-
-const LoginPageContainer = styled.div({
-  flexGrow: '1',
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const LoginPageCloseWrapper = styled.div({
-  display: 'flex',
-  justifyContent: 'end',
-  padding: '12px 20px',
-
-  ['>svg']: {
-    width: '36px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-  },
-});
-
-const LoginPageBannerContainer = styled.div({
-  flexGrow: '2',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '24px',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
-
-const LoginPageBannerContents = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  alignItems: 'center',
-
-  ['>p']: {
-    margin: '0',
-    textAlign: 'center',
-
-    ['&.title']: {
-      fontSize: '20px',
-      fontWeight: '600',
-      color: '#F0F0F1',
-    },
-    ['&.desc']: {
-      fontSize: '16px',
-      fontWeight: '500',
-      color: '#9A9C9E',
-    },
-  },
-});
-
-const LoginPageButtonContainer = styled.div({
-  flexGrow: '1',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '36px',
-  alignItems: 'center',
-
-  ['>p']: {
-    margin: '0',
-    fontSize: '16px',
-    fontWeight: '500',
-    color: '#6C757D',
-  },
-});
-
-const LoginPageButtonContents = styled.div({
-  display: 'flex',
-  gap: '16px',
-});
-
-const LoginPageButtonItemContainer = styled.div({
-  display: 'flex',
-  position: 'relative',
-
-  ['>img']: {
-    width: '64px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-  },
-});
+import {
+  LoginBannerContainer,
+  LoginBannerContents,
+  LoginButtonContainer,
+  LoginButtonContents,
+  LoginContainer,
+} from './Login.Style';
 
 const Login = () => {
   const navigate = useNavigate();
-
 
   const handleGoogleLogin = () => {
     localStorage.setItem('lastLoginProvider', 'google');
@@ -138,8 +62,8 @@ const Login = () => {
     const params = new URLSearchParams({
       client_id: import.meta.env.VITE_APPLE_CLIENT_ID, // Service ID
       redirect_uri: redirectUri,
-      response_type: 'code',          // 필요 시 'code id_token' 조합 사용
-      response_mode: 'query',         // form_post도 가능(서버 처리에 맞춰 선택)
+      response_type: 'code', // 필요 시 'code id_token' 조합 사용
+      response_mode: 'query', // form_post도 가능(서버 처리에 맞춰 선택)
       scope: 'name email',
       state,
       nonce,
@@ -173,7 +97,7 @@ const Login = () => {
     {
       key: 'naver',
       img: NaverLoginPNG,
-      method: handleNaverLogin
+      method: handleNaverLogin,
     },
     {
       key: 'apple',
@@ -192,32 +116,28 @@ const Login = () => {
   };
 
   return (
-    <LoginPageContainer>
-      <LoginPageCloseWrapper>
-        <CloseSVG onClick={handleCancelLogin} />
-      </LoginPageCloseWrapper>
-      <LoginPageBannerContainer>
+    <LoginContainer>
+      <CloseSVG onClick={handleCancelLogin} />
+      <LoginBannerContainer>
         <LogoWithTitleWhiteSVG />
-        <LoginPageBannerContents>
+        <LoginBannerContents>
           <p className="title">당신은 '인간지표'인가요?</p>
           <p className="desc">
             주식투자 심리도우미 인간지표에
             <br />
             오신걸 환영합니다!
           </p>
-        </LoginPageBannerContents>
-      </LoginPageBannerContainer>
-      <LoginPageButtonContainer>
-        <LoginPageButtonContents>
+        </LoginBannerContents>
+      </LoginBannerContainer>
+      <LoginButtonContainer>
+        <LoginButtonContents>
           {loginProviders.map((e) => (
-            <LoginPageButtonItemContainer>
-              <img src={e.img} onClick={e.method} />
-            </LoginPageButtonItemContainer>
+            <img src={e.img} onClick={e.method} />
           ))}
-        </LoginPageButtonContents>
+        </LoginButtonContents>
         <p>로그인에 문제가 있나요?</p>
-      </LoginPageButtonContainer>
-    </LoginPageContainer>
+      </LoginButtonContainer>
+    </LoginContainer>
   );
 };
 
