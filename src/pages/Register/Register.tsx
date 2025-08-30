@@ -1,12 +1,9 @@
-import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
-import Header from '@components/Common/Header';
 import { fetchAuthRegister } from '@controllers/api';
-import { theme } from '@styles/themes';
 import CheckSVG from '@assets/check.svg?react';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
 import AlertSVG from '@assets/icons/alert.svg?react';
@@ -26,7 +23,6 @@ import {
   RegisterTermListContainer,
   RegisterValueContainer,
 } from './Register.Style';
-import RegisterTerm from './Term/Term';
 
 type TermState = Record<TermKey, boolean>;
 type InputKey = 'name' | 'email' | 'birth';
@@ -116,8 +112,6 @@ const Register = () => {
   });
 
   const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
-
-  const [isOpenTerm, setIsOpenTerm] = useState<TermKey | null>();
 
   const handleUploadLocalFile = async () => {
     try {
@@ -259,16 +253,14 @@ const Register = () => {
   };
 
   const handleOpenTerm = (termKey: TermKey) => () => {
-    setIsOpenTerm(termKey);
-  };
-
-  const handleCloseTerm = () => {
-    setIsOpenTerm(null);
+    navigate(webPath.term(), {
+      state: { termKey },
+    });
   };
 
   return (
     <RegisterContainer>
-      {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />}
+      {/* {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />} */}
       <RegisterContent>
         <RegisterImageContainer onClick={handleUploadLocalFile}>
           <img src={(profileImage as string) ?? ProfilePNG} />

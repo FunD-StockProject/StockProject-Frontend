@@ -13,8 +13,10 @@ const Callback = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
 
+  console.log('Callback1');
   useEffect(() => {
     if (!isMounted) return;
+    console.log('Callback2');
 
     (async () => {
       const searchParams = new URLSearchParams(location.search);
@@ -57,7 +59,9 @@ const Callback = () => {
         localStorage.setItem('provider', provider);
         localStorage.setItem('recent_login_provider', provider);
 
-        navigate('/');
+        navigate('/', {
+          replace: true,
+        });
       } catch (err) {
         console.error(err);
         setError('error');

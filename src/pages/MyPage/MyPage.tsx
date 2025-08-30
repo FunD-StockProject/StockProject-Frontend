@@ -1,9 +1,7 @@
-import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/api';
-import { theme } from '@styles/themes';
 import InstagramSVG from '@assets/instagram.svg?react';
 import LinkedInSVG from '@assets/linkedin.svg?react';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
@@ -63,12 +61,48 @@ const MyPage = () => {
     },
   ];
 
+  const openDictionaryModel = () => {
+    window.open('https://balanced-bun-351.notion.site/17412e0c80b880259849c17228046794?pvs=4');
+  };
+
+  const openBusinessProposal = () => {
+    window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
+  };
+
+  const handleClickServiceCenter = () => {
+    window.open('https://forms.gle/eus2xRNHGxbSBaAK9');
+  };
+
+  const openInstagram = () => {
+    window.open('https://www.instagram.com/humanzipyo/');
+  };
+
+  const openLinkedIn = () => {
+    window.open('https://www.linkedin.com/company/humanzipyo');
+  };
+
+  const openThreads = () => {
+    window.open('https://www.threads.net/@humanzipyo');
+  };
+
+  const openTermUse = () => {
+    navigate(webPath.term(), {
+      state: { termKey: 'agreeTerm' },
+    });
+  };
+
+  const openTermPrivacy = () => {
+    navigate(webPath.term(), {
+      state: { termKey: 'agreePrivacy' },
+    });
+  };
+
   const defaultButtons = [
-    { text: '서비스 가이드', onClick: () => {} },
-    { text: '비즈니스 제안', onClick: () => {} },
-    { text: '고객센터', onClick: () => {} },
-    { text: '서비스 이용약관', onClick: () => {} },
-    { text: '개인정보 처리방침', onClick: () => {} },
+    { text: '서비스 가이드', onClick: openDictionaryModel },
+    { text: '비즈니스 제안', onClick: openBusinessProposal },
+    { text: '고객센터', onClick: handleClickServiceCenter },
+    { text: '서비스 이용약관', onClick: openTermUse },
+    { text: '개인정보 처리방침', onClick: openTermPrivacy },
   ];
 
   const authButtons = [
@@ -120,9 +154,9 @@ const MyPage = () => {
         )}
         <span className="divider" />
         <MyPageSNSContainer>
-          <InstagramSVG />
-          <LinkedInSVG />
-          <ThreadSVG />
+          <InstagramSVG onClick={openInstagram} />
+          <LinkedInSVG onClick={openLinkedIn} />
+          <ThreadSVG onClick={openThreads} />
         </MyPageSNSContainer>
       </MyPageContents>
     </MyPageContainer>

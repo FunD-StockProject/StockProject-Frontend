@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TermItem, TermKey, TermList } from '@ts/Term';
 import Button from '@components/Common/Button';
 import Header from '@components/Common/Header';
@@ -29,12 +30,20 @@ const RegisterTermList = ({ termItem }: { termItem: TermItem }) => {
   );
 };
 
-const RegisterTerm = ({ termKey, onClose }: { termKey: TermKey; onClose: () => void }) => {
+const RegisterTerm = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const termKey = location.state?.termKey as TermKey;
+
   const { title, name, contents } = TermList[termKey];
+
+  const handleClose = () => {
+    navigate(-1);
+  };
 
   return (
     <TermContainer>
-      <Header title={title} beforeIconType="close" onBefore={onClose} />
+      <Header title={title} beforeIconType="close" onBefore={handleClose} />
       <TermContents>
         <p>{name}</p>
         <TermListContainer>
@@ -49,7 +58,7 @@ const RegisterTerm = ({ termKey, onClose }: { termKey: TermKey; onClose: () => v
         </TermListContainer>
       </TermContents>
       <TermButtonContainer>
-        <Button onClick={onClose}>닫기</Button>
+        <Button onClick={handleClose}>닫기</Button>
       </TermButtonContainer>
     </TermContainer>
   );
