@@ -218,13 +218,31 @@ export const StockChartItemContent = styled.div(
 
     userSelect: 'none',
   },
-  ({ type }: { type?: 'price' | 'score' }) => ({
-    height: !type ? 'auto' : type == 'price' ? '500px' : '200px',
+  ({ type, chartHeight }: { type?: 'price' | 'score'; chartHeight?: { price: string; score: string } }) => ({
+    height: !type
+      ? 'auto'
+      : chartHeight
+        ? type == 'price'
+          ? chartHeight.price
+          : chartHeight.score
+        : type == 'price'
+          ? '500px'
+          : '200px',
 
     borderBottom: type ? `2px solid ${theme.colors.grayscale90}` : '',
+    flexShrink: '0',
+    boxSizing: 'border-box',
 
     [media[0]]: {
-      height: !type ? 'auto' : type == 'price' ? '300px' : '100px',
+      height: !type
+        ? 'auto'
+        : chartHeight
+          ? type == 'price'
+            ? chartHeight.price
+            : chartHeight.score
+          : type == 'price'
+            ? '300px'
+            : '100px',
     },
   }),
 );

@@ -7,7 +7,7 @@ import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import SearchHeader from '@layout/SearchHeader/SearchHeader';
 import { SmallStockCard } from '@components/CardList/StockCard/StockCard';
-import { StockCardContainer } from '@components/CardList/StockCard/StockCard.Style';
+import { StockCardContainer, StockCardItem } from '@components/CardList/StockCard/StockCard.Style';
 import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
 import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
@@ -112,9 +112,11 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: StockCo
         </div>
       </SearchResultItemTtile>
       <StockCardContainer>
-        {curRelevantStocks?.map((e: StockInfo) => {
-          return <SmallStockCard key={`RELEVANT_STOCK_${e.stockId}`} stock={e} country={country} />;
-        })}
+        {curRelevantStocks?.map((e: StockInfo) => (
+          <StockCardItem key={`RELEVANT_STOCK_${e.stockId}`}>
+            <SmallStockCard stock={e} country={country} />
+          </StockCardItem>
+        ))}
       </StockCardContainer>
     </SearchResultRelevantContainer>
   );

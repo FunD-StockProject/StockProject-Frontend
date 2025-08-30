@@ -1,0 +1,112 @@
+import { useRef, useState } from 'react';
+import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
+import { useSnapIndex } from '@hooks/useSnapIndex';
+import Button from '@components/Common/Button';
+import CrossSVG from '@assets/icons/cross.svg?react';
+import MoneySVG from '@assets/icons/money.svg?react';
+import ShortViewMockImage from '@assets/short_view_mock.png';
+import SwipeHandPNG from '@assets/swipe_hand.png';
+import {
+  ButtonContainer,
+  TutorialContainer,
+  TutorialContent,
+  TutorialItem,
+  TutorialItemCircleButtonContainer,
+  TutorialItemContent,
+  TutorialItemSwipeHand,
+  TutorialItemTinderCard,
+  TutorialItemTinderCardShadow1,
+  TutorialItemTinderCardShadow2,
+  TutorialStep,
+  TutorialTextContainer,
+} from './Tutorial.Style';
+
+const TutorialSteps = [
+  {
+    content: (
+      <TutorialItemContent>
+        <TutorialItemTinderCard>
+          <img src={ShortViewMockImage} alt="short view mock" />
+          <TutorialItemTinderCardShadow1 />
+          <TutorialItemTinderCardShadow2 />
+        </TutorialItemTinderCard>
+      </TutorialItemContent>
+    ),
+    title: '드래그를 통해 무한 탐색',
+    description: `아래로 드래그해서 종목을 무한으로 탐색할 수 있어요\n관심 있어 하실만한 종목을 추천해줘요`,
+  },
+  {
+    content: (
+      <TutorialItemContent>
+        <TutorialItemTinderCard>
+          <img src={ShortViewMockImage} alt="short view mock" />
+        </TutorialItemTinderCard>
+        <TutorialItemSwipeHand src={SwipeHandPNG} alt="swipe hand" />
+        <TutorialItemCircleButtonContainer className="money">
+          <MoneySVG />
+          <span>모의매수</span>
+        </TutorialItemCircleButtonContainer>
+      </TutorialItemContent>
+    ),
+    title: '🙆 관심있는 종목은 오른쪽으로!',
+    description: `이 종목, 곧 오를 것 같다면? 오른쪽으로 드래그해서\n모의매수를 진행해보세요!`,
+  },
+  {
+    content: (
+      <TutorialItemContent>
+        <TutorialItemTinderCard>
+          <img src={ShortViewMockImage} alt="short view mock" />
+        </TutorialItemTinderCard>
+        <TutorialItemSwipeHand isLeft src={SwipeHandPNG} alt="swipe hand" />
+        <TutorialItemCircleButtonContainer className="cross">
+          <CrossSVG />
+          <span>다시 안보기</span>
+        </TutorialItemCircleButtonContainer>
+      </TutorialItemContent>
+    ),
+    title: '🙅‍♂️ 관심없는 종목은 왼쪽으로! ',
+    description: `관심 없는 종목은 왼쪽으로 드래그해주세요\n앞으로 추천에서 제외해 드릴께요`,
+  },
+];
+
+const ShortViewTutorial = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { index: activeIndex } = useSnapIndex(containerRef, { horizontal: true, threshold: 0.7 });
+  const [isOpenTutorial, setIsOpenTutorial] = useState(getItemLocalStorage('ShortViewTutorial', true));
+
+  const handleClickTutorialEnd = () => {
+    console.log('tutorial end');
+    setIsOpenTutorial(false);
+    setItemLocalStorage('ShortViewTutorial', false);
+  };
+
+  if (!isOpenTutorial) return null;
+
+  return (
+    <TutorialContainer>
+      <TutorialContent ref={containerRef}>
+        {TutorialSteps.map(({ content, title, description }, i) => (
+          <TutorialItem key={`TUTORIAL-ITEM-${i}`}>
+            {content}
+            <TutorialTextContainer>
+              <p className="title">{title}</p>
+              <p className="description">{description}</p>
+            </TutorialTextContainer>
+          </TutorialItem>
+        ))}
+      </TutorialContent>
+      <TutorialStep>
+        {TutorialSteps.map((_, i) => (
+          <span key={`TUTORIAL-STEP-${i}`} className={activeIndex === i ? 'current' : ''} />
+        ))}
+      </TutorialStep>
+      <ButtonContainer>
+        <Button disabled={activeIndex !== TutorialSteps.length - 1} onClick={handleClickTutorialEnd}>
+          지금 사용해보기 →
+        </Button>
+      </ButtonContainer>
+    </TutorialContainer>
+  );
+};
+
+export default ShortViewTutorial;
