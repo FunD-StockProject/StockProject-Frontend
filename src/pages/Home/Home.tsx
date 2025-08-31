@@ -14,7 +14,7 @@ import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
 import {
   HomeContainer,
   HomeContents,
-  HomeHeaderButtonContainer,
+  HomeHeaderButton,
   HomeHeaderContainer,
   HomeTabMenuContainer,
   HomeTabMenuLabel,
@@ -59,10 +59,12 @@ const Home = () => {
       {isSearchModalOpen && <SearchBar initial={location.state.search} />}
       <HomeHeaderContainer>
         <FullLogoWhiteSVG />
-        <HomeHeaderButtonContainer>
-          <AlarmSVG onClick={handleNotificationClick} />
-          <SearchSVG onClick={handleSearchModalOpen} />
-        </HomeHeaderButtonContainer>
+        <HomeHeaderButton className="enable" onClick={handleNotificationClick}>
+          <AlarmSVG />
+        </HomeHeaderButton>
+        <HomeHeaderButton onClick={handleSearchModalOpen}>
+          <SearchSVG />
+        </HomeHeaderButton>
       </HomeHeaderContainer>
       <HomeTabMenuContainer>
         {STOCK_COUNTRIES.map(({ key, text }, i) => (

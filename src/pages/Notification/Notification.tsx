@@ -1,5 +1,187 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { StockCountryKey } from '@ts/StockCountry';
+import { getItemLocalStorage } from '@utils/LocalStorage';
+import { webPath } from '@router/index';
+import AlarmExamplePNG from '@assets/design/alarmExample.png';
+import {
+  AlarmExampleTextContainer,
+  AlarmExampleWrapper,
+  NoLoginButtonContainer,
+  NoLoginTextContainer,
+  NoLoginWrapper,
+  NotificationContainer,
+  NotificationItemContainer,
+  NotificationItemContent,
+  NotificationItemImage,
+} from './Notification.Style';
+
+const getBeforeTime = (date: Date) => {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const diffHours = Math.floor(diff / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHours / 24);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+  if (diffYears > 0) return `${diffYears}년 전`;
+  if (diffMonths > 0) return `${diffMonths}개월 전`;
+  if (diffWeeks > 0) return `${diffWeeks}주 전`;
+  if (diffDays > 0) return `${diffDays}일 전`;
+  return `${diffHours}시간 전`;
+};
+interface Notification {
+  id: number;
+  title: string;
+  content: string;
+  description: string;
+  stockName: string;
+  country: StockCountryKey;
+  readStatus: boolean;
+  date: Date;
+}
+
+const mockNotifications: Notification[] = [
+  {
+    id: 1,
+    title: '인간지표 변동 알림',
+    content: '[삼성전자] 인간지표 +18🔥',
+    description: '민심 급등 중! 지금 확인해보세요',
+    stockName: '삼성전자',
+    country: 'KOREA',
+    readStatus: false,
+    date: new Date(new Date().setTime(new Date().getTime() - 1000 * 60 * 60 * Math.random() * 24)),
+  },
+  {
+    id: 2,
+    title: '인간지표 변동 알림',
+    content: '[한화솔루션] 인간지표 -18💧',
+    description: '민심 급하락 중! 지금 확인해보세요',
+    stockName: '한화솔루션',
+    country: 'KOREA',
+    readStatus: false,
+    date: new Date(new Date().setTime(new Date().getTime() - 1000 * 60 * 60 * Math.random() * 24)),
+  },
+  {
+    id: 3,
+    title: '인간지표 변동 알림',
+    content: '[SK하이닉스] 인간지표 +7🔥',
+    description: '민심 급등 중! 지금 확인해보세요',
+    stockName: 'SK하이닉스',
+    country: 'KOREA',
+    readStatus: true,
+    date: new Date(new Date().setTime(new Date().getTime() - 1000 * 60 * 60 * Math.random() * 24)),
+  },
+  {
+    id: 4,
+    title: '인간지표 변동 알림',
+    content: '[인텔] 인간지표 +5🔥',
+    description: '민심 급등 중! 지금 확인해보세요',
+    stockName: '인텔',
+    country: 'OVERSEA',
+    readStatus: true,
+    date: new Date(new Date().setTime(new Date().getTime() - 1000 * 60 * 60 * Math.random() * 24)),
+  },
+  {
+    id: 5,
+    title: '인간지표 변동 알림',
+    content: '[삼성전자] 인간지표 -18💧',
+    description: '민심 급하락 중! 지금 확인해보세요',
+    stockName: '삼성전자',
+    country: 'KOREA',
+    readStatus: false,
+    date: new Date(new Date().setTime(new Date().getTime() - 1000 * 60 * 60 * Math.random() * 24)),
+  },
+];
+
+const NotificationList = ({ notifications }: { notifications: Notification[] }) => {
+  const navigate = useNavigate();
+
+  const handleClickNotification = (symbolName: string, country: StockCountryKey) => () => {
+    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+  };
+
+  if (notifications.length === 0)
+    return (
+      <AlarmExampleWrapper>
+        <img src={AlarmExamplePNG} />
+        <AlarmExampleTextContainer>
+          <p className="title">아직은 알림이 없어요</p>
+          <p className="description">
+            관심 종목을 설정하고 <br />
+            인간지표 변동 알림을 받아보세요!
+          </p>
+        </AlarmExampleTextContainer>
+      </AlarmExampleWrapper>
+    );
+
+  return notifications.map((notification) => (
+    <NotificationItemContainer
+      key={notification.id}
+      readStatus={notification.readStatus}
+      onClick={handleClickNotification(notification.stockName, notification.country)}
+    >
+      <NotificationItemImage>
+        <img src={''} />
+      </NotificationItemImage>
+      <NotificationItemContent>
+        <p className="title">
+          {notification.title}
+          <span>{getBeforeTime(notification.date)}</span>
+        </p>
+        <p className="content">{notification.content}</p>
+        <p className="description">{notification.description}</p>
+      </NotificationItemContent>
+    </NotificationItemContainer>
+  ));
+};
+
 const NotificationPage = () => {
-  return <div>NotificationPage</div>;
+  const navigate = useNavigate();
+  const [notifications, _setNotifications] = useState<Notification[]>(mockNotifications);
+
+  const isLogin = !!getItemLocalStorage('access_token');
+
+  const handleClickLoginButton = () => {
+    navigate(webPath.login());
+  };
+
+  const handleClickHomeButton = () => {
+    navigate('/');
+  };
+
+  return (
+    <NotificationContainer>
+      {isLogin ? (
+        <NotificationList notifications={notifications} />
+      ) : (
+        <>
+          <NotificationList notifications={mockNotifications} />
+          <NoLoginWrapper>
+            <NoLoginTextContainer>
+              <p className="title">
+                지금 로그인을 하고 <br />
+                관심종목의 심리가 어떻게 <br />
+                변하는지 알림을 받아보세요
+              </p>
+              <p className="description">
+                👋 로그인을 하면 관심종목의 심리가 급등/급락할 때 <br />
+                알림을 받을 수 있어요
+              </p>
+            </NoLoginTextContainer>
+            <NoLoginButtonContainer>
+              <button className="primary" onClick={handleClickLoginButton}>
+                회원가입/로그인 하기
+              </button>
+              <button className="secondary" onClick={handleClickHomeButton}>
+                홈으로 가기
+              </button>
+            </NoLoginButtonContainer>
+          </NoLoginWrapper>
+        </>
+      )}
+    </NotificationContainer>
+  );
 };
 
 export default NotificationPage;
