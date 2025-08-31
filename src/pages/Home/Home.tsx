@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
+import { webPath } from '@router/index';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
 import IndexScore from '@components/Home/IndexScore/IndexScore';
@@ -13,7 +14,7 @@ import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
 import {
   HomeContainer,
   HomeContents,
-  HomeHeaderButtonContainer,
+  HomeHeaderButton,
   HomeHeaderContainer,
   HomeTabMenuContainer,
   HomeTabMenuLabel,
@@ -47,6 +48,10 @@ const Home = () => {
     });
   };
 
+  const handleNotificationClick = () => {
+    navigate(webPath.notification());
+  };
+
   const isSearchModalOpen = location.state && 'search' in location.state;
 
   return (
@@ -54,10 +59,12 @@ const Home = () => {
       {isSearchModalOpen && <SearchBar initial={location.state.search} />}
       <HomeHeaderContainer>
         <FullLogoWhiteSVG />
-        <HomeHeaderButtonContainer>
+        <HomeHeaderButton className="enable" onClick={handleNotificationClick}>
           <AlarmSVG />
-          <SearchSVG onClick={handleSearchModalOpen} />
-        </HomeHeaderButtonContainer>
+        </HomeHeaderButton>
+        <HomeHeaderButton onClick={handleSearchModalOpen}>
+          <SearchSVG />
+        </HomeHeaderButton>
       </HomeHeaderContainer>
       <HomeTabMenuContainer>
         {STOCK_COUNTRIES.map(({ key, text }, i) => (

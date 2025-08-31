@@ -5,6 +5,7 @@ import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
+import NotificationPage from '@pages/Notification/Notification';
 import Register from '@pages/Register/Register';
 import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
@@ -50,6 +51,7 @@ export const webPath = {
   callbackGoogle: () => '/login/oauth2/code/google',
   callbackNaver: () => '/login/oauth2/code/naver',
   callbackApple: () => '/login/oauth2/code/apple',
+  notification: () => '/notification',
 };
 
 const Root = () => {
@@ -92,6 +94,7 @@ const routes = [
       { path: webPath.callbackNaver(), element: <Callback /> },
       { path: webPath.callbackApple(), element: <Callback /> },
       { path: webPath.usage(), element: <Usage /> },
+      { path: webPath.notification(), element: <NotificationPage /> },
     ],
   },
 ];

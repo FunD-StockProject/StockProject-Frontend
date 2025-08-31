@@ -43,6 +43,7 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     [webPath.about()]: '인간지표란?',
     [webPath.callbackKakao()]: '로그인',
     [webPath.usage()]: 'PWA 사용방법',
+    [webPath.notification()]: '알림',
     ['searchBar']: '검색',
   };
 

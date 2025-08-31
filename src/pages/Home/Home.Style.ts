@@ -16,17 +16,20 @@ const HomeHeaderContainer = styled.div({
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   alignItems: 'center',
+  gap: '10px',
 
   ['>svg']: {
     width: '100px',
     height: 'auto',
     fill: theme.colors.sub_white,
+    marginRight: 'auto',
   },
 });
 
-const HomeHeaderButtonContainer = styled.div({
+const HomeHeaderButton = styled.div({
   display: 'flex',
   gap: '10px',
+  position: 'relative',
 
   ['>svg']: {
     width: '36px',
@@ -34,6 +37,22 @@ const HomeHeaderButtonContainer = styled.div({
     aspectRatio: '1 / 1',
     cursor: 'pointer',
     fill: theme.colors.sub_gray7,
+  },
+
+  ['&.enable']: {
+    ['::after']: {
+      content: '""',
+      position: 'absolute',
+      top: '0',
+      right: '0',
+      margin: '5px',
+      display: 'block',
+      width: '5px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+      background: theme.colors.sub_red,
+      borderRadius: '50%',
+    },
   },
 });
 
@@ -98,11 +117,4 @@ const HomeContents = styled.div({
   },
 });
 
-export {
-  HomeContainer,
-  HomeHeaderContainer,
-  HomeHeaderButtonContainer,
-  HomeTabMenuContainer,
-  HomeTabMenuLabel,
-  HomeContents,
-};
+export { HomeContainer, HomeHeaderContainer, HomeHeaderButton, HomeTabMenuContainer, HomeTabMenuLabel, HomeContents };
