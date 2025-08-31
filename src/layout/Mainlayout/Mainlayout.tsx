@@ -11,19 +11,16 @@ import { MainContent, StyledMainlayout } from './Mainlayout.Style';
 const Mainlayout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
-  // const isSearchPage = location.pathname === webPath.search();
-  // const isLabPage = location.pathname.startsWith('/lab');
-  // const isMyPage = location.pathname.startsWith('/mypage');
   const isRootPage = location.pathname === '/';
-  // const isShortViewPage = location.pathname === webPath.shortView();
-  // const isFavoritesPage = location.pathname.startsWith('/favorites');
-
   const isLoginPage = location.pathname.startsWith(webPath.login());
   const isRegisterPage = location.pathname.startsWith(webPath.register());
   const isWithdrawPage = location.pathname.startsWith(webPath.withdraw());
   const isTermPage = location.pathname.startsWith(webPath.term());
+  const isCallbackPage = location.pathname.startsWith(webPath.callback());
+  const isUsagePage = location.pathname.startsWith(webPath.usage());
 
-  const isBottomNavigationVisible = !isLoginPage && !isRegisterPage && !isWithdrawPage && !isTermPage;
+  const isBottomNavigationVisible =
+    !isLoginPage && !isRegisterPage && !isWithdrawPage && !isTermPage && !isCallbackPage && !isUsagePage;
 
   return (
     <StyledMainlayout>

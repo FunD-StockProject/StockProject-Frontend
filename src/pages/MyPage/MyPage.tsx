@@ -23,7 +23,7 @@ const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
   const navigate = useNavigate();
 
-  const handleClickAboutHumanzipyo = () => {
+  const handleClickServiceGuide = () => {
     navigate(webPath.about());
   };
 
@@ -49,13 +49,13 @@ const MyPage = () => {
 
   const handleLogout = async () => {
     await fetchAuthLogout();
-    // console.log(res);
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('provider');
+    localStorage.removeItem('useremail');
+    localStorage.removeItem('username');
 
     navigate('/');
-    // console.log(res);
   };
 
   const handleWithdraw = async () => {
@@ -99,7 +99,7 @@ const MyPage = () => {
   };
 
   const defaultButtons = [
-    { text: '서비스 가이드', onClick: handleClickAboutHumanzipyo },
+    { text: '서비스 가이드', onClick: handleClickServiceGuide },
     { text: '비즈니스 제안', onClick: handleClickBusinessProposal },
     { text: '고객센터', onClick: handleClickServiceCenter },
     { text: '서비스 이용약관', onClick: handleClickTermUse },
@@ -143,7 +143,7 @@ const MyPage = () => {
             </MyPageDefaultItem>
           ))}
         </MyPageDefaultContainer>
-        {!isLogin && (
+        {isLogin && (
           <MyPageDefaultContainer>
             {authButtons.map((button) => (
               <MyPageDefaultItem className="sub" key={`AUTH_${button.text}`} onClick={button.onClick}>

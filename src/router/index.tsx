@@ -45,6 +45,11 @@ export const webPath = {
   labStockRecordSheet: () => '/lab/stock/recordsheet',
   term: () => '/term',
   about: () => '/about',
+  callback: () => '/login/oauth2/code',
+  callbackKakao: () => '/login/oauth2/code/kakao',
+  callbackGoogle: () => '/login/oauth2/code/google',
+  callbackNaver: () => '/login/oauth2/code/naver',
+  callbackApple: () => '/login/oauth2/code/apple',
 };
 
 const Root = () => {
@@ -58,10 +63,6 @@ const Root = () => {
 
 const routes = [
   { path: '*', element: <div>404 Not Found</div> },
-  { path: '/login/oauth2/code/kakao', element: <Callback /> },
-  { path: '/login/oauth2/code/google', element: <Callback /> },
-  { path: '/login/oauth2/code/naver', element: <Callback /> },
-  { path: '/login/oauth2/code/apple', element: <Callback /> },
 
   {
     path: '/',
@@ -86,9 +87,13 @@ const routes = [
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
       { path: webPath.term(), element: <Term /> },
       { path: webPath.about(), element: <AboutPage /> },
+      { path: webPath.callbackKakao(), element: <Callback /> },
+      { path: webPath.callbackGoogle(), element: <Callback /> },
+      { path: webPath.callbackNaver(), element: <Callback /> },
+      { path: webPath.callbackApple(), element: <Callback /> },
+      { path: webPath.usage(), element: <Usage /> },
     ],
   },
-  { path: webPath.usage(), element: <Usage /> },
 ];
 
 export const router = createBrowserRouter(routes);

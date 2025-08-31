@@ -6,7 +6,7 @@ export const fetchOAuth2Login = async (_code: string, _state: string, provider: 
   const code = encodeURIComponent(_code);
   const state = encodeURIComponent(_state);
 
-  const url = `${baseURL}/auth/login/${provider}?code=${code}&state=${state}`;
+  const url = `${baseURL}/auth/login/${provider.toLowerCase()}?code=${code}&state=${state}`;
 
   try {
     const res = await fetch(url, { method: 'GET', headers: Headers });
@@ -28,26 +28,45 @@ export const fetchLoginNaver = (code: string, state: string) => fetchOAuth2Login
 export const fetchLoginApple = (code: string, state: string) => fetchOAuth2Login(code, state, 'APPLE');
 
 export const fetchAuthRegister = async (
+  imageBase64: string,
   email: string,
   nickname: string,
   birth_date: Date,
-  marketing_agreement: boolean,
+  marketingAgreement: boolean,
   provider: string,
 ) => {
   try {
     const url = `${baseURL}/auth/register`;
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('nickname', nickname);
+    formData.append(
+      'birth_date',
+      `${birth_date.getFullYear()}-${String(birth_date.getMonth() + 1).padStart(2, '0')}-${String(
+        birth_date.getDate(),
+      ).padStart(2, '0')}`,
+    );
+    formData.append('marketingAgreement', String(marketingAgreement));
+    formData.append('provider', provider);
+
+    if (imageBase64) {
+      const byteString = atob(imageBase64.split(',')[1]);
+      const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
+
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([ab], { type: mimeString });
+      const file = new File([blob], 'profile.png', { type: mimeString });
+      formData.append('image', file);
+    }
+
     const res = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify({
-        email,
-        nickname,
-        birth_date: `${birth_date.getFullYear()}-${String(birth_date.getMonth() + 1).padStart(2, '0')}-${String(
-          birth_date.getDate(),
-        ).padStart(2, '0')}`,
-        marketing_agreement,
-        provider,
-      }),
-      headers: Headers,
+      body: formData,
     });
     if (!res.ok) {
       throw new Error(`${res.status} Error!!`);

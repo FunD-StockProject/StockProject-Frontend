@@ -1,56 +1,25 @@
-import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
 import CallOutTailSVG from '@assets/design/callout/callout_tail.svg?react';
 import CardSVG from '@assets/design/card/card.svg?react';
 import LogoWhiteSVG from '@assets/logo/logo_white.svg?react';
 import SlimeSVG from '@assets/logo/slime.svg?react';
-
-const Step1Container = styled.div({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-  alignItems: 'center',
-  marginBottom: '10px',
-  background: 'rgba(255, 255, 255, 0.16)',
-  flexGrow: 1,
-  padding: '12px',
-  borderRadius: '28px',
-
-  ['>svg']: {
-    position: 'absolute',
-    top: '100%',
-    right: '28px',
-    height: '10px',
-    fill: 'rgba(255, 255, 255, 0.16)',
-  },
-
-  ['>p']: {
-    margin: '0',
-    fontSize: '10px',
-    fontWeight: '400',
-    color: theme.colors.sub_white,
-  },
-});
-
-const Step1SubContainer = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '3px',
-});
-
-const Step1SubItem = styled.span({
-  fontSize: '9px',
-  fontWeight: '600',
-  color: theme.colors.sub_black,
-  background: theme.colors.sub_white,
-  border: `1px solid ${theme.colors.sub_black}`,
-  borderRadius: '999px',
-  padding: '2px 4px',
-  width: '32px',
-  textAlign: 'center',
-});
+import {
+  HowToContainer,
+  HowToStepContainer,
+  HowToStepContents,
+  HowToStepDescriptionContainer,
+  HowToStepDescriptionItem,
+  HowToStepTitle,
+  HowToTitle,
+  Step1Container,
+  Step1SubContainer,
+  Step1SubItem,
+  Step2Container,
+  Step2Grid,
+  Step2Item,
+  Step2Row,
+  Step3Container,
+  Step4Container,
+} from './HowTo.Style';
 
 const Step1Contents = () => {
   return (
@@ -65,56 +34,51 @@ const Step1Contents = () => {
   );
 };
 
-const Step2Container = styled.div({
-  flexGrow: 1,
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-  alignItems: 'center',
-});
-
 const Step2Contents = () => {
+  const messageList = [
+    [
+      { text: '추매각', delta: 1 },
+      { text: '보인다', delta: 0 },
+      { text: '진짜', delta: 0 },
+    ],
+    [
+      { text: '상승', delta: 1 },
+      { text: '기세', delta: 0 },
+      { text: '진짜', delta: 0 },
+    ],
+    [
+      { text: '이제는', delta: 0 },
+      { text: '조금', delta: 0 },
+      { text: '지치네요', delta: -1 },
+    ],
+  ];
+
   return (
     <Step2Container>
-      <CallOutTailSVG />
-      <p>추매각 보인다 진짜</p>
+      <Step2Grid>
+        {messageList.map((e, i) => (
+          <Step2Row key={`MESSAGE_${i}`}>
+            {e.map((e, i) => (
+              <Step2Item key={`MESSAGE_${i}_${i}`} delta={e.delta}>
+                <p>{e.text}</p>
+              </Step2Item>
+            ))}
+          </Step2Row>
+        ))}
+      </Step2Grid>
     </Step2Container>
   );
 };
 
-const Step3Container = styled.div({
-  flexGrow: 1,
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-  alignItems: 'center',
-});
-
 const Step3Contents = () => {
   return (
     <Step3Container>
-      <CallOutTailSVG />
-      <p>추매각 보인다 진짜</p>
+      <p className="message">이젠 정말 힘드네요</p>
+      <span />
+      <p className="result">👎 부정</p>
     </Step3Container>
   );
 };
-
-const Step4Container = styled.div({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-  alignItems: 'center',
-  flexGrow: 1,
-
-  ['>svg']: {
-    position: 'absolute',
-    width: '100%',
-    transform: 'translateY(-50%)',
-  },
-});
 
 const Step4Contents = () => {
   return (
@@ -156,76 +120,6 @@ const HowToStep = [
   },
 ];
 
-const HowToContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  padding: '28px 20px',
-  background: theme.colors.sub_blue6,
-});
-
-const HowToTitle = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-
-  ...theme.font.title20Semibold,
-  color: theme.colors.sub_white,
-  whiteSpace: 'nowrap',
-
-  ['>svg']: {
-    flexShrink: 0,
-    height: '17px',
-    width: 'auto',
-  },
-});
-
-const HowToStepContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  padding: '11px 12px',
-  background: theme.colors.sub_black,
-  borderRadius: '8px',
-});
-
-const HowToStepTitle = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4px',
-  background: theme.colors.sub_white,
-  padding: '4px 12px',
-  marginRight: 'auto',
-  borderRadius: '8px',
-
-  ...theme.font.detail12Semibold,
-  color: theme.colors.primary90,
-});
-
-const HowToStepContents = styled.div({
-  display: 'flex',
-  gap: '10px',
-  alignItems: 'center',
-});
-
-const HowToStepDescriptionContainer = styled.div({
-  width: '50%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-});
-
-const HowToStepDescriptionItem = styled.span({
-  padding: '10px',
-  wordBreak: 'keep-all',
-  textAlign: 'center',
-  borderRadius: '4px',
-  border: `1px solid ${theme.colors.sub_gray7}`,
-
-  ...theme.font.detail12Medium,
-  color: theme.colors.sub_white,
-});
-
 const AboutHowTo = () => {
   return (
     <HowToContainer>
@@ -234,7 +128,7 @@ const AboutHowTo = () => {
         점수는 어떻게 산출되나요?
       </HowToTitle>
       {HowToStep.map((step, index) => (
-        <HowToStepContainer>
+        <HowToStepContainer key={`HOWTO_STEP_${index}`}>
           <HowToStepTitle>
             <SlimeSVG />
             Step{index + 1}. {step.title}

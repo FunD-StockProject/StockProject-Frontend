@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import AppleLoginPNG from '@assets/appleLogin.png';
 import CloseSVG from '@assets/close.svg?react';
 import GoogleLoginPNG from '@assets/googleLogin.png';
@@ -19,7 +20,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     localStorage.setItem('lastLoginProvider', 'google');
     const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
-    const state = crypto.randomUUID(); // CSRF 방지
+    const state = uuidv4(); // CSRF 방지
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
@@ -39,7 +40,7 @@ const Login = () => {
   const handleNaverLogin = () => {
     localStorage.setItem('lastLoginProvider', 'naver');
     const redirectUri = `${window.location.origin}/login/oauth2/code/naver`;
-    const state = crypto.randomUUID();
+    const state = uuidv4();
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
@@ -53,8 +54,8 @@ const Login = () => {
   };
 
   const handleAppleLogin = () => {
-    const state = crypto.randomUUID();
-    const nonce = crypto.randomUUID(); // 권장
+    const state = uuidv4();
+    const nonce = uuidv4(); // 권장
     localStorage.setItem('lastLoginProvider', 'apple');
     localStorage.setItem('oauth_state', state);
 
@@ -75,7 +76,8 @@ const Login = () => {
   const handleKakaoLogin = () => {
     localStorage.setItem('lastLoginProvider', 'kakao');
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
-    const state = crypto.randomUUID();
+
+    const state = uuidv4();
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
@@ -132,7 +134,7 @@ const Login = () => {
       <LoginButtonContainer>
         <LoginButtonContents>
           {loginProviders.map((e) => (
-            <img src={e.img} onClick={e.method} />
+            <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
           ))}
         </LoginButtonContents>
         <p>로그인에 문제가 있나요?</p>

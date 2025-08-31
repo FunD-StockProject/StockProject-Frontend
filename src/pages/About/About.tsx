@@ -1,128 +1,25 @@
-import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
-import { theme } from '@styles/themes';
+import CommonRulePNG from '@assets/design/common_rule.png';
+import ArrowUpSVG from '@assets/icons/arrowUp.svg?react';
 import LogoWhiteSVG from '@assets/logo/logo_white.svg?react';
+import {
+  AboutContainer,
+  AboutGuageChartContainer,
+  AboutGuageChartInner,
+  AboutGuageChartLevelContainer,
+  AboutGuageChartLevelItem,
+  AboutGuageChartRangeContainer,
+  AboutGuageChartRangeItem,
+  AboutGuageChartTextContainer,
+  AboutTitleContainer,
+  AboutTrustContainer,
+  AboutTrustContents,
+  AboutTrustFooter,
+  AboutTrustTitle,
+  AboutUpScrollButton,
+} from './About.Style';
 import AboutHowTo from './HowTo/HowTo';
-
-const AboutContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '45px',
-  padding: '24px 0px',
-});
-
-const ScoreTextBackgroundColors = ['#11193E', '#121C46', '#141F53', '#1F359B', '#304CD1'];
-
-const AboutTitleContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  padding: '0px 20px',
-
-  ['>span']: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-
-    ...theme.font.heading24Semibold,
-    color: theme.colors.sub_white,
-    whiteSpace: 'nowrap',
-
-    ['>svg']: {
-      flexShrink: 0,
-      height: '20px',
-      width: 'auto',
-    },
-  },
-
-  ['>p']: {
-    margin: '0',
-    ...theme.font.body14Medium,
-    color: theme.colors.sub_gray4,
-  },
-});
-
-const AboutGuageChartContainer = styled.div({
-  gap: '16px',
-  display: 'flex',
-  flexDirection: 'column',
-  boxSizing: 'border-box',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0px 20px',
-});
-
-const AboutGuageChartInner = styled.div({
-  width: '110%',
-  left: '50%',
-  marginTop: '-5%',
-});
-
-const AboutGuageChartTextContainer = styled.div({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  alignItems: 'center',
-});
-
-const AboutGuageChartLevelContainer = styled.div({
-  display: 'flex',
-  width: '100%',
-  padding: '0px 12px',
-  boxSizing: 'border-box',
-});
-
-const AboutGuageChartLevelItem = styled.span(
-  ({ index }: { index: number }) => ({
-    background: ScoreTextBackgroundColors[index],
-  }),
-  {
-    ...theme.font.detail10Medium,
-    color: theme.colors.sub_gray2,
-    textAlign: 'center',
-    margin: '0px',
-    whiteSpace: 'nowrap',
-    minWidth: '0',
-    width: '100%',
-    padding: '2px 0px',
-  },
-);
-
-const AboutGuageChartRangeContainer = styled.div({
-  display: 'flex',
-  gap: '4px',
-  padding: '0px 4px',
-  width: '100%',
-  boxSizing: 'border-box',
-});
-
-const AboutGuageChartRangeItem = styled.span({
-  ...theme.font.detail12Medium,
-  color: theme.colors.sub_gray6,
-  textAlign: 'center',
-  width: '100%',
-  margin: '0px',
-  background: theme.colors.sub_gray10,
-  borderRadius: '2px',
-  position: 'relative',
-  padding: '2px 0px',
-  whiteSpace: 'nowrap',
-
-  ['::before']: {
-    content: '""',
-    position: 'absolute',
-    width: 0,
-    height: 0,
-    bottom: '100%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-
-    borderStyle: 'solid',
-    borderWidth: '0px 4px 6px 4px',
-    borderColor: `transparent transparent ${theme.colors.sub_gray10} transparent `,
-  },
-});
 
 const AboutPage = () => {
   const scoreText = ['대곰탕', '곰탕', '어?', '호황', '대호황'];
@@ -133,6 +30,30 @@ const AboutPage = () => {
     [50, 70],
     [70, 100],
   ];
+
+  const [isUpScrollButton, setIsUpScrollButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setIsUpScrollButton(scrollTop > 0);
+    };
+
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const handleClickUpScrollButton = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <AboutContainer>
@@ -149,7 +70,6 @@ const AboutPage = () => {
           과열된 상태를 뜻해요.
         </p>
       </AboutTitleContainer>
-
       <AboutGuageChartContainer>
         <AboutGuageChartInner>
           <GuageChart score={60} />
@@ -175,8 +95,34 @@ const AboutPage = () => {
           </AboutGuageChartRangeContainer>
         </AboutGuageChartTextContainer>
       </AboutGuageChartContainer>
-
       <AboutHowTo />
+      <AboutTrustContainer>
+        <AboutTrustTitle>
+          <LogoWhiteSVG />
+          믿을만한 정보인가요?
+        </AboutTrustTitle>
+        <AboutTrustContents>
+          <p>
+            해당 점수는 <b>비공식적인 지표</b>로, 투자 또는 중대한
+            <br />
+            의사결정을 내릴 때 <b>절대적인 기준으로 삼아서는 안됩니다</b>
+            <br />
+            <b>참고 자료로만 활용</b>하시기 바라며,
+            <br />
+            최종 결정은 공식적인 지표로 신중히 검토 후 내려주세요! 😊
+          </p>
+          <AboutTrustFooter>
+            <p>주식투자심리도우미</p>
+            <img src={CommonRulePNG} alt="info" />
+            <LogoWhiteSVG />
+          </AboutTrustFooter>
+        </AboutTrustContents>
+      </AboutTrustContainer>
+      {isUpScrollButton && (
+        <AboutUpScrollButton onClick={handleClickUpScrollButton}>
+          <ArrowUpSVG />
+        </AboutUpScrollButton>
+      )}
     </AboutContainer>
   );
 };

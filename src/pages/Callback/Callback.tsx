@@ -52,6 +52,8 @@ const Callback = () => {
           return;
         }
 
+        console.log(res);
+
         localStorage.setItem('access_token', res.access_token);
         localStorage.setItem('refresh_token', res.refresh_token);
         localStorage.setItem('useremail', res.email);
@@ -65,10 +67,6 @@ const Callback = () => {
       } catch (err) {
         console.error(err);
         setError('error');
-        navigate(webPath.register(), {
-          state: { provider, email: null },
-          replace: true,
-        });
       }
     })();
   }, [isMounted, location.pathname, navigate]);
