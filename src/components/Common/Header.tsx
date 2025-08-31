@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
 import { theme } from '@styles/themes';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
+import CloseSVG from '@assets/close.svg?react';
 
 const HeaderContainer = styled.div({
   paddingBottom: '8px',
@@ -16,14 +16,6 @@ const HeaderContents = styled.div({
   padding: '8px 20px',
   gap: '12px',
 
-  ['>svg']: {
-    width: '32px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    cursor: 'pointer',
-    fill: theme.colors.sub_gray5,
-  },
-
   ['>p']: {
     position: 'absolute',
     left: '50%',
@@ -32,19 +24,30 @@ const HeaderContents = styled.div({
     color: theme.colors.sub_white,
     margin: '0',
   },
+
+  ['>svg']: {
+    width: '32px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    cursor: 'pointer',
+    fill: theme.colors.sub_gray5,
+  },
+
+  ['>span']: {
+    flexGrow: 1,
+  },
 });
 
-const Header = ({ location, onBefore }: { location: string; onBefore?: () => void }) => {
+const Header = ({
+  title,
+  onBefore,
+  beforeIconType = 'back',
+}: {
+  title: string;
+  onBefore?: () => void;
+  beforeIconType?: 'back' | 'close';
+}) => {
   const navigate = useNavigate();
-
-  const headerTitle = {
-    [webPath.register()]: '회원가입',
-    [webPath.favorites()]: '관심',
-    [webPath.about()]: '인간지표란?',
-    [webPath.callbackKakao()]: '로그인',
-    [webPath.usage()]: 'PWA 사용방법',
-    ['searchBar']: '검색',
-  };
 
   const handleBefore = () => {
     if (onBefore) {
@@ -54,13 +57,13 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     }
   };
 
-  if (!headerTitle[location]) return null;
-
   return (
     <HeaderContainer>
       <HeaderContents>
-        <ArrowLeftSVG onClick={handleBefore} />
-        <p>{headerTitle[location]}</p>
+        <p>{title}</p>
+        {beforeIconType === 'back' && <ArrowLeftSVG onClick={handleBefore} />}
+        <span />
+        {beforeIconType === 'close' && <CloseSVG onClick={handleBefore} />}
       </HeaderContents>
     </HeaderContainer>
   );

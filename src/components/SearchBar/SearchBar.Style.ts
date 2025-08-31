@@ -14,36 +14,6 @@ const SearchBarLayout = styled.div({
   overflow: 'hidden auto ',
 });
 
-const SearchBarHeaderContainer = styled.div({
-  paddingBottom: '8px',
-  borderBottom: `4px solid ${theme.colors.sub_gray11}`,
-});
-
-const SearchBarHeaderContents = styled.div({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '8px 20px',
-  gap: '12px',
-
-  ['>svg']: {
-    width: '32px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    cursor: 'pointer',
-    fill: theme.colors.sub_gray5,
-  },
-
-  ['>p']: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    ...theme.font.body18Semibold,
-    color: theme.colors.sub_white,
-    margin: '0',
-  },
-});
-
 const SearchBarContainer = styled.div({
   padding: '20px',
   flexGrow: 1,
@@ -192,8 +162,6 @@ const SearchBarItemContents = styled.div({
 
 export {
   SearchBarLayout,
-  SearchBarHeaderContainer,
-  SearchBarHeaderContents,
   SearchBarContainer,
   SearchBarContents,
   SearchBarSelectBox,

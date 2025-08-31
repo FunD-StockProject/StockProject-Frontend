@@ -1,133 +1,29 @@
-import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { TermKey } from '@ts/Term';
 import { webPath } from '@router/index';
+import Button from '@components/Common/Button';
 import { fetchAuthRegister } from '@controllers/api';
-import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import CheckSVG from '@assets/check.svg?react';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
+import AlertSVG from '@assets/icons/alert.svg?react';
 import ProfilePNG from '@assets/profile.png';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
+import {
+  RegisterButtonContainer,
+  RegisterContainer,
+  RegisterContent,
+  RegisterImageContainer,
+  RegisterInputItemContainer,
+  RegisterInputItemSubContainer,
+  RegisterTermCheckBox,
+  RegisterTermContainer,
+  RegisterTermErrorContainer,
+  RegisterTermItemContainer,
+  RegisterTermListContainer,
+  RegisterValueContainer,
+} from './Register.Style';
 
-const RegisterItemContainer = styled.div({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  width: '100%',
-  padding: '0 24px',
-  boxSizing: 'border-box',
-
-  ['>p']: {
-    margin: '0',
-    fontSize: '16px',
-    fontWeight: '400',
-  },
-});
-
-const RegisterItemError = styled.span({
-  margin: '0 8px',
-  fontSize: '13px',
-  color: 'red',
-});
-
-const RegisterItemCheckBoxListContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  ['>hr']: {
-    margin: '0',
-    backgroundColor: '#303033',
-    height: '1px',
-    border: 'none',
-  },
-});
-
-const RegisterItemCheckBoxContainer = styled.label({
-  display: 'flex',
-  gap: '8px',
-  fontSize: '16px',
-  fontWeight: '700',
-  alignItems: 'center',
-
-  ['>p']: {
-    margin: '0',
-    fontSize: '16px',
-    fontWeight: '400',
-    color: '#FFFFFF',
-  },
-
-  ['>svg']: {
-    stroke: '#707374',
-    marginLeft: 'auto',
-    width: '28px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-  },
-});
-
-const RegisterContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  alignItems: 'center',
-  flexGrow: '1',
-});
-
-const RegisterContent = styled.div({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '24px',
-  padding: '32px 0px',
-  boxSizing: 'border-box',
-  flexGrow: '1',
-});
-
-const RegisterItemCheckBox = styled.label({
-  width: '24px',
-  padding: '3px',
-  boxSizing: 'border-box',
-  height: 'auto',
-  aspectRatio: '1 / 1',
-
-  ['>input[type="checkbox"]']: {
-    appearance: 'none',
-    width: '0',
-    height: '0',
-    margin: '0',
-    position: 'absolute',
-  },
-
-  ['>span.checkmark']: {
-    display: 'block',
-    width: '100%',
-    height: '100%',
-    border: '2px solid #525658',
-    boxSizing: 'border-box',
-    borderRadius: '1px',
-
-    ['>svg']: {
-      display: 'none',
-      width: '100%',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-      stroke: '#101010',
-    },
-  },
-
-  ['> input[type="checkbox"]:checked + .checkmark']: {
-    border: 'none',
-    background: '#F6F6F6',
-
-    ['>svg']: {
-      display: 'block',
-    },
-  },
-});
-
-type TermKey = 'agreeTerm' | 'agreePrivacy' | 'agreeMarketing';
 type TermState = Record<TermKey, boolean>;
 type InputKey = 'name' | 'email' | 'birth';
 
@@ -199,7 +95,6 @@ const Register = () => {
     birth: '',
   });
 
-
   const [terms, setTerms] = useState<TermState>({
     agreeTerm: false,
     agreePrivacy: false,
@@ -250,9 +145,9 @@ const Register = () => {
     const formatted =
       name === 'birth'
         ? value
-          .replace(/\D/g, '')
-          .slice(0, 8)
-          .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
+            .replace(/\D/g, '')
+            .slice(0, 8)
+            .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
         : value;
 
     setValues((prev) => ({
@@ -290,23 +185,23 @@ const Register = () => {
     const birthRegex = /^\d{4}-\d{2}-\d{2}$/;
 
     if (!values.name) {
-      errors.name = '닉네임을 입력해주세요.';
+      errors.name = '닉네임을 입력해주세요';
     } else if (values.name.length > 8) {
-      errors.name = '닉네임은 최대 8자까지 입력할 수 있어요.';
+      errors.name = '닉네임은 최대 8자까지 입력할 수 있어요';
     } else if (!nameRefex.test(values.name)) {
-      errors.name = '닉네임은 한글만 사용할 수 있어요.';
+      errors.name = '닉네임은 한글만 사용할 수 있어요';
     } else if (false) {
       // 닉네임 중복 API
-      errors.name = '이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.';
+      errors.name = '이미 사용 중인 닉네임입니다';
     }
 
     if (!values.email) {
-      errors.email = '이메일을 입력해주세요.';
+      errors.email = '이메일을 입력해주세요';
     } else if (!emailRegex.test(values.email)) {
-      errors.email = '이메일 형식을 확인해주세요.';
+      errors.email = '이메일 형식을 확인해주세요';
     } else if (false) {
       // 이메일 중복 API
-      errors.email = '이미 가입된 이메일입니다.';
+      errors.email = '이미 가입된 이메일입니다';
     }
 
     if (values.birth) {
@@ -324,7 +219,7 @@ const Register = () => {
         return acc;
       }, false)
     ) {
-      errors.termsAgreed = '필수 약관에 동의해야 가입할 수 있습니다.';
+      errors.termsAgreed = '필수 약관에 동의해야 가입할 수 있습니다';
     }
 
     if (false) {
@@ -344,31 +239,36 @@ const Register = () => {
       return;
     }
 
-    const res = await fetchAuthRegister(profileImage as string, values.email, values.name, new Date(values.birth), true, location.state?.provider.toUpperCase());
-
+    const res = await fetchAuthRegister(
+      profileImage as string,
+      values.email,
+      values.name,
+      new Date(values.birth),
+      true,
+      location.state?.provider.toUpperCase(),
+    );
 
     console.log(2, res);
     navigate(webPath.registerDone());
   };
 
+  const handleOpenTerm = (termKey: TermKey) => () => {
+    navigate(webPath.term(), {
+      state: { termKey },
+    });
+  };
+
   return (
     <RegisterContainer>
-      <RegisterHeaderContainer>
-        <div>
-          <ArrowLeftSVG onClick={() => navigate(-1)} />
-          <p>회원가입</p>
-          <span />
-        </div>
-        <span className="divider" />
-      </RegisterHeaderContainer>
+      {/* {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />} */}
       <RegisterContent>
-        <RegisterContentProfileImage onClick={handleUploadLocalFile}>
+        <RegisterImageContainer onClick={handleUploadLocalFile}>
           <img src={(profileImage as string) ?? ProfilePNG} />
           <EditCircleSVG />
-        </RegisterContentProfileImage>
-        <RegisterContentListContainer>
+        </RegisterImageContainer>
+        <RegisterValueContainer>
           {valueInputs.map((e) => (
-            <RegisterContentInputContainer key={e.key}>
+            <RegisterInputItemContainer key={e.key} isError={!!errors[e.key]}>
               <p>
                 {e.title}
                 {e.essential ? '*' : '(선택)'}
@@ -381,182 +281,50 @@ const Register = () => {
                 value={values[e.key]}
                 onChange={handleChangeValue}
               />
-              <RegisterContentInputSubContainer>
-                <RegisterItemError>{errors[e.key]}</RegisterItemError>
-                <RegisterContentInputSubText>{e.sub}</RegisterContentInputSubText>
-              </RegisterContentInputSubContainer>
-            </RegisterContentInputContainer>
+              <RegisterInputItemSubContainer>
+                <p className="error">{errors[e.key]}</p>
+                <p className="sub">{e.sub}</p>
+              </RegisterInputItemSubContainer>
+            </RegisterInputItemContainer>
           ))}
-          <span className="divider" />
-        </RegisterContentListContainer>
-        <RegisterItemContainer>
-          <p>약관 동의</p>
-          <RegisterItemCheckBoxListContainer>
-            <RegisterItemCheckBoxContainer>
-              <RegisterItemCheckBox>
-                <input type="checkbox" checked={checkedAll} onChange={handleChangeAllCheckbox} />
-                <span className="checkmark">
+          <hr />
+          <RegisterTermContainer>
+            <p>약관 동의</p>
+            <RegisterTermListContainer>
+              <RegisterTermItemContainer>
+                <RegisterTermCheckBox>
+                  <input type="checkbox" checked={checkedAll} onChange={handleChangeAllCheckbox} />
                   <CheckSVG />
-                </span>
-              </RegisterItemCheckBox>
-              <p>전체 동의</p>
-            </RegisterItemCheckBoxContainer>
-            <hr />
-            {termInputs.map((e) => (
-              <RegisterItemCheckBoxContainer>
-                <RegisterItemCheckBox>
-                  <input type="checkbox" name={e.key} checked={terms[e.key]} onChange={handleChangeCheckbox} />
-                  <span className="checkmark">
-                    <CheckSVG />
-                  </span>
-                </RegisterItemCheckBox>
-                <p>{e.text}</p>
-
+                  전체 동의
+                </RegisterTermCheckBox>
                 <RightArrowThickSVG />
-              </RegisterItemCheckBoxContainer>
-            ))}
-          </RegisterItemCheckBoxListContainer>
-          {errors.termsAgreed && <RegisterItemError>{errors.termsAgreed}</RegisterItemError>}
-        </RegisterItemContainer>
+              </RegisterTermItemContainer>
+              <hr />
+              {termInputs.map((e) => (
+                <RegisterTermItemContainer>
+                  <RegisterTermCheckBox>
+                    <input type="checkbox" name={e.key} checked={terms[e.key]} onChange={handleChangeCheckbox} />
+                    <CheckSVG />
+                    {e.text}
+                  </RegisterTermCheckBox>
+                  <RightArrowThickSVG onClick={handleOpenTerm(e.key)} />
+                </RegisterTermItemContainer>
+              ))}
+            </RegisterTermListContainer>
+          </RegisterTermContainer>
+        </RegisterValueContainer>
       </RegisterContent>
       <RegisterButtonContainer>
-        <RegisterButton onClick={handleSubmit}>회원 가입</RegisterButton>
+        {errors.termsAgreed && (
+          <RegisterTermErrorContainer>
+            <AlertSVG />
+            <p>{errors.termsAgreed}</p>
+          </RegisterTermErrorContainer>
+        )}
+        <Button onClick={handleSubmit}>회원 가입</Button>
       </RegisterButtonContainer>
     </RegisterContainer>
   );
 };
-
-const RegisterButtonContainer = styled.div({
-  padding: '0px 24px 24px',
-  width: '100%',
-  boxSizing: 'border-box',
-});
-
-const RegisterButton = styled.button({
-  width: '100%',
-  fontSize: '18px',
-  fontWeight: '600',
-  height: '48px',
-  borderRadius: '8px',
-  padding: '10px 0px',
-  border: 'none',
-  background: '#3457FD',
-  color: 'white',
-  [':disabled']: {
-    color: '#101010',
-  },
-});
-
-const RegisterHeaderContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  gap: '9px',
-
-  ['>div']: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '8px 20px',
-    boxSizing: 'border-box',
-    gap: '12px',
-
-    ['>svg,>span']: {
-      width: '32px',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-    },
-
-    ['>p']: {
-      margin: '0',
-      fontSize: '18px',
-      fontWeight: '600',
-      color: '#FFFFFF',
-      flexGrow: '1',
-      textAlign: 'center',
-    },
-  },
-
-  ['>span.divider']: {
-    background: '#1D1E1F',
-    height: '4px',
-  },
-});
-
-const RegisterContentProfileImage = styled.div({
-  display: 'flex',
-  position: 'relative',
-  ['>img']: {
-    width: '78px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    objectFit: 'cover',
-    borderRadius: '999px',
-  },
-  ['>svg']: {
-    position: 'absolute',
-    bottom: '0',
-    right: '0',
-    width: '24px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    fill: '#ADB5BD',
-    background: '#495057',
-    borderRadius: '999px',
-  },
-});
-
-const RegisterContentListContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  width: '100%',
-
-  ['>span.divider']: {
-    background: '#1D1E1F',
-    height: '4px',
-  },
-});
-
-const RegisterContentInputContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  padding: '0 24px',
-
-  ['>p']: {
-    margin: '0',
-    fontSize: '16px',
-    fontWeight: '400',
-    color: '#DEE2E6',
-  },
-  ['>input']: {
-    border: 'none',
-    padding: '20px 16px',
-    height: '48px',
-    boxSizing: 'border-box',
-    fontSize: '18px',
-    fontWeight: '500',
-    borderRadius: '5px',
-  },
-});
-
-const RegisterContentInputSubContainer = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  height: '20px',
-});
-
-const RegisterContentInputSubText = styled.span({
-  display: 'block',
-  fontSize: '14px',
-  fontWeight: '300',
-  color: '#DEE2E6',
-
-  ['>span']: {
-    fontWeight: '500',
-  },
-});
 
 export default Register;

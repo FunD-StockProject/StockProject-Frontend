@@ -12,16 +12,19 @@ export const StyledMainlayout = styled.div({
   background: '#101010',
 });
 
-export const MainContent = styled.div({
-  position: 'relative',
-  overflow: 'auto',
-  width: '100%',
-  flexGrow: '1',
-  display: 'flex',
-  flexDirection: 'column',
-
-  marginBottom: '96px',
-});
+export const MainContent = styled.div(
+  ({ isNavActive }: { isNavActive: boolean }) => ({
+    marginBottom: isNavActive ? '96px' : '0px',
+  }),
+  {
+    position: 'relative',
+    overflow: 'auto',
+    width: '100%',
+    flexGrow: '1',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+);
 
 export const BackButton = styled('img')({
   position: 'absolute',

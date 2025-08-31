@@ -299,6 +299,12 @@ const font = {
     lineHeight: '150%',
     letterSpacing: '1px',
   },
+  heading24Bold: {
+    fontSize: '24px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '1px',
+  },
   title20Semibold: {
     fontSize: '20px',
     fontWeight: 600,
@@ -363,6 +369,12 @@ const font = {
   detail12Semibold: {
     fontSize: '12px',
     fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail12Bold: {
+    fontSize: '12px',
+    fontWeight: 700,
     lineHeight: '150%',
     letterSpacing: '0',
   },

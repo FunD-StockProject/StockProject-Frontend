@@ -1,4 +1,5 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import AboutPage from '@pages/About/About';
 import Callback from '@pages/Callback/Callback';
 import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
@@ -7,6 +8,7 @@ import MyPage from '@pages/MyPage/MyPage';
 import Register from '@pages/Register/Register';
 import RegisterDone from '@pages/RegisterDone/RegisterDone';
 import ShortView from '@pages/ShortView/ShortView';
+import Term from '@pages/Term/Term';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
 import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
@@ -19,6 +21,8 @@ import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
+
+export type TermKey = 'agreeTerm' | 'agreePrivacy' | 'agreeMarketing';
 
 export const webPath = {
   search: () => '/search',
@@ -39,6 +43,13 @@ export const webPath = {
   labStockPurchase: () => '/lab/stock/purchase',
   labStockSearch: () => '/lab/stock/search',
   labStockRecordSheet: () => '/lab/stock/recordsheet',
+  term: () => '/term',
+  about: () => '/about',
+  callback: () => '/login/oauth2/code',
+  callbackKakao: () => '/login/oauth2/code/kakao',
+  callbackGoogle: () => '/login/oauth2/code/google',
+  callbackNaver: () => '/login/oauth2/code/naver',
+  callbackApple: () => '/login/oauth2/code/apple',
 };
 
 const Root = () => {
@@ -52,10 +63,6 @@ const Root = () => {
 
 const routes = [
   { path: '*', element: <div>404 Not Found</div> },
-  { path: '/login/oauth2/code/kakao', element: <Callback /> },
-  { path: '/login/oauth2/code/google', element: <Callback /> },
-  { path: '/login/oauth2/code/naver', element: <Callback /> },
-  { path: '/login/oauth2/code/apple', element: <Callback /> },
 
   {
     path: '/',
@@ -78,9 +85,15 @@ const routes = [
       { path: webPath.labStockSelection(), element: <StockSelection /> },
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
+      { path: webPath.term(), element: <Term /> },
+      { path: webPath.about(), element: <AboutPage /> },
+      { path: webPath.callbackKakao(), element: <Callback /> },
+      { path: webPath.callbackGoogle(), element: <Callback /> },
+      { path: webPath.callbackNaver(), element: <Callback /> },
+      { path: webPath.callbackApple(), element: <Callback /> },
+      { path: webPath.usage(), element: <Usage /> },
     ],
   },
-  { path: webPath.usage(), element: <Usage /> },
 ];
 
 export const router = createBrowserRouter(routes);

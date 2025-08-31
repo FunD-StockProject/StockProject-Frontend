@@ -2,19 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
 import { webPath } from '@router/index';
-import { ImgDiv } from '@components/Common/Common';
 import PWAPNG from '@assets/PWA/PWA.png';
+import CrossSVG from '@assets/icons/cross.svg?react';
 import {
   Backdrop,
-  ButtonContainer,
-  Close24HourButton,
-  CloseButton,
-  ConfirmButton,
-  DetailContainer,
-  HeaderText,
-  NormalText,
+  PWAInfoButtonContainer,
   PWAInfoContainer,
-  TextArea,
+  PWAInfoContents,
+  PWAInfoTextContainer,
 } from './PWAinfoPopUp.style';
 
 const PWAInfoPopUp = ({}: {}) => {
@@ -64,25 +59,28 @@ const PWAInfoPopUp = ({}: {}) => {
       <>
         <Backdrop onClick={closePopUp} />
         <PWAInfoContainer>
-          <CloseButton onClick={closePopUp}>✕</CloseButton>
-          <DetailContainer>
-            <TextArea>
-              <HeaderText>
-                1초만에
-                <br /> 앱처럼 사용하기
-              </HeaderText>
-              <NormalText>
-                누구보다 편하게
-                <br />
+          <CrossSVG onClick={closePopUp} />
+          <PWAInfoContents>
+            <PWAInfoTextContainer>
+              <p className="title">
+                1초만에 <br />
+                앱처럼 사용하기
+              </p>
+              <p className="description">
+                누구보다 편하게 <br />
                 인간지표를 누려보세요.
-              </NormalText>
-            </TextArea>
-            <ImgDiv src={PWAPNG} width={'140px'} />
-          </DetailContainer>
-          <ButtonContainer>
-            <Close24HourButton onClick={closePopUp24Hours}>24시간 동안 안보기</Close24HourButton>
-            <ConfirmButton onClick={confirmClick}>사용법 보기</ConfirmButton>
-          </ButtonContainer>
+              </p>
+            </PWAInfoTextContainer>
+            <img src={PWAPNG} width={'140px'} />
+          </PWAInfoContents>
+          <PWAInfoButtonContainer>
+            <button className="white" onClick={closePopUp24Hours}>
+              24시간 동안 안보기
+            </button>
+            <button className="blue" onClick={confirmClick}>
+              사용법 보기
+            </button>
+          </PWAInfoButtonContainer>
         </PWAInfoContainer>
       </>
     )

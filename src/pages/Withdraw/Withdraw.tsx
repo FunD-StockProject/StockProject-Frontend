@@ -29,6 +29,8 @@ const Withdraw = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('provider');
+    localStorage.removeItem('useremail');
+    localStorage.removeItem('username');
     navigate(webPath.withdrawDone());
   };
 

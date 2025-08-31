@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SEARCH_CATEGORIES, SEARCH_CATEGORY_MAP, SearchCategoryKey } from '@ts/SearchCategory';
-import ArrowLeftSVG from '@assets/icons/arrowLeft.svg?react';
+import Header from '@layout/Header/Header';
 import ChevronDownSVG from '@assets/icons/chevronDown.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -12,8 +12,6 @@ import RecentStocks from './RecentStocks/RecentStocks';
 import {
   SearchBarContainer,
   SearchBarContents,
-  SearchBarHeaderContainer,
-  SearchBarHeaderContents,
   SearchBarInput,
   SearchBarLayout,
   SearchBarSelectBox,
@@ -48,12 +46,7 @@ const SearchBar = ({
 
   return (
     <SearchBarLayout>
-      <SearchBarHeaderContainer>
-        <SearchBarHeaderContents>
-          <ArrowLeftSVG onClick={handleSearchBarClose} />
-          <p>검색</p>
-        </SearchBarHeaderContents>
-      </SearchBarHeaderContainer>
+      <Header location="searchBar" onBefore={handleSearchBarClose} />
       <SearchBarContainer>
         <SearchBarContents>
           <SearchBarSelectBox>
