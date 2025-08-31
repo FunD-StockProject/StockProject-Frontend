@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
+import { webPath } from '@router/index';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
 import IndexScore from '@components/Home/IndexScore/IndexScore';
@@ -47,6 +48,10 @@ const Home = () => {
     });
   };
 
+  const handleNotificationClick = () => {
+    navigate(webPath.notification());
+  };
+
   const isSearchModalOpen = location.state && 'search' in location.state;
 
   return (
@@ -55,7 +60,7 @@ const Home = () => {
       <HomeHeaderContainer>
         <FullLogoWhiteSVG />
         <HomeHeaderButtonContainer>
-          <AlarmSVG />
+          <AlarmSVG onClick={handleNotificationClick} />
           <SearchSVG onClick={handleSearchModalOpen} />
         </HomeHeaderButtonContainer>
       </HomeHeaderContainer>
