@@ -1,4 +1,5 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import AboutPage from '@pages/About/About';
 import Callback from '@pages/Callback/Callback';
 import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
@@ -43,6 +44,7 @@ export const webPath = {
   labStockSearch: () => '/lab/stock/search',
   labStockRecordSheet: () => '/lab/stock/recordsheet',
   term: () => '/term',
+  about: () => '/about',
 };
 
 const Root = () => {
@@ -83,6 +85,7 @@ const routes = [
       { path: webPath.labStockPurchase(), element: <StockPurchase /> },
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
       { path: webPath.term(), element: <Term /> },
+      { path: webPath.about(), element: <AboutPage /> },
     ],
   },
   { path: webPath.usage(), element: <Usage /> },

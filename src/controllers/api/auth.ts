@@ -1,6 +1,8 @@
-import { baseURL, Headers, wait } from './base';
+import { Headers, baseURL, wait } from './base';
 
-export const fetchOAuth2Login = async (_code: string, _state: string, provider: string) => {
+type ProviderKey = 'KAKAO' | 'GOOGLE' | 'NAVER' | 'APPLE';
+
+export const fetchOAuth2Login = async (_code: string, _state: string, provider: ProviderKey) => {
   const code = encodeURIComponent(_code);
   const state = encodeURIComponent(_state);
 
@@ -20,11 +22,10 @@ export const fetchOAuth2Login = async (_code: string, _state: string, provider: 
   }
 };
 
-
-export const fetchLoginKakao = (code: string, state: string) => fetchOAuth2Login(code, state, 'kakao');
-export const fetchLoginGoogle = (code: string, state: string) => fetchOAuth2Login(code, state, 'google');
-export const fetchLoginNaver = (code: string, state: string) => fetchOAuth2Login(code, state, 'naver');
-export const fetchLoginApple = (code: string, state: string) => fetchOAuth2Login(code, state, 'apple');
+export const fetchLoginKakao = (code: string, state: string) => fetchOAuth2Login(code, state, 'KAKAO');
+export const fetchLoginGoogle = (code: string, state: string) => fetchOAuth2Login(code, state, 'GOOGLE');
+export const fetchLoginNaver = (code: string, state: string) => fetchOAuth2Login(code, state, 'NAVER');
+export const fetchLoginApple = (code: string, state: string) => fetchOAuth2Login(code, state, 'APPLE');
 
 export const fetchAuthRegister = async (
   email: string,
@@ -84,7 +85,7 @@ export const fetchAuthLogout = async () => {
     const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
-        'value = refresh_token': localStorage.getItem('refresh_token'),
+        refreshToken: localStorage.getItem('refresh_token'),
       }),
       headers: {
         ...Headers,
@@ -100,5 +101,3 @@ export const fetchAuthLogout = async () => {
     throw error;
   }
 };
-
-

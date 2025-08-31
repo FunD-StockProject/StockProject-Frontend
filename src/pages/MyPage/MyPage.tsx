@@ -23,14 +23,39 @@ const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
   const navigate = useNavigate();
 
+  const handleClickAboutHumanzipyo = () => {
+    navigate(webPath.about());
+  };
+
+  const handleClickBusinessProposal = () => {
+    window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
+  };
+
+  const handleClickServiceCenter = () => {
+    window.open('https://forms.gle/eus2xRNHGxbSBaAK9');
+  };
+
+  const handleClickTermUse = () => {
+    navigate(webPath.term(), {
+      state: { termKey: 'agreeTerm' },
+    });
+  };
+
+  const handleClickTermPrivacy = () => {
+    navigate(webPath.term(), {
+      state: { termKey: 'agreePrivacy' },
+    });
+  };
+
   const handleLogout = async () => {
-    const res = await fetchAuthLogout();
+    await fetchAuthLogout();
+    // console.log(res);
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('provider');
 
     navigate('/');
-    console.log(res);
+    // console.log(res);
   };
 
   const handleWithdraw = async () => {
@@ -61,48 +86,24 @@ const MyPage = () => {
     },
   ];
 
-  const openDictionaryModel = () => {
-    window.open('https://balanced-bun-351.notion.site/17412e0c80b880259849c17228046794?pvs=4');
-  };
-
-  const openBusinessProposal = () => {
-    window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
-  };
-
-  const handleClickServiceCenter = () => {
-    window.open('https://forms.gle/eus2xRNHGxbSBaAK9');
-  };
-
-  const openInstagram = () => {
+  const handleClickInstagram = () => {
     window.open('https://www.instagram.com/humanzipyo/');
   };
 
-  const openLinkedIn = () => {
+  const handleClickLinkedIn = () => {
     window.open('https://www.linkedin.com/company/humanzipyo');
   };
 
-  const openThreads = () => {
+  const handleClickThreads = () => {
     window.open('https://www.threads.net/@humanzipyo');
   };
 
-  const openTermUse = () => {
-    navigate(webPath.term(), {
-      state: { termKey: 'agreeTerm' },
-    });
-  };
-
-  const openTermPrivacy = () => {
-    navigate(webPath.term(), {
-      state: { termKey: 'agreePrivacy' },
-    });
-  };
-
   const defaultButtons = [
-    { text: '서비스 가이드', onClick: openDictionaryModel },
-    { text: '비즈니스 제안', onClick: openBusinessProposal },
+    { text: '서비스 가이드', onClick: handleClickAboutHumanzipyo },
+    { text: '비즈니스 제안', onClick: handleClickBusinessProposal },
     { text: '고객센터', onClick: handleClickServiceCenter },
-    { text: '서비스 이용약관', onClick: openTermUse },
-    { text: '개인정보 처리방침', onClick: openTermPrivacy },
+    { text: '서비스 이용약관', onClick: handleClickTermUse },
+    { text: '개인정보 처리방침', onClick: handleClickTermPrivacy },
   ];
 
   const authButtons = [
@@ -136,16 +137,16 @@ const MyPage = () => {
           ))}
         <MyPageDefaultContainer>
           {defaultButtons.map((button) => (
-            <MyPageDefaultItem onClick={button.onClick}>
+            <MyPageDefaultItem key={`DEFAULT_${button.text}`} onClick={button.onClick}>
               {button.text}
               <RightArrowThickSVG />
             </MyPageDefaultItem>
           ))}
         </MyPageDefaultContainer>
-        {isLogin && (
+        {!isLogin && (
           <MyPageDefaultContainer>
             {authButtons.map((button) => (
-              <MyPageDefaultItem className="sub" onClick={button.onClick}>
+              <MyPageDefaultItem className="sub" key={`AUTH_${button.text}`} onClick={button.onClick}>
                 {button.text}
                 <RightArrowThickSVG />
               </MyPageDefaultItem>
@@ -154,9 +155,9 @@ const MyPage = () => {
         )}
         <span className="divider" />
         <MyPageSNSContainer>
-          <InstagramSVG onClick={openInstagram} />
-          <LinkedInSVG onClick={openLinkedIn} />
-          <ThreadSVG onClick={openThreads} />
+          <InstagramSVG onClick={handleClickInstagram} />
+          <LinkedInSVG onClick={handleClickLinkedIn} />
+          <ThreadSVG onClick={handleClickThreads} />
         </MyPageSNSContainer>
       </MyPageContents>
     </MyPageContainer>

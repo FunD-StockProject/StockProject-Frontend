@@ -21,8 +21,9 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isLoginPage = location.pathname.startsWith(webPath.login());
   const isRegisterPage = location.pathname.startsWith(webPath.register());
   const isWithdrawPage = location.pathname.startsWith(webPath.withdraw());
+  const isTermPage = location.pathname.startsWith(webPath.term());
 
-  const isBottomNavigationVisible = !isLoginPage && !isRegisterPage && !isWithdrawPage;
+  const isBottomNavigationVisible = !isLoginPage && !isRegisterPage && !isWithdrawPage && !isTermPage;
 
   return (
     <StyledMainlayout>

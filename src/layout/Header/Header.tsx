@@ -40,6 +40,7 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
   const headerTitle = {
     [webPath.register()]: '회원가입',
     [webPath.favorites()]: '관심',
+    [webPath.about()]: '인간지표란?',
     ['searchBar']: '검색',
   };
 

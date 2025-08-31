@@ -2,14 +2,7 @@ import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
 const TermContainer = styled.div({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  zIndex: 1000,
   background: theme.colors.sub_black,
-  height: '100%',
-  overflowY: 'auto',
 });
 
 const TermContents = styled.div({
