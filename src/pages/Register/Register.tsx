@@ -193,7 +193,6 @@ const termInputs: TermInputItem[] = [
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state?.provider);
   const [values, setValues] = useState({
     name: '',
     email: location.state?.email,
@@ -345,7 +344,7 @@ const Register = () => {
       return;
     }
 
-    const res = await fetchAuthRegister(values.email, values.name, new Date(values.birth), true, location.state?.provider);
+    const res = await fetchAuthRegister(profileImage as string, values.email, values.name, new Date(values.birth), true, location.state?.provider.toUpperCase());
 
 
     console.log(2, res);
