@@ -29,9 +29,8 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
       ...init,
       headers: {
         ...Headers,
-        // 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || '',
         ...(init.headers as any),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        Authorization: `Bearer ${token}`,
       },
       credentials: 'include', // 쿠키 포함
     });
@@ -42,13 +41,10 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
       const reissueRes = await fetch(`${baseURL}/auth/reissue`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          // 필요 시 CSRF 헤더도 추가
-          // "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") || "",
+          ...Headers,
         },
-        credentials: "include",
         body: JSON.stringify({
-          refresh_token: refreshToken,
+          refreshToken: refreshToken,
         }),
       });
 
@@ -56,14 +52,12 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
         throw new Error("토큰 재발급 실패. 재로그인 필요");
       }
 
-      const { accessToken, refreshToken: newRefreshToken } = await reissueRes.json();
+      const { access_token, refresh_token: newRefreshToken } = await reissueRes.json();
 
       // 새 토큰 저장
-      localStorage.setItem("access_token", accessToken);
-      if (newRefreshToken) {
-        localStorage.setItem("refresh_token", newRefreshToken);
-      }
-      token = accessToken;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", newRefreshToken);
+      token = access_token;
 
       // 원래 요청 재시도
       res = await fetch(url, {
