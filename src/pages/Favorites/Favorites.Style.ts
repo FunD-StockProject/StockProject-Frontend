@@ -171,14 +171,16 @@ export const StockScoreChange = styled.div`
   color: ${theme.colors.danger};
 `;
 
-export const NotificationIcon = styled.button<{ isActive: boolean }>`
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: ${props => props.isActive ? theme.colors.sub_blue5 : theme.colors.sub_gray7};
-  transition: color 0.2s ease;
-`;
+export const NotificationIcon = styled('button')<{ isActive: boolean }>(({ isActive }) => ({
+  background: 'none',
+  border: 'none',
+  fontSize: '20px',
+  cursor: 'pointer',
+  transition: 'color 0.2s ease',
+  '& svg *': {
+    fill: isActive ? theme.colors.sub_blue5 : theme.colors.sub_gray7,
+  },
+}));
 
 export const Checkbox = styled.input`
   width: 20px;

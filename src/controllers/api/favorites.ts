@@ -24,3 +24,6 @@ export const fetchBookmarkList = (): Promise<FavoriteStock[]> =>
 // GET /preference/bookmark/count
 export const fetchBookmarkCount = (): Promise<number> =>
   fetchAuthData(`/preference/bookmark/count`);
+
+export const patchNotification = (stockId: number) =>
+  fetchAuthData(`/preference/notification/toggle/${stockId}`, { method: 'PATCH' });

@@ -12,7 +12,7 @@ import {
 } from '@components/Modal/Common.Style';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
-import { useBookmarkListQuery } from '@controllers/query/favorites';
+import { useAddBookmarkMutation, useBookmarkListQuery, useDeleteBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
 import BellSVG from '@assets/icons/bell.svg?react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -50,18 +50,20 @@ const Favorites = () => {
   const { data } = useBookmarkListQuery();
   const [isEditMode, setIsEditMode] = useState(false);
   const [stocks, setStocks] = useState<FavoriteStock[]>([]);
-
+  // const { mutate: addBookmark } = useAddBookmarkMutation();
+  const { mutate: removeBookmark } = useDeleteBookmarkMutation();
+  const { mutate } = useToggleNotificationMutation();
   useEffect(() => {
     setStocks(data ?? []);
   }, [data]);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
+  const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
 
   const selectedCount = stocks.filter((stock) => stock.isSelected).length;
   const isEmpty = stocks.length === 0;
-  console.log(isEmpty);
+
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
     if (isEditMode) {
@@ -69,30 +71,30 @@ const Favorites = () => {
     }
   };
 
-  const handleStockSelect = (stockId: string) => {
-    setStocks(stocks.map((stock) => (stock.id === stockId ? { ...stock, isSelected: !stock.isSelected } : stock)));
+  const handleStockSelect = (stockId: number) => {
+    setStocks(stocks.map((stock) => (stock.stockId === stockId ? { ...stock, isSelected: !stock.isSelected } : stock)));
   };
 
-  const handleNotificationToggle = (notification: boolean, stockId: string) => {
+  const handleNotificationToggle = (stockId: number, isNotificationOn: boolean) => {
     setSelectedStockId(stockId);
-    if (notification) setShowNotificationModal(true);
-    else handleNotificationConfirm();
+    if (isNotificationOn)
+      setShowNotificationModal(true);
+    else
+      mutate(stockId);
   };
 
-  const handleDelete = () => {
-    setStocks(stocks.filter((stock) => !stock.isSelected));
+  const handleDelete = async () => {
+    const selectedIds = stocks.filter(s => s.isSelected).map(s => s.stockId);
+    await Promise.all(selectedIds.map(id => removeBookmark(id)));
+
+    // setStocks(prev => prev.filter(s => !s.isSelected));
+
     setShowDeleteModal(false);
     setIsEditMode(false);
   };
 
   const handleNotificationConfirm = () => {
-    if (selectedStockId) {
-      setStocks(
-        stocks.map((stock) =>
-          stock.id === selectedStockId ? { ...stock, isNotificationOn: !stock.isNotificationOn } : stock,
-        ),
-      );
-    }
+    mutate(selectedStockId!);
     setShowNotificationModal(false);
     setSelectedStockId(null);
   };
@@ -160,22 +162,22 @@ const Favorites = () => {
                 {stocks.map((stock) => {
                   const concurrency = stock.country === 'KOREA' ? '₩' : '$';
                   return (
-                    <StockContainer key={stock.id}>
+                    <StockContainer key={stock.stockId}>
                       {isEditMode && (
                         <Checkbox
                           type="checkbox"
-                          checked={stock.isSelected}
-                          onChange={() => handleStockSelect(stock.id)}
+                          checked={Boolean(stock.isSelected)}
+                          onChange={() => handleStockSelect(stock.stockId)}
                         />
                       )}
-                      <StockItem key={stock.id}>
+                      <StockItem key={stock.stockId}>
                         <StockInfo>
                           <StockName>
                             {stock.symbolName}
                             {!isEditMode && (
                               <NotificationIcon
                                 isActive={stock.isNotificationOn}
-                                onClick={() => handleNotificationToggle(stock.isNotificationOn, stock.id)}
+                                onClick={() => handleNotificationToggle(stock.stockId, stock.isNotificationOn)}
                               >
                                 <BellSVG />
                               </NotificationIcon>

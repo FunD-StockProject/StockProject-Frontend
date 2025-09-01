@@ -79,7 +79,7 @@ export interface PopularStocks {
 export type PERIOD_CODE = 'D' | 'W' | 'M';
 
 export interface FavoriteStock {
-  id: string;
+  stockId: number;
   name: string;
   price: number;
   priceDiffPerCent: number;
