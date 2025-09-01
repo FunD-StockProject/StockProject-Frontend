@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { queryOptions } from './common';
-import { deleteBookmark, deleteHide, fetchBookmarkCount, fetchBookmarkList, postBookmark, postHide } from '@controllers/api/favorites';
+import { deleteBookmark, deleteHide, fetchBookmarkCount, fetchBookmarkList, patchNotification, postBookmark, postHide } from '@controllers/api/favorites';
 
 
 // ----- Queries -----
@@ -62,3 +62,13 @@ export const useRemoveHideMutation = () => {
     },
   });
 };
+
+export const useToggleNotificationMutation = () => {
+  const qc = useQueryClient();
+
+  return useMutation((stockId: number) => patchNotification(stockId), {
+    onSuccess: () => {
+      qc.invalidateQueries(['bookmarkList']);
+    },
+  });
+}

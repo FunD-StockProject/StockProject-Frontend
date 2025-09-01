@@ -12,7 +12,7 @@ import {
 } from '@components/Modal/Common.Style';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
-import { useBookmarkListQuery } from '@controllers/query/favorites';
+import { useAddBookmarkMutation, useBookmarkListQuery, useRemoveBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
 import BellSVG from '@assets/icons/bell.svg?react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -50,18 +50,20 @@ const Favorites = () => {
   const { data } = useBookmarkListQuery();
   const [isEditMode, setIsEditMode] = useState(false);
   const [stocks, setStocks] = useState<FavoriteStock[]>([]);
-
+  // const { mutate: addBookmark } = useAddBookmarkMutation();
+  // const { mutate: removeBookmark } = useRemoveBookmarkMutation();
+  const { mutate } = useToggleNotificationMutation();
   useEffect(() => {
     setStocks(data ?? []);
   }, [data]);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
+  const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
 
   const selectedCount = stocks.filter((stock) => stock.isSelected).length;
   const isEmpty = stocks.length === 0;
-  console.log(isEmpty);
+
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
     if (isEditMode) {
@@ -69,14 +71,13 @@ const Favorites = () => {
     }
   };
 
-  const handleStockSelect = (stockId: string) => {
-    setStocks(stocks.map((stock) => (stock.id === stockId ? { ...stock, isSelected: !stock.isSelected } : stock)));
+  const handleStockSelect = (stockId: number) => {
+    setStocks(stocks.map((stock) => (stock.stockId === stockId ? { ...stock, isSelected: !stock.isSelected } : stock)));
   };
 
-  const handleNotificationToggle = (notification: boolean, stockId: string) => {
+  const handleNotificationToggle = (stockId: number) => {
     setSelectedStockId(stockId);
-    if (notification) setShowNotificationModal(true);
-    else handleNotificationConfirm();
+    mutate(stockId);
   };
 
   const handleDelete = () => {
@@ -89,7 +90,7 @@ const Favorites = () => {
     if (selectedStockId) {
       setStocks(
         stocks.map((stock) =>
-          stock.id === selectedStockId ? { ...stock, isNotificationOn: !stock.isNotificationOn } : stock,
+          stock.stockId === selectedStockId ? { ...stock, isNotificationOn: !stock.isNotificationOn } : stock,
         ),
       );
     }
@@ -160,22 +161,22 @@ const Favorites = () => {
                 {stocks.map((stock) => {
                   const concurrency = stock.country === 'KOREA' ? '₩' : '$';
                   return (
-                    <StockContainer key={stock.id}>
+                    <StockContainer key={stock.stockId}>
                       {isEditMode && (
                         <Checkbox
                           type="checkbox"
                           checked={stock.isSelected}
-                          onChange={() => handleStockSelect(stock.id)}
+                          onChange={() => handleStockSelect(stock.stockId)}
                         />
                       )}
-                      <StockItem key={stock.id}>
+                      <StockItem key={stock.stockId}>
                         <StockInfo>
                           <StockName>
                             {stock.symbolName}
                             {!isEditMode && (
                               <NotificationIcon
                                 isActive={stock.isNotificationOn}
-                                onClick={() => handleNotificationToggle(stock.isNotificationOn, stock.id)}
+                                onClick={() => handleNotificationToggle(stock.stockId)}
                               >
                                 <BellSVG />
                               </NotificationIcon>
