@@ -12,7 +12,7 @@ import {
 } from '@components/Modal/Common.Style';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
-import { useAddBookmarkMutation, useBookmarkListQuery, useRemoveBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
+import { useAddBookmarkMutation, useBookmarkListQuery, useDeleteBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
 import BellSVG from '@assets/icons/bell.svg?react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -51,7 +51,7 @@ const Favorites = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [stocks, setStocks] = useState<FavoriteStock[]>([]);
   // const { mutate: addBookmark } = useAddBookmarkMutation();
-  // const { mutate: removeBookmark } = useRemoveBookmarkMutation();
+  const { mutate: removeBookmark } = useDeleteBookmarkMutation();
   const { mutate } = useToggleNotificationMutation();
   useEffect(() => {
     setStocks(data ?? []);
@@ -75,25 +75,26 @@ const Favorites = () => {
     setStocks(stocks.map((stock) => (stock.stockId === stockId ? { ...stock, isSelected: !stock.isSelected } : stock)));
   };
 
-  const handleNotificationToggle = (stockId: number) => {
+  const handleNotificationToggle = (stockId: number, isNotificationOn: boolean) => {
     setSelectedStockId(stockId);
-    mutate(stockId);
+    if (isNotificationOn)
+      setShowNotificationModal(true);
+    else
+      mutate(stockId);
   };
 
-  const handleDelete = () => {
-    setStocks(stocks.filter((stock) => !stock.isSelected));
+  const handleDelete = async () => {
+    const selectedIds = stocks.filter(s => s.isSelected).map(s => s.stockId);
+    await Promise.all(selectedIds.map(id => removeBookmark(id)));
+
+    // setStocks(prev => prev.filter(s => !s.isSelected));
+
     setShowDeleteModal(false);
     setIsEditMode(false);
   };
 
   const handleNotificationConfirm = () => {
-    if (selectedStockId) {
-      setStocks(
-        stocks.map((stock) =>
-          stock.stockId === selectedStockId ? { ...stock, isNotificationOn: !stock.isNotificationOn } : stock,
-        ),
-      );
-    }
+    mutate(selectedStockId!);
     setShowNotificationModal(false);
     setSelectedStockId(null);
   };
@@ -165,7 +166,7 @@ const Favorites = () => {
                       {isEditMode && (
                         <Checkbox
                           type="checkbox"
-                          checked={stock.isSelected}
+                          checked={Boolean(stock.isSelected)}
                           onChange={() => handleStockSelect(stock.stockId)}
                         />
                       )}
@@ -176,7 +177,7 @@ const Favorites = () => {
                             {!isEditMode && (
                               <NotificationIcon
                                 isActive={stock.isNotificationOn}
-                                onClick={() => handleNotificationToggle(stock.stockId)}
+                                onClick={() => handleNotificationToggle(stock.stockId, stock.isNotificationOn)}
                               >
                                 <BellSVG />
                               </NotificationIcon>
