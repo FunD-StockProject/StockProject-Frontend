@@ -12,7 +12,7 @@ import {
 } from '@components/Modal/Common.Style';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { FavoriteStock } from '@controllers/api.Type';
-import { useAddBookmarkMutation, useBookmarkListQuery, useDeleteBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
+import { useBookmarkListQuery, useDeleteBookmarkMutation, useToggleNotificationMutation } from '@controllers/query/favorites';
 import BellSVG from '@assets/icons/bell.svg?react';
 import EditSVG from '@assets/icons/edit.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
@@ -50,7 +50,6 @@ const Favorites = () => {
   const { data } = useBookmarkListQuery();
   const [isEditMode, setIsEditMode] = useState(false);
   const [stocks, setStocks] = useState<FavoriteStock[]>([]);
-  // const { mutate: addBookmark } = useAddBookmarkMutation();
   const { mutate: removeBookmark } = useDeleteBookmarkMutation();
   const { mutate } = useToggleNotificationMutation();
   useEffect(() => {
