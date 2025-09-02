@@ -56,6 +56,7 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
 
       // 새 토큰 저장
       localStorage.setItem("access_token", access_token);
+      (window as any).ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', access_token }));
       localStorage.setItem("refresh_token", newRefreshToken);
       token = access_token;
 
