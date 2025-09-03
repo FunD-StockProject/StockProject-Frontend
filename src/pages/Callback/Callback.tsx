@@ -55,7 +55,7 @@ const Callback = () => {
         console.log(res);
 
         localStorage.setItem('access_token', res.access_token);
-        const token = res.access_token;
+        // const token = res.access_token;
         // (window as any).ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', token }));
         localStorage.setItem('refresh_token', res.refresh_token);
         localStorage.setItem('useremail', res.email);
