@@ -56,10 +56,12 @@ const fetchAuthData = async (path: string, init: RequestInit = {}) => {
 
       // 새 토큰 저장
       localStorage.setItem("access_token", access_token);
-      // (window as any).ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', access_token }));
+      (window as any).ReactNativeWebView?.postMessage(JSON.stringify({ type: 'TOKEN', token: access_token }));
+      // const token = localStorage.getItem('access_token');
+      // if (token && window.ReactNativeWebView) {
+      //   window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', token }));
+      // }
       localStorage.setItem("refresh_token", newRefreshToken);
-      token = access_token;
-
       // 원래 요청 재시도
       res = await fetch(url, {
         method: "GET",
