@@ -1,8 +1,5 @@
-import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ResultInfo } from '@ts/Constants';
 import { StockCountryKey } from '@ts/StockCountry';
-import { RESULT_TYPE } from '@ts/Types';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import SearchHeader from '@layout/SearchHeader/SearchHeader';
@@ -16,7 +13,7 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import { StockDetailInfo, StockInfo } from '@controllers/api.Type';
 import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
-import { useAddBookmarkMutation } from '@controllers/query/favorites';
+import { useAddBookmarkMutation, useBookmarkListQuery, useDeleteBookmarkMutation } from '@controllers/query/favorites';
 import { theme } from '@styles/themes';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {
@@ -124,37 +121,17 @@ const StockRelevant = ({ stockId, country }: { stockId: number; country: StockCo
 
 const Search = () => {
   const { state } = useLocation();
-  const [heartColor, setHeartColor] = useState(theme.colors.red);
-  const [bellColor, setBellColor] = useState(theme.colors.red);
-  const { mutate: mutateBookMark } = useAddBookmarkMutation();
-
   const [stockInfo] = useQueryComponent({
     query: useSymbolNameSearchQuery(state?.symbolName, state?.country),
   });
-  const [resultMode, setResultMode] = useState<RESULT_TYPE>('INDICATOR');
-
-  const toggleResultMode = () => setResultMode((prev) => ResultInfo[prev].opposite);
-  const onHeartClick = () => {
-    mutateBookMark(stockInfo?.stockId!);
-    setHeartColor(heartColor === theme.colors.red ? theme.colors.sub_gray6 : theme.colors.red);
-  };
-
-  const onBellClick = () => {
-    setBellColor(heartColor === theme.colors.red ? theme.colors.sub_gray6 : theme.colors.red);
-  };
 
   return (
     stockInfo && (
       <SearchResultContainer>
-        <SearchHeader
-          heartColor={heartColor}
-          bellColor={bellColor}
-          onHeartClick={onHeartClick}
-          onBellClick={onBellClick}
-        />
+        <SearchHeader stockInfo={stockInfo} />
         <Divider />
         <SearchResultContents>
-          <SearchTitle stockInfo={stockInfo} resultMode={resultMode} onClick={toggleResultMode} />
+          <SearchTitle stockInfo={stockInfo} />
           <Divider />
           <SearchResultGaugeChart stockInfo={stockInfo} />
           <SearchResultChart stockInfo={stockInfo} />

@@ -39,11 +39,11 @@ const ShortViewButton = styled.div({
   },
 
   ['&.heart, &.heart-active']: {
-    padding: '14px',
+    padding: '8px',
     background: theme.colors.sub_gray11,
 
     ['>svg']: {
-      width: '24px',
+      width: '36px',
     },
   },
 

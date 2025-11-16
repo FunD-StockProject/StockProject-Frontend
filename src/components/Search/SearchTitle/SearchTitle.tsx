@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
 import { RESULT_TYPE } from '@ts/Types';
+import { getItemLocalStorage } from '@utils/LocalStorage';
+import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
+import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { StockDetailInfo } from '@controllers/api.Type';
 import { useStockSummaryQuery } from '@controllers/query';
+import { useBuyExperimentMutation } from '@controllers/query/portfolio';
 import { theme } from '@styles/themes';
 import KoreaPNG from '@assets/flags/korea.png';
 import AlertSVG from '@assets/icons/alert.svg?react';
@@ -143,18 +147,37 @@ const SearchTitleAlertContainer = styled.div({
   },
 });
 
-const SearchTitle = ({
-  stockInfo,
-}: {
-  stockInfo: StockDetailInfo;
-  resultMode: RESULT_TYPE;
-  onClick: (e: any) => void;
-}) => {
+const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  const navigate = useNavigate();
+  const isLogin = !!getItemLocalStorage('access_token');
+
+  const { mutate: buyExperiment } = useBuyExperimentMutation();
+
+  const handleClickBuy = () => {
+    if (!isLogin) {
+      openLoginModal();
+      return;
+    }
+    buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
+  };
+
+  const handleLogin = () => {
+    navigate(webPath.login());
+  };
+
+  const [LoginModal, openLoginModal] = ConfirmModal({
+    title: '모의 매수를 진행하려면, 로그인이 필요해요!',
+    description: '나만의 투자심리 분석 보고서를 받고 싶다면, 로그인을 진행해주세요',
+    onConfirm: handleLogin,
+    isInverse: true,
+    actionText: ['로그인하기', '취소'],
+  });
 
   return (
     stockInfo && (
       <SearchTitleContainer>
+        <LoginModal />
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
         <SearchTitleDescriptionContainer>
@@ -166,7 +189,7 @@ const SearchTitle = ({
           <AlertSVG />
           <p>인간지표는 공식 지표가 아니므로 참고 용도로만 활용해주세요</p>
         </SearchTitleAlertContainer>
-        <Button>모의 매수하기</Button>
+        <Button onClick={handleClickBuy}>모의 매수하기</Button>
       </SearchTitleContainer>
     )
   );

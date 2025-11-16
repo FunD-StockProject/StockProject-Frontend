@@ -34,7 +34,7 @@ const Withdraw = () => {
     navigate(webPath.withdrawDone());
   };
 
-  const [LogoutModal, openLogoutModal] = ConfirmModal('정말 탈퇴 하시겠어요?', handleWithdraw);
+  const [LogoutModal, openLogoutModal] = ConfirmModal({ title: '정말 탈퇴 하시겠어요?', onConfirm: handleWithdraw });
 
   return (
     <RegisterContainer>

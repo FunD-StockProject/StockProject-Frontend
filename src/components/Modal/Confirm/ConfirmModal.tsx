@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
+import { theme } from '@styles/themes';
 
 const ConfirmModalLayout = styled.div({
   display: 'flex',
@@ -8,6 +9,8 @@ const ConfirmModalLayout = styled.div({
   width: '100%',
   height: '100%',
   zIndex: '100',
+  top: '0',
+  left: '0',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '32px',
@@ -24,22 +27,15 @@ const ConfirmModalContainer = styled.div({
   padding: '24px 20px 16px',
   gap: '28px',
 
-  ['>p']: {
-    margin: '0',
-    color: '#343A40',
-    fontSize: '20px',
-    fontWeight: '600',
-  },
-
   ['>div']: {
     display: 'flex',
     gap: '12px',
 
     ['>button']: {
+      ...theme.font.body18Semibold,
       width: '100%',
+      height: '48px',
       padding: '8px 0',
-      fontSize: '18px',
-      fontWeight: '700',
       border: 'none',
       borderRadius: '999px',
 
@@ -55,7 +51,40 @@ const ConfirmModalContainer = styled.div({
   },
 });
 
-const ConfirmModal = (title: string, onConfirm: () => void): [() => React.ReactElement, () => void] => {
+const ConfirmModalTextContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+
+  ['>p']: {
+    margin: '0',
+    wordBreak: 'keep-all',
+
+    ['&.title']: {
+      ...theme.font.title20Semibold,
+      color: theme.colors.sub_gray8,
+    },
+
+    ['&.desc']: {
+      ...theme.font.body16Medium,
+      color: theme.colors.sub_gray7,
+    },
+  },
+});
+
+const ConfirmModal = ({
+  title,
+  description,
+  onConfirm,
+  isInverse,
+  actionText = ['네', '아니오'],
+}: {
+  title: string;
+  description?: string;
+  onConfirm: () => void;
+  isInverse?: boolean;
+  actionText?: string[];
+}): [() => React.ReactElement, () => void] => {
   const [isOpen, setIsOpen] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -87,10 +116,13 @@ const ConfirmModal = (title: string, onConfirm: () => void): [() => React.ReactE
     return (
       <ConfirmModalLayout>
         <ConfirmModalContainer ref={modalRef}>
-          <p>{title}</p>
+          <ConfirmModalTextContainer>
+            <p className="title">{title}</p>
+            {description && <p className="desc">{description}</p>}
+          </ConfirmModalTextContainer>
           <div>
-            <button onClick={onConfirm}>네</button>
-            <button onClick={closeModal}>아니오</button>
+            <button onClick={isInverse ? closeModal : onConfirm}>{actionText[isInverse ? 1 : 0]}</button>
+            <button onClick={isInverse ? onConfirm : closeModal}>{actionText[isInverse ? 0 : 1]}</button>
           </div>
         </ConfirmModalContainer>
       </ConfirmModalLayout>
