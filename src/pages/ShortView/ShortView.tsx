@@ -1,9 +1,18 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
 import ShortViewNeedLogin from '@components/ShortView/NeedLogin/NeedLogin';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
+import {
+  useAddBookmarkMutation,
+  useAddHideMutation,
+  useBookmarkListQuery,
+  useDeleteBookmarkMutation,
+  useRemoveHideMutation,
+} from '@controllers/query/favorites';
+import { useBuyExperimentMutation } from '@controllers/query/portfolio';
+import { useShortViewQuery } from '@controllers/query/shortview';
 import CheckSVG from '@assets/icons/check.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import HeartSVG from '@assets/icons/heart.svg?react';
@@ -17,6 +26,18 @@ import {
 } from './ShortView.Style';
 import TinderCardItem, { TinderCardProps } from './TinderCard/TinderCard';
 
+export interface StockCardShortview {
+  id: string;
+  stockId: number;
+  stockName: string;
+  price: number;
+  priceDiff: number;
+  score: number;
+  diff: number;
+  country: StockCountryKey;
+  keywords: string[];
+}
+
 export interface StockCard {
   id: string;
   stockId: number;
@@ -29,64 +50,81 @@ export interface StockCard {
   tags: string[];
 }
 
-const mockStocks: StockCard[] = [
+const mockStocks: StockCardShortview[] = [
   {
     id: '1',
     stockId: 904,
-    symbolName: '삼성전자',
-    currentPrice: 71500,
-    priceChange: 1200,
+    stockName: '삼성전자',
+    price: 71500,
+    priceDiff: 1200,
     score: 85,
-    scoreChange: 79,
+    diff: 79,
     country: 'KOREA',
-    tags: ['IT', '반도체'],
+    keywords: ['IT', '반도체'],
   },
   {
     id: '2',
     stockId: 89,
-    symbolName: 'NAVER',
-    currentPrice: 205000,
-    priceChange: -1500,
+    stockName: 'NAVER',
+    price: 205000,
+    priceDiff: -1500,
     score: 51,
-    scoreChange: -12,
+    diff: -12,
     country: 'KOREA',
-    tags: ['플랫폼', '인터넷'],
+    keywords: ['플랫폼', '인터넷'],
   },
   {
     id: '3',
     stockId: 5990,
-    symbolName: '인텔',
-    currentPrice: 61000,
-    priceChange: 500,
+    stockName: '인텔',
+    price: 61000,
+    priceDiff: 500,
     score: 43,
-    scoreChange: 5,
+    diff: 5,
     country: 'OVERSEA',
-    tags: ['모빌리티', '광고'],
+    keywords: ['모빌리티', '광고'],
   },
   {
     id: '4',
     stockId: 2716,
-    symbolName: '한화',
-    currentPrice: 83800,
-    priceChange: 200,
+    stockName: '한화',
+    price: 83800,
+    priceDiff: 200,
     score: 89,
-    scoreChange: 11,
+    diff: 11,
     country: 'KOREA',
-    tags: ['모빌리티', '광고'],
+    keywords: ['모빌리티', '광고'],
   },
 ];
 
 const ShortView = () => {
   const isLogin = !!getItemLocalStorage('access_token');
-  const [stocks, setStocks] = useState<StockCard[]>(isLogin ? mockStocks : [mockStocks[0]]);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [stocks, setStocks] = useState<StockCardShortview[]>(!isLogin ? [mockStocks[0]] : []);
   const { toast, showToast, hideToast } = useToast();
+  const { data: shortviewStock } = useShortViewQuery();
+  const currentStock = stocks?.[0];
 
   const tinderCardComponentRef = useRef<TinderCardProps>(null);
 
+  const { data: bookmarkList } = useBookmarkListQuery();
+  // const [isFavorite, setIsFavorite] = useState(false);
+  const isBookmark = (bookmarkList ?? []).some((e) => e.stockId == currentStock?.stockId);
+  const { mutate: addBookMark } = useAddBookmarkMutation();
+  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
+  const { mutate: buyExperiment } = useBuyExperimentMutation();
+  const { mutate: addHide } = useAddHideMutation();
+  const { mutate: removeHide } = useRemoveHideMutation();
+
+  useEffect(() => {
+    if (!shortviewStock) return;
+    setStocks((prev) => [...prev, ...shortviewStock.filter((e) => !prev.some((b) => b.stockId == e.stockId))]);
+  }, [shortviewStock]);
+
+  const lastHideStockIdRef = useRef<number>();
+
   const neverseenAction = () => {
+    if (!currentStock) return;
     console.log('never seen');
-    setStocks((prev) => prev.slice(1));
     showToast(
       <>
         <CheckSVG className="check" />
@@ -96,32 +134,43 @@ const ShortView = () => {
         </p>
       </>,
     );
+    addHide(currentStock.stockId);
+    lastHideStockIdRef.current = currentStock.stockId;
+    setStocks((prev) => prev.slice(1));
   };
 
   const purchaseAction = () => {
+    if (!currentStock) return;
     console.log('purchase');
+    buyExperiment({ stockId: currentStock.stockId, country: currentStock.country });
     setStocks((prev) => prev.slice(1));
   };
 
   const handleClickNeverSeen = () => {
+    if (!currentStock) return;
     tinderCardComponentRef.current?.handleClickNeverSeen();
   };
 
   const handleCancelNeverSeen = () => {
+    if (!lastHideStockIdRef.current) return;
     console.log('cancel never seen');
+    removeHide(lastHideStockIdRef.current);
     hideToast();
   };
 
   const handleClickFavorite = () => {
-    if (!isFavorite) {
+    if (!currentStock) return;
+    if (!isBookmark) {
       showToast(
         <>
           <HeartSVG className="heart" />
           <p>관심 등록 완료! 민심 급변 시 알림 드릴게요</p>
         </>,
       );
+      addBookMark(currentStock.stockId);
+    } else {
+      deleteBookmark(currentStock.stockId);
     }
-    setIsFavorite((prev) => !prev);
   };
 
   const handleClickPurchase = () => {
@@ -146,7 +195,7 @@ const ShortView = () => {
         <ShortViewButton className="cross" onClick={handleClickNeverSeen}>
           <CrossSVG />
         </ShortViewButton>
-        <ShortViewButton className={isFavorite ? 'heart-active' : 'heart'} onClick={handleClickFavorite}>
+        <ShortViewButton className={isBookmark ? 'heart-active' : 'heart'} onClick={handleClickFavorite}>
           <HeartSVG />
         </ShortViewButton>
         <ShortViewButton className="money" onClick={handleClickPurchase}>

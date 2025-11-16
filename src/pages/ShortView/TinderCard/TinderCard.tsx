@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
 import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import StockChart from '@components/Search/StockChart/StockChart';
 import ArrowDropUpSVG from '@assets/icons/arrowDropUp.svg?react';
 import MagnifierSVG from '@assets/icons/magnifier.svg?react';
-import { StockCard } from '../ShortView';
+import { StockCardShortview } from '../ShortView';
 import {
   TinderCardChartContainer,
   TinderCardItemContainer,
@@ -27,11 +28,11 @@ export interface TinderCardProps {
 }
 const TinderCardItem = forwardRef<
   TinderCardProps,
-  { stock: StockCard; isTop: boolean; neverseenAction?: () => void; purchaseAction?: () => void }
+  { stock: StockCardShortview; isTop: boolean; neverseenAction?: () => void; purchaseAction?: () => void }
 >(
   (
     {
-      stock: { stockId, symbolName, country, currentPrice, priceChange, score, scoreChange, tags },
+      stock: { stockId, stockName, country, price, priceDiff, score, diff, keywords },
       isTop,
       neverseenAction,
       purchaseAction,
@@ -54,14 +55,14 @@ const TinderCardItem = forwardRef<
     const containerRef = useRef<HTMLDivElement>(null);
     const aboutStockRef = useRef<HTMLDivElement>(null);
 
-    const priceText = STOCK_COUNTRY_MAP[country].currency + currentPrice.toLocaleString();
-    const priceDiffText = `${diffToValue(priceChange)}(${diffToPercent(currentPrice, priceChange, {
+    const priceText = STOCK_COUNTRY_MAP[country].currency + price.toLocaleString();
+    const priceDiffText = `${diffToValue(priceDiff)}(${diffToPercent(price, priceDiff, {
       fixed: 2,
       sign: false,
     })})`;
 
     const scoreText = `${score}점`;
-    const scoreDiffText = `${diffToValue(scoreChange)}점`;
+    const scoreDiffText = `${diffToValue(diff)}점`;
 
     const width = containerRef.current?.clientWidth ?? 0;
 
@@ -81,7 +82,7 @@ const TinderCardItem = forwardRef<
 
       navigate(webPath.search(), {
         state: {
-          symbolName: symbolName,
+          symbolName: stockName,
           country: country,
         },
       });
@@ -176,7 +177,7 @@ const TinderCardItem = forwardRef<
         <TinderCardChartContainer>
           <StockChart
             stockId={stockId}
-            symbolName={symbolName}
+            symbolName={stockName}
             country={country}
             chartHeight={{ price: 'calc(100% - 160px)', score: '160px' }}
             chartInteractive={false}
@@ -184,16 +185,16 @@ const TinderCardItem = forwardRef<
         </TinderCardChartContainer>
         <TinderCardItemInfo>
           <TinderCardItemInfoTitle>
-            <img src="https://yt3.googleusercontent.com/Yoj44lPMte0uwM0vzH7uQynVMdpfhU4WxZMyBEC7k6mEYovAKPqW4FCbqLeW8eIhexEx8-c9=s900-c-k-c0x00ffffff-no-rj" />
-            <p>{symbolName}</p>
+            <StockImage stockId={stockId} alt={stockName} />
+            <p>{stockName}</p>
           </TinderCardItemInfoTitle>
           <TinderCardItemInfoContents>
             <TinderCardItemInfoValueContainer>
-              <TinderCardItemInfoValueContents delta={priceChange}>
+              <TinderCardItemInfoValueContents delta={priceDiff}>
                 {priceText}
                 <span>{priceDiffText}</span>
               </TinderCardItemInfoValueContents>
-              <TinderCardItemInfoValueContents delta={scoreChange}>
+              <TinderCardItemInfoValueContents delta={diff}>
                 {scoreText}
                 <span>{scoreDiffText}</span>
                 <ArrowDropUpSVG />
@@ -201,7 +202,7 @@ const TinderCardItem = forwardRef<
             </TinderCardItemInfoValueContainer>
             <TinderCardItemInfoExtraContainer>
               <TinderCardItemInfoTagsContainer>
-                {tags.map((e) => (
+                {keywords.map((e) => (
                   <TinderCardItemInfoTag key={`SHORT-VIEW-ITEM-TAG-${e}`}>#{e}</TinderCardItemInfoTag>
                 ))}
               </TinderCardItemInfoTagsContainer>

@@ -50,6 +50,11 @@ const TinderCardItemInfoTitle = styled.div({
   padding: '4px 6px',
   borderRadius: '10px',
   backdropFilter: 'blur(4px)',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  width: '100%',
+  boxSizing: 'border-box',
 
   ['>img']: {
     width: '32px',
@@ -63,6 +68,9 @@ const TinderCardItemInfoTitle = styled.div({
     margin: '0',
     ...theme.font.heading24Semibold,
     color: theme.colors.sub_white,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 });
 

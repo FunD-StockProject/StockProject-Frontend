@@ -1,19 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { queryOptions } from './common';
-import { deleteBookmark, deleteHide, fetchBookmarkCount, fetchBookmarkList, patchNotification, postBookmark, postHide } from '@controllers/api/favorites';
 import { FavoriteStock } from '@controllers/api.Type';
-
+import {
+  deleteBookmark,
+  deleteHide,
+  fetchBookmarkCount,
+  fetchBookmarkList,
+  patchNotification,
+  postBookmark,
+  postHide,
+} from '@controllers/api/favorites';
+import { queryOptions } from './common';
 
 // ----- Queries -----
 export const useBookmarkListQuery = () => {
-  return useQuery(
-    ['bookmarkList'],
-    fetchBookmarkList,
-    {
-      ...queryOptions,
-      enabled: !!localStorage.getItem('access_token'),
-    }
-  );
+  return useQuery(['bookmarkList'], fetchBookmarkList, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
 };
 
 export const useBookmarkCountQuery = () => {
@@ -77,7 +80,7 @@ export const useAddHideMutation = () => {
   return useMutation((stockId: number) => postHide(stockId), {
     onSuccess: () => {
       // 숨김 리스트를 따로 만들 경우 여기에 invalidate 추가
-      qc.invalidateQueries(['bookmarkList']);
+      qc.invalidateQueries({ queryKey: ['hideStocks'] });
     },
   });
 };
@@ -87,7 +90,7 @@ export const useRemoveHideMutation = () => {
   return useMutation((stockId: number) => deleteHide(stockId), {
     onSuccess: () => {
       // 숨김 리스트를 따로 만들 경우 여기에 invalidate 추가
-      qc.invalidateQueries(['bookmarkList']);
+      qc.invalidateQueries(['hideStocks']);
     },
   });
 };
@@ -100,4 +103,4 @@ export const useToggleNotificationMutation = () => {
       qc.invalidateQueries(['bookmarkList']);
     },
   });
-}
+};
