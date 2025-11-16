@@ -148,9 +148,9 @@ const SmallStockCardContentTitle = styled.div({
 });
 
 const SmallStockCardContentScore = styled.div(
-  ({ delta }: { delta: number }) => ({
+  ({ delta, isNew }: { delta: number; isNew: boolean }) => ({
     ['>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+      color: isNew ? theme.colors.yellow : (deltaScoreToColor(delta) ?? theme.colors.sub_gray7),
     },
   }),
   {

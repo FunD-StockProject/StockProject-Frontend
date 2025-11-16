@@ -84,11 +84,9 @@ export const SmallStockCard = ({
       <SmallStockCardContent>
         <SmallStockCardContentTitle>
           <p className="name">{symbolName}</p>
-          <SmallStockCardContentScore delta={diff}>
+          <SmallStockCardContentScore delta={diff} isNew={score == diff}>
             {score}점
-            <span>
-              {diffToValue(diff)}점({diffToPercent(score, diff, { fixed: 1 })})
-            </span>
+            <span>{score != diff ? `${diffToValue(diff)}점(${diffToPercent(score, diff, { fixed: 1 })}` : 'NEW!'}</span>
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>
