@@ -84,7 +84,7 @@ const ConfirmModal = ({
   onConfirm: () => void;
   isInverse?: boolean;
   actionText?: string[];
-}): [() => React.ReactElement, () => void] => {
+}): [() => React.ReactElement, () => void, () => void] => {
   const [isOpen, setIsOpen] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -129,7 +129,7 @@ const ConfirmModal = ({
     );
   };
 
-  return [modal, openModal];
+  return [modal, openModal, closeModal];
 };
 
 export default ConfirmModal;
