@@ -56,6 +56,13 @@ const LargeStockCardHeader = styled.div({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
+
+  ['>img']: {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    flexShrink: '0',
+  },
 });
 
 const LargeStockCardHeaderImage = styled.div({

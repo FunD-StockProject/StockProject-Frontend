@@ -82,7 +82,6 @@ const StockTableItemSymbol = styled.td({
     height: '26px',
     flexShrink: '0',
     aspectRatio: '1 / 1',
-    background: 'red',
     borderRadius: '50%',
   },
 

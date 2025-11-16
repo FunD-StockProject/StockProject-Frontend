@@ -4,6 +4,7 @@ import { STOCK_TYPE } from '@ts/Types';
 import { diffToPercent, diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import { StockInfo } from '@controllers/api.Type';
 import { useHomeStockFetchQuery } from '@controllers/query';
 import {
@@ -22,7 +23,7 @@ import {
 } from './StockCard.Style';
 
 export const LargeStockCard = ({
-  stock: { symbolName, score },
+  stock: { stockId, symbolName, score },
   country,
 }: {
   stock: StockInfo;
@@ -40,9 +41,7 @@ export const LargeStockCard = ({
   return (
     <LargeStockCardContainer onClick={handleClick}>
       <LargeStockCardHeader>
-        <LargeStockCardHeaderImage>
-          <img src={''} />
-        </LargeStockCardHeaderImage>
+        <StockImage stockId={stockId} alt={symbolName} />
         <p>{symbolName}</p>
       </LargeStockCardHeader>
       <hr />
