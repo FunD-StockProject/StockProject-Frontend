@@ -429,7 +429,6 @@ const Lab = () => {
   const [selectedTab, setSelectedTab] = useState<'현황' | '결과'>('현황');
 
   const { data: experiment } = useExperimentQuery();
-  console.log(experiment);
 
   const handleIntroClick = (step: number) => () => {
     navigate(webPath.labPurchase(), { state: { step: step } });
