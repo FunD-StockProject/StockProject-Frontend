@@ -30,7 +30,6 @@ import {
   SectionTitle,
   StockCard,
   StockGrid,
-  StockImagePlaceholder,
   StockName,
   StockPrice,
   StockScore,

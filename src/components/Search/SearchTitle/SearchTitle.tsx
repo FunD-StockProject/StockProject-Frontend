@@ -3,7 +3,6 @@ import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
-import { RESULT_TYPE } from '@ts/Types';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
@@ -160,6 +159,7 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       return;
     }
     buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
+    navigate(webPath.labPurchase(), { state: { step: 4 } });
   };
 
   const handleLogin = () => {

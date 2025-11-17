@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from '@layout/Header/Header';
 import { theme } from '@styles/themes';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import LabCountry from './Country/Country';

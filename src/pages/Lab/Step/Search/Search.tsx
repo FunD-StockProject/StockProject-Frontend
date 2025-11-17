@@ -6,7 +6,7 @@ import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { fetchAutoComplete } from '@controllers/api';
-import { StockDetailInfo, StockInfo } from '@controllers/api.Type';
+import { StockDetailInfo } from '@controllers/api.Type';
 import { useAutoComplete, usePopularStockFetchQuery } from '@controllers/query';
 import { theme } from '@styles/themes';
 import AlertSVG from '@assets/icons/alert.svg?react';

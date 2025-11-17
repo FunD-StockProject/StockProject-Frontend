@@ -12,7 +12,6 @@ import {
   LargeStockCardContent,
   LargeStockCardContentTextContainer,
   LargeStockCardHeader,
-  LargeStockCardHeaderImage,
   SmallStockCardContainer,
   SmallStockCardContent,
   SmallStockCardContentKeywords,

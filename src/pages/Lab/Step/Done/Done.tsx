@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
+import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import { theme } from '@styles/themes';
 import LabResultPNG from '@assets/lab/lab-result.png';

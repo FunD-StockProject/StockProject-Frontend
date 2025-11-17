@@ -1,16 +1,11 @@
-import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ExperimentItem } from '@ts/Interfaces';
 import { webPath } from '@router/index';
 import { StatusTitle } from '@components/Lab/Common.Style';
 import ExperimentList from '@components/Lab/StockRecordSheet/ExperimentList/ExpermentList';
 import LabResult from '@components/LabResult/LabResult';
 import { useExperimentQuery } from '@controllers/query/portfolio';
-import { theme } from '@styles/themes';
 import AddStockSVG from '@assets/icons/addStock.svg?react';
-import LeftChevronSVG from '@assets/icons/chevronLeftNarrow.svg?react';
-import SamsungLogoSVGURL from '@assets/sangsung.svg?url';
 import {
   AddStockButton,
   AddStockButtonWrapper,
@@ -32,147 +27,6 @@ import {
   TabContainer,
 } from './Lab.Style';
 
-const mocksummaryMetrics = [
-  { label: '총 실험 수', value: 12 },
-  { label: '성공률', value: 62.5 },
-  { label: '평균 수익률', value: 1.26 },
-];
-
-const mockExperiments: ExperimentItem[] = [
-  {
-    id: 1,
-    name: '삼성전자',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 50000,
-    buyScore: 50,
-    currentPrice: 60000,
-    currentScore: 60,
-    autoSellIn: 3,
-    buyDate: '24.11.01',
-  },
-  {
-    id: 2,
-    name: 'Deloitte',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 50000,
-    buyScore: 50,
-    currentPrice: 60000,
-    currentScore: 60,
-    autoSellIn: 2,
-    buyDate: '24.11.05',
-  },
-  {
-    id: 3,
-    name: '애플',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 70000,
-    buyScore: 65,
-    currentPrice: 80000,
-    currentScore: 68,
-    autoSellIn: 1,
-    buyDate: '24.11.10',
-  },
-  {
-    id: 4,
-    name: '테슬라',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 90000,
-    buyScore: 72,
-    currentPrice: 88000,
-    currentScore: 70,
-    autoSellIn: 0,
-    buyDate: '24.11.15',
-  },
-  {
-    id: 5,
-    name: '네이버',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 1000,
-    buyScore: 80,
-    currentPrice: 1300,
-    currentScore: 85,
-    autoSellIn: 2,
-    buyDate: '24.11.18',
-  },
-  {
-    id: 6,
-    name: '카카오',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 600,
-    buyScore: 47,
-    currentPrice: 60000,
-    currentScore: 45,
-    autoSellIn: 3,
-    buyDate: '24.11.',
-  },
-  {
-    id: 7,
-    name: '현대차',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 95000,
-    buyScore: 66,
-    currentPrice: 99000,
-    currentScore: 70,
-    autoSellIn: 4,
-    buyDate: '24.11.23',
-  },
-  {
-    id: 8,
-    name: 'LG화학',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 500000,
-    buyScore: 85,
-    currentPrice: 510000,
-    currentScore: 87,
-    autoSellIn: 0,
-    buyDate: '24.11.26',
-  },
-  {
-    id: 9,
-    name: '마이크로소프트',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 310000,
-    buyScore: 78,
-    currentPrice: 330000,
-    currentScore: 82,
-    autoSellIn: 5,
-    buyDate: '24.11.28',
-  },
-  {
-    id: 10,
-    name: '엔비디아',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 450000,
-    buyScore: 90,
-    currentPrice: 470000,
-    currentScore: 92,
-    autoSellIn: 1,
-    buyDate: '24.12.01',
-  },
-  {
-    id: 11,
-    name: '아마존',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 180000,
-    buyScore: 58,
-    currentPrice: 176000,
-    currentScore: 56,
-    autoSellIn: 2,
-    buyDate: '24.12.03',
-  },
-  {
-    id: 12,
-    name: '구글',
-    logo: SamsungLogoSVGURL,
-    buyPrice: 200000,
-    buyScore: 62,
-    currentPrice: 2000,
-    currentScore: 67,
-    autoSellIn: 4,
-    buyDate: '24.12.05',
-  },
-];
-
 // const LabContainer = styled.div({
 //   flexGrow: '1',
 //   display: 'flex',
@@ -181,11 +35,11 @@ const mockExperiments: ExperimentItem[] = [
 //   overflow: 'hidden',
 // });
 
-type EXPERIMENT_TAB = 'STATUS' | 'RESULT';
-const experimentTabText: Record<EXPERIMENT_TAB, string> = {
-  STATUS: '매수현황',
-  RESULT: '매수결과',
-};
+// type EXPERIMENT_TAB = 'STATUS' | 'RESULT';
+// const experimentTabText: Record<EXPERIMENT_TAB, string> = {
+//   STATUS: '매수현황',
+//   RESULT: '매수결과',
+// };
 
 // const experimentTabList: { key: EXPERIMENT_TAB; text: string }[] = [
 //   { key: 'STATUS', text: experimentTabText.STATUS },

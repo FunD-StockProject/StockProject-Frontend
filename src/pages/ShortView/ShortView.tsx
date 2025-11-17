@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
+import { webPath } from '@router/index';
 import ShortViewNeedLogin from '@components/ShortView/NeedLogin/NeedLogin';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
 import {
@@ -98,6 +100,8 @@ const mockStocks: StockCardShortview[] = [
 ];
 
 const ShortView = () => {
+  const navigate = useNavigate();
+
   const isLogin = !!getItemLocalStorage('access_token');
   const [stocks, setStocks] = useState<StockCardShortview[]>(!isLogin ? [mockStocks[0]] : []);
   const { toast, showToast, hideToast } = useToast();
@@ -144,6 +148,7 @@ const ShortView = () => {
     console.log('purchase');
     buyExperiment({ stockId: currentStock.stockId, country: currentStock.country });
     setStocks((prev) => prev.slice(1));
+    navigate(webPath.labPurchase(), { state: { step: 4 } });
   };
 
   const handleClickNeverSeen = () => {

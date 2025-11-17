@@ -4,7 +4,7 @@ import { ExperimentItem } from '@ts/Interfaces';
 import StockImage from '@components/Common/StockImage';
 import { useExperimentStatusDetailQuery } from '@controllers/query/portfolio';
 import { theme } from '@styles/themes';
-import { CompanyLogo, CompanyName } from './ExpeimentList.Style';
+import { CompanyName } from './ExpeimentList.Style';
 import {
   BottomSheetContainer,
   BottomSheetContent,

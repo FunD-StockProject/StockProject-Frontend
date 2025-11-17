@@ -13,8 +13,6 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import { StockDetailInfo, StockInfo } from '@controllers/api.Type';
 import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
-import { useAddBookmarkMutation, useBookmarkListQuery, useDeleteBookmarkMutation } from '@controllers/query/favorites';
-import { theme } from '@styles/themes';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {
   Divider,

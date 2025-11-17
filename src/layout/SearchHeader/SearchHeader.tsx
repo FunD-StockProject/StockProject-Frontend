@@ -12,7 +12,6 @@ import {
   useToggleNotificationMutation,
 } from '@controllers/query/favorites';
 import { theme } from '@styles/themes';
-import HeartSVG from '@assets/heart.svg?react';
 import BackIcon from '@assets/icons/arrowLeft.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
 import MoreIcon from '@assets/icons/detail.svg?react';

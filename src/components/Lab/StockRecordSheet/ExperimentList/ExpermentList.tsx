@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ExperimentItem } from '@ts/Interfaces';
 import StockImage from '@components/Common/StockImage';
 import {
-  CompanyLogo,
   CompanyName,
   DataContainer,
   DateStatus,
