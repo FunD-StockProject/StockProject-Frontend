@@ -1,9 +1,25 @@
-import { ExperimentItem } from "@ts/Interfaces";
-import { CompanyLogo, CompanyName } from "./ExpeimentList.Style";
-import { BottomSheetOverlay, BottomSheetContainer, BottomSheetContent, HeaderSection, SummarySection, SummaryTable, SummaryRow, SummaryCell, SummaryLabel, SummaryValue, GraphSection, GraphContainer, CloseButton } from "./ExperimentDetailBottomSheet.Style";
-import { useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { theme } from "@styles/themes";
+import { useMemo } from 'react';
+import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { ExperimentItem } from '@ts/Interfaces';
+import StockImage from '@components/Common/StockImage';
+import { useExperimentStatusDetailQuery } from '@controllers/query/portfolio';
+import { theme } from '@styles/themes';
+import { CompanyName } from './ExpeimentList.Style';
+import {
+  BottomSheetContainer,
+  BottomSheetContent,
+  BottomSheetOverlay,
+  CloseButton,
+  GraphContainer,
+  GraphSection,
+  HeaderSection,
+  SummaryCell,
+  SummaryLabel,
+  SummaryRow,
+  SummarySection,
+  SummaryTable,
+  SummaryValue,
+} from './ExperimentDetailBottomSheet.Style';
 
 interface ExperimentDetailBottomSheetProps {
   experiment: ExperimentItem | null;
@@ -14,6 +30,11 @@ interface ExperimentDetailBottomSheetProps {
 const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: ExperimentDetailBottomSheetProps) => {
   if (!experiment || !isOpen) return null;
 
+  const { data: experimentStatusDetail } = useExperimentStatusDetailQuery(experiment.experimentId);
+
+  const _date = new Date(experiment.buyAt);
+  const buyDate = `${_date.getFullYear() % 100}.${(_date.getMonth() + 1).toString().padStart(2, '0')}.${_date.getDate().toString().padStart(2, '0')}`;
+
   const scoreDiff = experiment.currentScore - experiment.buyScore;
   const scoreDiffPercent = ((scoreDiff / experiment.buyScore) * 100).toFixed(1);
   const priceDiff = experiment.currentPrice - experiment.buyPrice;
@@ -21,33 +42,44 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
 
   // 그래프 데이터 생성
   const graphData = useMemo(() => {
-    const baseScore = experiment.buyScore;
-    const currentScore = experiment.currentScore;
-    const isExperimenting = experiment.autoSellIn > 0;
+    // const baseScore = experiment.buyScore;
+    // const currentScore = experiment.currentScore;
+    // const isExperimenting = experiment.autoSellIn > 0;
 
-    // 실험 진행 상태에 따라 데이터 생성
-    if (isExperimenting) {
-      // 실험 중일 때 - D-5, D-4, D-3만 데이터 있음, D-2, D-1은 비어있음
-      return [
-        { day: 'D-5', score: baseScore, price: experiment.buyPrice, isCurrent: false },
-        { day: 'D-4', score: Math.round((baseScore + currentScore) / 2), price: Math.round((experiment.buyPrice + experiment.currentPrice) / 2), isCurrent: false },
-        { day: 'D-3', score: currentScore, price: experiment.currentPrice, isCurrent: true },
-        { day: 'D-2', score: null, price: null, isCurrent: false },
-        { day: 'D-1', score: null, price: null, isCurrent: false }
-      ] as Array<{ day: string, score: number | null, price: number | null, isCurrent: boolean }>;
-    } else {
-      // 실험 완료일 때 - 전체 5일 데이터
-      return [
-        { day: 'D-5', score: baseScore - 2, price: experiment.buyPrice * 0.98, isCurrent: false },
-        { day: 'D-4', score: baseScore - 1, price: experiment.buyPrice * 0.99, isCurrent: false },
-        { day: 'D-3', score: baseScore + 1, price: experiment.buyPrice * 1.01, isCurrent: false },
-        { day: 'D-2', score: baseScore + 0.5, price: experiment.buyPrice * 1.005, isCurrent: false },
-        { day: 'D-1', score: currentScore, price: experiment.currentPrice, isCurrent: true }
-      ] as Array<{ day: string, score: number | null, price: number | null, isCurrent: boolean }>;
-    }
-  }, [experiment]);
+    // // 실험 진행 상태에 따라 데이터 생성
+    // if (isExperimenting) {
+    //   // 실험 중일 때 - D-5, D-4, D-3만 데이터 있음, D-2, D-1은 비어있음
+    //   return [
+    //     { day: 'D-5', score: baseScore, price: experiment.buyPrice, isCurrent: false },
+    //     {
+    //       day: 'D-4',
+    //       score: Math.round((baseScore + currentScore) / 2),
+    //       price: Math.round((experiment.buyPrice + experiment.currentPrice) / 2),
+    //       isCurrent: false,
+    //     },
+    //     { day: 'D-3', score: currentScore, price: experiment.currentPrice, isCurrent: true },
+    //     { day: 'D-2', score: null, price: null, isCurrent: false },
+    //     { day: 'D-1', score: null, price: null, isCurrent: false },
+    //   ] as Array<{ day: string; score: number | null; price: number | null; isCurrent: boolean }>;
+    // } else {
+    //   // 실험 완료일 때 - 전체 5일 데이터
+    //   return [
+    //     { day: 'D-5', score: baseScore - 2, price: experiment.buyPrice * 0.98, isCurrent: false },
+    //     { day: 'D-4', score: baseScore - 1, price: experiment.buyPrice * 0.99, isCurrent: false },
+    //     { day: 'D-3', score: baseScore + 1, price: experiment.buyPrice * 1.01, isCurrent: false },
+    //     { day: 'D-2', score: baseScore + 0.5, price: experiment.buyPrice * 1.005, isCurrent: false },
+    //     { day: 'D-1', score: currentScore, price: experiment.currentPrice, isCurrent: true },
+    //   ] as Array<{ day: string; score: number | null; price: number | null; isCurrent: boolean }>;
+    // }
+    return Array.from({ length: 5 }, () => 1).map((_, i) => ({
+      day: `D-${5 - i}`,
+      score: experimentStatusDetail?.tradeInfos[i]?.score ?? null,
+      price: experimentStatusDetail?.tradeInfos[i]?.price ?? null,
+      isCurrent: (experimentStatusDetail?.tradeInfos?.length ?? 0) - 1 == i,
+    })) as Array<{ day: string; score: number | null; price: number | null; isCurrent: boolean }>;
+  }, [experimentStatusDetail]);
 
-
+  console.log(graphData);
 
   return (
     <BottomSheetOverlay onClick={onClose}>
@@ -55,8 +87,15 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
         <BottomSheetContent>
           {/* Header Section */}
           <HeaderSection>
-            <CompanyLogo src={experiment.logo} alt="logo" />
-            <CompanyName>{experiment.name}</CompanyName>
+            <StockImage
+              stockId={experiment.stockId}
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '999px',
+              }}
+            />
+            <CompanyName>{experiment.symbolName}</CompanyName>
           </HeaderSection>
 
           {/* Summary Section */}
@@ -65,8 +104,8 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
               <SummaryRow>
                 <SummaryCell>
                   <SummaryLabel>매수일/상태</SummaryLabel>
-                  <SummaryValue>{experiment.buyDate}</SummaryValue>
-                  <SummaryValue>{experiment.autoSellIn > 0 ? '실험중' : '실험완료'}</SummaryValue>
+                  <SummaryValue>{buyDate}</SummaryValue>
+                  <SummaryValue>{experiment.status == 'PROGRESS' ? '실험중' : '실험완료'}</SummaryValue>
                 </SummaryCell>
                 <SummaryCell>
                   <SummaryLabel>매수시점</SummaryLabel>
@@ -81,7 +120,8 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
                 <SummaryCell>
                   <SummaryLabel>수익률</SummaryLabel>
                   <SummaryValue style={{ color: scoreDiff >= 0 ? '#FF6B6B' : '#4A90E2' }}>
-                    {scoreDiff >= 0 ? '+' : ''}{scoreDiffPercent}%
+                    {scoreDiff >= 0 ? '+' : ''}
+                    {scoreDiffPercent}%
                   </SummaryValue>
                 </SummaryCell>
               </SummaryRow>
@@ -91,29 +131,22 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
           {/* Graph Section */}
           <GraphSection>
             <GraphContainer>
-              <div style={{
-                width: '100%',
-                height: '200px',
-                background: 'rgba(255,255,255,0.05)',
-                borderRadius: '8px',
-                padding: '10px',
-                boxSizing: 'border-box',
-                position: 'relative'
-              }}>
+              <div
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  background: 'rgba(255,255,255,0.05)',
+                  borderRadius: '8px',
+                  padding: '10px',
+                  boxSizing: 'border-box',
+                  position: 'relative',
+                }}
+              >
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={graphData} margin={{ top: 5, right: 40, left: 40, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                    <XAxis
-                      dataKey="day"
-                      stroke="rgba(255,255,255,0.6)"
-                      fontSize={12}
-                    />
-                    <YAxis
-                      stroke="transparent"
-                      fontSize={0}
-                      domain={['dataMin - 5', 'dataMax + 5']}
-                      hide={true}
-                    />
+                    <XAxis dataKey="day" stroke="rgba(255,255,255,0.6)" fontSize={12} />
+                    <YAxis stroke="transparent" fontSize={0} domain={['dataMin - 5', 'dataMax + 5']} hide={true} />
                     <Line
                       type="monotone"
                       dataKey="score"
@@ -124,9 +157,9 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
                       connectNulls={false}
                     />
                     {/* 현재 포인트 강조 */}
-                    {graphData.find(d => d.isCurrent) && (
+                    {graphData.find((d) => d.isCurrent) && (
                       <ReferenceLine
-                        x={graphData.find(d => d.isCurrent)?.day}
+                        x={graphData.find((d) => d.isCurrent)?.day}
                         stroke={theme.colors.sub_blue6}
                         strokeDasharray="3 3"
                         strokeWidth={1}
@@ -136,43 +169,51 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
                 </ResponsiveContainer>
 
                 {/* 고정된 툴팁 */}
-                {graphData.find(d => d.isCurrent) && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '100px',
-                    left: experiment.autoSellIn === 0 ? '80%' : '60%', // 실험 완료시 D-1(80%), 실험중일 때 D-3(60%)
-                    transform: 'translateX(-50%)',
-                    background: 'rgba(255,255,255,0.12)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '400px',
-                    padding: '8px 12px',
-                    color: 'white',
-                    fontSize: '10px',
-                    minWidth: '120px',
-                    backdropFilter: 'blur(10px)',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                    zIndex: 1000
-                  }}>
+                {graphData.find((d) => d.isCurrent) && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100px',
+                      left: experiment.autoSellIn === 0 ? '80%' : '60%', // 실험 완료시 D-1(80%), 실험중일 때 D-3(60%)
+                      transform: 'translateX(-50%)',
+                      background: 'rgba(255,255,255,0.12)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '400px',
+                      padding: '8px 12px',
+                      color: 'white',
+                      fontSize: '10px',
+                      minWidth: '120px',
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                      zIndex: 1000,
+                    }}
+                  >
                     <div style={{ marginBottom: '2px' }}>
                       <span style={{ color: 'rgba(255,255,255,0.8)' }}>인간지표 | </span>
                       <span style={{ color: 'white' }}>{experiment.currentScore}점</span>
                       <span style={{ color: scoreDiff >= 0 ? '#FF6B6B' : '#4A90E2' }}>
-                        {' '}({scoreDiff >= 0 ? '+' : ''}{scoreDiff}점)
+                        {' '}
+                        ({scoreDiff >= 0 ? '+' : ''}
+                        {scoreDiff}점)
                       </span>
                     </div>
                     <div style={{ marginBottom: '2px' }}>
                       <span style={{ color: 'rgba(255,255,255,0.8)' }}>수익률 | </span>
                       <span style={{ color: 'white' }}>{priceDiffPercent}%</span>
                       <span style={{ color: parseFloat(priceDiffPercent) >= 0 ? '#FF6B6B' : '#4A90E2' }}>
-                        {' '}({parseFloat(priceDiffPercent) >= 0 ? '+' : ''}{priceDiffPercent}%)
+                        {' '}
+                        ({parseFloat(priceDiffPercent) >= 0 ? '+' : ''}
+                        {priceDiffPercent}%)
                       </span>
                     </div>
-                    <div style={{
-                      fontSize: '8px',
-                      color: 'rgba(255,255,255,0.6)',
-                      marginTop: '2px',
-                      fontStyle: 'italic'
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '8px',
+                        color: 'rgba(255,255,255,0.6)',
+                        marginTop: '2px',
+                        fontStyle: 'italic',
+                      }}
+                    >
                       *()는 매수시점 대비
                     </div>
                   </div>
@@ -182,13 +223,11 @@ const ExperimentDetailBottomSheet = ({ experiment, isOpen, onClose }: Experiment
           </GraphSection>
 
           {/* Close Button */}
-          <CloseButton onClick={onClose}>
-            닫기
-          </CloseButton>
+          <CloseButton onClick={onClose}>닫기</CloseButton>
         </BottomSheetContent>
       </BottomSheetContainer>
     </BottomSheetOverlay>
   );
 };
 
-export default ExperimentDetailBottomSheet; 
+export default ExperimentDetailBottomSheet;

@@ -13,7 +13,6 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  border-bottom: 1px solid ${theme.colors.sub_gray9};
 `;
 
 export const HeaderTitle = styled.div`
@@ -56,7 +55,6 @@ export const EmptyState = styled.div`
   gap: 24px;
 `;
 
-
 export const SVGContainer = styled.div`
   width: 100%;
   height: 200px;
@@ -93,7 +91,7 @@ export const ActionButtonPrimary = styled(ActionButton)`
   ${theme.font.body18Semibold}
   background: ${theme.colors.sub_gray2};
   color: ${theme.colors.sub_black};
-  
+
   svg {
     width: 24px;
     height: 24px;
@@ -111,7 +109,6 @@ export const StockContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  
 `;
 export const StockItem = styled.div`
   display: flex;

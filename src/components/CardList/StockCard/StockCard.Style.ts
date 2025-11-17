@@ -56,6 +56,13 @@ const LargeStockCardHeader = styled.div({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
+
+  ['>img']: {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    flexShrink: '0',
+  },
 });
 
 const LargeStockCardHeaderImage = styled.div({
@@ -148,9 +155,9 @@ const SmallStockCardContentTitle = styled.div({
 });
 
 const SmallStockCardContentScore = styled.div(
-  ({ delta }: { delta: number }) => ({
+  ({ delta, isNew }: { delta: number; isNew: boolean }) => ({
     ['>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+      color: isNew ? theme.colors.yellow : (deltaScoreToColor(delta) ?? theme.colors.sub_gray7),
     },
   }),
   {

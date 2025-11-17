@@ -39,12 +39,13 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
 
   const headerTitle = {
     [webPath.register()]: '회원가입',
-    [webPath.favorites()]: '관심',
     [webPath.about()]: '인간지표란?',
     [webPath.callbackKakao()]: '로그인',
     [webPath.usage()]: 'PWA 사용방법',
     [webPath.notification()]: '알림',
     ['searchBar']: '검색',
+    ['labTutorial']: '실험실 소개',
+    ['labPurchase']: '포트폴리오 생성하기',
   };
 
   const handleBefore = () => {

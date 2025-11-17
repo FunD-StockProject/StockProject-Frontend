@@ -4,6 +4,7 @@ import { STOCK_TYPE } from '@ts/Types';
 import { diffToPercent, diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import { StockInfo } from '@controllers/api.Type';
 import { useHomeStockFetchQuery } from '@controllers/query';
 import {
@@ -11,7 +12,6 @@ import {
   LargeStockCardContent,
   LargeStockCardContentTextContainer,
   LargeStockCardHeader,
-  LargeStockCardHeaderImage,
   SmallStockCardContainer,
   SmallStockCardContent,
   SmallStockCardContentKeywords,
@@ -22,7 +22,7 @@ import {
 } from './StockCard.Style';
 
 export const LargeStockCard = ({
-  stock: { symbolName, score },
+  stock: { stockId, symbolName, score },
   country,
 }: {
   stock: StockInfo;
@@ -40,9 +40,7 @@ export const LargeStockCard = ({
   return (
     <LargeStockCardContainer onClick={handleClick}>
       <LargeStockCardHeader>
-        <LargeStockCardHeaderImage>
-          <img src={''} />
-        </LargeStockCardHeaderImage>
+        <StockImage stockId={stockId} alt={symbolName} />
         <p>{symbolName}</p>
       </LargeStockCardHeader>
       <hr />
@@ -84,11 +82,9 @@ export const SmallStockCard = ({
       <SmallStockCardContent>
         <SmallStockCardContentTitle>
           <p className="name">{symbolName}</p>
-          <SmallStockCardContentScore delta={diff}>
+          <SmallStockCardContentScore delta={diff} isNew={score == diff}>
             {score}점
-            <span>
-              {diffToValue(diff)}점({diffToPercent(score, diff, { fixed: 1 })})
-            </span>
+            <span>{score != diff ? `${diffToValue(diff)}점(${diffToPercent(score, diff, { fixed: 1 })}` : 'NEW!'}</span>
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>

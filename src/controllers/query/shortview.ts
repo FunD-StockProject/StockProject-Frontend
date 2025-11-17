@@ -1,6 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { StockCardShortview } from '@pages/ShortView/ShortView';
+import { fetchShortview, fetchShortviewFeed, postShortViewBuy, postShortViewHide } from '@controllers/api/shortview';
 import { queryOptions } from './common';
-import { fetchShortviewFeed, postShortViewBuy, postShortViewHide } from '@controllers/api/shortview';
+
+export const useShortViewQuery = () => {
+  return useQuery<StockCardShortview[]>(['shortview'], fetchShortview, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
+};
 
 export const useBookmarkCountQuery = () => {
   return useQuery(['shortview'], fetchShortviewFeed, {

@@ -5,6 +5,7 @@ import { StockCountryKey } from '@ts/StockCountry';
 import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import { StockTableInfo } from '@controllers/api.Type';
 import { useStockTableInfoQuery } from '@controllers/query';
 import { HomeItemTtile } from '../Title/Title.Style';
@@ -76,7 +77,7 @@ const StockTable = ({ country }: { country: StockCountryKey }) => {
                   onClick={handleClick(stock.symbolName)}
                 >
                   <StockTableItemSymbol>
-                    <img src={''} />
+                    <StockImage stockId={stock.stockId} alt={stock.symbolName} />
                     <p>{stock.symbolName}</p>
                   </StockTableItemSymbol>
                   <StockTableItemPrice delta={stock.priceDiff}>

@@ -26,7 +26,7 @@ export interface StockInfo {
 }
 
 export interface StockTableInfo {
-  stockId: string;
+  stockId: number;
   symbolName: string;
   country: string;
   price: number;

@@ -1,9 +1,17 @@
-
-
-import { ExperimentItem } from "@ts/Interfaces";
-import { ExperimentContainer, ExperimentCard, RankNumber, CompanyLogo, CompanyName, DateStatus, DetailsButton, DataContainer, PriceText } from "./ExpeimentList.Style";
-import { useState } from "react";
-import ExperimentDetailBottomSheet from "./ExperimentDetailBottomSheet";
+import { useState } from 'react';
+import { ExperimentItem } from '@ts/Interfaces';
+import StockImage from '@components/Common/StockImage';
+import {
+  CompanyName,
+  DataContainer,
+  DateStatus,
+  DetailsButton,
+  ExperimentCard,
+  ExperimentContainer,
+  PriceText,
+  RankNumber,
+} from './ExpeimentList.Style';
+import ExperimentDetailBottomSheet from './ExperimentDetailBottomSheet';
 
 const ExperimentList = ({ experiment }: { experiment: ExperimentItem[] }) => {
   const [selectedExperiment, setSelectedExperiment] = useState<ExperimentItem | null>(null);
@@ -25,20 +33,33 @@ const ExperimentList = ({ experiment }: { experiment: ExperimentItem[] }) => {
         {experiment.map((item, index) => {
           const scoreDiff = item.currentScore - item.buyScore;
           const scoreDiffPercent = ((scoreDiff / item.buyScore) * 100).toFixed(0);
-          const daysAgo = item.autoSellIn > 0 ? item.autoSellIn + 3 : 8; // 임시 계산
+          // const daysAgo = item.autoSellIn > 0 ? item.autoSellIn + 3 : 8; // 임시 계산
+
+          const _date = new Date(item.buyAt);
+          const buyDate = `${_date.getFullYear() % 100}.${(_date.getMonth() + 1).toString().padStart(2, '0')}.${_date.getDate().toString().padStart(2, '0')}`;
+          const daysAgo = (new Date().getTime() - _date.getTime()) / (24 * 60 * 60 * 1000);
 
           return (
-            <ExperimentCard key={item.id}>
+            <ExperimentCard key={item.experimentId}>
               <RankNumber>{index + 1}</RankNumber>
-              <CompanyLogo src={item.logo} alt="logo" />
+              <StockImage
+                stockId={item.stockId}
+                style={{
+                  width: '28px',
+                  borderRadius: '999px',
+                  marginRight: '12px',
+                }}
+              />
               <DataContainer>
-                <CompanyName>{item.name}</CompanyName>
+                <CompanyName>{item.symbolName}</CompanyName>
                 <DateStatus>
-                  {item.buyDate}({item.autoSellIn > 0 ? '실험중' : '완료'})
+                  {buyDate}({item.status == 'PROGRESS' ? '실험중' : '완료'})
                 </DateStatus>
                 <span>
-                  {daysAgo}일전보다 <PriceText isPositive={scoreDiff > 0} >
-                    {scoreDiff >= 0 ? '+' : ''}{scoreDiffPercent}%
+                  {daysAgo.toFixed(0)}일전보다{' '}
+                  <PriceText isPositive={scoreDiff > 0}>
+                    {scoreDiff >= 0 ? '+' : ''}
+                    {scoreDiffPercent}%
                   </PriceText>
                 </span>
               </DataContainer>
@@ -54,7 +75,7 @@ const ExperimentList = ({ experiment }: { experiment: ExperimentItem[] }) => {
         onClose={handleCloseBottomSheet}
       />
     </>
-  )
+  );
 };
 
 export default ExperimentList;

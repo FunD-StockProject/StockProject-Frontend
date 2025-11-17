@@ -1,17 +1,39 @@
-import { useState } from "react";
-import { webPath } from "@router/index";
-import { Container, TopBar, BackIcon, TopBarTitle, InnerContainer, Title, Description, NavButtonContainer, NavButton, ToastStyle, Divider, IndustryTag } from "../Common.Style";
-
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useQueryComponent } from '@hooks/useQueryComponent';
+import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
+import { StockDetailInfo } from '@controllers/api.Type';
+import { useStockIdSearchQuery } from '@controllers/query';
 import BackLogoSVG from '@assets/backLogo.svg?react';
-import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
+import PurchaseCheckSVG from '@assets/icons/purchaseCheck.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
-
-import { useLocation, useNavigate } from "react-router-dom";
-import { StockGrid, StockCard, StockName, StockPrice, StockScore, PurchaseButton, StockImagePlaceholder, ScoreDiff, SectionTitle, IndustryTagWrapper } from "./StockPurchase.Style";
-import { useQueryComponent } from "@hooks/useQueryComponent";
-import { useStockIdSearchQuery } from "@controllers/query";
-import { StockDetailInfo } from "@controllers/api.Type";
+import {
+  BackIcon,
+  Container,
+  Description,
+  Divider,
+  IndustryTag,
+  InnerContainer,
+  NavButton,
+  NavButtonContainer,
+  Title,
+  ToastStyle,
+  TopBar,
+  TopBarTitle,
+} from '../Common.Style';
+import {
+  IndustryTagWrapper,
+  PurchaseButton,
+  ScoreDiff,
+  SectionTitle,
+  StockCard,
+  StockGrid,
+  StockName,
+  StockPrice,
+  StockScore,
+} from './StockPurchase.Style';
 
 const formatScoreDiff = (scoreDiff: number) => {
   const sign = scoreDiff > 0 ? '+' : '';
@@ -38,21 +60,25 @@ const StockSelection = () => {
   console.log(industries);
 
   const handlePurchase = (symbol: string, name: string, price: number) => {
-    setPurchasedStocks(prev => [...prev, symbol]);
+    setPurchasedStocks((prev) => [...prev, symbol]);
     const truncatedName = name.length > 14 ? `${name.slice(0, 14)}...` : name;
     showToast(
       <>
         <PurchaseCheckSVG style={{ marginRight: '6px' }} />
         {`${truncatedName} ${formatPrice(price)}로 매수 완료되었습니다.`}
-      </>
+      </>,
     );
   };
 
-  const stockInfos = selectedStocks?.map((stock: StockDetailInfo) =>
-    useQueryComponent({
-      query: useStockIdSearchQuery(stock.stockId, stock.country),
-    })[0]
-  ).filter(Boolean) ?? [];
+  const stockInfos =
+    selectedStocks
+      ?.map(
+        (stock: StockDetailInfo) =>
+          useQueryComponent({
+            query: useStockIdSearchQuery(stock.stockId, stock.country),
+          })[0],
+      )
+      .filter(Boolean) ?? [];
 
   const showToast = (message: React.ReactNode) => {
     setToast(message);
@@ -76,13 +102,9 @@ const StockSelection = () => {
           추천 종목을 보고 <br />
           관심있는 종목을 매수하세요
         </Title>
-        <Description>
-          * 현재 화면에 노출되는 가격으로 매수됩니다.
-        </Description>
+        <Description>* 현재 화면에 노출되는 가격으로 매수됩니다.</Description>
         <Divider />
-        <SectionTitle>
-          내가 선택한 종목
-        </SectionTitle>
+        <SectionTitle>내가 선택한 종목</SectionTitle>
         <StockGrid>
           {stockInfos?.map((stockInfo: StockDetailInfo, index: number) => {
             const isPurchased = purchasedStocks.includes(stockInfo.symbol);
@@ -90,7 +112,7 @@ const StockSelection = () => {
 
             return (
               <StockCard key={index}>
-                <StockImagePlaceholder />
+                <StockImage stockId={stockInfo.stockId} />
                 <StockName>{stockInfo.symbolName}</StockName>
                 <StockPrice>
                   {formatPrice(stockInfo.price)}
@@ -116,16 +138,10 @@ const StockSelection = () => {
           })}
         </StockGrid>
 
-        <SectionTitle>
-          내 관심 산업별 추천 종목
-        </SectionTitle>
+        <SectionTitle>내 관심 산업별 추천 종목</SectionTitle>
         <IndustryTagWrapper>
           {industries.map((label: string) => (
-            <IndustryTag
-              key={label}
-              selected={selectedIndustry === label}
-              onClick={() => toggleIndustry(label)}
-            >
+            <IndustryTag key={label} selected={selectedIndustry === label} onClick={() => toggleIndustry(label)}>
               {label}
             </IndustryTag>
           ))}
@@ -141,7 +157,6 @@ const StockSelection = () => {
             완료
           </NavButton>
         </NavButtonContainer>
-
       </InnerContainer>
       {toast && <ToastStyle key={toast.toString()}>{toast}</ToastStyle>}
     </Container>

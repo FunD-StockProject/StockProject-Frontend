@@ -3,6 +3,7 @@ import AboutPage from '@pages/About/About';
 import Callback from '@pages/Callback/Callback';
 import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
+import LabStep from '@pages/Lab/Step/Step';
 import Login from '@pages/Login/Login';
 import MyPage from '@pages/MyPage/MyPage';
 import NotificationPage from '@pages/Notification/Notification';
@@ -37,6 +38,7 @@ export const webPath = {
   favorites: () => '/favorites',
   withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
+  labPurchase: () => '/lab/purchase',
   labIntro: () => '/lab/intro',
   labMarketSelection: () => '/lab/market/selection',
   labResult: () => '/lab/result',
@@ -81,6 +83,7 @@ const routes = [
       { path: webPath.withdrawDone(), element: <WithdrawDone /> },
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
+      { path: webPath.labPurchase(), element: <LabStep /> },
       { path: webPath.labIntro(), element: <Intro /> },
       { path: webPath.labMarketSelection(), element: <MarketSelection /> },
       { path: webPath.labResult(), element: <Result /> },

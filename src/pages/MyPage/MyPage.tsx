@@ -62,7 +62,10 @@ const MyPage = () => {
     navigate(webPath.withdraw());
   };
 
-  const [LogoutModal, openLogoutModal] = ConfirmModal('정말 로그아웃 하시겠어요?', handleLogout);
+  const [LogoutModal, openLogoutModal] = ConfirmModal({
+    title: '정말 로그아웃 하시겠어요?',
+    onConfirm: handleLogout,
+  });
 
   const detailButtons = [
     {
