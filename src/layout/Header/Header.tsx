@@ -44,6 +44,8 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     [webPath.usage()]: 'PWA 사용방법',
     [webPath.notification()]: '알림',
     ['searchBar']: '검색',
+    ['labTutorial']: '실험실 소개',
+    ['labPurchase']: '포트폴리오 생성하기',
   };
 
   const handleBefore = () => {

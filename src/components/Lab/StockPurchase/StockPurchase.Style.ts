@@ -1,13 +1,11 @@
-import styled from "@emotion/styled";
-import { theme } from "@styles/themes";
-import { deltaScoreToColor } from "@utils/ScoreConvert";
-
+import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { theme } from '@styles/themes';
 
 export const SectionTitle = styled.div`
   ${theme.font.body16Medium};
   margin-bottom: 8px;
 `;
-
 
 export const StockGrid = styled.div`
   display: grid;
@@ -15,18 +13,25 @@ export const StockGrid = styled.div`
   gap: 10px;
   margin-top: 16px;
   width: 100%;
-  margin-bottom:50px;
+  margin-bottom: 50px;
 `;
 
-export const StockCard = styled.div`
-  background: ${theme.colors.sub_gray11};
-  padding: 10px 0;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+export const StockCard = styled.div({
+  background: theme.colors.sub_gray11,
+  padding: '10px 0',
+  borderRadius: '10px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  ['>img']: {
+    borderRadius: '999px',
+    width: '72px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+  },
+});
 
 export const StockImagePlaceholder = styled.div`
   width: 72px;
@@ -69,8 +74,8 @@ export const ScoreDiff = styled.span<{ delta: number }>`
   color: ${({ delta }) => deltaScoreToColor(delta)};
 
   svg {
-    height: 0.5em;
     width: auto;
+    height: 0.5em;
     fill: ${({ delta }) => deltaScoreToColor(delta)};
   }
 `;

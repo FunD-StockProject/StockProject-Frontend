@@ -1,10 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
-import { fetchExperiment, fetchReport, fetchResult, postBuyExperiment } from '@controllers/api/portfolio';
+import {
+  fetchExperiment,
+  fetchExperimentStatusDetail,
+  fetchReport,
+  fetchResult,
+  postBuyExperiment,
+} from '@controllers/api/portfolio';
 import { queryOptions } from './common';
 
 export const useExperimentQuery = () => {
-  return useQuery(['bookmarkList'], fetchExperiment, queryOptions);
+  return useQuery(['experiment'], fetchExperiment, queryOptions);
+};
+
+export const useExperimentStatusDetailQuery = (experimentId: number) => {
+  return useQuery(['experimentDetail', experimentId], () => fetchExperimentStatusDetail(experimentId), queryOptions);
 };
 
 export const useReportQuery = () => {
