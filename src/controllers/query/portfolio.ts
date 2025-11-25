@@ -4,7 +4,6 @@ import {
   fetchExperiment,
   fetchExperimentStatusDetail,
   fetchReport,
-  fetchResult,
   fetchSectorRecommend,
   postBuyExperiment,
 } from '@controllers/api/portfolio';
@@ -20,10 +19,6 @@ export const useExperimentStatusDetailQuery = (experimentId: number) => {
 
 export const useReportQuery = () => {
   return useQuery(['bookmarkList'], fetchReport, queryOptions);
-};
-
-export const useResultQuery = () => {
-  return useQuery(['bookmarkList'], fetchResult, queryOptions);
 };
 
 export const useSectorRecommendQuery = (sector: string) => {

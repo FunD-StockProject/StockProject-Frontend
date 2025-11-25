@@ -146,6 +146,10 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const onBellClick = () => {
     if (!stockInfo) return;
 
+    if (!isLogin) {
+      openLoginModal();
+      return;
+    }
     if (isNotification) {
       showToast(
         <>
