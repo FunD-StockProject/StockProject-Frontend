@@ -1,10 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
+import { StockDetailInfo } from '@controllers/api.Type';
+
 import {
   fetchExperiment,
   fetchExperimentStatusDetail,
   fetchReport,
-  fetchResult,
+  fetchSectorRecommend,
   postBuyExperiment,
 } from '@controllers/api/portfolio';
 import { queryOptions } from './common';
@@ -21,8 +23,8 @@ export const useReportQuery = () => {
   return useQuery(['bookmarkList'], fetchReport, queryOptions);
 };
 
-export const useResultQuery = () => {
-  return useQuery(['bookmarkList'], fetchResult, queryOptions);
+export const useSectorRecommendQuery = (sector: string) => {
+  return useQuery<StockDetailInfo[]>(['sectorRecommend', sector], () => fetchSectorRecommend(sector), queryOptions);
 };
 
 // ----- Mutations -----

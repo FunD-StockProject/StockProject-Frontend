@@ -21,19 +21,21 @@ import {
 } from './LabResult.Style';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
+import { useReportQuery } from '@controllers/query/portfolio';
 
 const LabResult = () => {
   const [showHumanTypeSheet, setShowHumanTypeSheet] = useState(false);
   const [showQuadrantSheet, setShowQuadrantSheet] = useState(false);
   const navigate = useNavigate();
-
+  const { data: experimentReport } = useReportQuery();
+  console.log(experimentReport);
   // 실험 상태 체크 (실제로는 API에서 가져올 데이터)
   const hasOngoingExperiments = true; // 진행중인 실험이 있는지
   const hasCompletedExperiments = true; // 완료된 실험이 있는지
-  const daysUntilCompletion = 1; // 실험 완료까지 남은 일수
+  const daysUntilCompletion = 1; // 실험 완료까지 남은 일수 
 
   const handleStartMockPurchase = () => {
-    navigate(webPath.labIntro());
+    navigate(webPath.labPurchase(), { state: { step: 0 } });
   };
 
   // 진행중인 실험이 없을 때

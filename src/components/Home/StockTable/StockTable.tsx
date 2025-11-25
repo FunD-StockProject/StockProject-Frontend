@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
-import { StockCountryKey } from '@ts/StockCountry';
+import { STOCK_COUNTRY_MAP, StockCountryKey } from '@ts/StockCountry';
 import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
@@ -30,10 +30,9 @@ const StockTableTab = [
 
 const StockTable = ({ country }: { country: StockCountryKey }) => {
   const navigate = useNavigate();
-
   const [tableTab, setTableTab] = useState<string>('MARKET');
-
   const updateTime = STOCK_UPDATE_TIME[country];
+  const currency = STOCK_COUNTRY_MAP[country].currency;
   const [stockTable, suspend] = useQueryComponent({
     query: useStockTableInfoQuery(tableTab, country),
   });
@@ -81,7 +80,7 @@ const StockTable = ({ country }: { country: StockCountryKey }) => {
                     <p>{stock.symbolName}</p>
                   </StockTableItemSymbol>
                   <StockTableItemPrice delta={stock.priceDiff}>
-                    <p className="price">{stock.price.toLocaleString()}</p>
+                    <p className="price">{currency}{stock.price.toLocaleString()}</p>
                     <p className="diff">
                       {diffToValue(stock.priceDiff)}(
                       {diffToPercent(stock.price, stock.priceDiff, { fixed: 2, sign: false })})
@@ -89,7 +88,7 @@ const StockTable = ({ country }: { country: StockCountryKey }) => {
                   </StockTableItemPrice>
                   <StockTableItemScore delta={stock.scoreDiff}>
                     <p className="score">{stock.score}점</p>
-                    <p className="diff">({diffToPercent(stock.score, stock.scoreDiff, { sign: true, fixed: 0 })})</p>
+                    <p className="diff">({diffToValue(stock.scoreDiff)}점)</p>
                   </StockTableItemScore>
                 </StockTableItem>
               ))}

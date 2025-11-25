@@ -7,8 +7,8 @@ import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { StockDetailInfo } from '@controllers/api.Type';
 import {
   useAddBookmarkMutation,
-  useBookmarkListQuery,
   useDeleteBookmarkMutation,
+  useStockPreferenceQuery,
   useToggleNotificationMutation,
 } from '@controllers/query/favorites';
 import { theme } from '@styles/themes';
@@ -111,17 +111,12 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const isLogin = !!getItemLocalStorage('access_token');
   const { toast, showToast } = useToast();
 
-  const { data: bookmarkList } = useBookmarkListQuery();
+  const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
   const { mutate: addBookMark } = useAddBookmarkMutation();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
   const { mutate: toggleNotification } = useToggleNotificationMutation();
-
-  const { isBookmark, isNotification } = (() => {
-    const data = (bookmarkList ?? []).find((e) => e.stockId == stockInfo?.stockId);
-    const isBookmark = data && true;
-    const isNotification = data?.isNotificationOn;
-    return { isBookmark, isNotification };
-  })();
+  const isBookmark = stockPreference?.isBookmarked ?? false;
+  const isNotification = stockPreference?.isNotificationOn ?? false;
 
   const handleLogin = () => {
     navigate(webPath.login());
@@ -151,6 +146,10 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const onBellClick = () => {
     if (!stockInfo) return;
 
+    if (!isLogin) {
+      openLoginModal();
+      return;
+    }
     if (isNotification) {
       showToast(
         <>

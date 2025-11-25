@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_TYPE } from '@ts/Types';
-import { diffToPercent, diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
+import { diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
@@ -84,7 +84,7 @@ export const SmallStockCard = ({
           <p className="name">{symbolName}</p>
           <SmallStockCardContentScore delta={diff} isNew={score == diff}>
             {score}점
-            <span>{score != diff ? `${diffToValue(diff)}점(${diffToPercent(score, diff, { fixed: 1 })}` : 'NEW!'}</span>
+            <span>{score != diff ? `${diffToValue(diff)}점` : 'NEW!'}</span>
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>
