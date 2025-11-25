@@ -12,13 +12,18 @@ import { useStockIdSearchQuery } from '@controllers/query';
 import { useBuyExperimentMutation } from '@controllers/query/portfolio';
 import { theme } from '@styles/themes';
 import CheckSVG from '@assets/icons/check.svg?react';
+import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
 
 const LabPurchase = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { step, stocks, industries } = location.state;
+  const { step, stocks, sectors: selectedSectorKeys } = location.state; // 섹터 키 배열
+  const [selectedSector, setSelectedSector] = useState<StockSectorKey>(
+    selectedSectorKeys?.[0], // 첫 번째 섹터를 기본 선택
+  );
 
-  const stockInfos: StockDetailInfo[] =
+  // 선택한 종목들
+  const selectedStockInfos: StockDetailInfo[] =
     stocks
       ?.map(
         (stock: StockDetailInfo) =>
@@ -28,7 +33,7 @@ const LabPurchase = () => {
       )
       .filter(Boolean) ?? [];
 
-  console.log(stockInfos);
+
 
   const handlePrevStep = () => {
     navigate(-1);
@@ -42,8 +47,6 @@ const LabPurchase = () => {
       },
     });
   };
-
-  const [selectedIndustry, setSelectedIndustry] = useState<string>('');
 
   const [purchased, setPurchased] = useState<number[]>([]);
   const { mutate: buyExperiment } = useBuyExperimentMutation();
@@ -63,7 +66,7 @@ const LabPurchase = () => {
       <LabPurchaseContents>
         <p>내가 선택한 종목</p>
         <div className="grid">
-          {stockInfos.map((e) => {
+          {selectedStockInfos.map((e: StockDetailInfo) => {
             const disabled = purchased.some((b) => b == e.stockId);
             return (
               <div>
@@ -106,14 +109,21 @@ const LabPurchase = () => {
       <LabPurchaseContents>
         <p>내 관심 산업별 추천종목</p>
         <div className="category">
-          {industries.map((e: string) => (
-            <p className={selectedIndustry == e ? 'selected' : ''} onClick={() => setSelectedIndustry(e)}>
-              {e}
-            </p>
-          ))}
+          {selectedSectorKeys?.map((sectorKey: StockSectorKey) => {
+            const sector = STOCK_SECTOR_MAP[sectorKey];
+            return sector ? (
+              <p
+                key={sectorKey}
+                className={selectedSector === sectorKey ? 'selected' : ''}
+                onClick={() => setSelectedSector(sectorKey)}
+              >
+                {sector.text}
+              </p>
+            ) : null;
+          })}
         </div>
-        <div className="grid">
-          {/* {stockInfos.map((e) => (
+        {/* <div className="grid">
+          {currentSectorStocks.map((e: StockDetailInfo) => (
             <div>
               <div>
                 <StockImage stockId={e.stockId} />
@@ -130,8 +140,8 @@ const LabPurchase = () => {
               </div>
               <button>매수하기</button>
             </div>
-          ))} */}
-        </div>
+          ))}
+        </div> */}
       </LabPurchaseContents>
       <LabPurchaseButtonContainer>
         <button onClick={handlePrevStep}>이전</button>

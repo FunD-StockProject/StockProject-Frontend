@@ -14,12 +14,7 @@ import Term from '@pages/Term/Term';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
 import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
-import Intro from '@components/Lab/Intro/Intro';
-import MarketSelection from '@components/Lab/MarketSelection/MarketSelection';
-import Result from '@components/Lab/Result/Result';
-import StockPurchase from '@components/Lab/StockPurchase/StockPurchase';
 import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
-import StockSelection from '@components/Lab/StockSelection/StockSelection';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
@@ -39,12 +34,6 @@ export const webPath = {
   withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
   labPurchase: () => '/lab/purchase',
-  labIntro: () => '/lab/intro',
-  labMarketSelection: () => '/lab/market/selection',
-  labResult: () => '/lab/result',
-  labStockSelection: () => '/lab/stock/selection',
-  labStockPurchase: () => '/lab/stock/purchase',
-  labStockSearch: () => '/lab/stock/search',
   labStockRecordSheet: () => '/lab/stock/recordsheet',
   term: () => '/term',
   about: () => '/about',
@@ -84,11 +73,6 @@ const routes = [
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
       { path: webPath.labPurchase(), element: <LabStep /> },
-      { path: webPath.labIntro(), element: <Intro /> },
-      { path: webPath.labMarketSelection(), element: <MarketSelection /> },
-      { path: webPath.labResult(), element: <Result /> },
-      { path: webPath.labStockSelection(), element: <StockSelection /> },
-      { path: webPath.labStockPurchase(), element: <StockPurchase /> },
       { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
       { path: webPath.term(), element: <Term /> },
       { path: webPath.about(), element: <AboutPage /> },

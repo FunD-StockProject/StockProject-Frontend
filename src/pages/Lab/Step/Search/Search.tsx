@@ -15,36 +15,12 @@ import CrossSVG from '@assets/icons/cross.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import CheckCircleSelectedSVG from '@assets/lab/checkCircleSelected.svg?react';
 import CheckCircleUnselectedSVG from '@assets/lab/checkCircleUnelected.svg?react';
+import { KOREA_SECTORS, OVERSEA_SECTORS, StockSector } from '@ts/StockSector';
 
-const industries = {
-  KOREA: [
-    '전기전자',
-    '기계장비',
-    '금속',
-    '음식료 담배',
-    '제약',
-    '운송장비',
-    '유통',
-    '기타금융',
-    '화학',
-    '증권',
-    '이외산업',
-  ],
-  OVERSEA: [
-    '에너지',
-    '소재',
-    '산업재',
-    '임의소비재',
-    '필수소비재',
-    '헬스케어',
-    '금융',
-    'IT',
-    '화학',
-    '커뮤니케이션',
-    '유틸리티',
-    '부동산',
-    '이외산업',
-  ],
+const getSectorsByCountry = (country: StockCountryKey): StockSector[] => {
+  if (country === 'KOREA') return KOREA_SECTORS;
+  if (country === 'OVERSEA') return OVERSEA_SECTORS;
+  return [];
 };
 
 const LabSearchModal = ({
@@ -398,11 +374,12 @@ const LabSearch = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { step, country } = location.state;
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]); // 섹터 키 배열
   const [selectedStocks, setSelectedStocks] = useState<StockDetailInfo[]>([]);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const isOpenModal = location.state?.isOpenModal;
   const showModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const sectors = getSectorsByCountry(country as StockCountryKey);
 
   const handleClickStock = (stock: StockDetailInfo) => {
     console.log(stock);
@@ -423,7 +400,7 @@ const LabSearch = () => {
       state: {
         ...location.state,
         step: step + 1,
-        industries: selectedIndustries,
+        sectors: selectedSectors,
         stocks: selectedStocks,
       },
     });
@@ -431,9 +408,9 @@ const LabSearch = () => {
 
   const { toast, showToast } = useToast();
 
-  const handleClickIndustry = (industry: string) => () => {
-    setSelectedIndustries((prev) => {
-      if (prev.some((b) => b == industry)) return prev.filter((b) => b != industry);
+  const handleClickSector = (sectorKey: string) => () => {
+    setSelectedSectors((prev) => {
+      if (prev.some((b) => b == sectorKey)) return prev.filter((b) => b != sectorKey);
       else {
         if (prev.length >= 3) {
           showToast(
@@ -444,7 +421,7 @@ const LabSearch = () => {
           );
           return prev;
         }
-        return [...prev, industry];
+        return [...prev, sectorKey];
       }
     });
   };
@@ -554,19 +531,20 @@ const LabSearch = () => {
       <LabSearchSelectContainer>
         <p>관심 산업</p>
         <LabSearchSelectIndustryContainer>
-          {industries[country as StockCountryKey].map((e) => (
+          {sectors.map((sector: StockSector) => (
             <LabSearchSelectIndustryItemContainer
-              isSelected={selectedIndustries.some((b) => b == e)}
-              onClick={handleClickIndustry(e)}
+              key={sector.key}
+              isSelected={selectedSectors.some((b) => b == sector.key)}
+              onClick={handleClickSector(sector.key)}
             >
-              {e}
+              {sector.text}
             </LabSearchSelectIndustryItemContainer>
           ))}
         </LabSearchSelectIndustryContainer>
       </LabSearchSelectContainer>
       <LabSearchButtonContainer>
         <button onClick={handlePrevStep}>이전</button>
-        <button onClick={handleNextStep} disabled={!(selectedStocks.length || selectedIndustries.length)}>
+        <button onClick={handleNextStep} disabled={!(selectedStocks.length || selectedSectors.length)}>
           선택완료
         </button>
       </LabSearchButtonContainer>

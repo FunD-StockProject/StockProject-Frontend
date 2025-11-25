@@ -35,7 +35,7 @@ const LabResult = () => {
   const daysUntilCompletion = 1; // 실험 완료까지 남은 일수 
 
   const handleStartMockPurchase = () => {
-    navigate(webPath.labIntro());
+    navigate(webPath.labPurchase(), { state: { step: 0 } });
   };
 
   // 진행중인 실험이 없을 때
