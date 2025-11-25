@@ -12,3 +12,5 @@ export const fetchExperimentStatusDetail = (experimentId: number) =>
 export const fetchReport = () => fetchAuthData('portfolio/report');
 
 export const fetchResult = () => fetchAuthData('portfolio/result');
+
+export const fetchSectorRecommend = (sector: string) => fetchAuthData(`/stock/sector/${sector}/recommend'`);

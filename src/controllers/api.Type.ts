@@ -90,3 +90,8 @@ export interface FavoriteStock {
   symbolName: string;
   country: StockCountryKey;
 }
+
+export interface StockPreferenceStatus {
+  isBookmarked: boolean;
+  isNotificationOn: boolean;
+}

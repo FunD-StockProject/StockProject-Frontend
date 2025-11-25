@@ -91,3 +91,4 @@ export const fetchPopularStocks = (): Promise<PopularStocks[]> => {
 export const fetchPopularKeywords = (): Promise<string[]> => {
   return fetchData('/keyword/rankings');
 };
+

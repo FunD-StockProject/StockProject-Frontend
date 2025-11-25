@@ -5,6 +5,7 @@ import {
   fetchExperimentStatusDetail,
   fetchReport,
   fetchResult,
+  fetchSectorRecommend,
   postBuyExperiment,
 } from '@controllers/api/portfolio';
 import { queryOptions } from './common';
@@ -24,6 +25,10 @@ export const useReportQuery = () => {
 export const useResultQuery = () => {
   return useQuery(['bookmarkList'], fetchResult, queryOptions);
 };
+
+export const useSectorRecommendQuery = (sector: string) => {
+  return useQuery(['sectorRecommend'], () => fetchSectorRecommend(sector), queryOptions);
+}
 
 // ----- Mutations -----
 export const useBuyExperimentMutation = () => {

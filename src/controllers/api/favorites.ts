@@ -1,6 +1,10 @@
 import { FavoriteStock } from '@controllers/api.Type';
 import { fetchAuthData } from './base';
 
+// GET /preference/stock/{stockId}
+export const fetchStockPreference = (stockId: number) =>
+  fetchAuthData(`/preference/stock/${stockId}`);
+
 // POST /preference/bookmark/{stock_id}
 export const postBookmark = (stockId: number | string) =>
   fetchAuthData(`/preference/bookmark/${stockId}`, { method: 'POST' });
