@@ -285,7 +285,6 @@ const Register = () => {
                   <CheckSVG />
                   전체 동의
                 </RegisterTermCheckBox>
-                <RightArrowThickSVG />
               </RegisterTermItemContainer>
               <hr />
               {termInputs.map((e) => (
