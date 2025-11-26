@@ -47,7 +47,10 @@ const Callback = () => {
 
         if (res.state === 'NEED_REGISTER') {
           navigate(webPath.register(), {
-            state: { provider, email: res.email },
+            state: {
+              provider,
+              email: res.email,
+            },
           });
           return;
         }

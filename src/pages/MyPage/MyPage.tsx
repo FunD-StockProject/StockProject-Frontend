@@ -25,7 +25,6 @@ const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
   const { data: favorites = [] } = useBookmarkListQuery();
   const { data: experiments = [] } = useExperimentQuery();
-  console.log(experiments);
 
   const FavoriteCount = favorites?.length ?? 0;
   const AlarmCount = favorites?.filter((e) => e.isNotificationOn).length ?? 0;

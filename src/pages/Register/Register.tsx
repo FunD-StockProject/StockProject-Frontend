@@ -209,8 +209,6 @@ const Register = () => {
       return;
     }
 
-    console.log(location.state?.provider.toUpperCase());
-
     const res = await fetchAuthRegister(
       profileImage as string,
       values.email,
@@ -220,7 +218,8 @@ const Register = () => {
       location.state?.provider.toUpperCase(),
     );
 
-    console.log(2, res);
+    if (!res) return;
+
     navigate(webPath.registerDone());
   };
 

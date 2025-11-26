@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import BlueCheckSVG from '@assets/checkCircle.svg?react';
 
@@ -100,12 +102,12 @@ const RegisterButton = styled.button({
 });
 
 const RegisterDone = () => {
-  const handleClickDone = () => {
-    const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
-    console.log(redirectUri);
+  const location = useLocation();
 
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${redirectUri}`;
-    window.location.href = kakaoAuthUrl;
+  const navigate = useNavigate();
+
+  const handleClickDone = () => {
+    navigate('/');
   };
 
   return (
@@ -133,38 +135,6 @@ const RegisterDone = () => {
         <RegisterButton onClick={handleClickDone}>홈으로 이동</RegisterButton>
       </RegisterButtonContainer>
     </RegisterContainer>
-    // <div
-    //   style={{
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     width: '100%',
-    //     padding: '24px',
-    //     boxSizing: 'border-box',
-    //     height: '100%',
-    //     // flexGrow: '1',
-    //     justifyContent: 'center',
-    //     gap: '64px',
-    //   }}
-    // >
-    //   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
-    //     <p style={{ textAlign: 'center', fontWeight: '700', fontSize: '15px', margin: '0' }}>환영합니다!</p>
-    //     <div
-    //       style={{
-    //         width: '160px',
-    //         border: '1px solid white',
-    //         aspectRatio: '1 / 1',
-    //       }}
-    //     ></div>
-    //     <p style={{ textAlign: 'center', fontSize: '15px', margin: '0' }}>
-    //       민심을 읽고, 타이밍을 실험하세요.
-    //       <br />
-    //       당신의 직감은 얼마나 정확할까요?
-    //     </p>
-    //   </div>
-    //   <button style={{ height: '42px', fontSize: '15px' }} onClick={handleClickDone}>
-    //     홈으로 이동
-    //   </button>
-    // </div>
   );
 };
 
