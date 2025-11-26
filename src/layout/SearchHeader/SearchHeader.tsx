@@ -116,7 +116,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
   const { mutate: toggleNotification } = useToggleNotificationMutation();
   const isBookmark = stockPreference?.isBookmarked ?? false;
-  const isNotification = stockPreference?.isNotificationOn ?? false;
+  const isNotification = stockPreference?.isNotificationEnabled ?? false;
 
   const handleLogin = () => {
     navigate(webPath.login());
@@ -150,6 +150,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       openLoginModal();
       return;
     }
+
     if (isNotification) {
       showToast(
         <>
@@ -158,6 +159,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
         </>,
       );
     }
+
     toggleNotification(stockInfo.stockId);
   };
 
