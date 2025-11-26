@@ -57,13 +57,47 @@ const LoginButtonContainer = styled.div({
   display: 'flex',
   gap: '16px',
   justifyContent: 'center',
-
-  ['>img']: {
-    width: '64px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    borderRadius: '50%',
-  },
 });
 
-export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer };
+const LoginButton = styled.div(
+  ({ isRecent }: { isRecent: boolean }) =>
+    isRecent &&
+    ({
+      ['::before']: {
+        content: '"최근 로그인"',
+        position: 'absolute',
+        background: theme.colors.sub_gray10,
+        padding: '4px 8px',
+        ...theme.font.detail10Medium,
+        left: '50%',
+        whiteSpace: 'nowrap',
+        transform: 'translateX(-50%);',
+        bottom: 'calc(100% + 16px)',
+        borderRadius: '4px',
+      },
+      ['::after']: {
+        content: '""',
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%);',
+        bottom: 'calc(100% + 10px)',
+        width: '0px',
+        height: '0px',
+        borderStyle: 'solid',
+        borderWidth: '6px 4px 0px 4px',
+        borderColor: `${theme.colors.sub_gray10} transparent transparent transparent`,
+      },
+    } as const),
+  {
+    position: 'relative',
+
+    ['>img']: {
+      width: '64px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+      borderRadius: '50%',
+    },
+  },
+);
+
+export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginButton };

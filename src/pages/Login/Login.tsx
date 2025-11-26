@@ -6,7 +6,13 @@ import GoogleLoginPNG from '@assets/googleLogin.png';
 import KakaoLoginPNG from '@assets/kakaoLogin.png';
 import LogoWithTitleWhiteSVG from '@assets/logo_with_title_white.svg?react';
 import NaverLoginPNG from '@assets/naverLogin.png';
-import { LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginContainer } from './Login.Style';
+import {
+  LoginBannerContainer,
+  LoginBannerContents,
+  LoginButton,
+  LoginButtonContainer,
+  LoginContainer,
+} from './Login.Style';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -127,7 +133,9 @@ const Login = () => {
       </LoginBannerContainer>
       <LoginButtonContainer>
         {loginProviders.map((e) => (
-          <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
+          <LoginButton isRecent={e.key == localStorage.getItem('recent_login_provider')}>
+            <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
+          </LoginButton>
         ))}
       </LoginButtonContainer>
     </LoginContainer>
