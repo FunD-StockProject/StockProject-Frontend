@@ -47,11 +47,6 @@ const valueInputs: InputItem[] = [
     title: '닉네임',
     essential: true,
     placeholder: '닉네임을 입력해주세요',
-    sub: (
-      <>
-        <span>0</span>/10
-      </>
-    ),
   },
   {
     key: 'email',
@@ -148,7 +143,9 @@ const Register = () => {
             .replace(/\D/g, '')
             .slice(0, 8)
             .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
-        : value;
+        : name === 'name'
+          ? value.slice(0, 10)
+          : value;
 
     setValues((prev) => ({
       ...prev,
@@ -260,7 +257,6 @@ const Register = () => {
 
   return (
     <RegisterContainer>
-      {/* {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />} */}
       <RegisterContent>
         <RegisterImageContainer onClick={handleUploadLocalFile}>
           <img src={(profileImage as string) ?? ProfilePNG} />
@@ -283,7 +279,11 @@ const Register = () => {
               />
               <RegisterInputItemSubContainer>
                 <p className="error">{errors[e.key]}</p>
-                <p className="sub">{e.sub}</p>
+                {e.key == 'name' && (
+                  <p className="sub">
+                    <span>{values.name.length}</span>/10
+                  </p>
+                )}
               </RegisterInputItemSubContainer>
             </RegisterInputItemContainer>
           ))}
