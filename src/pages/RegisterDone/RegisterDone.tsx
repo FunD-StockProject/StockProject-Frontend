@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import BlueCheckSVG from '@assets/checkCircle.svg?react';
 
@@ -102,8 +101,6 @@ const RegisterButton = styled.button({
 });
 
 const RegisterDone = () => {
-  const location = useLocation();
-
   const navigate = useNavigate();
 
   const handleClickDone = () => {
