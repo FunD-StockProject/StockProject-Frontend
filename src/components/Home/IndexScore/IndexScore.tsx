@@ -40,7 +40,7 @@ const IndexScore = ({ country }: { country: StockCountryKey }) => {
           </IndexScoreItemHeader>
           <IndexScoreItemScore delta={delta}>
             <p>{score}</p>
-            {delta === 0 ? '' : delta > 0 ? <UpSVG /> : <DownSVG />}
+            {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
           </IndexScoreItemScore>
         </IndexScoreItem>
       ))}
