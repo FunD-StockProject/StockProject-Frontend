@@ -107,33 +107,6 @@ const Register = () => {
 
   const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
 
-  const handleUploadLocalFile = async () => {
-    try {
-      const [fileHandle] = await (window as any).showOpenFilePicker({
-        types: [
-          {
-            description: 'Image Files',
-            accept: {
-              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-            },
-          },
-        ],
-        multiple: false,
-      });
-
-      const file = await fileHandle.getFile();
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-    } catch (err) {
-      console.error('파일 선택 취소 또는 실패:', err);
-    }
-  };
-
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -236,11 +209,13 @@ const Register = () => {
       return;
     }
 
+    console.log(location.state?.provider.toUpperCase());
+
     const res = await fetchAuthRegister(
       profileImage as string,
       values.email,
       values.name,
-      new Date(values.birth),
+      values.birth,
       true,
       location.state?.provider.toUpperCase(),
     );
@@ -255,12 +230,25 @@ const Register = () => {
     });
   };
 
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setProfileImage(reader.result as string);
+    };
+  };
+
   return (
     <RegisterContainer>
       <RegisterContent>
-        <RegisterImageContainer onClick={handleUploadLocalFile}>
+        <RegisterImageContainer>
           <img src={(profileImage as string) ?? ProfilePNG} />
           <EditCircleSVG />
+          <input type="file" accept="image/*" onChange={handleChangeFile} />
         </RegisterImageContainer>
         <RegisterValueContainer>
           {valueInputs.map((e) => (
