@@ -3,7 +3,7 @@ import { theme } from '@styles/themes';
 
 const TutorialContainer = styled.div({
   width: '100%',
-  height: 'calc(100% - 96px)',
+  height: '100%',
   position: 'fixed',
   background: 'rgba(0, 0, 0, 0.8)',
   backdropFilter: 'blur(4px)',
@@ -15,10 +15,12 @@ const TutorialContainer = styled.div({
   justifyContent: 'center',
   flexDirection: 'column',
   gap: '24px',
+  overflow: 'hidden auto',
 });
 
 const TutorialContent = styled.div({
   display: 'flex',
+  flexShrink: '0',
   width: '100%',
   overflow: 'auto',
   scrollSnapType: 'x mandatory',
@@ -67,6 +69,7 @@ const TutorialItemContent = styled.div({
   justifyContent: 'center',
   width: '100%',
   position: 'relative',
+  padding: '20px 0 0',
 });
 
 const TutorialItemTinderCard = styled.div({
@@ -211,7 +214,7 @@ const ButtonContainer = styled.div({
   display: 'flex',
   justifyContent: 'center',
   boxSizing: 'border-box',
-  padding: '0px 20px',
+  padding: '0px 20px 20px',
 
   ['>button']: {
     width: '100%',
@@ -243,7 +246,7 @@ const TutorialTextContainer = styled.div({
     ['&.description']: {
       ...theme.font.body14Regular,
       color: theme.colors.sub_gray4,
-      whiteSpace: 'pre-line',
+      whiteSpace: 'pre',
     },
   },
 });
