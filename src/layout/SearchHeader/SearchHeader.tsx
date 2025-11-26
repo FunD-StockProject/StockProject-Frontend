@@ -150,6 +150,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       openLoginModal();
       return;
     }
+
     if (isNotification) {
       showToast(
         <>
@@ -158,6 +159,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
         </>,
       );
     }
+
     toggleNotification(stockInfo.stockId);
   };
 

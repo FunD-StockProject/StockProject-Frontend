@@ -47,11 +47,6 @@ const valueInputs: InputItem[] = [
     title: '닉네임',
     essential: true,
     placeholder: '닉네임을 입력해주세요',
-    sub: (
-      <>
-        <span>0</span>/10
-      </>
-    ),
   },
   {
     key: 'email',
@@ -112,33 +107,6 @@ const Register = () => {
 
   const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
 
-  const handleUploadLocalFile = async () => {
-    try {
-      const [fileHandle] = await (window as any).showOpenFilePicker({
-        types: [
-          {
-            description: 'Image Files',
-            accept: {
-              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-            },
-          },
-        ],
-        multiple: false,
-      });
-
-      const file = await fileHandle.getFile();
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-    } catch (err) {
-      console.error('파일 선택 취소 또는 실패:', err);
-    }
-  };
-
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -148,7 +116,9 @@ const Register = () => {
             .replace(/\D/g, '')
             .slice(0, 8)
             .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
-        : value;
+        : name === 'name'
+          ? value.slice(0, 10)
+          : value;
 
     setValues((prev) => ({
       ...prev,
@@ -243,12 +213,13 @@ const Register = () => {
       profileImage as string,
       values.email,
       values.name,
-      new Date(values.birth),
+      values.birth,
       true,
       location.state?.provider.toUpperCase(),
     );
 
-    console.log(2, res);
+    if (!res) return;
+
     navigate(webPath.registerDone());
   };
 
@@ -258,13 +229,25 @@ const Register = () => {
     });
   };
 
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setProfileImage(reader.result as string);
+    };
+  };
+
   return (
     <RegisterContainer>
-      {/* {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />} */}
       <RegisterContent>
-        <RegisterImageContainer onClick={handleUploadLocalFile}>
+        <RegisterImageContainer>
           <img src={(profileImage as string) ?? ProfilePNG} />
           <EditCircleSVG />
+          <input type="file" accept="image/*" onChange={handleChangeFile} />
         </RegisterImageContainer>
         <RegisterValueContainer>
           {valueInputs.map((e) => (
@@ -283,7 +266,11 @@ const Register = () => {
               />
               <RegisterInputItemSubContainer>
                 <p className="error">{errors[e.key]}</p>
-                <p className="sub">{e.sub}</p>
+                {e.key == 'name' && (
+                  <p className="sub">
+                    <span>{values.name.length}</span>/10
+                  </p>
+                )}
               </RegisterInputItemSubContainer>
             </RegisterInputItemContainer>
           ))}
@@ -297,7 +284,6 @@ const Register = () => {
                   <CheckSVG />
                   전체 동의
                 </RegisterTermCheckBox>
-                <RightArrowThickSVG />
               </RegisterTermItemContainer>
               <hr />
               {termInputs.map((e) => (

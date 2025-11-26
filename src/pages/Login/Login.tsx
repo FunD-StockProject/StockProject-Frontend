@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import AppleLoginPNG from '@assets/appleLogin.png';
 import CloseSVG from '@assets/close.svg?react';
-import GoogleLoginPNG from '@assets/googleLogin.png';
-import KakaoLoginPNG from '@assets/kakaoLogin.png';
+import AppleLoginSVG from '@assets/login/apple.svg?react';
+import GoogleLoginSVG from '@assets/login/google.svg?react';
+import KakaoLoginSVG from '@assets/login/kakao.svg?react';
+import NaverLoginSVG from '@assets/login/naver.svg?react';
 import LogoWithTitleWhiteSVG from '@assets/logo_with_title_white.svg?react';
-import NaverLoginPNG from '@assets/naverLogin.png';
 import {
   LoginBannerContainer,
   LoginBannerContents,
+  LoginButton,
   LoginButtonContainer,
-  LoginButtonContents,
   LoginContainer,
 } from './Login.Style';
 
@@ -93,23 +93,23 @@ const Login = () => {
   const loginProviders = [
     {
       key: 'google',
-      img: GoogleLoginPNG,
       method: handleGoogleLogin,
+      svg: GoogleLoginSVG,
     },
     {
       key: 'naver',
-      img: NaverLoginPNG,
       method: handleNaverLogin,
+      svg: NaverLoginSVG,
     },
     {
       key: 'apple',
-      img: AppleLoginPNG,
       method: handleAppleLogin,
+      svg: AppleLoginSVG,
     },
     {
       key: 'kakao',
-      img: KakaoLoginPNG,
       method: handleKakaoLogin,
+      svg: KakaoLoginSVG,
     },
   ];
 
@@ -132,12 +132,15 @@ const Login = () => {
         </LoginBannerContents>
       </LoginBannerContainer>
       <LoginButtonContainer>
-        <LoginButtonContents>
-          {loginProviders.map((e) => (
-            <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
-          ))}
-        </LoginButtonContents>
-        <p>로그인에 문제가 있나요?</p>
+        {loginProviders.map((e) => (
+          <LoginButton
+            key={`LOGIN_PROVIDER_IMG_${e.key}`}
+            isRecent={e.key == localStorage.getItem('recent_login_provider')}
+            onClick={e.method}
+          >
+            {<e.svg />}
+          </LoginButton>
+        ))}
       </LoginButtonContainer>
     </LoginContainer>
   );

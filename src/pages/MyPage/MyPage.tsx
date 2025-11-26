@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/api';
+import { useBookmarkListQuery } from '@controllers/query/favorites';
+import { useExperimentQuery } from '@controllers/query/portfolio';
 import InstagramSVG from '@assets/instagram.svg?react';
 import LinkedInSVG from '@assets/linkedin.svg?react';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
@@ -21,6 +23,12 @@ import MyPageProfile from './Profile/Profile';
 
 const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
+  const { data: favorites = [] } = useBookmarkListQuery();
+  const { data: experiments = [] } = useExperimentQuery();
+
+  const FavoriteCount = favorites?.length ?? 0;
+  const AlarmCount = favorites?.filter((e) => e.isNotificationOn).length ?? 0;
+
   const navigate = useNavigate();
 
   const handleClickServiceGuide = () => {
@@ -67,24 +75,32 @@ const MyPage = () => {
     onConfirm: handleLogout,
   });
 
+  const handleClickMyHumanzipyo = () => {
+    navigate(webPath.favorites());
+  };
+
+  const handleClickMyExperiment = () => {
+    navigate(webPath.lab());
+  };
+
   const detailButtons = [
     {
       title: '내 인간지표',
       subtitle: '관심 종목 변동 알림 신청하기',
-      onClick: () => {},
+      onClick: handleClickMyHumanzipyo,
       items: [
-        { title: '관심 종목', content: '8개' },
-        { title: '변동알림', content: '7개' },
+        { title: '관심 종목', content: `${FavoriteCount}개` },
+        { title: '변동알림', content: `${AlarmCount}개` },
       ],
     },
     {
       title: '모의매수 실험 현황',
       subtitle: '내 투자 타이밍은 적절할까',
-      onClick: () => {},
+      onClick: handleClickMyExperiment,
       items: [
-        { title: '실험 중', content: '8개' },
-        { title: '총 실험 수', content: '20개' },
-        { title: '성공률', content: '62.5%' },
+        { title: '실험 중', content: `${experiments.progressTradeCount ?? 0}개` },
+        { title: '총 실험 수', content: `${experiments.totalTradeCount ?? 0}개` },
+        { title: '성공률', content: `${(experiments.successRate ?? 0).toFixed(1)}%` },
       ],
     },
   ];
@@ -121,7 +137,7 @@ const MyPage = () => {
       <MyPageContents>
         {isLogin &&
           detailButtons.map((button) => (
-            <MyPageDetailContainer>
+            <MyPageDetailContainer onClick={button.onClick}>
               <MyPageDetailTitle>
                 <p>
                   {button.title} <span>| {button.subtitle}</span>

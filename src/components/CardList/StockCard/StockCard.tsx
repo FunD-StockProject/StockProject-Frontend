@@ -83,8 +83,7 @@ export const SmallStockCard = ({
         <SmallStockCardContentTitle>
           <p className="name">{symbolName}</p>
           <SmallStockCardContentScore delta={diff} isNew={score == diff}>
-            {score}점
-            <span>{score != diff ? `${diffToValue(diff)}점` : 'NEW!'}</span>
+            {score}점<span>{score != diff ? `${diffToValue(diff)}점` : 'NEW!'}</span>
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>
@@ -97,6 +96,8 @@ export const SmallStockCard = ({
 
 const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryKey }) => {
   const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
+
+  console.log(curStocks);
 
   return (
     suspend || (

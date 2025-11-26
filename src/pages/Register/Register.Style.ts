@@ -21,7 +21,7 @@ const RegisterContent = styled.div({
   flexGrow: '1',
 });
 
-const RegisterImageContainer = styled.div({
+const RegisterImageContainer = styled.label({
   display: 'flex',
   position: 'relative',
   ['>img']: {
@@ -41,6 +41,10 @@ const RegisterImageContainer = styled.div({
     fill: '#ADB5BD',
     background: '#495057',
     borderRadius: '999px',
+  },
+
+  ['>input']: {
+    display: 'none',
   },
 });
 

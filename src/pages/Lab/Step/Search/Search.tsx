@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
+import { KOREA_SECTORS, OVERSEA_SECTORS, StockSector } from '@ts/StockSector';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
@@ -15,7 +16,6 @@ import CrossSVG from '@assets/icons/cross.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import CheckCircleSelectedSVG from '@assets/lab/checkCircleSelected.svg?react';
 import CheckCircleUnselectedSVG from '@assets/lab/checkCircleUnelected.svg?react';
-import { KOREA_SECTORS, OVERSEA_SECTORS, StockSector } from '@ts/StockSector';
 
 const getSectorsByCountry = (country: StockCountryKey): StockSector[] => {
   if (country === 'KOREA') return KOREA_SECTORS;
@@ -58,6 +58,7 @@ const LabSearchModal = ({
   };
 
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
+  console.log(searchedStocks);
 
   useEffect(() => {
     setSearchedStocks(value);

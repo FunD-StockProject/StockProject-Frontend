@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage } from '@utils/LocalStorage';
+import { mapNotificationResponseToItem } from '@utils/notificationMapper';
 import { webPath } from '@router/index';
+import { useMarkAsReadMutation, useNotificationsQuery } from '@controllers/query/notifications';
 import AlarmExamplePNG from '@assets/design/alarmExample.png';
 import {
   AlarmExampleTextContainer,
@@ -97,7 +98,10 @@ const mockNotifications: Notification[] = [
 const NotificationList = ({ notifications }: { notifications: Notification[] }) => {
   const navigate = useNavigate();
 
-  const handleClickNotification = (symbolName: string, country: StockCountryKey) => () => {
+  const { mutate: readNotification } = useMarkAsReadMutation();
+
+  const handleClickNotification = (notificationId: number, symbolName: string, country: StockCountryKey) => () => {
+    readNotification(notificationId);
     navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
   };
 
@@ -119,7 +123,7 @@ const NotificationList = ({ notifications }: { notifications: Notification[] }) 
     <NotificationItemContainer
       key={notification.id}
       readStatus={notification.readStatus}
-      onClick={handleClickNotification(notification.stockName, notification.country)}
+      onClick={handleClickNotification(notification.id, notification.stockName, notification.country)}
     >
       <NotificationItemImage>
         <img src={''} />
@@ -138,7 +142,11 @@ const NotificationList = ({ notifications }: { notifications: Notification[] }) 
 
 const NotificationPage = () => {
   const navigate = useNavigate();
-  const [notifications, _setNotifications] = useState<Notification[]>(mockNotifications);
+  // const [notifications, _setNotifications] = useState<Notification[]>(mockNotifications);
+
+  const { data: notificationsPage, isLoading } = useNotificationsQuery(0, 20);
+
+  const notifications = notificationsPage?.content ? notificationsPage.content.map(mapNotificationResponseToItem) : [];
 
   const isLogin = !!getItemLocalStorage('access_token');
 
@@ -149,6 +157,8 @@ const NotificationPage = () => {
   const handleClickHomeButton = () => {
     navigate('/');
   };
+
+  if (isLoading) return null;
 
   return (
     <NotificationContainer>

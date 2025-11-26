@@ -31,7 +31,7 @@ export const fetchAuthRegister = async (
   imageBase64: string,
   email: string,
   nickname: string,
-  birth_date: Date,
+  birth_date: string,
   marketingAgreement: boolean,
   provider: string,
 ) => {
@@ -40,12 +40,7 @@ export const fetchAuthRegister = async (
     const formData = new FormData();
     formData.append('email', email);
     formData.append('nickname', nickname);
-    formData.append(
-      'birth_date',
-      `${birth_date.getFullYear()}-${String(birth_date.getMonth() + 1).padStart(2, '0')}-${String(
-        birth_date.getDate(),
-      ).padStart(2, '0')}`,
-    );
+    formData.append('birth_date', birth_date);
     formData.append('marketingAgreement', String(marketingAgreement));
     formData.append('provider', provider);
 

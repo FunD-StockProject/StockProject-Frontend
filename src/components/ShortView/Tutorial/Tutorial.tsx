@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
-import { useSnapIndex } from '@hooks/useSnapIndex';
 import Button from '@components/Common/Button';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import MoneySVG from '@assets/icons/money.svg?react';
@@ -71,7 +70,6 @@ const TutorialSteps = [
 
 const ShortViewTutorial = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { index: activeIndex } = useSnapIndex(containerRef, { horizontal: true, threshold: 0.7 });
   const [isOpenTutorial, setIsOpenTutorial] = useState(getItemLocalStorage('ShortViewTutorial', true));
 
   const handleClickTutorialEnd = () => {
@@ -79,6 +77,24 @@ const ShortViewTutorial = () => {
     setIsOpenTutorial(false);
     setItemLocalStorage('ShortViewTutorial', false);
   };
+
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const checkScroll = () => {
+      const { scrollLeft, clientWidth } = container;
+      setStepIndex(~~((scrollLeft + clientWidth / 2) / clientWidth));
+    };
+
+    container.addEventListener('scroll', checkScroll);
+
+    return () => {
+      container.removeEventListener('scroll', checkScroll);
+    };
+  }, []);
 
   if (!isOpenTutorial) return null;
 
@@ -97,11 +113,11 @@ const ShortViewTutorial = () => {
       </TutorialContent>
       <TutorialStep>
         {TutorialSteps.map((_, i) => (
-          <span key={`TUTORIAL-STEP-${i}`} className={activeIndex === i ? 'current' : ''} />
+          <span key={`TUTORIAL-STEP-${i}`} className={stepIndex === i ? 'current' : ''} />
         ))}
       </TutorialStep>
       <ButtonContainer>
-        <Button disabled={activeIndex !== TutorialSteps.length - 1} onClick={handleClickTutorialEnd}>
+        <Button disabled={stepIndex !== TutorialSteps.length - 1} onClick={handleClickTutorialEnd}>
           지금 사용해보기 →
         </Button>
       </ButtonContainer>
