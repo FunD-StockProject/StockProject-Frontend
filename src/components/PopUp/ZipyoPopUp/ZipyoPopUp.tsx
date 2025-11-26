@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+import { webPath } from '@router/index';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
 import LogoSVG from '@assets/logo_blue.svg?react';
 import CommonPopUp from '../CommonPopUp';
@@ -24,6 +26,12 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => {
     [50, 70],
     [70, 100],
   ];
+
+  const navigate = useNavigate();
+
+  const handleClickAbout = () => {
+    navigate(webPath.about());
+  };
 
   return (
     <CommonPopUp onClose={onClose}>
@@ -65,7 +73,7 @@ const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => {
             대규모 감정분석 모델을 통해 각종 커뮤니티에서 투자자들 반응을 긍/부정으로 파악하여 점수를 산출해요
           </p>
         </ZipyoPopUpHowToTextContainer>
-        <button>산출 방식 자세히 보기 → </button>
+        <button onClick={handleClickAbout}>산출 방식 자세히 보기 → </button>
       </ZipyoPopUpHowToContainer>
       <ZipyoPopUpWarningText>*공식 지표가 아니므로 참고 용도로 활용해 주세요</ZipyoPopUpWarningText>
     </CommonPopUp>
