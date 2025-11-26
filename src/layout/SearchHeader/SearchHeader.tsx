@@ -116,7 +116,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
   const { mutate: toggleNotification } = useToggleNotificationMutation();
   const isBookmark = stockPreference?.isBookmarked ?? false;
-  const isNotification = stockPreference?.isNotificationOn ?? false;
+  const isNotification = stockPreference?.isNotificationEnabled ?? false;
 
   const handleLogin = () => {
     navigate(webPath.login());
