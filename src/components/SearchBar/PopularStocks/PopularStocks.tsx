@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import { usePopularStockFetchQuery } from '@controllers/query';
 import ChevronLeftSVG from '@assets/icons/chevronLeft.svg?react';
 import { SearchBarItemContainer, SearchBarItemContents, SearchBarItemTitle } from '../SearchBar.Style';
@@ -11,6 +12,7 @@ const PopularStocks = () => {
   const navigate = useNavigate();
 
   const [popularStocks] = usePopularStockFetchQuery();
+  console.log(popularStocks);
 
   const handlePopularStockClick = (symbolName: string, country: StockCountryKey) => () => {
     setItemLocalStorage('RecentStocks', [
@@ -27,14 +29,14 @@ const PopularStocks = () => {
     <SearchBarItemContainer>
       <SearchBarItemTitle>인간지표 인기검색어</SearchBarItemTitle>
       <SearchBarItemContents>
-        {popularStocks.map(({ symbolName, country }, index) => (
+        {popularStocks.map(({ stockId, symbolName, country }, index) => (
           <PopularStocksItem
             key={`SEARCHED_STOCK_${symbolName}`}
             onClick={handlePopularStockClick(symbolName, country)}
           >
             <p>{index + 1}</p>
             <PopularStocksItemContents>
-              <img src={''} />
+              <StockImage stockId={stockId} />
               <p className="symbolName">{symbolName}</p>
               <ChevronLeftSVG />
             </PopularStocksItemContents>

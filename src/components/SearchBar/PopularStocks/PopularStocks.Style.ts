@@ -22,7 +22,7 @@ const PopularStocksItemContents = styled.div({
 
   ['>img']: {
     width: '32px',
-    height: 'auto',
+    height: '32px',
     aspectRatio: '1 / 1',
     borderRadius: '50%',
     flexShrink: '0',
