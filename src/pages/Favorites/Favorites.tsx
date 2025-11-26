@@ -106,7 +106,7 @@ const Favorites = () => {
 
   const [DeleteFavoritesModal, openDeleteFavoritesModal, closeDeleteFavoritesModal] = ConfirmModal({
     title: '정말 삭제하시겠어요?',
-    description: '관심 종목 내역까지 삭제가 됩니다',
+    description: '관심내역에서 삭제되고 변동 알림이 중단됩니다',
     onConfirm: handleDeleteFavorites,
     isInverse: true,
     actionText: ['삭제', '취소'],
