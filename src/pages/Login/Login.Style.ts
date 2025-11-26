@@ -72,7 +72,7 @@ const LoginButton = styled.div(
         left: '50%',
         whiteSpace: 'nowrap',
         transform: 'translateX(-50%);',
-        bottom: 'calc(100% + 16px)',
+        bottom: 'calc(100% + 12px)',
         borderRadius: '4px',
       },
       ['::after']: {
@@ -80,7 +80,7 @@ const LoginButton = styled.div(
         position: 'absolute',
         left: '50%',
         transform: 'translateX(-50%);',
-        bottom: 'calc(100% + 10px)',
+        bottom: 'calc(100% + 6px)',
         width: '0px',
         height: '0px',
         borderStyle: 'solid',
@@ -90,8 +90,9 @@ const LoginButton = styled.div(
     } as const),
   {
     position: 'relative',
+    display: 'flex',
 
-    ['>img']: {
+    ['>svg']: {
       width: '64px',
       height: 'auto',
       aspectRatio: '1 / 1',
