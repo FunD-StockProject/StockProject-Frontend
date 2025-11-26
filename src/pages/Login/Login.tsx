@@ -6,13 +6,7 @@ import GoogleLoginPNG from '@assets/googleLogin.png';
 import KakaoLoginPNG from '@assets/kakaoLogin.png';
 import LogoWithTitleWhiteSVG from '@assets/logo_with_title_white.svg?react';
 import NaverLoginPNG from '@assets/naverLogin.png';
-import {
-  LoginBannerContainer,
-  LoginBannerContents,
-  LoginButtonContainer,
-  LoginButtonContents,
-  LoginContainer,
-} from './Login.Style';
+import { LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginContainer } from './Login.Style';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -132,12 +126,9 @@ const Login = () => {
         </LoginBannerContents>
       </LoginBannerContainer>
       <LoginButtonContainer>
-        <LoginButtonContents>
-          {loginProviders.map((e) => (
-            <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
-          ))}
-        </LoginButtonContents>
-        <p>로그인에 문제가 있나요?</p>
+        {loginProviders.map((e) => (
+          <img key={`LOGIN_PROVIDER_IMG_${e.key}`} src={e.img} onClick={e.method} />
+        ))}
       </LoginButtonContainer>
     </LoginContainer>
   );

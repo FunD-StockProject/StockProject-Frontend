@@ -12,11 +12,19 @@ const LoginContainer = styled.div({
     aspectRatio: '1 / 1',
     padding: '12px 20px',
     marginLeft: 'auto',
+    position: 'absolute',
+    right: '0',
+    top: '0',
   },
+
+  ['::before']: {
+    content: '""',
+  },
+
+  justifyContent: 'space-around',
 });
 
 const LoginBannerContainer = styled.div({
-  flexGrow: '3',
   display: 'flex',
   flexDirection: 'column',
   gap: '24px',
@@ -46,24 +54,9 @@ const LoginBannerContents = styled.div({
 });
 
 const LoginButtonContainer = styled.div({
-  flexGrow: '1',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '36px',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  ['>p']: {
-    margin: '0',
-    ...theme.font.body16Medium,
-    color: theme.colors.sub_gray6,
-    opacity: 0.8,
-  },
-});
-
-const LoginButtonContents = styled.div({
   display: 'flex',
   gap: '16px',
+  justifyContent: 'center',
 
   ['>img']: {
     width: '64px',
@@ -73,4 +66,4 @@ const LoginButtonContents = styled.div({
   },
 });
 
-export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginButtonContents };
+export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer };
