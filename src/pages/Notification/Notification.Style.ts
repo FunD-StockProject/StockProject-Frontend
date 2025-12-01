@@ -101,79 +101,10 @@ const AlarmExampleTextContainer = styled.div({
   },
 });
 
-const NoLoginWrapper = styled.div({
-  position: 'fixed',
-  top: '60px',
-  left: '0',
-  right: '0',
-  bottom: '0',
-  background: 'linear-gradient(rgba(16, 16, 16, 0.4) 0%, #101010 55%)',
-  color: 'white',
-  zIndex: '100',
-  backdropFilter: 'blur(2.5px)',
-  padding: '24px',
-
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '20px',
-});
-
-const NoLoginTextContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '10px',
-
-  ['>p']: {
-    margin: '0',
-    textAlign: 'center',
-    whiteSpace: 'nowrap',
-
-    ['&.title']: {
-      ...theme.font.title20Semibold,
-      color: theme.colors.sub_gray2,
-    },
-
-    ['&.description']: {
-      ...theme.font.body14Medium,
-      color: theme.colors.sub_gray4,
-    },
-  },
-});
-
-const NoLoginButtonContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  gap: '20px',
-
-  ['>button']: {
-    padding: '10px 28px',
-    borderRadius: '500px',
-    border: 'none',
-    ...theme.font.body18Semibold,
-
-    ['&.primary']: {
-      background: theme.colors.sub_white,
-      color: theme.colors.sub_gray11,
-    },
-    ['&.secondary']: {
-      background: theme.colors.sub_gray9,
-      color: theme.colors.sub_gray5,
-    },
-  },
-});
-
 export {
   NotificationContainer,
   NotificationItemContainer,
   NotificationItemContent,
   AlarmExampleWrapper,
   AlarmExampleTextContainer,
-  NoLoginWrapper,
-  NoLoginTextContainer,
-  NoLoginButtonContainer,
 };

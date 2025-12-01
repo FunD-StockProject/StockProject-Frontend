@@ -80,12 +80,7 @@ export const useKeywordSearchQuery = (keywordName: string) => {
 };
 
 export const useStockSummaryQuery = (symbol: string, country: StockCountryKey) => {
-  const { data = [] } = useQuery<string[]>(
-    ['stockSummary', symbol, country],
-    () => fetchStockSummary(symbol, country),
-    queryOptions,
-  );
-  return [data] as const;
+  return useQuery<string[]>(['stockSummary', symbol, country], () => fetchStockSummary(symbol, country), queryOptions);
 };
 
 export const useRelevantStockFetchQuery = (id: number) => {

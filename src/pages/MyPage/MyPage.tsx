@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/api';
-import { useBookmarkListQuery } from '@controllers/query/favorites';
+import { useBookmarkListQuery } from '@controllers/preference/query';
 import { useExperimentQuery } from '@controllers/query/portfolio';
 import InstagramSVG from '@assets/instagram.svg?react';
 import LinkedInSVG from '@assets/linkedin.svg?react';
@@ -138,17 +138,17 @@ const MyPage = () => {
       <MyPageProfile />
       <MyPageContents>
         {isLogin &&
-          detailButtons.map((button) => (
-            <MyPageDetailContainer onClick={button.onClick} key={`MYPAGE_DETAIL_${button.key}`}>
+          detailButtons.map(({ key, title, subtitle, onClick, items }) => (
+            <MyPageDetailContainer onClick={onClick} key={`MYPAGE_DETAIL_${key}`}>
               <MyPageDetailTitle>
                 <p>
-                  {button.title} <span>| {button.subtitle}</span>
+                  {title} <span>| {subtitle}</span>
                 </p>
                 <RightArrowThickSVG />
               </MyPageDetailTitle>
               <MyPageDetailContents>
-                {button.items.map((item, idx) => (
-                  <MyPageDetailItem key={`MYPAGE_DETAIL_${button.key}_ITEM_${idx}`}>
+                {items.map((item, idx) => (
+                  <MyPageDetailItem key={`MYPAGE_DETAIL_${key}_ITEM_${idx}`}>
                     <p className="title">{item.title}</p>
                     <p className="content">{item.content}</p>
                   </MyPageDetailItem>

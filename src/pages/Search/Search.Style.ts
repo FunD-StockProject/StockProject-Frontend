@@ -124,6 +124,8 @@ const SearchResultAlertContainer = styled.div({
     display: 'flex',
     gap: '10px',
     padding: '12px 16px',
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.5)',
+    backdropFilter: 'blur(2.5px)',
 
     ['>svg']: {
       flexShrink: '0',

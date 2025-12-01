@@ -123,7 +123,7 @@ const SearchTitleDetail = ({
 };
 
 const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
-  const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
+  const { data: summary = [], isLoading } = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
   const navigate = useNavigate();
   const isLogin = !!getItemLocalStorage('access_token');
 
@@ -162,14 +162,17 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
         <LoginModal />
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
-        <SearchTitleDescriptionContainer showMoreDesc={showMoreDesc}>
-          <button onClick={handleClickMore}>더보기</button>
-          <p>
-            {summary.reduce((acc, e, i) => {
-              return acc + (i ? '\n' : '') + e;
-            }, '')}
-          </p>
-        </SearchTitleDescriptionContainer>
+        {!isLoading && (
+          <SearchTitleDescriptionContainer showMoreDesc={showMoreDesc}>
+            <button onClick={handleClickMore}>더보기</button>
+            <p>
+              {summary.reduce((acc, e, i) => {
+                return acc + (i ? '\n' : '') + e;
+              }, '')}
+            </p>
+          </SearchTitleDescriptionContainer>
+        )}
+
         <Button onClick={handleClickBuy}>모의 매수하기</Button>
       </SearchTitleContainer>
     )

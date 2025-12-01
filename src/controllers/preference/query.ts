@@ -170,6 +170,10 @@ export const useToggleNotificationMutation = () => {
         isNotificationOn: !old?.isNotificationOn,
       }));
 
+      qc.setQueryData(['bookmarkList'], (old: any) =>
+        old.map((e: BookmarkItem) => (e.stockId === stockId ? { ...e, isNotificationOn: !e.isNotificationOn } : e)),
+      );
+
       return { previousPreference };
     },
     onError: (_err, stockId, ctx) => {

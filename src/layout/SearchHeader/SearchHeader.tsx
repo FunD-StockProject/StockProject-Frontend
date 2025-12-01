@@ -10,7 +10,7 @@ import {
   useDeleteBookmarkMutation,
   useStockPreferenceQuery,
   useToggleNotificationMutation,
-} from '@controllers/query/favorites';
+} from '@controllers/preference/query';
 import { theme } from '@styles/themes';
 import BackIcon from '@assets/icons/arrowLeft.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';

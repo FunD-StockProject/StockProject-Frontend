@@ -4,14 +4,12 @@ import { getItemLocalStorage } from '@utils/LocalStorage';
 import { mapNotificationResponseToItem } from '@utils/notificationMapper';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
+import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { useMarkAsReadMutation, useNotificationsQuery } from '@controllers/query/notifications';
 import AlarmExamplePNG from '@assets/design/alarmExample.png';
 import {
   AlarmExampleTextContainer,
   AlarmExampleWrapper,
-  NoLoginButtonContainer,
-  NoLoginTextContainer,
-  NoLoginWrapper,
   NotificationContainer,
   NotificationItemContainer,
   NotificationItemContent,
@@ -119,8 +117,6 @@ const NotificationList = ({ notifications }: { notifications: Notification[] }) 
       </AlarmExampleWrapper>
     );
 
-  console.log(notifications);
-
   return notifications.map((notification) => (
     <NotificationItemContainer
       key={notification.id}
@@ -146,7 +142,6 @@ const NotificationList = ({ notifications }: { notifications: Notification[] }) 
 };
 
 const NotificationPage = () => {
-  const navigate = useNavigate();
   // const [notifications, _setNotifications] = useState<Notification[]>(mockNotifications);
 
   const { data: notificationsPage, isLoading } = useNotificationsQuery(0, 20);
@@ -154,14 +149,6 @@ const NotificationPage = () => {
   const notifications = notificationsPage?.content ? notificationsPage.content.map(mapNotificationResponseToItem) : [];
 
   const isLogin = !!getItemLocalStorage('access_token');
-
-  const handleClickLoginButton = () => {
-    navigate(webPath.login());
-  };
-
-  const handleClickHomeButton = () => {
-    navigate('/');
-  };
 
   if (isLoading) return null;
 
@@ -172,27 +159,12 @@ const NotificationPage = () => {
       ) : (
         <>
           <NotificationList notifications={mockNotifications} />
-          <NoLoginWrapper>
-            <NoLoginTextContainer>
-              <p className="title">
-                지금 로그인을 하고 <br />
-                관심종목의 심리가 어떻게 <br />
-                변하는지 알림을 받아보세요
-              </p>
-              <p className="description">
-                👋 로그인을 하면 관심종목의 심리가 급등/급락할 때 <br />
-                알림을 받을 수 있어요
-              </p>
-            </NoLoginTextContainer>
-            <NoLoginButtonContainer>
-              <button className="primary" onClick={handleClickLoginButton}>
-                회원가입/로그인 하기
-              </button>
-              <button className="secondary" onClick={handleClickHomeButton}>
-                홈으로 가기
-              </button>
-            </NoLoginButtonContainer>
-          </NoLoginWrapper>
+          <NoLoginWrapper
+            title={'지금 로그인을 하고\n관심종목의 심리가 어떻게 변하는지\n알림을 받아보아요'}
+            description={'👋 로그인을 하면 심리가 급등/급락할 때\n알림을 받을 수 있어요'}
+            buttonText="회원가입/로그인 하기"
+            SecondaryButtonText="홈으로 가기"
+          />
         </>
       )}
     </NotificationContainer>
