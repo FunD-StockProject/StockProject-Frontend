@@ -39,7 +39,7 @@ const IndexScore = ({ country }: { country: StockCountryKey }) => {
             {idx === 0 && <InfoSVG onClick={openModal} />}
           </IndexScoreItemHeader>
           <IndexScoreItemScore delta={delta}>
-            <p>{score}</p>
+            <p>{score}점</p>
             {delta === 0 ? '-' : delta > 0 ? <UpSVG /> : <DownSVG />}
           </IndexScoreItemScore>
         </IndexScoreItem>
