@@ -20,7 +20,7 @@ const SearchResultContents = styled.div({
 
   [media[0]]: {
     padding: '24px 0px',
-    gap: '45px',
+    gap: '36px',
     boxSizing: 'border-box',
   },
 });
@@ -106,13 +106,39 @@ const SearchResultRelevantContainer = styled.div({
 const SearchResultGaugeChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: '10px',
+  gap: '16px',
 });
 
 const Divider = styled.div({
   backgroundColor: theme.colors.sub_gray11,
   height: '4px',
   width: '100vw',
+});
+
+const SearchResultAlertContainer = styled.div({
+  padding: '0 20px',
+  ['>div']: {
+    background: theme.colors.sub_gray11,
+    border: `1px solid ${theme.colors.sub_gray10}`,
+    borderRadius: '5px',
+    display: 'flex',
+    gap: '10px',
+    padding: '12px 16px',
+
+    ['>svg']: {
+      flexShrink: '0',
+      fill: theme.colors.sub_red,
+      width: '20px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+    },
+
+    ['>p']: {
+      ...theme.font.detail12Semibold,
+      color: theme.colors.sub_gray5,
+      margin: '0 auto',
+    },
+  },
 });
 
 export {
@@ -126,4 +152,5 @@ export {
   SearchResultRelevantContainer,
   SearchResultGaugeChartContainer,
   Divider,
+  SearchResultAlertContainer,
 };

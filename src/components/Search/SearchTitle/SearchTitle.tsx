@@ -12,7 +12,6 @@ import { useStockSummaryQuery } from '@controllers/query';
 import { useBuyExperimentMutation } from '@controllers/query/portfolio';
 import { theme } from '@styles/themes';
 import KoreaPNG from '@assets/flags/korea.png';
-import AlertSVG from '@assets/icons/alert.svg?react';
 import {
   SearchTitleContainer,
   SearchTitleDescriptionContainer,
@@ -123,29 +122,6 @@ const SearchTitleDetail = ({
   );
 };
 
-const SearchTitleAlertContainer = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  padding: '12px 16px',
-  background: theme.colors.sub_gray11,
-  justifyContent: 'center',
-  borderRadius: '5px',
-  border: `1px solid ${theme.colors.sub_gray10}`,
-
-  ['>p']: {
-    ...theme.font.detail12Semibold,
-    color: theme.colors.sub_gray5,
-    margin: '0',
-  },
-
-  ['>svg']: {
-    width: '20px',
-    height: '20px',
-    flexShrink: 0,
-  },
-});
-
 const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const [summary] = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
   const navigate = useNavigate();
@@ -174,21 +150,26 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
     actionText: ['로그인하기', '취소'],
   });
 
+  const [showMoreDesc, setShowMoreDesc] = useState(false);
+
+  const handleClickMore = () => {
+    setShowMoreDesc(true);
+  };
+
   return (
     stockInfo && (
       <SearchTitleContainer>
         <LoginModal />
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
-        <SearchTitleDescriptionContainer>
-          {summary.map((e, i) => (
-            <span key={`Summary_${stockInfo.symbol}_${i}`}>{e}</span>
-          ))}
+        <SearchTitleDescriptionContainer showMoreDesc={showMoreDesc}>
+          <button onClick={handleClickMore}>더보기</button>
+          <p>
+            {summary.reduce((acc, e, i) => {
+              return acc + (i ? '\n' : '') + e;
+            }, '')}
+          </p>
         </SearchTitleDescriptionContainer>
-        <SearchTitleAlertContainer>
-          <AlertSVG />
-          <p>인간지표는 공식 지표가 아니므로 참고 용도로만 활용해주세요</p>
-        </SearchTitleAlertContainer>
         <Button onClick={handleClickBuy}>모의 매수하기</Button>
       </SearchTitleContainer>
     )

@@ -13,9 +13,11 @@ import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
 import { StockDetailInfo, StockInfo } from '@controllers/api.Type';
 import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
+import AlertSVG from '@assets/icons/alert.svg?react';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {
   Divider,
+  SearchResultAlertContainer,
   SearchResultChartContainer,
   SearchResultChartContents,
   SearchResultContainer,
@@ -26,8 +28,6 @@ import {
   SearchResultWordCloudContainer,
   SearchResultWordCloudContents,
 } from './Search.Style';
-
-// 이름 추천
 
 const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo: StockDetailInfo }) => {
   const [stockScore, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
@@ -49,6 +49,12 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo
         </div>
       </SearchResultItemTtile>
       <GuageChart score={stockScore?.score ?? 0} />
+      <SearchResultAlertContainer>
+        <div>
+          <AlertSVG />
+          <p>인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요</p>
+        </div>
+      </SearchResultAlertContainer>
       <Modal />
     </SearchResultGaugeChartContainer>
   );
