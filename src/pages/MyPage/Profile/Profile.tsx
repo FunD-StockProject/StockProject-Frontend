@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
+import { fetchUpdateUserImage } from '@controllers/api';
 import { theme } from '@styles/themes';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
 import ProfilePNG from '@assets/profile.png';
@@ -15,7 +17,7 @@ const ProfileContainer = styled.div({
   gap: '12px',
 });
 
-const ProfileImage = styled.div({
+const ProfileImage = styled.label({
   position: 'relative',
   width: '64px',
   height: 'auto',
@@ -25,6 +27,8 @@ const ProfileImage = styled.div({
   ['>img']: {
     width: '100%',
     height: '100%',
+    borderRadius: '100%',
+    objectFit: 'cover',
   },
 
   ['>svg']: {
@@ -37,6 +41,10 @@ const ProfileImage = styled.div({
     aspectRatio: '1 / 1',
     bottom: '0',
     right: '0',
+  },
+
+  ['>input']: {
+    display: 'none',
   },
 });
 
@@ -76,7 +84,7 @@ const MyPageProfile = () => {
   const navigate = useNavigate();
   const isLogin = !!localStorage.getItem('access_token');
 
-  const profileImg = localStorage.getItem('profileImg');
+  const [profileImage, setProfileImage] = useState<string | null>(localStorage.getItem('profileImg'));
   const username = localStorage.getItem('username') ?? '아직 정보가 없어요!';
   const useremail = localStorage.getItem('useremail') ?? '로그인을 진행해주세요';
 
@@ -84,11 +92,35 @@ const MyPageProfile = () => {
     navigate(webPath.login());
   };
 
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const fileType = file.type;
+
+    if (!fileType.includes('image')) {
+      alert(`해당 파일은 이미지 파일이 아닙니다.`);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = async () => {
+      setProfileImage(reader.result as string);
+
+      const data = await fetchUpdateUserImage(reader.result as string);
+      console.log(data);
+    };
+  };
+
   return (
     <ProfileContainer>
       <ProfileImage>
-        <img src={profileImg ?? ProfilePNG} />
+        <img src={profileImage ?? ProfilePNG} />
         {isLogin && <EditCircleSVG />}
+        <input type="file" accept="image/*" onChange={handleChangeFile} />
       </ProfileImage>
       <ProfileContents>
         <p>{username}</p>

@@ -26,6 +26,13 @@ const Callback = () => {
 
       const provider = location.pathname.split('/').at(-1);
 
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('useremail');
+      localStorage.removeItem('username');
+      localStorage.removeItem('provider');
+      localStorage.removeItem('profileImg');
+
       try {
         let res: any;
         switch (provider) {
@@ -66,6 +73,9 @@ const Callback = () => {
         localStorage.setItem('username', res.nickname);
         localStorage.setItem('provider', provider);
         localStorage.setItem('recent_login_provider', provider);
+        if (res.profileImageUrl) {
+          localStorage.setItem('profileImg', res.profileImageUrl);
+        }
 
         navigate('/', {
           replace: true,

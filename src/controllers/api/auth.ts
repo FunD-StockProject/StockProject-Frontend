@@ -115,3 +115,42 @@ export const fetchAuthLogout = async () => {
     throw error;
   }
 };
+
+// PATCH /notification/read/{notificationId}
+export const fetchUpdateUserImage = async (imageBase64: string) => {
+  try {
+    const url = `${baseURL}/user/image`;
+    const formData = new FormData();
+    if (imageBase64) {
+      const byteString = atob(imageBase64.split(',')[1]);
+      const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
+
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([ab], { type: mimeString });
+      const file = new File([blob], 'profile.png', { type: mimeString });
+      formData.append('image', file);
+    }
+
+    const res = await fetch(url, {
+      method: 'PATCH',
+      body: formData,
+      headers: {
+        ...Headers,
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+    if (!res.ok) {
+      console.log(await res.json());
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};

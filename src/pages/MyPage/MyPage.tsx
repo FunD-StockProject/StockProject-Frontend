@@ -85,6 +85,7 @@ const MyPage = () => {
 
   const detailButtons = [
     {
+      key: 'favorites',
       title: '내 인간지표',
       subtitle: '관심 종목 변동 알림 신청하기',
       onClick: handleClickMyHumanzipyo,
@@ -94,6 +95,7 @@ const MyPage = () => {
       ],
     },
     {
+      key: 'lab',
       title: '모의매수 실험 현황',
       subtitle: '내 투자 타이밍은 적절할까',
       onClick: handleClickMyExperiment,
@@ -137,7 +139,7 @@ const MyPage = () => {
       <MyPageContents>
         {isLogin &&
           detailButtons.map((button) => (
-            <MyPageDetailContainer onClick={button.onClick}>
+            <MyPageDetailContainer onClick={button.onClick} key={`MYPAGE_DETAIL_${button.key}`}>
               <MyPageDetailTitle>
                 <p>
                   {button.title} <span>| {button.subtitle}</span>
@@ -145,8 +147,8 @@ const MyPage = () => {
                 <RightArrowThickSVG />
               </MyPageDetailTitle>
               <MyPageDetailContents>
-                {button.items.map((item) => (
-                  <MyPageDetailItem>
+                {button.items.map((item, idx) => (
+                  <MyPageDetailItem key={`MYPAGE_DETAIL_${button.key}_ITEM_${idx}`}>
                     <p className="title">{item.title}</p>
                     <p className="content">{item.content}</p>
                   </MyPageDetailItem>
