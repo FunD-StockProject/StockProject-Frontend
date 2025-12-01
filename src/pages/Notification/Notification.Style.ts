@@ -8,32 +8,26 @@ const NotificationContainer = styled.div({
 
 const NotificationItemContainer = styled.div(
   ({ readStatus }: { readStatus: boolean }) => ({
-    background: readStatus ? '' : theme.colors.sub_gray11,
+    background: readStatus ? '' : theme.colors.sub_gray10,
+    opacity: readStatus ? 0.4 : 1,
   }),
   {
     padding: '16px 24px',
     display: 'flex',
     gap: '12px',
     alignItems: 'center',
+
+    ['>img']: {
+      width: '48px',
+      height: 'auto',
+      objectFit: 'cover',
+      aspectRatio: '1 / 1',
+      borderRadius: '50%',
+      overflow: 'hidden',
+      background: theme.colors.sub_gray11,
+    },
   },
 );
-
-const NotificationItemImage = styled.div({
-  width: '48px',
-  height: 'auto',
-  aspectRatio: '1 / 1',
-  borderRadius: '50%',
-  background: theme.colors.sub_gray11,
-  flexShrink: '0',
-  display: 'flex',
-  overflow: 'hidden',
-
-  ['>img']: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-});
 
 const NotificationItemContent = styled.div({
   display: 'flex',
@@ -176,7 +170,6 @@ const NoLoginButtonContainer = styled.div({
 export {
   NotificationContainer,
   NotificationItemContainer,
-  NotificationItemImage,
   NotificationItemContent,
   AlarmExampleWrapper,
   AlarmExampleTextContainer,

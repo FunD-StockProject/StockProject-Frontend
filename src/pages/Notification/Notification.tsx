@@ -3,6 +3,7 @@ import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import { mapNotificationResponseToItem } from '@utils/notificationMapper';
 import { webPath } from '@router/index';
+import StockImage from '@components/Common/StockImage';
 import { useMarkAsReadMutation, useNotificationsQuery } from '@controllers/query/notifications';
 import AlarmExamplePNG from '@assets/design/alarmExample.png';
 import {
@@ -14,7 +15,6 @@ import {
   NotificationContainer,
   NotificationItemContainer,
   NotificationItemContent,
-  NotificationItemImage,
 } from './Notification.Style';
 
 const getBeforeTime = (date: Date) => {
@@ -119,15 +119,20 @@ const NotificationList = ({ notifications }: { notifications: Notification[] }) 
       </AlarmExampleWrapper>
     );
 
+  console.log(notifications);
+
   return notifications.map((notification) => (
     <NotificationItemContainer
       key={notification.id}
       readStatus={notification.readStatus}
       onClick={handleClickNotification(notification.id, notification.stockName, notification.country)}
     >
-      <NotificationItemImage>
-        <img src={''} />
-      </NotificationItemImage>
+      <StockImage
+        stockId={
+          0
+          //  notification.stockId
+        }
+      />
       <NotificationItemContent>
         <p className="title">
           {notification.title}
