@@ -97,8 +97,6 @@ export const SmallStockCard = ({
 const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryKey }) => {
   const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
 
-  console.log(curStocks);
-
   return (
     suspend || (
       <StockCardContainer>

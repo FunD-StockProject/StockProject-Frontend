@@ -106,7 +106,6 @@ const HomeContents = styled.div({
   gap: '64px',
   boxSizing: 'border-box',
   width: '100%',
-  maxWidth: '1280px',
   height: '100%',
   margin: '0 auto',
   padding: '90px 60px',

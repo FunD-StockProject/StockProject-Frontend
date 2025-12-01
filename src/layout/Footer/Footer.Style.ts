@@ -10,7 +10,6 @@ const FooterContents = styled.div({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  maxWidth: '1280px',
   padding: '32px 20px',
   boxSizing: 'border-box',
   margin: '0 auto',
