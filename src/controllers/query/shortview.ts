@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { StockCardShortview } from '@pages/ShortView/ShortView';
+import { StockCardShortview } from '@pages/ShortView_old/ShortView';
 import { fetchShortview, fetchShortviewFeed, postShortViewBuy, postShortViewHide } from '@controllers/api/shortview';
 import { queryOptions } from './common';
 
