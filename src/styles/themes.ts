@@ -390,6 +390,18 @@ const font = {
     lineHeight: '150%',
     letterSpacing: '0',
   },
+  detail10Semibold: {
+    fontSize: '10px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail10Bold: {
+    fontSize: '10px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
 };
 
 const theme = {

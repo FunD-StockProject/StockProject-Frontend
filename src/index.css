@@ -32,6 +32,7 @@
   -o-text-size-adjust: 100%; /* 오페라 구버전 */
 
   -webkit-overflow-scrolling: touch;
+
   overflow-x: hidden;
 }
 
@@ -50,8 +51,12 @@ html {
 body {
   display: flex;
 
+  justify-items: center;
+
   margin: 0px;
   background-color: #000000;
   min-width: 320px;
   min-height: 100vh;
+  overflow: hidden;
+  overscroll-behavior: contain;
 }

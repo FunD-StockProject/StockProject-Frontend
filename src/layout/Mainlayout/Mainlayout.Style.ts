@@ -8,8 +8,8 @@ export const StyledMainlayout = styled.div({
   alignItems: 'center',
   width: '100%',
   minHeight: '100dvh',
-  // backgroundColor: theme.colors.grayscale100,
   background: '#101010',
+  maxWidth: '1280px',
 });
 
 export const MainContent = styled.div(

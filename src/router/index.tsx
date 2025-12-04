@@ -3,8 +3,10 @@ import AboutPage from '@pages/About/About';
 import Callback from '@pages/Callback/Callback';
 import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
+import RecordSheet from '@pages/Lab/RecordSheet/RecordSheet';
 import LabStep from '@pages/Lab/Step/Step';
 import Login from '@pages/Login/Login';
+import EditProfile from '@pages/MyPage/Edit/Edit';
 import MyPage from '@pages/MyPage/MyPage';
 import NotificationPage from '@pages/Notification/Notification';
 import Register from '@pages/Register/Register';
@@ -14,7 +16,6 @@ import Term from '@pages/Term/Term';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
 import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
-import StockRecordSheet from '@components/Lab/StockRecordSheet/StockRecordSheet';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
@@ -26,6 +27,7 @@ export const webPath = {
   usage: () => '/usage',
   shortView: () => '/shortview',
   mypage: () => '/mypage',
+  editProfile: () => '/mypage/edit',
   login: () => '/mypage/login',
   register: () => '/mypage/register',
   registerDone: () => '/mypage/register/done',
@@ -34,7 +36,7 @@ export const webPath = {
   withdrawDone: () => '/mypage/withdraw/done',
   lab: () => '/lab',
   labPurchase: () => '/lab/purchase',
-  labStockRecordSheet: () => '/lab/stock/recordsheet',
+  labRecordSheet: () => '/lab/recordsheet',
   term: () => '/term',
   about: () => '/about',
   callback: () => '/login/oauth2/code',
@@ -73,7 +75,7 @@ const routes = [
       { path: webPath.shortView(), element: <ShortView /> },
       { path: webPath.lab(), element: <Lab /> },
       { path: webPath.labPurchase(), element: <LabStep /> },
-      { path: webPath.labStockRecordSheet(), element: <StockRecordSheet /> },
+      { path: webPath.labRecordSheet(), element: <RecordSheet /> },
       { path: webPath.term(), element: <Term /> },
       { path: webPath.about(), element: <AboutPage /> },
       { path: webPath.callbackKakao(), element: <Callback /> },
@@ -82,6 +84,7 @@ const routes = [
       { path: webPath.callbackApple(), element: <Callback /> },
       { path: webPath.usage(), element: <Usage /> },
       { path: webPath.notification(), element: <NotificationPage /> },
+      { path: webPath.editProfile(), element: <EditProfile /> },
     ],
   },
 ];

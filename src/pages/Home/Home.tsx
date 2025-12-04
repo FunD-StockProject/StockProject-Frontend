@@ -8,7 +8,7 @@ import IndexScore from '@components/Home/IndexScore/IndexScore';
 import Keywords from '@components/Home/Keywords/Keywords';
 import StockTable from '@components/Home/StockTable/StockTable';
 import SearchBar from '@components/SearchBar/SearchBar';
-import { useUnreadCountQuery } from '@controllers/query/notifications';
+import { useUnreadCountQuery } from '@controllers/notification/query';
 import AlarmSVG from '@assets/icons/alarm.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';

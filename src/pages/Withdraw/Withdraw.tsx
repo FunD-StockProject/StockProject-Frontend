@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { fetchAuthWithdraw } from '@controllers/api';
+import { fetchAuthWithdraw } from '@controllers/auth/api';
 import AlarmSVG from '@assets/alarm.svg?react';
 import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 import HeartSVG from '@assets/heart.svg?react';

@@ -3,9 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
-import { fetchAuthRegister } from '@controllers/api';
+import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
+import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
+import { fetchAuthRegister } from '@controllers/auth/api';
 import CheckSVG from '@assets/check.svg?react';
-import EditCircleSVG from '@assets/edit_circle.svg?react';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import ProfilePNG from '@assets/profile.png';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
@@ -13,9 +14,6 @@ import {
   RegisterButtonContainer,
   RegisterContainer,
   RegisterContent,
-  RegisterImageContainer,
-  RegisterInputItemContainer,
-  RegisterInputItemSubContainer,
   RegisterTermCheckBox,
   RegisterTermContainer,
   RegisterTermErrorContainer,
@@ -25,43 +23,12 @@ import {
 } from './Register.Style';
 
 type TermState = Record<TermKey, boolean>;
-type InputKey = 'name' | 'email' | 'birth';
 
 interface TermInputItem {
   key: TermKey;
   essential?: boolean;
   text: string;
 }
-interface InputItem {
-  key: InputKey;
-  title: string;
-  placeholder: string;
-  sub?: React.ReactElement;
-  essential?: boolean;
-  disabled?: boolean;
-}
-
-const valueInputs: InputItem[] = [
-  {
-    key: 'name',
-    title: '닉네임',
-    essential: true,
-    placeholder: '닉네임을 입력해주세요',
-  },
-  {
-    key: 'email',
-    title: '이메일',
-    essential: true,
-    placeholder: 'email@email.com',
-    disabled: true,
-  },
-  {
-    key: 'birth',
-    title: '생년월일',
-    essential: false,
-    placeholder: 'YYYY-MM-DD',
-  },
-];
 
 const termInputs: TermInputItem[] = [
   {
@@ -105,7 +72,7 @@ const Register = () => {
     system: '',
   });
 
-  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -141,7 +108,7 @@ const Register = () => {
     setTerms((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const validate = () => {
+  const validate = async () => {
     const errors = {
       name: '',
       email: '',
@@ -161,6 +128,8 @@ const Register = () => {
     } else if (!nameRefex.test(values.name)) {
       errors.name = '닉네임은 한글만 사용할 수 있어요';
     } else if (false) {
+      // const res = await fetchAuthNickname(values.name);
+      // console.log(res);
       // 닉네임 중복 API
       errors.name = '이미 사용 중인 닉네임입니다';
     }
@@ -177,7 +146,7 @@ const Register = () => {
     if (values.birth) {
       if (!birthRegex.test(values.birth)) {
         errors.birth = '생년월일 형식을 확인해주세요. (예: 1999-06-23)';
-      } else if (new Date(values.birth) > new Date()) {
+      } else if (isNaN(new Date(values.birth).getTime()) || new Date(values.birth) > new Date()) {
         errors.birth = '유효한 생년월일을 입력해주세요.';
       }
     }
@@ -199,9 +168,57 @@ const Register = () => {
     return errors;
   };
 
+  const valueInputs: MyPageInputProps[] = [
+    {
+      name: 'name',
+      error: errors.name,
+      title: '닉네임*',
+      sub: (
+        <>
+          <span>{values.name.length}</span>/10
+        </>
+      ),
+      inputs: [
+        {
+          key: 'name',
+          value: values.name,
+          placeholder: '닉네임을 입력해주세요',
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+    {
+      name: 'email',
+      title: '이메일*',
+      error: errors.email,
+      inputs: [
+        {
+          key: 'email',
+          value: values.email,
+          placeholder: 'email@email.com',
+          disabled: true,
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+    {
+      name: 'birth',
+      title: '생년월일(선택)',
+      error: errors.birth,
+      inputs: [
+        {
+          key: 'birth',
+          value: values.birth,
+          placeholder: 'YYYY-MM-DD',
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+  ];
+
   const handleSubmit = async () => {
     // 필드 검사 후
-    const errors = validate();
+    const errors = await validate();
     // 에러 값을 설정하고
     setErrors(errors);
     // 잘못된 값이면 제출 처리를 중단한다.
@@ -244,35 +261,10 @@ const Register = () => {
   return (
     <RegisterContainer>
       <RegisterContent>
-        <RegisterImageContainer>
-          <img src={(profileImage as string) ?? ProfilePNG} />
-          <EditCircleSVG />
-          <input type="file" accept="image/*" onChange={handleChangeFile} />
-        </RegisterImageContainer>
+        <ProfileCircle profileImage={profileImage ?? ProfilePNG} handleChangeFile={handleChangeFile} size="large" />
         <RegisterValueContainer>
           {valueInputs.map((e) => (
-            <RegisterInputItemContainer key={e.key} isError={!!errors[e.key]}>
-              <p>
-                {e.title}
-                {e.essential ? '*' : '(선택)'}
-              </p>
-              <input
-                type="text"
-                placeholder={e.placeholder}
-                disabled={e.disabled}
-                name={e.key}
-                value={values[e.key]}
-                onChange={handleChangeValue}
-              />
-              <RegisterInputItemSubContainer>
-                <p className="error">{errors[e.key]}</p>
-                {e.key == 'name' && (
-                  <p className="sub">
-                    <span>{values.name.length}</span>/10
-                  </p>
-                )}
-              </RegisterInputItemSubContainer>
-            </RegisterInputItemContainer>
+            <MyPageInput key={e.name} name={e.name} error={e.error} title={e.title} sub={e.sub} inputs={e.inputs} />
           ))}
           <hr />
           <RegisterTermContainer>
@@ -287,7 +279,7 @@ const Register = () => {
               </RegisterTermItemContainer>
               <hr />
               {termInputs.map((e) => (
-                <RegisterTermItemContainer>
+                <RegisterTermItemContainer key={`TERM_${e.key}`}>
                   <RegisterTermCheckBox>
                     <input type="checkbox" name={e.key} checked={terms[e.key]} onChange={handleChangeCheckbox} />
                     <CheckSVG />
