@@ -1,3 +1,5 @@
+import DEFAULT_STOCK_IMAGE from '@assets/default-stock-image.png';
+
 /**
  * 주식 이미지 URL 생성 함수
  * @param stockId 주식 ID
@@ -10,7 +12,7 @@ export const getStockImageUrl = (stockId: number): string => {
 /**
  * 기본 이미지 URL (이미지가 없거나 로딩 실패 시 사용)
  */
-export const DEFAULT_STOCK_IMAGE = '/default-stock-image.png';
+export { DEFAULT_STOCK_IMAGE };
 
 /**
  * 주식 이미지 URL 결정 함수
