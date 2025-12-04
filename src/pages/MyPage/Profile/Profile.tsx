@@ -5,7 +5,6 @@ import { webPath } from '@router/index';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchUpdateUserImage } from '@controllers/auth/api';
 import { theme } from '@styles/themes';
-import EditCircleSVG from '@assets/edit_circle.svg?react';
 import ProfilePNG from '@assets/profile.png';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
 
@@ -16,37 +15,6 @@ const ProfileContainer = styled.div({
   padding: '25dvh 24px 24px',
   boxSizing: 'border-box',
   gap: '12px',
-});
-
-const ProfileImage = styled.label({
-  position: 'relative',
-  width: '64px',
-  height: 'auto',
-  aspectRatio: '1 / 1',
-  display: 'flex',
-
-  ['>img']: {
-    width: '100%',
-    height: '100%',
-    borderRadius: '100%',
-    objectFit: 'cover',
-  },
-
-  ['>svg']: {
-    position: 'absolute',
-    fill: '#ADB5BD',
-    background: '#495057',
-    borderRadius: '999px',
-    width: '20px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    bottom: '0',
-    right: '0',
-  },
-
-  ['>input']: {
-    display: 'none',
-  },
 });
 
 const ProfileContents = styled.div({

@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import ScrollTopButton from '@components/Common/ScrollTopButton/ScrollTopButton';
 import ExperimentItemComponent from '@components/Lab/ExperimentItem/ExperimentItem';
 import useExperimentDetailModal from '@components/Modal/ExperimentDetail/useExperimentDetail';
-import { ExperimentItem, ExperimentStatusResponse } from '@controllers/experiment/api';
+import { ExperimentItem } from '@controllers/experiment/api';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import ChevronDownSVG from '@assets/icons/chevronDown.svg?react';
 import ChevronUpSVG from '@assets/icons/chevronUp.svg?react';

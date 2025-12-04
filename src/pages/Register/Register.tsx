@@ -23,7 +23,6 @@ import {
 } from './Register.Style';
 
 type TermState = Record<TermKey, boolean>;
-type InputKey = 'name' | 'email' | 'birth';
 
 interface TermInputItem {
   key: TermKey;

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ExperimentItemComponent from '@components/Lab/ExperimentItem/ExperimentItem';
 import { ExperimentDetailModalData } from '@components/Modal/ExperimentDetail/useExperimentDetail';
-import { ExperimentStatusResponse } from '@controllers/experiment/api';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import AddStockSVG from '@assets/icons/addStock.svg?react';
 import LeftChevronSVG from '@assets/icons/chevronLeftNarrow.svg?react';

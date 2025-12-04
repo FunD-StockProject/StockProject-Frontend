@@ -56,12 +56,7 @@ const TinderCard = ({
   const scoreDiffText = `${diffToValue(diff)}점`;
 
   return (
-    <TinderCardItemContainer
-      style={{
-        ...transform,
-        zIndex: zIndex,
-      }}
-    >
+    <TinderCardItemContainer transform={transform} zIndex={zIndex}>
       <TinderCardChartContainer>
         <StockChart
           stockId={stockId}

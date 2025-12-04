@@ -11,7 +11,7 @@ const ExperimentItemComponent = ({
   idx: number;
   handleClickExperimentDetail: (experimentId: number) => void;
 }) => {
-  const { stockId, symbolName, buyAt, status, currentPrice, buyPrice, roi } = experiment;
+  const { stockId, symbolName, buyAt, status, buyPrice, roi } = experiment;
 
   const dateText = ((date: Date) => {
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map((num) =>

@@ -4,7 +4,6 @@ import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
-import ShortViewNeedLogin from '@components/ShortView/NeedLogin/NeedLogin';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import {
@@ -50,7 +49,7 @@ const ShortView = () => {
     isFetchingNextPage: isFetchingNextShortview,
     removeItem: removeShortviewItem,
     appendItem: appendShortviewItem,
-  } = useShortViewQuery({ useMock: !isLogin });
+  } = useShortViewQuery({ useMock: isLogin });
   const [currentIdx, setCurrentIdx] = useState(0);
 
   useEffect(() => {
@@ -138,10 +137,11 @@ const ShortView = () => {
   };
 
   const currentCardTransform = {
-    transform: `translate3d(${cardX}px, ${Math.min(0, cardY)}px, 0)`,
+    transform: `translate3d(${cardX}px, ${Math.min(0, cardY)}px, 0) rotate(${(cardX / width) * 15}deg)`,
     scale: `${mouseDrag.active ? 1.05 : 1}`,
     opacity: `${1}`,
-    transition: `scale 0.1s ease-in-out ${!mouseDrag.active ? ', transform 0.2s ease-in-out' : ''}`,
+    filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${0.12 * (1 - Math.abs(cardY / (height / 2)))}))`,
+    transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out ${!mouseDrag.active ? ', transform 0.2s ease-in-out' : ''}`,
   };
 
   const nextCardTransform = {

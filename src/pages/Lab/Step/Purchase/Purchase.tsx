@@ -50,9 +50,9 @@ const LabPurchase = () => {
 
   const [purchased, setPurchased] = useState<number[]>([]);
   const { mutate: buyExperiment } = useBuyExperimentMutation();
-  const { data: sectorRecommend } = useSectorRecommendQuery(selectedCountry, selectedSector);
+  const { data: sectorRecommendStockInfos } = useSectorRecommendQuery(selectedCountry, selectedSector);
 
-  console.log(sectorRecommend);
+  console.log(sectorRecommendStockInfos);
 
   const { toast, showToast } = useToast();
 

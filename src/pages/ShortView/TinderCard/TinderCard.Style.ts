@@ -3,25 +3,20 @@ import { theme } from '@styles/themes';
 
 const TinderCardItemContainer = styled.div(
   ({
-    isTop,
-    active,
-    cardX,
-    cardY,
-    cardRotate,
-    cardScale,
+    transform,
+    zIndex,
   }: {
-    isTop?: boolean;
-    active?: boolean;
-    cardX?: number;
-    cardY?: number;
-    cardRotate?: number;
-    cardScale?: string;
+    transform?: {
+      transform?: string;
+      scale?: string;
+      opacity?: string;
+      transition?: string;
+      filter?: string;
+    };
+    zIndex?: number;
   }) => ({
-    // zIndex: isTop ? '1' : 'auto',
-    boxShadow: isTop ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 50px 0px rgba(255, 255, 255, 0.12)' : 'none',
-    // transform: `translate3d(${cardX}px, ${cardY}px, 0) rotate(${cardRotate}deg)`,
-    scale: cardScale,
-    // transition: `box-shadow 0.2s ease-in-out, scale 0.1s ease-in-out${!active ? ', transform 0.2s ease-in-out' : ''}`,
+    ...transform,
+    zIndex: zIndex,
   }),
   {
     position: 'absolute',

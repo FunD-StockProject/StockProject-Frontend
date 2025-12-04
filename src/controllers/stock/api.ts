@@ -1,6 +1,6 @@
 import { StockCountryKey } from '@ts/StockCountry';
 import { StockSectorKey } from '@ts/StockSector';
-import { fetchData } from '@controllers/api/base';
+import { fetchAuthData, fetchData } from '@controllers/api/base';
 
 export interface AutoCompleteItem {
   stockId: number;
@@ -40,7 +40,14 @@ export const fetchAutoCompleteStock = (name: string): Promise<AutoCompleteItem[]
 
 // GET /stock/sector/overseas/{sectorKey}/recommend
 // GET /stock/sector/domestic/{sectorKey}/recommend
-export const fetchSectorRecommend = (country: StockCountryKey, sectorKey: StockSectorKey): Promise<StockInfo[]> => {
+export const fetchSectorRecommend = async (
+  country: StockCountryKey,
+  sectorKey: StockSectorKey,
+): Promise<StockInfo[]> => {
   const countryPath = country == 'KOREA' ? 'domestic' : 'overseas';
-  return fetchData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+
+  console.log(countryPath, sectorKey);
+  const res = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+  console.log(res);
+  return fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
 };
