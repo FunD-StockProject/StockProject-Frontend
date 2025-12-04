@@ -49,7 +49,7 @@ const ShortView = () => {
     isFetchingNextPage: isFetchingNextShortview,
     removeItem: removeShortviewItem,
     appendItem: appendShortviewItem,
-  } = useShortViewQuery({ useMock: isLogin });
+  } = useShortViewQuery({ useMock: !isLogin });
   const [currentIdx, setCurrentIdx] = useState(0);
 
   useEffect(() => {

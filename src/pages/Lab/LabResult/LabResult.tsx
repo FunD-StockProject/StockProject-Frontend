@@ -3,25 +3,18 @@ import ScrollTopButton from '@components/Common/ScrollTopButton/ScrollTopButton'
 import ReportClassChart from '@components/Lab/ReportClassChart/ReportClassChart';
 import { ReportClassType, reportClassList } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
 import ReportPatternChart from '@components/Lab/ReportPatternChart/ReportPatternChart';
-import {
-  PatternQuadrant,
-  PatternQuadrantKey,
-  patternQuadrantKeys,
-  patternQuadrantList,
-  patternQuadrantMap,
-} from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
+import { PatternQuadrant, patternQuadrantList } from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
 import useAboutReportClass from '@components/Modal/AboutReportClass/useAboutReportClass';
 import useAboutReportPattern from '@components/Modal/AboutReportPattern/useAboutReportPattern';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import {
-  ExperimentReportStatisticDto,
   PortfolioResultExperimentSummary,
   PortfolioResultHistory,
   PortfolioResultHumanIndex,
   PortfolioResultInvestmentPattern,
   PortfolioResultScoreTable,
 } from '@controllers/experiment/api';
-import { useExperimentReportQuery, usePortfolioResultQuery } from '@controllers/experiment/query';
+import { usePortfolioResultQuery } from '@controllers/experiment/query';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 import {
   LabResultContainer,
@@ -459,7 +452,7 @@ const LabResult = () => {
   const { Modal: AboutReportPatternModal, openModal: openAboutReportPatternModal } = useAboutReportPattern();
 
   const resultReportItems = useMemo(() => {
-    if (!portfolioResult) return [];
+    if (!portfolioResult || isPortfolioResultLoading) return [];
 
     const { scoreTable, experimentSummary, humanIndex, investmentPattern, history } = portfolioResult;
 
