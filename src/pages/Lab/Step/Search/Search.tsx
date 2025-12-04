@@ -256,7 +256,6 @@ const LabSearch = () => {
         handleCloseModal={handleCloseModal}
         handleClickStock={handleClickStock}
       />
-      <span className="divider" />
       <LabSearchSelectContainer>
         <p>관심 종목</p>
         <LabSearchSelectStockInputContainer onClick={handleOpenModal}>
