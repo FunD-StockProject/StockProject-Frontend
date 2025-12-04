@@ -9,7 +9,7 @@ import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { StockDetailInfo } from '@controllers/api.Type';
 import { useStockIdSearchQuery } from '@controllers/query';
-import { useBuyExperimentMutation } from '@controllers/query/portfolio';
+import { useBuyExperimentMutation, useSectorRecommendQuery } from '@controllers/query/portfolio';
 import { theme } from '@styles/themes';
 import CheckSVG from '@assets/icons/check.svg?react';
 import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
@@ -17,7 +17,7 @@ import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
 const LabPurchase = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { step, stocks, sectors: selectedSectorKeys } = location.state; // 섹터 키 배열
+  const { country, step, stocks, sectors: selectedSectorKeys } = location.state; // 섹터 키 배열
   const [selectedSector, setSelectedSector] = useState<StockSectorKey>(
     selectedSectorKeys?.[0], // 첫 번째 섹터를 기본 선택
   );
@@ -33,8 +33,8 @@ const LabPurchase = () => {
       )
       .filter(Boolean) ?? [];
 
-
-
+  const { data: currentSectorStocks } = useSectorRecommendQuery(country, selectedSector);
+  console.log(currentSectorStocks);
   const handlePrevStep = () => {
     navigate(-1);
   };

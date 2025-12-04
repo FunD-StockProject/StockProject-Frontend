@@ -23,8 +23,8 @@ export const useReportQuery = () => {
   return useQuery(['bookmarkList'], fetchReport, queryOptions);
 };
 
-export const useSectorRecommendQuery = (sector: string) => {
-  return useQuery<StockDetailInfo[]>(['sectorRecommend', sector], () => fetchSectorRecommend(sector), queryOptions);
+export const useSectorRecommendQuery = (country: StockCountryKey, sector: string) => {
+  return useQuery<StockDetailInfo[]>(['sectorRecommend', country, sector], () => fetchSectorRecommend(country, sector), queryOptions);
 };
 
 // ----- Mutations -----

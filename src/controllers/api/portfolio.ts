@@ -12,4 +12,4 @@ export const fetchExperimentStatusDetail = (experimentId: number) =>
 
 export const fetchReport = () => fetchAuthData('/experiment/report');
 
-export const fetchSectorRecommend = (sector: string) => fetchAuthData(`/stock/sector/domestic/${sector}/recommend`);
+export const fetchSectorRecommend = (country: StockCountryKey, sector: string) => fetchAuthData(`/stock/sector/${country === 'KOREA' ? 'domestic' : 'overseas'}/${sector}/recommend`);
