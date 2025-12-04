@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/api';
+import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import { useBookmarkListQuery } from '@controllers/preference/query';
-import { useExperimentQuery } from '@controllers/query/portfolio';
 import InstagramSVG from '@assets/instagram.svg?react';
 import LinkedInSVG from '@assets/linkedin.svg?react';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
@@ -24,7 +24,7 @@ import MyPageProfile from './Profile/Profile';
 const MyPage = () => {
   const isLogin = !!localStorage.getItem('access_token');
   const { data: favorites = [] } = useBookmarkListQuery();
-  const { data: experiments = [] } = useExperimentQuery();
+  const { data: experimentStatus } = useExperimentStatusQuery();
 
   const FavoriteCount = favorites?.length ?? 0;
   const AlarmCount = favorites?.filter((e) => e.isNotificationOn).length ?? 0;
@@ -100,9 +100,9 @@ const MyPage = () => {
       subtitle: '내 투자 타이밍은 적절할까',
       onClick: handleClickMyExperiment,
       items: [
-        { title: '실험 중', content: `${experiments.progressTradeCount ?? 0}개` },
-        { title: '총 실험 수', content: `${experiments.totalTradeCount ?? 0}개` },
-        { title: '성공률', content: `${(experiments.successRate ?? 0).toFixed(1)}%` },
+        { title: '실험 중', content: `${experimentStatus?.progressTradeCount ?? 0}개` },
+        { title: '총 실험 수', content: `${experimentStatus?.totalTradeCount ?? 0}개` },
+        { title: '성공률', content: `${(experimentStatus?.successRate ?? 0).toFixed(1)}%` },
       ],
     },
   ];

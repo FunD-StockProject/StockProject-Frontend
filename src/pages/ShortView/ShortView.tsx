@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
+import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import ShortViewNeedLogin from '@components/ShortView/NeedLogin/NeedLogin';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
@@ -372,7 +373,24 @@ const ShortView = () => {
         </ShortViewButton>
         {toast.enabled && <ShortViewToast closing={toast.closing}>{toast.message}</ShortViewToast>}
       </ShortViewButtonContainer>
-      {isLogin ? <ShortViewTutorial /> : <ShortViewNeedLogin />}
+
+      <NoLoginWrapper
+        title={
+          <>
+            지금 로그인을 하고 <br />
+            요즘 괜찮은 종목이 있는지 탐색해보아요
+          </>
+        }
+        description={
+          <>
+            👋 로그인을 하면 <b>#심리지수</b>와 <b>#종목 키워드</b> <br />
+            같은 기능을 사용할 수 있어요
+          </>
+        }
+        buttonText="회원가입/로그인 하기"
+        hasNavbar
+      />
+      <ShortViewTutorial />
     </ShortViewContainer>
   );
 };

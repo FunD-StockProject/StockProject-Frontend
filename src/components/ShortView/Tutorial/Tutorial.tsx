@@ -69,13 +69,15 @@ const TutorialSteps = [
 ];
 
 const ShortViewTutorial = () => {
+  const isLogin = !!getItemLocalStorage('access_token');
+
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [isOpenTutorial, setIsOpenTutorial] = useState(getItemLocalStorage('ShortViewTutorial', true));
+  const [tutorialWatched, setTutorialWatched] = useState(getItemLocalStorage('ShortViewTutorialWatched'));
 
   const handleClickTutorialEnd = () => {
     console.log('tutorial end');
-    setIsOpenTutorial(false);
-    setItemLocalStorage('ShortViewTutorial', false);
+    setTutorialWatched(true);
+    setItemLocalStorage('ShortViewTutorialWatched', true);
   };
 
   const [stepIndex, setStepIndex] = useState(0);
@@ -96,7 +98,7 @@ const ShortViewTutorial = () => {
     };
   }, []);
 
-  if (!isOpenTutorial) return null;
+  if (tutorialWatched || !isLogin) return null;
 
   return (
     <TutorialContainer>

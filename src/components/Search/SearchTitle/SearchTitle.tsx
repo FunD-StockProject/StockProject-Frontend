@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,9 +7,8 @@ import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { StockDetailInfo } from '@controllers/api.Type';
+import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import { useStockSummaryQuery } from '@controllers/query';
-import { useBuyExperimentMutation } from '@controllers/query/portfolio';
-import { theme } from '@styles/themes';
 import KoreaPNG from '@assets/flags/korea.png';
 import {
   SearchTitleContainer,

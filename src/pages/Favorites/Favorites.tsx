@@ -32,7 +32,6 @@ import {
 const Favorites = () => {
   const navigate = useNavigate();
 
-  const isLogin = !!localStorage.getItem('access_token');
   const { data: bookmarkList = [], isLoading } = useBookmarkListQuery();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
   const { mutate: toggleNotification } = useToggleNotificationMutation();
@@ -134,13 +133,23 @@ const Favorites = () => {
     <FavoritesContainer>
       <OffNotificationModal />
       <DeleteFavoritesModal />
-      {!isLogin && (
-        <NoLoginWrapper
-          title={'지금 로그인을 하고\n관심종목의 심리가 어떻게 변하는지\n알림을 받아보아요'}
-          description={'👋 로그인을 하면 심리가 급등/급락할 때\n알림을 받을 수 있어요'}
-          buttonText="회원가입/로그인 하기"
-        />
-      )}
+      <NoLoginWrapper
+        title={
+          <>
+            지금 로그인을 하고 <br />
+            관심종목의 심리가 어떻게 변하는지 <br />
+            알림을 받아보아요
+          </>
+        }
+        description={
+          <>
+            👋 로그인을 하면 심리가 급등/급락할 때 <br />
+            알림을 받을 수 있어요
+          </>
+        }
+        buttonText="회원가입/로그인 하기"
+        hasNavbar
+      />
 
       <FavoritesTitleContainer>
         <p>관심종목 ({bookmarkList.length})</p>

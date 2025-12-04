@@ -1,6 +1,29 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
-import { fetchBuyExperiment } from './api';
+import { queryOptions } from '@controllers/query';
+import { fetchBuyExperiment, fetchExperimentDetail, fetchExperimentReport, fetchExperimentStatus } from './api';
+
+// ----- Queries -----
+export const useExperimentStatusQuery = () => {
+  return useQuery(['experimentStatus'], fetchExperimentStatus, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
+};
+
+export const useExperimentDetailQuery = (experimentId: number) => {
+  return useQuery(['experimentDetail', experimentId], () => fetchExperimentDetail(experimentId), {
+    ...queryOptions,
+    enabled: !!experimentId && !!localStorage.getItem('access_token'),
+  });
+};
+
+export const useExperimentReportQuery = () => {
+  return useQuery(['experimentReport'], fetchExperimentReport, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
+};
 
 // ----- Mutations -----
 export const useBuyExperimentMutation = () => {

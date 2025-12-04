@@ -1,39 +1,60 @@
-import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
-import { deltaScoreToColor, diffToValue } from '@utils/ScoreConvert';
-import { useQueryComponent } from '@hooks/useQueryComponent';
+import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
+import { diffToValue } from '@utils/ScoreConvert';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { StockDetailInfo } from '@controllers/api.Type';
-import { useStockIdSearchQuery } from '@controllers/query';
-import { useBuyExperimentMutation } from '@controllers/query/portfolio';
-import { theme } from '@styles/themes';
+import { useBuyExperimentMutation } from '@controllers/experiment/query';
+import { stockInfoQueries, useSectorRecommendQuery } from '@controllers/stock/query';
 import CheckSVG from '@assets/icons/check.svg?react';
-import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
+import DownSVG from '@assets/icons/down.svg?react';
+import UpSVG from '@assets/icons/up.svg?react';
+import { StepButtonContainer } from '../Step.Style';
+import {
+  LabPurchaseContainer,
+  LabPurchaseContents,
+  LabPurchaseGridContainer,
+  LabPurchaseGridItemContainer,
+  LabPurchaseGridItemText,
+  LabPurchaseToast,
+} from './Purchase.Style';
+
+const priceToText = (price: number, country: StockCountryKey) => {
+  const _price = price.toLocaleString();
+  return (country == 'OVERSEA' ? '$' : '') + _price + (country == 'KOREA' ? '원' : '');
+};
 
 const LabPurchase = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { step, stocks, sectors: selectedSectorKeys } = location.state; // 섹터 키 배열
-  const [selectedSector, setSelectedSector] = useState<StockSectorKey>(
+  const {
+    step,
+    stocks: selectedStocks = [],
+    country: selectedCountry = 'KOREA',
+    sectors: selectedSectorKeys = [],
+  }: {
+    step: number;
+    stocks: StockDetailInfo[];
+    country: StockCountryKey;
+    sectors: StockSectorKey[];
+  } = location.state; // 섹터 키 배열
+  const [selectedSector, setSelectedSector] = useState<StockSectorKey | undefined>(
     selectedSectorKeys?.[0], // 첫 번째 섹터를 기본 선택
   );
 
-  // 선택한 종목들
-  const selectedStockInfos: StockDetailInfo[] =
-    stocks
-      ?.map(
-        (stock: StockDetailInfo) =>
-          useQueryComponent({
-            query: useStockIdSearchQuery(stock.stockId, stock.country),
-          })[0],
-      )
-      .filter(Boolean) ?? [];
+  const selectedStockInfos = ((stockInfoQueries(selectedStocks) ?? []).map((query) => query.data).filter(Boolean) ??
+    []) as StockDetailInfo[];
 
+  const [purchased, setPurchased] = useState<number[]>([]);
+  const { mutate: buyExperiment } = useBuyExperimentMutation();
+  const { data: sectorRecommend } = useSectorRecommendQuery(selectedCountry, selectedSector);
 
+  console.log(sectorRecommend);
+
+  const { toast, showToast } = useToast();
 
   const handlePrevStep = () => {
     navigate(-1);
@@ -48,63 +69,58 @@ const LabPurchase = () => {
     });
   };
 
-  const [purchased, setPurchased] = useState<number[]>([]);
-  const { mutate: buyExperiment } = useBuyExperimentMutation();
+  const handleClickPurchase = (stockInfo: StockDetailInfo) => () => {
+    buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
 
-  const { toast, showToast } = useToast();
+    showToast(
+      <>
+        <CheckSVG />
+        <p>
+          {stockInfo.symbolName} {priceToText(stockInfo.price, stockInfo.country)}(으)로 매수 완료되었습니다.
+        </p>
+      </>,
+    );
+    setPurchased((prev) => [...prev, stockInfo.stockId]);
+  };
+
+  const handleClickSectorTab = (sectorKey: StockSectorKey) => () => {
+    setSelectedSector((prev) => (prev == sectorKey ? undefined : sectorKey));
+  };
 
   return (
     <LabPurchaseContainer>
-      <LabPurchaseTitleContainer>
-        <p className="title">
-          관심있는 종목을 <br />
-          매수해주세요
-        </p>
-        <p className="desc">* 현재 화면에 노출되는 가격으로 매수됩니다.</p>
-      </LabPurchaseTitleContainer>
       <span className="divider" />
       <LabPurchaseContents>
         <p>내가 선택한 종목</p>
-        <div className="grid">
-          {selectedStockInfos.map((e: StockDetailInfo) => {
+        <LabPurchaseGridContainer>
+          {selectedStockInfos.map((e) => {
             const disabled = purchased.some((b) => b == e.stockId);
+
             return (
-              <div>
+              <LabPurchaseGridItemContainer key={`SELECTED_STOCK_${e.stockId}`}>
                 <div>
                   <StockImage stockId={e.stockId} />
                   <p>{e.symbolName}</p>
                   <div>
-                    <LabPurchaseDeltaText delta={e.priceDiff} className="price">
+                    <LabPurchaseGridItemText delta={e.priceDiff} className="price">
                       {priceToText(e.price, e.country)}{' '}
                       <span>({diffToValue(Number(e.priceDiffPerCent.toFixed(1)))}%)</span>
-                    </LabPurchaseDeltaText>
-                    <LabPurchaseDeltaText delta={e.scoreDiff} className="score">
-                      {e.score}점 <span>{diffToValue(e.scoreDiff)}점</span>
-                    </LabPurchaseDeltaText>
+                    </LabPurchaseGridItemText>
+                    <LabPurchaseGridItemText delta={e.scoreDiff} className="score">
+                      {e.score}점{' '}
+                      <span>
+                        {diffToValue(e.scoreDiff)}점 {e.scoreDiff > 0 ? <UpSVG /> : e.scoreDiff < 0 ? <DownSVG /> : '-'}
+                      </span>
+                    </LabPurchaseGridItemText>
                   </div>
                 </div>
-                <button
-                  disabled={disabled}
-                  onClick={() => {
-                    buyExperiment({ stockId: e.stockId, country: e.country });
-
-                    showToast(
-                      <>
-                        <CheckSVG />
-                        <p>
-                          {e.symbolName} {priceToText(e.price, e.country)}(으)로 매수 완료되었습니다.
-                        </p>
-                      </>,
-                    );
-                    setPurchased((prev) => [...prev, e.stockId]);
-                  }}
-                >
+                <button disabled={disabled} onClick={handleClickPurchase(e)}>
                   {disabled ? '매수완료' : '매수하기'}
                 </button>
-              </div>
+              </LabPurchaseGridItemContainer>
             );
           })}
-        </div>
+        </LabPurchaseGridContainer>
       </LabPurchaseContents>
       <LabPurchaseContents>
         <p>내 관심 산업별 추천종목</p>
@@ -115,270 +131,23 @@ const LabPurchase = () => {
               <p
                 key={sectorKey}
                 className={selectedSector === sectorKey ? 'selected' : ''}
-                onClick={() => setSelectedSector(sectorKey)}
+                onClick={handleClickSectorTab(sectorKey)}
               >
                 {sector.text}
               </p>
             ) : null;
           })}
         </div>
-        {/* <div className="grid">
-          {currentSectorStocks.map((e: StockDetailInfo) => (
-            <div>
-              <div>
-                <StockImage stockId={e.stockId} />
-                <p>{e.symbolName}</p>
-                <div>
-                  <LabPurchaseDeltaText delta={e.priceDiff} className="price">
-                    {priceToText(e.price, e.country)}{' '}
-                    <span>({diffToValue(Number(e.priceDiffPerCent.toFixed(1)))}%)</span>
-                  </LabPurchaseDeltaText>
-                  <LabPurchaseDeltaText delta={e.scoreDiff} className="score">
-                    {e.score}점 <span>{diffToValue(e.scoreDiff)}점</span>
-                  </LabPurchaseDeltaText>
-                </div>
-              </div>
-              <button>매수하기</button>
-            </div>
-          ))}
-        </div> */}
       </LabPurchaseContents>
-      <LabPurchaseButtonContainer>
+      <StepButtonContainer>
         <button onClick={handlePrevStep}>이전</button>
         <button onClick={handleNextStep} disabled={!purchased.length}>
           다음
         </button>
-      </LabPurchaseButtonContainer>
+      </StepButtonContainer>
       {toast.enabled && <LabPurchaseToast closing={toast.closing}>{toast.message}</LabPurchaseToast>}
     </LabPurchaseContainer>
   );
 };
-
-const LabPurchaseToast = styled.div(
-  ({ closing }: { closing: boolean }) => ({
-    opacity: closing ? 0 : 1,
-    transition: 'opacity 0.3s ease-in-out',
-  }),
-  {
-    position: 'fixed',
-    bottom: '110px',
-    background: 'rgba(0, 0, 0, 0.75)',
-    left: '20px',
-    right: '20px',
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: '5px',
-    border: '1px solid rgba(73, 80, 87, 0.5)',
-    padding: '12px 16px',
-    boxSizing: 'border-box',
-    backdropFilter: 'blur(5px)',
-    boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.5)',
-    gap: '10px',
-
-    ['>svg']: {
-      width: '24px',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-
-      fill: theme.colors.sub_blue6,
-    },
-
-    ['>p']: {
-      margin: '0',
-      ...theme.font.detail12Semibold,
-      color: theme.colors.sub_gray2,
-
-      ['&.cancel']: {
-        color: theme.colors.sub_gray5,
-        textDecoration: 'underline',
-        marginLeft: 'auto',
-        cursor: 'pointer',
-      },
-    },
-  },
-);
-
-const LabPurchaseButtonContainer = styled.div({
-  display: 'flex',
-  gap: '12px',
-  marginTop: 'auto',
-  padding: '0 20px',
-
-  ['>button']: {
-    width: '100%',
-    padding: '10px 0px',
-    ...theme.font.body18Semibold,
-    margin: '0',
-    border: 'none',
-    borderRadius: '8px',
-
-    [':first-of-type']: {
-      background: theme.colors.sub_gray11,
-      color: theme.colors.sub_gray5,
-    },
-
-    [':last-of-type']: {
-      background: theme.colors.sub_blue6,
-      color: theme.colors.sub_white,
-
-      ['&:disabled']: {
-        background: theme.colors.sub_gray8,
-        color: theme.colors.sub_black,
-      },
-    },
-  },
-});
-
-const priceToText = (price: number, country: StockCountryKey) => {
-  const _price = price.toLocaleString();
-  return (country == 'OVERSEA' ? '$' : '') + _price + (country == 'KOREA' ? '원' : '');
-};
-
-const LabPurchaseDeltaText = styled.p(
-  ({ delta }: { delta: number }) => ({
-    ['>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray11,
-    },
-  }),
-  {},
-);
-
-const LabPurchaseContents = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  padding: '0 20px',
-
-  ['>p']: {
-    margin: '0',
-    ...theme.font.body16Medium,
-    color: theme.colors.sub_white,
-  },
-
-  ['>div.grid']: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '16px',
-
-    ['>div']: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '20px',
-      background: theme.colors.sub_gray11,
-      borderRadius: '10px',
-      padding: '24px 12px 20px',
-      justifyContent: 'center',
-
-      ['>div']: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '10px',
-
-        ['>img']: {
-          width: '72px',
-          height: '72px',
-          borderRadius: '999px',
-        },
-
-        ['>p']: {
-          margin: '0',
-          ...theme.font.body18Semibold,
-          color: theme.colors.sub_gray1,
-        },
-
-        ['>div']: {
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2px',
-          alignItems: 'center',
-
-          ['>p']: {
-            margin: '0',
-            color: theme.colors.sub_gray3,
-
-            ['&.price']: {
-              ...theme.font.body14Medium,
-            },
-
-            ['&.score']: {
-              ...theme.font.detail12Semibold,
-            },
-          },
-        },
-      },
-
-      ['>button']: {
-        width: '100%',
-        background: theme.colors.sub_blue6,
-        color: theme.colors.sub_white,
-        border: 'none',
-        borderRadius: '8px',
-        padding: '6px 10px',
-
-        [':disabled']: {
-          background: theme.colors.sub_black,
-          color: theme.colors.sub_gray7,
-        },
-      },
-    },
-  },
-
-  ['>div.category']: {
-    display: 'flex',
-    gap: '8px',
-    padding: '0 4px',
-
-    ['>p']: {
-      background: theme.colors.sub_gray11,
-      color: theme.colors.sub_gray6,
-      margin: '0',
-      ...theme.font.body14Semibold,
-      borderRadius: '999px',
-      padding: '8px 15px',
-
-      ['&.selected']: {
-        background: theme.colors.sub_blue6,
-        color: theme.colors.sub_white,
-      },
-    },
-  },
-});
-
-const LabPurchaseTitleContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  padding: '0 20px',
-
-  ['>p']: {
-    margin: '0',
-
-    ['&.title']: {
-      ...theme.font.title20Semibold,
-      color: theme.colors.sub_white,
-    },
-
-    ['&.desc']: {
-      ...theme.font.body14Medium,
-      color: theme.colors.sub_gray6,
-    },
-  },
-});
-
-const LabPurchaseContainer = styled.div({
-  padding: '32px 0px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '36px',
-  flexGrow: '1',
-
-  ['>span.divider']: {
-    height: '4px',
-    width: '100%',
-    background: theme.colors.sub_gray11,
-  },
-});
 
 export default LabPurchase;

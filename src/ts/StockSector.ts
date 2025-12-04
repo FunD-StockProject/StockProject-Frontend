@@ -1,3 +1,5 @@
+import { StockCountryKey } from './StockCountry';
+
 // 국내 섹터
 export type KoreaSectorKey =
   | 'RETAIL'
@@ -156,5 +158,7 @@ export const OVERSEA_SECTORS: StockSector[] = [
 ];
 
 // 전체 섹터 목록 (국내 + 해외)
-export const STOCK_SECTORS: StockSector[] = [...KOREA_SECTORS, ...OVERSEA_SECTORS];
-
+export const STOCK_SECTORS: Record<StockCountryKey, StockSector[]> = {
+  KOREA: KOREA_SECTORS,
+  OVERSEA: OVERSEA_SECTORS,
+};

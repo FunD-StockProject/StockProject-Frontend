@@ -75,6 +75,7 @@ const ShortViewContent = styled.div({
   flexGrow: '1',
   display: 'flex',
   flexDirection: 'column-reverse',
+  minHeight: '420px',
 });
 
 const ShortViewToast = styled.div(

@@ -1,0 +1,417 @@
+import { Fragment, useMemo } from 'react';
+import ScrollTopButton from '@components/Common/ScrollTopButton/ScrollTopButton';
+import ReportClassChart from '@components/Lab/ReportClassChart/ReportClassChart';
+import { ReportClassType, reportClassList } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
+import ReportPatternChart from '@components/Lab/ReportPatternChart/ReportPatternChart';
+import {
+  PatternQuadrantKey,
+  patternQuadrantKeys,
+  patternQuadrantMap,
+} from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
+import useAboutReportClass from '@components/Modal/AboutReportClass/useAboutReportClass';
+import useAboutReportPattern from '@components/Modal/AboutReportPattern/useAboutReportPattern';
+import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
+import { ExperimentReportStatisticDto } from '@controllers/experiment/api';
+import { useExperimentReportQuery } from '@controllers/experiment/query';
+import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
+import {
+  LabResultContainer,
+  LabResultContent,
+  LabResultDescription,
+  ReportClassChartContainer,
+  ReportClassContainer,
+  ReportClassSummary,
+  ReportPatternChartContainer,
+  ReportPatternContainer,
+  ReportPatternSummary,
+  ReportRecommendContainer,
+  ReportRecommendSummary,
+  ReportRecommendTable,
+} from './LabResult.Style';
+
+const ReportRecommend = ({
+  reportStatisticDtos,
+  weeklyExperimentCount,
+}: {
+  reportStatisticDtos: ExperimentReportStatisticDto[];
+  weeklyExperimentCount: number;
+}) => {
+  const tableHeaders = ['인간지표 점수대', '평균 ROI', '내 평균 ROI'];
+
+  const highestProfitScoreRange = reportStatisticDtos.reduce(
+    (acc, curr) => {
+      return curr.userAvgRoi > acc.userAvgRoi ? curr : acc;
+    },
+    { scoreRange: '', userAvgRoi: -Infinity },
+  ).scoreRange;
+  const lowestProfitScoreRange = reportStatisticDtos.reduce(
+    (acc, curr) => {
+      return curr.userAvgRoi < acc.userAvgRoi ? curr : acc;
+    },
+    { scoreRange: '', userAvgRoi: Infinity },
+  ).scoreRange;
+
+  return (
+    <ReportRecommendContainer>
+      <ReportRecommendTable>
+        <thead>
+          <tr>
+            {tableHeaders.map((header, idx) => (
+              <th key={`REPORT_RECOMMEND_TABLE_HEADER_${idx}`}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {reportStatisticDtos.map((statistic, idx) => {
+            const { scoreRange, totalAvgRoi, userAvgRoi } = statistic;
+
+            const totalAvgRoiSign = !totalAvgRoi ? '' : totalAvgRoi > 0 ? '+' : '-';
+            const userAvgRoiSign = !userAvgRoi ? '' : userAvgRoi > 0 ? '+' : '-';
+
+            return (
+              <tr key={`REPORT_RECOMMEND_TABLE_ROW_${idx}`}>
+                <td>{scoreRange}</td>
+                <td>
+                  {totalAvgRoiSign}
+                  {Math.abs(totalAvgRoi).toFixed(1)}%
+                </td>
+                <td>
+                  {userAvgRoiSign}
+                  {Math.abs(userAvgRoi).toFixed(1)}%
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </ReportRecommendTable>
+      <ReportRecommendSummary>
+        <p className="primary">이번주에 총 {weeklyExperimentCount}건의 실험을 진행하셨습니다.</p>
+        <p className="secondary">
+          ☺️ 가장 높은 수익률 | <b>{highestProfitScoreRange} 구간</b> <br />
+          😭 가장 낮은 수익률 | <b>{lowestProfitScoreRange} 이상 구간</b>
+        </p>
+      </ReportRecommendSummary>
+    </ReportRecommendContainer>
+  );
+};
+
+const ReportClass = ({
+  reportClass,
+  successRate,
+  totalUserExperiments,
+  successUserExperiments,
+  sameGradeUserRate,
+  openHelpModal,
+}: {
+  reportClass: ReportClassType;
+  successRate: number;
+  totalUserExperiments: number;
+  successUserExperiments: number;
+  sameGradeUserRate: number;
+  openHelpModal: () => void;
+}) => {
+  const handleClickHelpModal = () => {
+    openHelpModal();
+  };
+
+  return (
+    <ReportClassContainer>
+      <ReportClassChartContainer>
+        <div className="help" onClick={handleClickHelpModal}>
+          <QuestionMarkSVG /> <span>다른 유형은 뭐가 있어요?</span>
+        </div>
+        <ReportClassChart reportClass={reportClass} successRate={successRate} sameGradeUserRate={sameGradeUserRate} />
+      </ReportClassChartContainer>
+      <ReportClassSummary>
+        <span>{totalUserExperiments}개</span> 종목을 사서, <span>{successUserExperiments}개</span> 오르는 당신의 유형!
+      </ReportClassSummary>
+    </ReportClassContainer>
+  );
+};
+
+const ReportPattern = ({
+  reportPatternsQuadrant,
+  reportPatternsCoordinates,
+  openHelpModal,
+}: {
+  reportPatternsQuadrant: PatternQuadrantKey;
+  reportPatternsCoordinates: { dateLabel: string; x: number; y: number }[];
+  openHelpModal: () => void;
+}) => {
+  const handleClickHelpModal = () => {
+    openHelpModal();
+  };
+
+  return (
+    <ReportPatternContainer>
+      <ReportPatternChartContainer>
+        <div className="help" onClick={handleClickHelpModal}>
+          <QuestionMarkSVG /> <span>각 사분면은 무슨 패턴이에요?</span>
+        </div>
+        <ReportPatternChart
+          reportPatternsQuadrant={reportPatternsQuadrant}
+          reportPatternsCoordinates={reportPatternsCoordinates}
+        />
+      </ReportPatternChartContainer>
+      <ReportPatternSummary>
+        <p className="title">{patternQuadrantMap[reportPatternsQuadrant].title} 이란?</p>
+        <p className="description">
+          {/* 여기 문구 추가해야함 */}
+          점수가 낮을 때 매수하여, 수익을 보는 투자 패턴 <br />= 남들이 관심 없을 때 진입을 해두는 경우가 많아요!
+        </p>
+      </ReportPatternSummary>
+    </ReportPatternContainer>
+  );
+};
+
+const getResultReportItems = ({
+  recommendedScoreRange,
+  reportStatisticDtos,
+  weeklyExperimentCount,
+  reportClass,
+  successRate,
+  totalUserExperiments,
+  successUserExperiments,
+  sameGradeUserRate,
+  reportPatternsQuadrant,
+  reportPatternsCoordinates,
+  openAboutReportClassModal,
+  openAboutReportPatternModal,
+  reportPatternText,
+}: {
+  recommendedScoreRange: string;
+  reportStatisticDtos: ExperimentReportStatisticDto[];
+  weeklyExperimentCount: number;
+  reportClass: ReportClassType;
+  successRate: number;
+  totalUserExperiments: number;
+  successUserExperiments: number;
+  sameGradeUserRate: number;
+  reportPatternsQuadrant: PatternQuadrantKey;
+  reportPatternsCoordinates: { dateLabel: string; x: number; y: number }[];
+  openAboutReportClassModal: () => void;
+  openAboutReportPatternModal: () => void;
+  reportPatternText: string;
+}) => {
+  return [
+    {
+      title: (
+        <>
+          인간지표로 보는 <wbr />내 매수 타이밍 잡는 법!
+        </>
+      ),
+      description: (
+        <LabResultDescription color="sub_gray10" isSmall>
+          다음 매수 때는, <span>✨{recommendedScoreRange} 구간</span> 에 주목해보세요!
+        </LabResultDescription>
+      ),
+      report: (
+        <ReportRecommend reportStatisticDtos={reportStatisticDtos} weeklyExperimentCount={weeklyExperimentCount} />
+      ),
+    },
+    {
+      title: '나의 인간지표는?',
+      description: (
+        <LabResultDescription color={reportClass.color}>
+          <b>{localStorage.getItem('username')}님</b>은{' '}
+          <span>
+            {reportClass.emoji} {reportClass.title}
+          </span>{' '}
+          지표!
+        </LabResultDescription>
+      ),
+      report: (
+        <ReportClass
+          reportClass={reportClass}
+          successRate={successRate}
+          totalUserExperiments={totalUserExperiments}
+          successUserExperiments={successUserExperiments}
+          sameGradeUserRate={sameGradeUserRate}
+          openHelpModal={openAboutReportClassModal}
+        />
+      ),
+    },
+    {
+      title: '그동안 지켜본 당신의 투자패턴은',
+      description: (
+        <LabResultDescription color="sub_blue6">
+          <span>{reportPatternText}</span> 에 속하는 경우가 많아요
+        </LabResultDescription>
+      ),
+      report: (
+        <ReportPattern
+          reportPatternsQuadrant={reportPatternsQuadrant}
+          reportPatternsCoordinates={reportPatternsCoordinates}
+          openHelpModal={openAboutReportPatternModal}
+        />
+      ),
+    },
+  ];
+};
+
+const LabResult = () => {
+  const { data: experimentReport, isLoading } = useExperimentReportQuery();
+
+  const { Modal: AboutReportClassModal, openModal: openAboutReportClassModal } = useAboutReportClass();
+  const { Modal: AboutReportPatternModal, openModal: openAboutReportPatternModal } = useAboutReportPattern();
+
+  const resultReportItems = useMemo(() => {
+    if (isLoading) return [];
+    if (!experimentReport)
+      return getResultReportItems({
+        recommendedScoreRange: '',
+        reportStatisticDtos: [],
+        weeklyExperimentCount: 0,
+        reportClass: reportClassList[0],
+        successRate: 0,
+        totalUserExperiments: 0,
+        successUserExperiments: 0,
+        sameGradeUserRate: 0,
+        reportPatternsQuadrant: 'top-right',
+        reportPatternsCoordinates: [],
+        openAboutReportClassModal: () => {},
+        openAboutReportPatternModal: () => {},
+        reportPatternText: '',
+      });
+
+    const {
+      reportStatisticDtos,
+      reportPatternDtos,
+      weeklyExperimentCount,
+      totalUserExperiments,
+      successUserExperiments,
+      sameGradeUserRate,
+    } = experimentReport ?? {};
+
+    //
+
+    const recommendedScoreRange = reportStatisticDtos.reduce(
+      (acc, curr) => {
+        const currRoiDiff = curr.userAvgRoi - curr.totalAvgRoi;
+        const minRoiDiff = acc.userAvgRoi - acc.totalAvgRoi;
+
+        return currRoiDiff < minRoiDiff ? curr : acc;
+      },
+      { scoreRange: '', userAvgRoi: Infinity, totalAvgRoi: -Infinity },
+    ).scoreRange;
+
+    //
+
+    const successRate = (successUserExperiments / totalUserExperiments) * 100;
+
+    const reportClass = reportClassList.find((e) => successRate < e.max) ?? reportClassList[0];
+
+    //
+
+    const positiveRoiMax = reportPatternDtos.reduce((acc, curr) => {
+      if (curr.roi < 0) return acc;
+      return Math.max(acc, curr.roi);
+    }, 0);
+
+    const negativeRoiMin = reportPatternDtos.reduce((acc, curr) => {
+      if (curr.roi > 0) return acc;
+      return Math.min(acc, curr.roi);
+    }, 0);
+
+    const reportPatternsCoordinates = reportPatternDtos.map((e) => {
+      const date = new Date(e.buyAt);
+      const [month, day] = [date.getMonth() + 1, date.getDate()].map((e) => e.toString().padStart(2, '0'));
+      const dateLabel = `${month}${day}`;
+
+      const x = e.score * 0.8 + 10;
+      const y = (e.roi >= 0 ? e.roi / positiveRoiMax : -e.roi / negativeRoiMin) * 40 + 50;
+
+      return { dateLabel, x, y };
+    });
+
+    const reportPatternsQuadrant = reportPatternsCoordinates
+      .reduce(
+        (acc, curr) => {
+          const x = curr.x - 50;
+          const y = curr.y - 50;
+
+          const quadrant = x >= 0 ? (y >= 0 ? 0 : 1) : y >= 0 ? 3 : 2;
+
+          acc[quadrant][0] += x;
+          acc[quadrant][1] += y;
+
+          return acc;
+        },
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ],
+      )
+      .reduce<{ quadrant: PatternQuadrantKey; vectorLength: number }>(
+        (acc, curr, index) => {
+          const vectorLength = Math.sqrt(curr[0] ** 2 + curr[1] ** 2);
+          if (vectorLength > acc.vectorLength) {
+            acc.quadrant = patternQuadrantKeys[index];
+            acc.vectorLength = vectorLength;
+          }
+          return acc;
+        },
+        { quadrant: 'top-right', vectorLength: 0 },
+      ).quadrant;
+
+    const reportPatternText = patternQuadrantMap[reportPatternsQuadrant].title;
+
+    return getResultReportItems({
+      recommendedScoreRange,
+      reportStatisticDtos,
+      weeklyExperimentCount,
+      reportClass,
+      successRate,
+      totalUserExperiments,
+      successUserExperiments,
+      sameGradeUserRate,
+      reportPatternsQuadrant,
+      reportPatternsCoordinates,
+      openAboutReportClassModal,
+      openAboutReportPatternModal,
+      reportPatternText,
+    });
+  }, [experimentReport]);
+
+  return (
+    <LabResultContainer>
+      <NoLoginWrapper
+        title={
+          <>
+            지금 로그인을 하고 <br />
+            나의 매수 타이밍을 실험해보세요
+          </>
+        }
+        description={
+          <>
+            👋 로그인을 하면 포트폴리오를 생성하여 진입 타이밍과 <br />
+            숨겨진 투자 심리를 분석한 보고서를 받아볼 수 있어요
+          </>
+        }
+        buttonText="회원가입/로그인 하기"
+        SecondaryButtonText="홈으로 가기"
+        hasHeader
+        hasNavbar
+      />
+      {AboutReportClassModal}
+      {AboutReportPatternModal}
+      <ScrollTopButton />
+      {resultReportItems.map((e, idx) => {
+        return (
+          <Fragment key={`REPORT_RESULT_ITEM_${idx}`}>
+            {idx > 0 && <span className="divider" />}
+            <LabResultContent>
+              <p className="title">{e.title}</p>
+              {e.description}
+              {e.report}
+            </LabResultContent>
+          </Fragment>
+        );
+      })}
+    </LabResultContainer>
+  );
+};
+
+export default LabResult;

@@ -1,20 +1,27 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
-export const Overlay = styled.div({
-  position: 'absolute',
-  inset: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: 50,
-  color: theme.colors.sub_black,
-  backdropFilter: 'blur(5px)',
-  WebkitBackdropFilter: 'blur(5px)',
-  background: 'linear-gradient(180deg, rgba(16, 16, 16, 0.4) 0%, #101010 44.56%)',
-  gap: '20px',
-});
+export const Overlay = styled.div(
+  ({ hasHeader, hasNavbar }: { hasHeader?: boolean; hasNavbar?: boolean }) => ({
+    top: hasHeader ? '60px' : 0,
+    bottom: hasNavbar ? '96px' : 0,
+  }),
+  {
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 50,
+    color: theme.colors.sub_black,
+    backdropFilter: 'blur(5px)',
+    WebkitBackdropFilter: 'blur(5px)',
+    background: 'linear-gradient(180deg, rgba(16, 16, 16, 0.4) 0%, #101010 44.56%)',
+    gap: '20px',
+  },
+);
 
 export const TitleContainer = styled.div({
   display: 'flex',

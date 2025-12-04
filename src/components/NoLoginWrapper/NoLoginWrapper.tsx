@@ -10,12 +10,16 @@ export interface NoLoginWrapperProps {
   children?: ReactNode;
   className?: string;
   SecondaryButtonText?: string;
+  hasHeader?: boolean;
+  hasNavbar?: boolean;
 }
 
 const NoLoginWrapper = (props: NoLoginWrapperProps) => {
+  const isLogin = !!localStorage.getItem('access_token');
+
   const navigate = useNavigate();
 
-  const { title, description, buttonText, children, className, SecondaryButtonText } = props;
+  const { title, description, buttonText, children, className, SecondaryButtonText, hasHeader, hasNavbar } = props;
 
   const handleClick = () => {
     navigate(webPath.login());
@@ -25,8 +29,17 @@ const NoLoginWrapper = (props: NoLoginWrapperProps) => {
     navigate('/');
   };
 
+  if (isLogin) return null;
+
   return (
-    <Overlay className={className} aria-live="polite" role="dialog" aria-modal="true">
+    <Overlay
+      className={className}
+      aria-live="polite"
+      role="dialog"
+      aria-modal="true"
+      hasHeader={hasHeader}
+      hasNavbar={hasNavbar}
+    >
       <TitleContainer>
         <p className="title">{title}</p>
         <p className="description">{description}</p>

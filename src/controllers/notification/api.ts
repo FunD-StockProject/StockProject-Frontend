@@ -1,17 +1,21 @@
-import { fetchAuthData } from './base';
+import { StockCountryKey } from '@ts/StockCountry';
+import { fetchAuthData } from '@controllers/api';
+
+export type NotificationType = 'SCORE_SPIKE';
 
 export interface NotificationResponse {
   id: number;
+  stockId: number | null;
   stockName: string | null;
-  notificationType: string;
+  notificationType: NotificationType;
   oldScore: number | null;
   newScore: number | null;
   changeAbs: number | null;
   title: string;
   body: string;
   isRead: boolean;
-  createdAt: string; // ISO 8601 format
-  country: 'KOREA' | 'OVERSEA' | null;
+  createdAt: string;
+  country: StockCountryKey | null;
 }
 
 export interface NotificationPageResponse {
@@ -23,7 +27,7 @@ export interface NotificationPageResponse {
 }
 
 // GET /notification
-export const fetchNotifications = (page: number = 0, size: number = 20): Promise<NotificationPageResponse> => {
+export const fetchNotification = (page: number = 0, size: number = 20): Promise<NotificationPageResponse> => {
   return fetchAuthData(`/notification?page=${page}&size=${size}`);
 };
 
