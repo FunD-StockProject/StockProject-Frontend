@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchUpdateUserImage } from '@controllers/api';
+import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
+import { fetchUpdateUserImage } from '@controllers/auth/api';
 import { theme } from '@styles/themes';
 import EditCircleSVG from '@assets/edit_circle.svg?react';
 import ProfilePNG from '@assets/profile.png';
@@ -88,8 +89,12 @@ const MyPageProfile = () => {
   const username = localStorage.getItem('username') ?? '아직 정보가 없어요!';
   const useremail = localStorage.getItem('useremail') ?? '로그인을 진행해주세요';
 
-  const handleLogin = () => {
-    navigate(webPath.login());
+  const handleClickProfile = () => {
+    if (!isLogin) {
+      navigate(webPath.login());
+    } else {
+      navigate(webPath.editProfile());
+    }
   };
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,23 +113,34 @@ const MyPageProfile = () => {
     reader.readAsDataURL(file);
 
     reader.onloadend = async () => {
-      setProfileImage(reader.result as string);
-
       const data = await fetchUpdateUserImage(reader.result as string);
-      console.log(data);
+      if (data) {
+        setProfileImage(reader.result as string);
+        localStorage.setItem('profileImg', reader.result as string);
+      } else {
+        alert('프로필 이미지 업데이트 실패');
+      }
     };
   };
 
+  const handleClickProfileImage = (e: React.MouseEvent<HTMLLabelElement>) => {
+    if (isLogin) {
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <ProfileContainer>
-      <ProfileImage>
-        <img src={profileImage ?? ProfilePNG} />
-        {isLogin && <EditCircleSVG />}
-        <input type="file" accept="image/*" onChange={handleChangeFile} />
-      </ProfileImage>
+    <ProfileContainer onClick={handleClickProfile}>
+      <ProfileCircle
+        profileImage={profileImage ?? ProfilePNG}
+        handleChangeFile={handleChangeFile}
+        size="medium"
+        canEdit={isLogin}
+        handleClickCircle={handleClickProfileImage}
+      />
       <ProfileContents>
         <p>{username}</p>
-        <button onClick={handleLogin}>
+        <button>
           {useremail}
           <RightArrowThickSVG />
         </button>

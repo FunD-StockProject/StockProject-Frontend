@@ -6,6 +6,7 @@ import Lab from '@pages/Lab/Lab';
 import RecordSheet from '@pages/Lab/RecordSheet/RecordSheet';
 import LabStep from '@pages/Lab/Step/Step';
 import Login from '@pages/Login/Login';
+import EditProfile from '@pages/MyPage/Edit/Edit';
 import MyPage from '@pages/MyPage/MyPage';
 import NotificationPage from '@pages/Notification/Notification';
 import Register from '@pages/Register/Register';
@@ -26,6 +27,7 @@ export const webPath = {
   usage: () => '/usage',
   shortView: () => '/shortview',
   mypage: () => '/mypage',
+  editProfile: () => '/mypage/edit',
   login: () => '/mypage/login',
   register: () => '/mypage/register',
   registerDone: () => '/mypage/register/done',
@@ -82,6 +84,7 @@ const routes = [
       { path: webPath.callbackApple(), element: <Callback /> },
       { path: webPath.usage(), element: <Usage /> },
       { path: webPath.notification(), element: <NotificationPage /> },
+      { path: webPath.editProfile(), element: <EditProfile /> },
     ],
   },
 ];

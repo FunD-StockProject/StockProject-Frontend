@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { fetchAuthLogout } from '@controllers/api';
+import { fetchAuthLogout } from '@controllers/auth/api';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import { useBookmarkListQuery } from '@controllers/preference/query';
 import InstagramSVG from '@assets/instagram.svg?react';
@@ -62,8 +62,9 @@ const MyPage = () => {
     localStorage.removeItem('provider');
     localStorage.removeItem('useremail');
     localStorage.removeItem('username');
+    localStorage.removeItem('profileImg');
 
-    navigate('/');
+    window.location.href = '/';
   };
 
   const handleWithdraw = async () => {

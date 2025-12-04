@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
-import { fetchLoginApple, fetchLoginGoogle, fetchLoginKakao, fetchLoginNaver } from '@controllers/api';
+import { ProviderKey, fetchOAuth2Login } from '@controllers/auth/api';
 import BlueAlert from '@assets/blueAlert.svg?react';
 import Loading from '@assets/loading.png';
 
@@ -13,10 +13,8 @@ const Callback = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
 
-  console.log('Callback1');
   useEffect(() => {
     if (!isMounted) return;
-    console.log('Callback2');
 
     (async () => {
       const searchParams = new URLSearchParams(location.search);
@@ -34,23 +32,7 @@ const Callback = () => {
       localStorage.removeItem('profileImg');
 
       try {
-        let res: any;
-        switch (provider) {
-          case 'kakao':
-            res = await fetchLoginKakao(code, state);
-            break;
-          case 'google':
-            res = await fetchLoginGoogle(code, state);
-            break;
-          case 'naver':
-            res = await fetchLoginNaver(code, state);
-            break;
-          case 'apple':
-            res = await fetchLoginApple(code, state);
-            break;
-          default:
-            throw new Error(`Unknown OAuth provider: ${provider}`);
-        }
+        const res = await fetchOAuth2Login(code, state, provider as ProviderKey);
 
         if (res.state === 'NEED_REGISTER') {
           navigate(webPath.register(), {
@@ -71,8 +53,8 @@ const Callback = () => {
         localStorage.setItem('refresh_token', res.refresh_token);
         localStorage.setItem('useremail', res.email);
         localStorage.setItem('username', res.nickname);
-        localStorage.setItem('provider', provider);
-        localStorage.setItem('recent_login_provider', provider);
+        localStorage.setItem('provider', provider as string);
+        localStorage.setItem('recent_login_provider', provider as string);
         if (res.profileImageUrl) {
           localStorage.setItem('profileImg', res.profileImageUrl);
         }

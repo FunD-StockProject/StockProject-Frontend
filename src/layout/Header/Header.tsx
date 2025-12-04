@@ -47,6 +47,7 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     ['searchBar']: '검색',
     ['labTutorial']: '실험실 소개',
     ['labPurchase']: '포트폴리오 생성하기',
+    [webPath.editProfile()]: '내 정보 수정',
   };
 
   const handleBefore = () => {
