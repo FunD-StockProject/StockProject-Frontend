@@ -72,6 +72,51 @@ export interface ExperimentReportResponse {
   reportPatternDtos: ExperimentReportPatternDto[];
 }
 
+export interface PortfolioResultScoreTable {
+  range: string;
+  avg: number;
+  median: number;
+}
+
+export interface PortfolioResultProfit {
+  score: number;
+  range: string;
+}
+export interface PortfolioResultExperimentSummary {
+  totalExperiments: number;
+  highestProfit: PortfolioResultProfit;
+  lowestProfit: PortfolioResultProfit;
+}
+
+export interface PortfolioResultHumanIndex {
+  userScore: number;
+  userType: string;
+  successRate: string;
+  maintainRate: string;
+  purchasedCount: number;
+  profitCount: number;
+  sameGradeUserRate: number;
+}
+
+export interface PortfolioResultInvestmentPattern {
+  patternType: string;
+  patternDescription: string;
+  avgScore: number;
+}
+
+export interface PortfolioResultHistory {
+  x: number;
+  y: number;
+  label: string;
+}
+export interface PortfolioResultResponse {
+  scoreTable: PortfolioResultScoreTable[];
+  experimentSummary: PortfolioResultExperimentSummary;
+  humanIndex: PortfolioResultHumanIndex;
+  investmentPattern: PortfolioResultInvestmentPattern;
+  history: PortfolioResultHistory[];
+}
+
 // POST /experiment/{stockId}/buy/{country}
 export const fetchBuyExperiment = (stockId: number, country: StockCountryKey): Promise<BuyExperimentResponse> => {
   return fetchAuthData(`/experiment/${stockId}/buy/${country}`, { method: 'POST' });
@@ -90,4 +135,9 @@ export const fetchExperimentDetail = (experimentId: number): Promise<ExperimentD
 // GET /experiment/report
 export const fetchExperimentReport = (): Promise<ExperimentReportResponse> => {
   return fetchAuthData('/experiment/report', { method: 'GET' });
+};
+
+// GET /portfolio/result
+export const fetchPortfolioResult = (): Promise<PortfolioResultResponse> => {
+  return fetchAuthData('/portfolio/result', { method: 'GET' });
 };

@@ -1,7 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
 import { queryOptions } from '@controllers/query';
-import { fetchBuyExperiment, fetchExperimentDetail, fetchExperimentReport, fetchExperimentStatus } from './api';
+import {
+  fetchBuyExperiment,
+  fetchExperimentDetail,
+  fetchExperimentReport,
+  fetchExperimentStatus,
+  fetchPortfolioResult,
+} from './api';
 
 // ----- Queries -----
 export const useExperimentStatusQuery = () => {
@@ -20,6 +26,13 @@ export const useExperimentDetailQuery = (experimentId: number) => {
 
 export const useExperimentReportQuery = () => {
   return useQuery(['experimentReport'], fetchExperimentReport, {
+    ...queryOptions,
+    enabled: !!localStorage.getItem('access_token'),
+  });
+};
+
+export const usePortfolioResultQuery = () => {
+  return useQuery(['portfolioResult'], fetchPortfolioResult, {
     ...queryOptions,
     enabled: !!localStorage.getItem('access_token'),
   });

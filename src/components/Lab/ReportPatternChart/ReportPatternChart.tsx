@@ -96,7 +96,9 @@ const ReportPatternChart = ({
             {patternQuadrantList.map((e) => (
               <div key={`REPORT_PATTERN_TUTORIAL_QUADRANT_${e.key}`} className={e.key.split('-').join(' ')}>
                 <div>
-                  <p className="title">{e.title}</p>
+                  <p className="title">
+                    {e.emoji} {e.title}
+                  </p>
                   <p className="description">{e.description}</p>
                 </div>
                 <span>→ {e.roi}</span>
