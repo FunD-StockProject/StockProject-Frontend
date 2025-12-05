@@ -57,7 +57,7 @@ const LabPurchase = () => {
   };
 
   const handleNextStep = () => {
-    navigate(webPath.labPurchase(), {
+    navigate(webPath.labStep(), {
       state: {
         ...location.state,
         step: step + 1,

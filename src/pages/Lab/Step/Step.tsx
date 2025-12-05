@@ -58,7 +58,7 @@ const stepText = [
 const LabStep = () => {
   const location = useLocation();
   const { step } = location.state ?? {};
-
+  console.log(step);
   return (
     <>
       {!!step && (

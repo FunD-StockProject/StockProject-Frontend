@@ -15,7 +15,7 @@ const LabCountry = () => {
   };
 
   const handleNextStep = () => {
-    navigate(webPath.labPurchase(), {
+    navigate(webPath.labStep(), {
       state: {
         ...location.state,
         step: 2,

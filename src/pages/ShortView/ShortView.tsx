@@ -247,7 +247,7 @@ const ShortView = () => {
 
       buyExperiment({ stockId: currentStock.stockId, country: currentStock.country });
       removeShortviewItem(currentIdx);
-      navigate(webPath.labPurchase(), { state: { step: 4 } });
+      navigate(webPath.labStep(), { state: { step: 3 } });
     }, 200);
   };
 

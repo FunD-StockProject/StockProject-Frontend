@@ -96,6 +96,12 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
       throw new Error(`${res.status} Error!!`);
     }
     await wait(0);
+    
+    // 204 No Content 응답 처리
+    if (res.status === 204) {
+      return null;
+    }
+    
     const data = await res.json();
     return data;
   } catch (error) {
