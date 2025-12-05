@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_SECTORS, StockSector } from '@ts/StockSector';
@@ -40,12 +40,14 @@ const LabSearchModal = ({
   isOpenModal,
   isShowModal,
   selectedStocks,
+  selectedCountry,
   handleCloseModal,
   handleClickStock,
 }: {
   isOpenModal: boolean;
   isShowModal: boolean;
   selectedStocks: StockDetailInfo[];
+  selectedCountry: StockCountryKey;
   handleCloseModal: () => void;
   handleClickStock: (stock: StockDetailInfo) => void;
 }) => {
@@ -53,7 +55,12 @@ const LabSearchModal = ({
 
   const [popularStocks] = usePopularStockFetchQuery();
   const [value, setValue] = useState('');
-  const { data: searchedStocks = [] } = useAutoCompleteStockQuery(value);
+  const { data: allStocks = [] } = useAutoCompleteStockQuery(value);
+
+  const searchedStocks = useMemo(
+    () => allStocks.filter((e: AutoCompleteStockItem) => e.country === selectedCountry),
+    [allStocks, selectedCountry]
+  );
 
   const handleClickOutside = (e: React.MouseEvent) => {
     if (!backgroundContaienrRef.current) return;
@@ -194,7 +201,7 @@ const LabSearch = () => {
   };
 
   const handleNextStep = () => {
-    navigate(webPath.labPurchase(), {
+    navigate(webPath.labStep(), {
       state: {
         ...location.state,
         step: step + 1,
@@ -252,6 +259,7 @@ const LabSearch = () => {
         isOpenModal={isOpenModal}
         isShowModal={isShowModal}
         selectedStocks={selectedStocks}
+        selectedCountry={country}
         handleCloseModal={handleCloseModal}
         handleClickStock={handleClickStock}
       />

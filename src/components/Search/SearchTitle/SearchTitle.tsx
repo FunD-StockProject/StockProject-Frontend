@@ -133,7 +133,7 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       return;
     }
     buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
-    navigate(webPath.labPurchase(), { state: { step: 4 } });
+    navigate(webPath.labStep(), { state: { step: 3 } });
   };
 
   const handleLogin = () => {

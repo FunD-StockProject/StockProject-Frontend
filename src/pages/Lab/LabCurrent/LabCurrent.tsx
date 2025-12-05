@@ -24,7 +24,7 @@ const LabCurrent = ({
   const navigate = useNavigate();
 
   const handleClickTutorial = () => {
-    navigate(webPath.labPurchase(), { state: { step: 0 } });
+    navigate(webPath.labStep(), { state: { step: 0 } });
   };
 
   const { data: experimentStatus, isLoading: isExperimentStatusLoading } = useExperimentStatusQuery();
@@ -53,7 +53,7 @@ const LabCurrent = ({
   ];
 
   const handleClickAddExperiment = () => {
-    navigate(webPath.labPurchase(), { state: { step: 1 } });
+    navigate(webPath.labStep(), { state: { step: 1 } });
   };
 
   const handleClickRecordSheet = () => {

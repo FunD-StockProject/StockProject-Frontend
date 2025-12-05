@@ -167,8 +167,15 @@ export const fetchSectorRecommend = async (
 ): Promise<SectorRecommendStockInfo[]> => {
   const countryPath = country == 'KOREA' ? 'domestic' : 'overseas';
 
-  console.log(countryPath, sectorKey);
-  const res = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
-  console.log(res);
-  return fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+  try {
+    const res = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+    // 204 No Content인 경우 빈 배열 반환
+    if (!res || (Array.isArray(res) && res.length === 0)) {
+      return [];
+    }
+    return res;
+  } catch (error) {
+    console.error('fetchSectorRecommend error:', error);
+    return [];
+  }
 };
