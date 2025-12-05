@@ -73,6 +73,9 @@ const ShortViewButton = styled.div({
 const ShortViewContent = styled.div({
   position: 'relative',
   flexGrow: '1',
+  display: 'flex',
+  flexDirection: 'column-reverse',
+  minHeight: '420px',
 });
 
 const ShortViewToast = styled.div(

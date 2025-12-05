@@ -4,19 +4,20 @@ import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { StockDetailInfo } from '@controllers/api.Type';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
   useStockPreferenceQuery,
   useToggleNotificationMutation,
-} from '@controllers/query/favorites';
+} from '@controllers/preference/query';
 import { theme } from '@styles/themes';
 import BackIcon from '@assets/icons/arrowLeft.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
 import MoreIcon from '@assets/icons/detail.svg?react';
 import HeartIcon from '@assets/icons/heart.svg?react';
-import ToastBellCrossIcon from '@assets/icons/toast/bell_cross.svg?react';
+import ToastBellSVG from '@assets/icons/toast/bell.svg?react';
+import ToastBellCrossSVG from '@assets/icons/toast/bell_cross.svg?react';
 import ToastHeartSVG from '@assets/icons/toast/heart.svg?react';
 
 const SearchHeaderWrapper = styled.header({
@@ -71,7 +72,8 @@ const SearchHeaderToast = styled.div(
     position: 'fixed',
     bottom: 'calc(96px + 24px)',
     zIndex: '10',
-    left: '20px',
+    left: '50%',
+    transform: 'translateX(-50%)',
     right: '20px',
     background: 'rgba(0, 0, 0, 0.75)',
     // width: '100%',
@@ -84,6 +86,8 @@ const SearchHeaderToast = styled.div(
     backdropFilter: 'blur(5px)',
     boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.5)',
     gap: '10px',
+    maxWidth: '1280px',
+    width: 'calc(min(100%, 1280px) - 40px)',
 
     ['>svg']: {
       width: '20px',
@@ -150,14 +154,23 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       openLoginModal();
       return;
     }
+
     if (isNotification) {
       showToast(
         <>
-          <ToastBellCrossIcon />
+          <ToastBellCrossSVG />
           <p>알림이 해제되었어요</p>
         </>,
       );
+    } else {
+      showToast(
+        <>
+          <ToastBellSVG />
+          <p>알림이 설정되었어요</p>
+        </>,
+      );
     }
+
     toggleNotification(stockInfo.stockId);
   };
 

@@ -21,29 +21,6 @@ const RegisterContent = styled.div({
   flexGrow: '1',
 });
 
-const RegisterImageContainer = styled.div({
-  display: 'flex',
-  position: 'relative',
-  ['>img']: {
-    width: '78px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    objectFit: 'cover',
-    borderRadius: '999px',
-  },
-  ['>svg']: {
-    position: 'absolute',
-    bottom: '0',
-    right: '0',
-    width: '24px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    fill: '#ADB5BD',
-    background: '#495057',
-    borderRadius: '999px',
-  },
-});
-
 const RegisterValueContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
@@ -56,69 +33,6 @@ const RegisterValueContainer = styled.div({
     height: '4px',
     border: 'none',
     margin: '0',
-  },
-});
-
-const RegisterInputItemContainer = styled.div(
-  ({ isError }: { isError: boolean }) => ({
-    ['>p']: {
-      color: isError ? theme.colors.sub_red : theme.colors.sub_gray3,
-    },
-
-    ['>input']: {
-      outline: isError ? `1px solid ${theme.colors.sub_red}` : 'none',
-    },
-  }),
-  {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    padding: '0 20px',
-
-    ['>p']: {
-      margin: '0',
-      ...theme.font.body16Medium,
-    },
-
-    ['>input']: {
-      border: 'none',
-      padding: '20px 16px',
-      height: '48px',
-      boxSizing: 'border-box',
-      borderRadius: '5px',
-      background: theme.colors.sub_gray11,
-      color: theme.colors.sub_gray3,
-      ...theme.font.body16Medium,
-
-      ['&::placeholder']: {
-        color: theme.colors.sub_gray8,
-      },
-    },
-  },
-);
-
-const RegisterInputItemSubContainer = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  height: '20px',
-
-  ['>p']: {
-    margin: '0',
-
-    ['&.error']: {
-      padding: '0 4px',
-      ...theme.font.body14Medium,
-      color: theme.colors.sub_red,
-    },
-
-    ['&.sub']: {
-      ...theme.font.body14Regular,
-      color: theme.colors.sub_gray3,
-
-      ['>span']: {
-        ...theme.font.body14Semibold,
-      },
-    },
   },
 });
 
@@ -233,10 +147,7 @@ const RegisterButtonContainer = styled.div({
 export {
   RegisterContainer,
   RegisterContent,
-  RegisterImageContainer,
   RegisterValueContainer,
-  RegisterInputItemContainer,
-  RegisterInputItemSubContainer,
   RegisterTermContainer,
   RegisterTermListContainer,
   RegisterTermItemContainer,

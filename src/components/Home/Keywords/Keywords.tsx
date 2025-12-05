@@ -3,7 +3,7 @@ import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import KeywordPopUp from '@components/PopUp/KeywordPopUp/KeywordPopUp';
-import { useKeywordsQuery } from '@controllers/query';
+import { useKeywordsQuery } from '@controllers/stocks/query';
 import InfoSVG from '@assets/info.svg?react';
 import { HomeItemTtile } from '../Title/Title.Style';
 import { KeywordItem, KeywordsContainer, KeywordsGrid } from './Keywords.style';

@@ -15,50 +15,54 @@ const HomeAdContainer = styled.div({
   },
 });
 
-const HomeAdItem = styled.div({
-  position: 'relative',
-  flexShrink: '0',
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  height: '100%',
-  padding: '24px 24px 18px',
-  boxSizing: 'border-box',
-  justifyContent: 'space-between',
-  background: `#3457FD`,
-  scrollSnapAlign: 'start',
+const HomeAdItem = styled.div(
+  ({ backgroundColor }: { backgroundColor: string }) => ({
+    background: backgroundColor,
+  }),
+  {
+    position: 'relative',
+    flexShrink: '0',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+    padding: '24px 24px 18px',
+    boxSizing: 'border-box',
+    justifyContent: 'space-between',
+    scrollSnapAlign: 'start',
 
-  ['>span']: {
-    position: 'absolute',
+    ['>span']: {
+      position: 'absolute',
 
-    [':nth-of-type(1)']: {
-      bottom: '0px',
-      left: '0px',
-      width: '100%',
-      height: '57px',
-      background: `rgba(255, 255, 255, 0.05)`,
-    },
+      [':nth-of-type(1)']: {
+        bottom: '0px',
+        left: '0px',
+        width: '100%',
+        height: '57px',
+        background: `rgba(255, 255, 255, 0.05)`,
+      },
 
-    [':nth-of-type(2)']: {
-      top: '0px',
-      right: '0px',
-      height: '100%',
-      width: '57px',
-      background: `rgba(255, 255, 255, 0.05)`,
-    },
+      [':nth-of-type(2)']: {
+        top: '0px',
+        right: '0px',
+        height: '100%',
+        width: '57px',
+        background: `rgba(255, 255, 255, 0.05)`,
+      },
 
-    [':nth-of-type(3)']: {
-      top: '0px',
-      right: '0px',
-      height: '100%',
-      width: '188.5px',
-      boxSizing: 'border-box',
-      borderStyle: 'solid',
-      borderWidth: '0px 0px 240px 131.5px',
-      borderColor: 'transparent transparent rgba(255, 255, 255, 0.05) transparent ',
+      [':nth-of-type(3)']: {
+        top: '0px',
+        right: '0px',
+        height: '100%',
+        width: '188.5px',
+        boxSizing: 'border-box',
+        borderStyle: 'solid',
+        borderWidth: '0px 0px 240px 131.5px',
+        borderColor: 'transparent transparent rgba(255, 255, 255, 0.05) transparent ',
+      },
     },
   },
-});
+);
 
 const HomeAdItemContent = styled.div({
   display: 'flex',
@@ -71,6 +75,7 @@ const HomeAdItemTitle = styled.p({
   ...theme.font.heading24Semibold,
   color: theme.colors.sub_white,
   margin: '0px',
+  whiteSpace: 'pre',
 });
 
 const HomeAdItemDescription = styled.p({

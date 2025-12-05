@@ -68,6 +68,7 @@ const ConfirmModalTextContainer = styled.div({
     ['&.desc']: {
       ...theme.font.body16Medium,
       color: theme.colors.sub_gray7,
+      whiteSpace: 'pre-line',
     },
   },
 });

@@ -3,9 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
-import { fetchAuthRegister } from '@controllers/api';
+import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
+import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
+import { fetchAuthRegister } from '@controllers/auth/api';
 import CheckSVG from '@assets/check.svg?react';
-import EditCircleSVG from '@assets/edit_circle.svg?react';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import ProfilePNG from '@assets/profile.png';
 import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
@@ -13,9 +14,6 @@ import {
   RegisterButtonContainer,
   RegisterContainer,
   RegisterContent,
-  RegisterImageContainer,
-  RegisterInputItemContainer,
-  RegisterInputItemSubContainer,
   RegisterTermCheckBox,
   RegisterTermContainer,
   RegisterTermErrorContainer,
@@ -25,48 +23,12 @@ import {
 } from './Register.Style';
 
 type TermState = Record<TermKey, boolean>;
-type InputKey = 'name' | 'email' | 'birth';
 
 interface TermInputItem {
   key: TermKey;
   essential?: boolean;
   text: string;
 }
-interface InputItem {
-  key: InputKey;
-  title: string;
-  placeholder: string;
-  sub?: React.ReactElement;
-  essential?: boolean;
-  disabled?: boolean;
-}
-
-const valueInputs: InputItem[] = [
-  {
-    key: 'name',
-    title: '닉네임',
-    essential: true,
-    placeholder: '닉네임을 입력해주세요',
-    sub: (
-      <>
-        <span>0</span>/10
-      </>
-    ),
-  },
-  {
-    key: 'email',
-    title: '이메일',
-    essential: true,
-    placeholder: 'email@email.com',
-    disabled: true,
-  },
-  {
-    key: 'birth',
-    title: '생년월일',
-    essential: false,
-    placeholder: 'YYYY-MM-DD',
-  },
-];
 
 const termInputs: TermInputItem[] = [
   {
@@ -110,34 +72,7 @@ const Register = () => {
     system: '',
   });
 
-  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
-
-  const handleUploadLocalFile = async () => {
-    try {
-      const [fileHandle] = await (window as any).showOpenFilePicker({
-        types: [
-          {
-            description: 'Image Files',
-            accept: {
-              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-            },
-          },
-        ],
-        multiple: false,
-      });
-
-      const file = await fileHandle.getFile();
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-    } catch (err) {
-      console.error('파일 선택 취소 또는 실패:', err);
-    }
-  };
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -148,7 +83,9 @@ const Register = () => {
             .replace(/\D/g, '')
             .slice(0, 8)
             .replace(/^(\d{4})(\d{0,2})(\d{0,2})$/, (_, y, m, d) => [y, m, d].filter(Boolean).join('-'))
-        : value;
+        : name === 'name'
+          ? value.slice(0, 10)
+          : value;
 
     setValues((prev) => ({
       ...prev,
@@ -171,7 +108,7 @@ const Register = () => {
     setTerms((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const validate = () => {
+  const validate = async () => {
     const errors = {
       name: '',
       email: '',
@@ -191,6 +128,8 @@ const Register = () => {
     } else if (!nameRefex.test(values.name)) {
       errors.name = '닉네임은 한글만 사용할 수 있어요';
     } else if (false) {
+      // const res = await fetchAuthNickname(values.name);
+      // console.log(res);
       // 닉네임 중복 API
       errors.name = '이미 사용 중인 닉네임입니다';
     }
@@ -207,7 +146,7 @@ const Register = () => {
     if (values.birth) {
       if (!birthRegex.test(values.birth)) {
         errors.birth = '생년월일 형식을 확인해주세요. (예: 1999-06-23)';
-      } else if (new Date(values.birth) > new Date()) {
+      } else if (isNaN(new Date(values.birth).getTime()) || new Date(values.birth) > new Date()) {
         errors.birth = '유효한 생년월일을 입력해주세요.';
       }
     }
@@ -229,9 +168,57 @@ const Register = () => {
     return errors;
   };
 
+  const valueInputs: MyPageInputProps[] = [
+    {
+      name: 'name',
+      error: errors.name,
+      title: '닉네임*',
+      sub: (
+        <>
+          <span>{values.name.length}</span>/10
+        </>
+      ),
+      inputs: [
+        {
+          key: 'name',
+          value: values.name,
+          placeholder: '닉네임을 입력해주세요',
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+    {
+      name: 'email',
+      title: '이메일*',
+      error: errors.email,
+      inputs: [
+        {
+          key: 'email',
+          value: values.email,
+          placeholder: 'email@email.com',
+          disabled: true,
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+    {
+      name: 'birth',
+      title: '생년월일(선택)',
+      error: errors.birth,
+      inputs: [
+        {
+          key: 'birth',
+          value: values.birth,
+          placeholder: 'YYYY-MM-DD',
+          handleChange: handleChangeValue,
+        },
+      ],
+    },
+  ];
+
   const handleSubmit = async () => {
     // 필드 검사 후
-    const errors = validate();
+    const errors = await validate();
     // 에러 값을 설정하고
     setErrors(errors);
     // 잘못된 값이면 제출 처리를 중단한다.
@@ -243,12 +230,13 @@ const Register = () => {
       profileImage as string,
       values.email,
       values.name,
-      new Date(values.birth),
+      values.birth,
       true,
       location.state?.provider.toUpperCase(),
     );
 
-    console.log(2, res);
+    if (!res) return;
+
     navigate(webPath.registerDone());
   };
 
@@ -258,34 +246,25 @@ const Register = () => {
     });
   };
 
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setProfileImage(reader.result as string);
+    };
+  };
+
   return (
     <RegisterContainer>
-      {/* {isOpenTerm && <RegisterTerm termKey={isOpenTerm} onClose={handleCloseTerm} />} */}
       <RegisterContent>
-        <RegisterImageContainer onClick={handleUploadLocalFile}>
-          <img src={(profileImage as string) ?? ProfilePNG} />
-          <EditCircleSVG />
-        </RegisterImageContainer>
+        <ProfileCircle profileImage={profileImage ?? ProfilePNG} handleChangeFile={handleChangeFile} size="large" />
         <RegisterValueContainer>
           {valueInputs.map((e) => (
-            <RegisterInputItemContainer key={e.key} isError={!!errors[e.key]}>
-              <p>
-                {e.title}
-                {e.essential ? '*' : '(선택)'}
-              </p>
-              <input
-                type="text"
-                placeholder={e.placeholder}
-                disabled={e.disabled}
-                name={e.key}
-                value={values[e.key]}
-                onChange={handleChangeValue}
-              />
-              <RegisterInputItemSubContainer>
-                <p className="error">{errors[e.key]}</p>
-                <p className="sub">{e.sub}</p>
-              </RegisterInputItemSubContainer>
-            </RegisterInputItemContainer>
+            <MyPageInput key={e.name} name={e.name} error={e.error} title={e.title} sub={e.sub} inputs={e.inputs} />
           ))}
           <hr />
           <RegisterTermContainer>
@@ -297,11 +276,10 @@ const Register = () => {
                   <CheckSVG />
                   전체 동의
                 </RegisterTermCheckBox>
-                <RightArrowThickSVG />
               </RegisterTermItemContainer>
               <hr />
               {termInputs.map((e) => (
-                <RegisterTermItemContainer>
+                <RegisterTermItemContainer key={`TERM_${e.key}`}>
                   <RegisterTermCheckBox>
                     <input type="checkbox" name={e.key} checked={terms[e.key]} onChange={handleChangeCheckbox} />
                     <CheckSVG />

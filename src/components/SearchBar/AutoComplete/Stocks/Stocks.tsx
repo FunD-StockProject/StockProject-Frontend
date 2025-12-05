@@ -10,8 +10,8 @@ import {
   SearchBarItemContents,
   SearchBarItemTitle,
 } from '@components/SearchBar/SearchBar.Style';
-import { fetchAutoComplete } from '@controllers/api';
-import { useAutoComplete } from '@controllers/query';
+import { fetchAutoComplete } from '@controllers/stocks/api';
+import { useAutoComplete } from '@controllers/stocks/query';
 import { AutoCompleteEmptyContainer } from '../AutoComplete.Style';
 import { AutoCompleteStocksItem } from './Stocks.Style';
 

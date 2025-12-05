@@ -1,205 +1,241 @@
 import styled from '@emotion/styled';
+import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
-export const Container = styled.div`
-  background: ${theme.colors.sub_black};
-  color: ${theme.colors.sub_white};
-  padding: 0;
-  position: relative;
-`;
+const FavoritesContainer = styled.div({
+  flexGrow: '1',
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '20px 20px 40px',
+  gap: '12px',
+  boxSizing: 'border-box',
+  overflow: 'hidden',
+});
 
-export const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-`;
+const FavoritesTitleContainer = styled.div({
+  display: 'flex',
+  gap: '10px',
+  alignItems: 'center',
 
-export const HeaderTitle = styled.div`
-  ${theme.font.body18Semibold};
-  color: ${theme.colors.sub_white};
-  flex: 1;
-  margin-left: 15px;
-`;
-
-export const HeaderContainer = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const EditButton = styled.span`
-  cursor: pointer;
-  background: none;
-  margin-left: 12px;
-  display: inline-flex;
-  align-items: baseline;
-`;
-
-export const UpdateInfo = styled.div`
-  ${theme.font.detail12Medium};
-  color: ${theme.colors.sub_gray6};
-  margin-top: 8px;
-`;
-
-export const Content = styled.div`
-  padding: 20px;
-  flex: 1;
-`;
-
-export const EmptyState = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-`;
-
-export const SVGContainer = styled.div`
-  width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${theme.colors.sub_gray11};
-  border-radius: 12px;
-`;
-
-export const ActionButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 20px;
-  width: 100%;
-`;
-
-export const ActionButton = styled.div`
-  ${theme.font.body18Medium};
-  background-color: ${theme.colors.sub_gray11};
-  color: ${theme.colors.sub_gray6};
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`;
-
-export const ActionButtonPrimary = styled(ActionButton)`
-  ${theme.font.body18Semibold}
-  background: ${theme.colors.sub_gray2};
-  color: ${theme.colors.sub_black};
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-`;
-
-export const StockList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-`;
-
-export const StockContainer = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-`;
-export const StockItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 20px;
-  background: ${theme.colors.sub_gray11};
-  border-radius: 12px;
-  transition: background 0.2s ease;
-  width: 100%;
-`;
-
-export const StockInfo = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-export const StockName = styled.div`
-  ${theme.font.title20Semibold};
-  color: ${theme.colors.sub_white};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-export const StockPriceRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-export const StockPrice = styled.div`
-  ${theme.font.body16Medium};
-  color: ${theme.colors.sub_white};
-`;
-
-export const StockChange = styled.div`
-  ${theme.font.body16Medium};
-`;
-
-export const StockScoreRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-export const StockScore = styled.div`
-  ${theme.font.detail12Medium};
-  color: ${theme.colors.sub_gray6};
-`;
-
-export const StockScoreChange = styled.div`
-  ${theme.font.detail12Medium};
-  color: ${theme.colors.danger};
-`;
-
-export const NotificationIcon = styled('button')<{ isActive: boolean }>(({ isActive }) => ({
-  background: 'none',
-  border: 'none',
-  fontSize: '20px',
-  cursor: 'pointer',
-  transition: 'color 0.2s ease',
-  '& svg *': {
-    fill: isActive ? theme.colors.sub_blue5 : theme.colors.sub_gray7,
+  ['>p']: {
+    margin: '0',
+    ...theme.font.title20Semibold,
+    color: theme.colors.sub_white,
   },
-}));
 
-export const Checkbox = styled.input`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  accent-color: ${theme.colors.sub_gray1};
-  margin-right: 12px;
-  align-self: center;
-`;
+  ['>svg']: {
+    fill: theme.colors.sub_gray6,
+    width: '20px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    cursor: 'pointer',
+  },
+});
 
-export const DeleteButton = styled.button`
-  position: fixed;
-  bottom: 120px;
-  left: 0;
-  right: 0;
-  background: ${theme.colors.sub_gray1};
-  color: ${theme.colors.sub_black};
-  border: none;
-  padding: 10px 0;
-  border-radius: 8px;
-  ${theme.font.body18Semibold};
-  cursor: pointer;
-  margin: 0 20px;
-  z-index: 100;
-`;
+const FavoritesEmptyContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px',
+
+  ['>img']: {
+    width: '100%',
+    height: '120px',
+    objectFit: 'contain',
+    background: theme.colors.sub_gray11,
+    borderRadius: '10px',
+    padding: '40px 0px',
+  },
+
+  ['>button']: {
+    display: 'flex',
+    gap: '10px',
+    padding: '12px 20px',
+    background: theme.colors.sub_gray2,
+    alignItems: 'center',
+    outline: 'none',
+    border: 'none',
+    borderRadius: '10px',
+    justifyContent: 'center',
+
+    ['>svg']: {
+      width: '24px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+      fill: theme.colors.sub_black,
+    },
+    ['>p']: {
+      margin: '0',
+      ...theme.font.body18Semibold,
+      color: theme.colors.sub_black,
+    },
+  },
+});
+
+const FavoritesContents = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '36px',
+
+  ['>p']: {
+    margin: '0',
+    ...theme.font.body14Medium,
+    color: theme.colors.sub_gray6,
+  },
+});
+
+const FavoritesListContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+});
+
+const FavoritesItemContainer = styled.label({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+  boxSizing: 'border-box',
+
+  ['>input[type="checkbox"]']: {
+    display: 'none',
+  },
+
+  ['>svg']: {
+    stroke: 'transparent',
+    width: '18px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    borderRadius: '2px',
+    border: '2px solid #525658',
+    boxSizing: 'border-box',
+    flexShrink: '0',
+  },
+
+  ['> input[type="checkbox"]:checked + svg']: {
+    border: 'none',
+    background: '#F6F6F6',
+    stroke: '#101010',
+
+    ['>svg']: {
+      display: 'block',
+    },
+  },
+
+  ['>div']: {
+    width: '100%',
+    boxSizing: 'border-box',
+    background: theme.colors.sub_gray11,
+    borderRadius: '10px',
+    padding: '20px',
+    gap: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+
+    ['>div.title']: {
+      display: 'flex',
+
+      ['>p']: {
+        margin: '0',
+        ...theme.font.title20Semibold,
+        color: theme.colors.sub_white,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width: '100%',
+      },
+    },
+
+    ['>div.sub']: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
+  },
+});
+
+const FavoritesItemBellContainer = styled.div(
+  ({ isActive }: { isActive?: boolean }) => ({
+    ['>svg']: {
+      fill: isActive ? theme.colors.sub_blue6 : theme.colors.sub_gray9,
+    },
+  }),
+  {
+    ['>svg']: {
+      flexShrink: '0',
+      width: '30px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+    },
+  },
+);
+
+const FavoritesItemSubtextContainer = styled.p(
+  ({ delta }: { delta: number }) => ({
+    ['>span']: {
+      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray1,
+    },
+  }),
+  {
+    margin: '0',
+    display: 'flex',
+    gap: '6px',
+    ...theme.font.body16Medium,
+    color: theme.colors.sub_gray4,
+    alignItems: 'center',
+
+    ['>span']: {
+      ...theme.font.body14Semibold,
+    },
+  },
+);
+
+const FavoritesAddButtonContainer = styled.div({
+  display: 'flex',
+  gap: '10px',
+  padding: '12px 20px',
+  background: theme.colors.sub_gray11,
+  alignItems: 'center',
+  outline: 'none',
+  border: 'none',
+  borderRadius: '10px',
+  justifyContent: 'center',
+
+  ['>p']: {
+    margin: '0',
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_gray6,
+  },
+
+  ['>svg']: {
+    width: '24px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: theme.colors.sub_gray6,
+  },
+});
+
+const FavoritesDeleteButton = styled.button({
+  position: 'fixed',
+  bottom: 'calc(96px + 24px)',
+  left: '20px',
+  right: '20px',
+  borderRadius: '10px',
+  padding: '10px 0px',
+  border: 'none',
+  background: theme.colors.sub_gray1,
+  ...theme.font.body18Semibold,
+  color: theme.colors.sub_black,
+});
+
+export {
+  FavoritesContainer,
+  FavoritesTitleContainer,
+  FavoritesEmptyContainer,
+  FavoritesContents,
+  FavoritesListContainer,
+  FavoritesItemContainer,
+  FavoritesItemBellContainer,
+  FavoritesItemSubtextContainer,
+  FavoritesAddButtonContainer,
+  FavoritesDeleteButton,
+};

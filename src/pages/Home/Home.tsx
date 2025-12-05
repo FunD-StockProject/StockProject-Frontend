@@ -8,6 +8,7 @@ import IndexScore from '@components/Home/IndexScore/IndexScore';
 import Keywords from '@components/Home/Keywords/Keywords';
 import StockTable from '@components/Home/StockTable/StockTable';
 import SearchBar from '@components/SearchBar/SearchBar';
+import { useUnreadCountQuery } from '@controllers/notification/query';
 import AlarmSVG from '@assets/icons/alarm.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
@@ -24,6 +25,7 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [country, setCountry] = useState<StockCountryKey>('KOREA');
+  const { data: notificationCount } = useUnreadCountQuery();
 
   const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCountry(e.target.value as StockCountryKey);
@@ -59,7 +61,7 @@ const Home = () => {
       {isSearchModalOpen && <SearchBar initial={location.state.search} />}
       <HomeHeaderContainer>
         <FullLogoWhiteSVG />
-        <HomeHeaderButton className="enable" onClick={handleNotificationClick}>
+        <HomeHeaderButton className={notificationCount?.unreadCount ? 'enable' : ''} onClick={handleNotificationClick}>
           <AlarmSVG />
         </HomeHeaderButton>
         <HomeHeaderButton onClick={handleSearchModalOpen}>

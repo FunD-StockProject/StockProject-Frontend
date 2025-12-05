@@ -49,10 +49,12 @@ const IndexScoreItemScore = styled.div(
   ({ delta }: { delta: number }) => ({
     ['>p']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_white,
+      whiteSpace: 'nowrap',
     },
 
     ['>svg']: {
       fill: deltaScoreToColor(delta) ?? theme.colors.sub_gray10,
+      flexShrink: 0,
     },
   }),
   {

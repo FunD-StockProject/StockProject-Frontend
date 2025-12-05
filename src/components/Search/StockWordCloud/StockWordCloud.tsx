@@ -4,7 +4,7 @@ import { WordCloudItem } from '@ts/Interfaces';
 import { StockCountryKey } from '@ts/StockCountry';
 import { useIsMobile } from '@hooks/useIsMobile';
 import LoadingComponent from '@components/Common/LoadingComponent';
-import { useWordCloudQuery } from '@controllers/query';
+import { useWordCloudQuery } from '@controllers/stocks/query';
 import { StockWordCloudContainer, Word, WordCloudTestText, WordContainer } from './StockWordCloud.Style';
 
 const StockWordCloudContents = ({
