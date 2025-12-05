@@ -4,7 +4,7 @@ import { getItemLocalStorage } from '@utils/LocalStorage';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { StockDetailInfo } from '@controllers/api.Type';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,

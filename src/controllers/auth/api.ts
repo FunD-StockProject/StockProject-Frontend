@@ -1,6 +1,26 @@
-import { fetchAuthData, fetchData } from '@controllers/api/base';
+import { fetchAuthData, fetchData, Headers, baseURL, wait } from '@controllers/common/base';
 
 export type ProviderKey = 'kakao' | 'google' | 'naver' | 'apple';
+
+// GET /auth/nickname
+export const fetchAuthNickname = async (nickname: string) => {
+  try {
+    const url = `${baseURL}/auth/nickname?nickname=${nickname}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        ...Headers,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} Error!!`);
+    }
+    await wait(0);
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const fetchOAuth2Login = async (_code: string, _state: string, provider: ProviderKey) => {
   const allowedProviders: ProviderKey[] = ['kakao', 'google', 'naver', 'apple'];

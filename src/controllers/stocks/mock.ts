@@ -1,4 +1,4 @@
-import { StockDetailInfo } from './api.Type';
+import { StockDetailInfo } from "./types";
 
 export const fetchIndexScoreMock = {
   kospiVix: 50,

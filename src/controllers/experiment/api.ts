@@ -1,5 +1,22 @@
 import { StockCountryKey } from '@ts/StockCountry';
-import { fetchAuthData } from '@controllers/api';
+import { StockSectorKey } from '@ts/StockSector';
+import { fetchAuthData } from '@controllers/common/base';
+import type { StockInfo } from '@controllers/stocks/types';
+
+export type { StockInfo };
+
+export interface SectorRecommendStockInfo {
+  stockId: number;
+  imageUrl: string;
+  stockName: string;
+  price: number;
+  priceDiff: number;
+  priceDiffPerCent: number;
+  score: number;
+  diff: number;
+  keywords: string[];
+  country: StockCountryKey;
+}
 
 export interface BuyExperimentResponse {
   success: boolean;
@@ -140,4 +157,18 @@ export const fetchExperimentReport = (): Promise<ExperimentReportResponse> => {
 // GET /portfolio/result
 export const fetchPortfolioResult = (): Promise<PortfolioResultResponse> => {
   return fetchAuthData('/portfolio/result', { method: 'GET' });
+};
+
+// GET /stock/sector/overseas/{sectorKey}/recommend
+// GET /stock/sector/domestic/{sectorKey}/recommend
+export const fetchSectorRecommend = async (
+  country: StockCountryKey,
+  sectorKey: StockSectorKey,
+): Promise<SectorRecommendStockInfo[]> => {
+  const countryPath = country == 'KOREA' ? 'domestic' : 'overseas';
+
+  console.log(countryPath, sectorKey);
+  const res = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+  console.log(res);
+  return fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
 };

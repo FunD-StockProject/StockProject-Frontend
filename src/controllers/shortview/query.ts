@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQueryClient } from 'react-query';
-import { queryOptions } from '@controllers/query/common';
+import { queryOptions } from '@controllers/common/query';
 import { ShortViewItem, fetchShortview } from './api';
 import { mockShortViewItems } from './mock';
 

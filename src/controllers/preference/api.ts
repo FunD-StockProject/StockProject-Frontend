@@ -1,5 +1,5 @@
 import { StockCountryKey } from '@ts/StockCountry';
-import { fetchAuthData } from '@controllers/api';
+import { fetchAuthData } from '@controllers/common/base';
 
 export interface PreferenceStockResponse {
   stockId: number;

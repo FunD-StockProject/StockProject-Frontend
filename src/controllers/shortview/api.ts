@@ -1,5 +1,5 @@
 import { StockCountryKey } from '@ts/StockCountry';
-import { fetchAuthData } from '@controllers/api/base';
+import { fetchAuthData } from '@controllers/common/base';
 
 //이름 뭐로 하지
 export interface ShortViewItem {

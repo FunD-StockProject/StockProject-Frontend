@@ -65,6 +65,15 @@ export interface AutoCompleteItem {
   value: string;
 }
 
+export interface AutoCompleteStockItem {
+  stockId: number;
+  symbolName: string;
+  score: number;
+  diff: number;
+  country: StockCountryKey;
+  keywords?: string[];
+}
+
 export interface SearchBarResultItems extends PopularItems, AutoCompleteItem {
   value: string;
 }
@@ -78,6 +87,7 @@ export interface PopularStocks {
 
 export type PERIOD_CODE = 'D' | 'W' | 'M';
 
+// Deprecated types - not used anymore
 export interface FavoriteStock {
   stockId: number;
   name: string;
@@ -95,3 +105,4 @@ export interface StockPreferenceStatus {
   isBookmarked: boolean;
   isNotificationOn: boolean;
 }
+

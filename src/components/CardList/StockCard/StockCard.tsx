@@ -5,8 +5,8 @@ import { diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { StockInfo } from '@controllers/api.Type';
-import { useHomeStockFetchQuery } from '@controllers/query';
+import { StockInfo } from '@controllers/stocks/types';
+import { useHomeStockFetchQuery } from '@controllers/stocks/query';
 import {
   LargeStockCardContainer,
   LargeStockCardContent,

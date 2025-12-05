@@ -6,9 +6,8 @@ import { diffToValue } from '@utils/ScoreConvert';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { StockDetailInfo } from '@controllers/api.Type';
-import { usePopularStockFetchQuery } from '@controllers/query';
-import { useAutoCompleteStockQuery } from '@controllers/stock/query';
+import { AutoCompleteStockItem, StockDetailInfo } from '@controllers/stocks/types';
+import { useAutoCompleteStockQuery, usePopularStockFetchQuery } from '@controllers/stocks/query';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import ChevronLeftNarrowSVG from '@assets/icons/chevronLeftNarrow.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
@@ -112,7 +111,7 @@ const LabSearchModal = ({
                 <p className="subtitle">다른 종목을 다시 검색해보세요</p>
               </LabSearchModalResultEmptyContainer>
             ) : (
-              searchedStocks.map((e) => {
+              searchedStocks.map((e: AutoCompleteStockItem) => {
                 const isSelected = selectedStocks.some((b) => b.stockId == e.stockId);
 
                 const scoreText = `${e.score}점`;

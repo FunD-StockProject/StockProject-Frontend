@@ -2,7 +2,7 @@ import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
-import { useIndexScoreQuery } from '@controllers/query';
+import { useIndexScoreQuery } from '@controllers/stocks/query';
 import DownSVG from '@assets/icons/down.svg?react';
 import InfoSVG from '@assets/icons/info.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';

@@ -6,9 +6,9 @@ import { getItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { StockDetailInfo } from '@controllers/api.Type';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
-import { useStockSummaryQuery } from '@controllers/query';
+import { useStockSummaryQuery } from '@controllers/stocks/query';
 import KoreaPNG from '@assets/flags/korea.png';
 import {
   SearchTitleContainer,

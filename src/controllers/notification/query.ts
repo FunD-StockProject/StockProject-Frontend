@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 import { mapNotificationResponseToItem } from '@utils/notificationMapper';
-import { queryOptions } from '@controllers/query/common';
+import { queryOptions } from '@controllers/common/query';
 import { NotificationPageResponse, fetchNotification, fetchUnreadCount, markNotificationAsRead } from './api';
 import { mockNotifications } from './mock';
 
@@ -13,12 +13,12 @@ export const useNotificationsQuery = ({ useMock = false }: { useMock?: boolean }
     ({ pageParam = 0 }) =>
       useMock
         ? Promise.resolve({
-            content: mockNotifications,
-            totalElements: mockNotifications.length,
-            totalPages: 1,
-            size: PAGE_SIZE,
-            number: pageParam,
-          })
+          content: mockNotifications,
+          totalElements: mockNotifications.length,
+          totalPages: 1,
+          size: PAGE_SIZE,
+          number: pageParam,
+        })
         : fetchNotification(pageParam, PAGE_SIZE),
     {
       ...queryOptions,

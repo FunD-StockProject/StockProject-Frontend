@@ -1,5 +1,5 @@
 import { STOCK_TYPE } from '@ts/Types';
-import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../api';
+import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../stocks/api';
 
 export const queryOptions = {
   // retry: 5,
@@ -12,3 +12,4 @@ export const STOCK_FETCH_FUNCTIONS: Record<STOCK_TYPE, (country: string) => Prom
   DESCENT: fetchDescentStocks,
   RELATED: () => Promise.resolve([]),
 };
+

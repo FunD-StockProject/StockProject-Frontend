@@ -6,8 +6,8 @@ import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { StockTableInfo } from '@controllers/api.Type';
-import { useStockTableInfoQuery } from '@controllers/query';
+import { StockTableInfo } from '@controllers/stocks/types';
+import { useStockTableInfoQuery } from '@controllers/stocks/query';
 import { HomeItemTtile } from '../Title/Title.Style';
 import {
   StockTableContainer,

@@ -3,7 +3,7 @@ import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { usePopularStockFetchQuery } from '@controllers/query';
+import { usePopularStockFetchQuery } from '@controllers/stocks/query';
 import ChevronLeftSVG from '@assets/icons/chevronLeft.svg?react';
 import { SearchBarItemContainer, SearchBarItemContents, SearchBarItemTitle } from '../SearchBar.Style';
 import { PopularStocksItem, PopularStocksItemContents } from './PopularStocks.Style';

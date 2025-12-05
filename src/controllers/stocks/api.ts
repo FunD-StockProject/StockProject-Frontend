@@ -1,6 +1,6 @@
 import { WordFrequency } from '@ts/Interfaces';
 import { StockCountryKey } from '@ts/StockCountry';
-import { PERIOD_CODE, PopularStocks, StockDetailInfo } from '../api.Type';
+import { PERIOD_CODE, PopularStocks, StockDetailInfo } from './types';
 import {
   fetchChartMock,
   fetchIndexScoreMock,
@@ -11,8 +11,8 @@ import {
   fetchScoreMock,
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
-} from '../mock';
-import { enableMock, fetchData } from './base';
+} from './mock';
+import { enableMock, fetchData } from '../common/base';
 
 export const fetchScore = async (id: number, country: string) => {
   if (enableMock) return fetchScoreMock;
@@ -43,7 +43,7 @@ export const fetchSearchSymbolName = (symbolname: string, country: StockCountryK
   return fetchData(`/stock/search/${symbolname}/${country}`);
 };
 
-export const fetchRealStockInfo = (stockId: number, country: StockCountryKey) => {
+export const fetchStockInfo = (stockId: number, country: StockCountryKey) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 

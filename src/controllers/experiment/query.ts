@@ -1,13 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
-import { queryOptions } from '@controllers/query';
+import { queryOptions } from '@controllers/common/query';
 import {
   fetchBuyExperiment,
   fetchExperimentDetail,
   fetchExperimentReport,
   fetchExperimentStatus,
   fetchPortfolioResult,
+  fetchSectorRecommend,
 } from './api';
+import { StockSectorKey } from '@ts/StockSector';
 
 // ----- Queries -----
 export const useExperimentStatusQuery = () => {
@@ -49,4 +51,12 @@ export const useBuyExperimentMutation = () => {
       },
     },
   );
+};
+
+
+export const useSectorRecommendQuery = (country: StockCountryKey, sectorKey: StockSectorKey | undefined) => {
+  return useQuery(['sectorRecommend', country, sectorKey], () => fetchSectorRecommend(country, sectorKey!), {
+    ...queryOptions,
+    enabled: !!country && !!sectorKey && !!localStorage.getItem('access_token'),
+  });
 };

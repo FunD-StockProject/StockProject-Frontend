@@ -6,8 +6,8 @@ import {
   SearchBarItemContents,
   SearchBarItemTitle,
 } from '@components/SearchBar/SearchBar.Style';
-import { fetchSearchKeyword } from '@controllers/api';
-import { useAutoComplete } from '@controllers/query';
+import { fetchSearchKeyword } from '@controllers/stocks/api';
+import { useAutoComplete } from '@controllers/stocks/query';
 import { AutoCompleteEmptyContainer } from '../AutoComplete.Style';
 
 const AutoCompleteKeywords = ({ searchValue }: { searchValue: string }) => {

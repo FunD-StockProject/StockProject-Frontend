@@ -110,3 +110,4 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
 // }
 
 export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
+

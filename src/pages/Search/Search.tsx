@@ -11,8 +11,8 @@ import GuageChart from '@components/Search/GuageChart/GuageChart';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
 import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
-import { StockDetailInfo, StockInfo } from '@controllers/api.Type';
-import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/query';
+import { StockDetailInfo, StockInfo } from '@controllers/stocks/types';
+import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/stocks/query';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {

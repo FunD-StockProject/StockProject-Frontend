@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueries, useQuery, useQueryClient } from 'react-query';
 import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD } from '@ts/Constants';
 import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_TYPE } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import {
-  // fetchAutoComplete,
+  fetchAutoComplete,
   fetchIndexScore,
   fetchKeywords,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchRealStockInfo,
+  fetchStockInfo,
   fetchRelevant,
   fetchScore,
   fetchSearchKeyword,
@@ -19,7 +19,7 @@ import {
   fetchStockChart,
   fetchStockSummary,
   fetchStockTable,
-} from '../api';
+} from './api';
 import {
   AutoCompleteItem,
   IndexScoreInfo,
@@ -28,8 +28,8 @@ import {
   StockDetailInfo,
   StockInfo,
   StockTableInfo,
-} from '../api.Type';
-import { STOCK_FETCH_FUNCTIONS, queryOptions } from './common';
+} from './types';
+import { STOCK_FETCH_FUNCTIONS, queryOptions } from '../common/query';
 
 export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
   return useQuery<StockDetailInfo>(
@@ -40,7 +40,20 @@ export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey)
 };
 
 export const useStockIdSearchQuery = (stockId: number, country: StockCountryKey) => {
-  return useQuery(['stockIdSearchQuery', stockId, country], () => fetchRealStockInfo(stockId, country), queryOptions);
+  return useQuery(['stockInfo', stockId, country], () => fetchStockInfo(stockId, country), {
+    ...queryOptions,
+    enabled: !!stockId && !!country,
+  });
+};
+
+export const stockInfoQueries = (stocks: StockDetailInfo[]) => {
+  return useQueries(
+    (stocks ?? []).map((stock) => ({
+      queryKey: ['stockInfo', stock.stockId, stock.country],
+      queryFn: () => fetchStockInfo(stock.stockId, stock.country), // API 함수 직접 사용
+      enabled: !!stock,
+    })),
+  );
 };
 
 export const useHomeStockFetchQuery = (type: STOCK_TYPE, country: StockCountryKey) => {
@@ -265,4 +278,32 @@ export const useAutoComplete = (
   };
 
   return [data, fetchData];
+};
+
+const useDebounce = <T>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+export const useAutoCompleteStockQuery = (input: string) => {
+  const value = input.trim();
+
+  const debouncedValue = useDebounce(value, 250);
+
+  return useQuery(['autocomplete', debouncedValue], () => fetchAutoComplete(debouncedValue), {
+    ...queryOptions,
+    staleTime: 60000,
+    cacheTime: 10000,
+    enabled: !!debouncedValue,
+    keepPreviousData: true,
+  });
 };
