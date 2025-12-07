@@ -47,7 +47,7 @@ export const useBuyExperimentMutation = () => {
     ({ stockId, country }: { stockId: number; country: StockCountryKey }) => fetchBuyExperiment(stockId, country),
     {
       onSettled: () => {
-        qc.invalidateQueries({ queryKey: ['experiment'] });
+        qc.invalidateQueries({ queryKey: ['experiment', 'experimentStatus'] });
       },
     },
   );

@@ -5,7 +5,7 @@ import { MARKET_CODES } from '@ts/Constants';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
-import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+// import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { StockDetailInfo } from '@controllers/stocks/types';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import { useStockSummaryQuery } from '@controllers/stocks/query';
@@ -129,24 +129,24 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
 
   const handleClickBuy = () => {
     if (!isLogin) {
-      openLoginModal();
+      navigate(webPath.labStep(), { state: { step: 0 } });
       return;
     }
     buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
     navigate(webPath.labStep(), { state: { step: 3 } });
   };
 
-  const handleLogin = () => {
-    navigate(webPath.login());
-  };
+  // const handleLogin = () => {
+  //   navigate(webPath.login());
+  // };
 
-  const [LoginModal, openLoginModal] = ConfirmModal({
-    title: '모의 매수를 진행하려면, 로그인이 필요해요!',
-    description: '나만의 투자심리 분석 보고서를 받고 싶다면, 로그인을 진행해주세요',
-    onConfirm: handleLogin,
-    isInverse: true,
-    actionText: ['로그인하기', '취소'],
-  });
+  // const [LoginModal, openLoginModal] = ConfirmModal({
+  //   title: '모의 매수를 진행하려면, 로그인이 필요해요!',
+  //   description: '나만의 투자심리 분석 보고서를 받고 싶다면, 로그인을 진행해주세요',
+  //   onConfirm: handleLogin,
+  //   isInverse: true,
+  //   actionText: ['로그인하기', '취소'],
+  // });
 
   const [showMoreDesc, setShowMoreDesc] = useState(false);
 
@@ -157,7 +157,7 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   return (
     stockInfo && (
       <SearchTitleContainer>
-        <LoginModal />
+        {/* <LoginModal /> */}
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
         {!isLoading && (

@@ -14,7 +14,7 @@ import {
 import { theme } from '@styles/themes';
 import BackIcon from '@assets/icons/arrowLeft.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
-import MoreIcon from '@assets/icons/detail.svg?react';
+// import MoreIcon from '@assets/icons/detail.svg?react';
 import HeartIcon from '@assets/icons/heart.svg?react';
 import ToastBellSVG from '@assets/icons/toast/bell.svg?react';
 import ToastBellCrossSVG from '@assets/icons/toast/bell_cross.svg?react';
@@ -192,9 +192,6 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
         </IconButton>
         <IconButton isActive={isNotification}>
           <BellSVG onClick={onBellClick} />
-        </IconButton>
-        <IconButton>
-          <MoreIcon />
         </IconButton>
       </RightSection>
       {toast.enabled && <SearchHeaderToast closing={toast.closing}>{toast.message}</SearchHeaderToast>}
