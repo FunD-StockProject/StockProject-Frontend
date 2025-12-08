@@ -15,7 +15,7 @@ const SearchBarLayout = styled.div({
 });
 
 const SearchBarContainer = styled.div({
-  padding: '20px',
+  padding: '20px 0',
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
@@ -23,6 +23,7 @@ const SearchBarContainer = styled.div({
 });
 
 const SearchBarContents = styled.div({
+  padding: '0 20px',
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
@@ -126,6 +127,7 @@ const SearchBarInput = styled.label({
 });
 
 const SearchBarItemContainer = styled.div({
+  padding: '0 20px',
   display: 'flex',
   flexDirection: 'column',
   gap: '20px',
