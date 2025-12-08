@@ -1,20 +1,18 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { getItemLocalStorage } from '@utils/LocalStorage';
+import useLogin from '@hooks/useLogin';
 import useToast from '@hooks/useToast';
-import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { StockDetailInfo } from '@controllers/stocks/types';
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
   useStockPreferenceQuery,
   useToggleNotificationMutation,
 } from '@controllers/preference/query';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import { theme } from '@styles/themes';
 import BackIcon from '@assets/icons/arrowLeft.svg?react';
 import BellSVG from '@assets/icons/bell.svg?react';
-// import MoreIcon from '@assets/icons/detail.svg?react';
 import HeartIcon from '@assets/icons/heart.svg?react';
 import ToastBellSVG from '@assets/icons/toast/bell.svg?react';
 import ToastBellCrossSVG from '@assets/icons/toast/bell_cross.svg?react';
@@ -112,7 +110,7 @@ const SearchHeaderToast = styled.div(
 
 const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const navigate = useNavigate();
-  const isLogin = !!getItemLocalStorage('access_token');
+  const { isLogin, handleLogin } = useLogin();
   const { toast, showToast } = useToast();
 
   const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
@@ -121,10 +119,6 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { mutate: toggleNotification } = useToggleNotificationMutation();
   const isBookmark = stockPreference?.isBookmarked ?? false;
   const isNotification = stockPreference?.isNotificationEnabled ?? false;
-
-  const handleLogin = () => {
-    navigate(webPath.login());
-  };
 
   const onHeartClick = () => {
     if (!stockInfo) return;

@@ -59,7 +59,7 @@ const Callback = () => {
           localStorage.setItem('profileImg', res.profileImageUrl);
         }
         // navigate(-1);
-        navigate('/', {
+        navigate(localStorage.getItem('before_login_path') ?? webPath.home(), {
           replace: true,
         });
       } catch (err) {

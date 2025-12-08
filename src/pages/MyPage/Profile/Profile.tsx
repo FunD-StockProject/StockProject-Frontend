@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchUpdateUserImage } from '@controllers/auth/api';
@@ -51,7 +52,7 @@ const ProfileContents = styled.div({
 
 const MyPageProfile = () => {
   const navigate = useNavigate();
-  const isLogin = !!localStorage.getItem('access_token');
+  const { isLogin, handleLogin } = useLogin();
 
   const [profileImage, setProfileImage] = useState<string | null>(localStorage.getItem('profileImg'));
   const username = localStorage.getItem('username') ?? '아직 정보가 없어요!';
@@ -59,7 +60,7 @@ const MyPageProfile = () => {
 
   const handleClickProfile = () => {
     if (!isLogin) {
-      navigate(webPath.login());
+      handleLogin();
     } else {
       navigate(webPath.editProfile());
     }

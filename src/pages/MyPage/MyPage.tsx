@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/auth/api';
@@ -22,7 +23,7 @@ import {
 import MyPageProfile from './Profile/Profile';
 
 const MyPage = () => {
-  const isLogin = !!localStorage.getItem('access_token');
+  const { isLogin } = useLogin();
   const { data: favorites = [] } = useBookmarkListQuery();
   const { data: experimentStatus } = useExperimentStatusQuery();
 

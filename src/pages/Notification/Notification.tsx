@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { getItemLocalStorage } from '@utils/LocalStorage';
 import { NotificationItem } from '@utils/notificationMapper';
+import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
@@ -75,7 +76,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationItem[]
 };
 
 const NotificationPage = () => {
-  const isLogin = !!getItemLocalStorage('access_token');
+  const { isLogin } = useLogin();
 
   const {
     notifications = [],

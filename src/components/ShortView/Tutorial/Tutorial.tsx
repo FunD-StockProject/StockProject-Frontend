@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
+import useLogin from '@hooks/useLogin';
 import Button from '@components/Common/Button';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import MoneySVG from '@assets/icons/money.svg?react';
@@ -69,7 +70,7 @@ const TutorialSteps = [
 ];
 
 const ShortViewTutorial = () => {
-  const isLogin = !!getItemLocalStorage('access_token');
+  const { isLogin } = useLogin();
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [tutorialWatched, setTutorialWatched] = useState(getItemLocalStorage('ShortViewTutorialWatched'));

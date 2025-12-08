@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
+import useLogin from '@hooks/useLogin';
 import { ButtonContainer, Overlay, TitleContainer } from './NoLoginWrapper.style';
 
 export interface NoLoginWrapperProps {
@@ -15,14 +15,13 @@ export interface NoLoginWrapperProps {
 }
 
 const NoLoginWrapper = (props: NoLoginWrapperProps) => {
-  const isLogin = !!localStorage.getItem('access_token');
-
+  const { isLogin, handleLogin } = useLogin();
   const navigate = useNavigate();
 
   const { title, description, buttonText, children, className, SecondaryButtonText, hasHeader, hasNavbar } = props;
 
   const handleClick = () => {
-    navigate(webPath.login());
+    handleLogin();
   };
 
   const handleSecondaryClick = () => {
