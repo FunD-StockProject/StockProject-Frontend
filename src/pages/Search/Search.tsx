@@ -1,18 +1,17 @@
 import { useLocation } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
-import useModal from '@hooks/useModal';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import SearchHeader from '@layout/SearchHeader/SearchHeader';
 import { SmallStockCard } from '@components/CardList/StockCard/StockCard';
 import { StockCardContainer, StockCardItem } from '@components/CardList/StockCard/StockCard.Style';
-import AntVoicePopUp from '@components/PopUp/AntiVoicePopUp/AntVoicePopUp';
-import ZipyoPopup from '@components/PopUp/ZipyoPopUp/ZipyoPopUp';
+import useAboutAntVoice from '@components/Modal/CenterTutorial/AboutAntVoice/useAboutAntVoice';
+import useAboutHumanZipyo from '@components/Modal/CenterTutorial/AboutHumanZipyo/useAboutHumanZipyo';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
 import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
-import { StockDetailInfo, StockInfo } from '@controllers/stocks/types';
 import { useRelevantStockFetchQuery, useScoreQuery, useSymbolNameSearchQuery } from '@controllers/stocks/query';
+import { StockDetailInfo, StockInfo } from '@controllers/stocks/types';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {
@@ -34,10 +33,14 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo
 
   if (suspend) return null;
 
-  const { Modal, openModal } = useModal({ Component: ZipyoPopup });
+  const { Modal: AboutHumanZipyoModal, openModal } = useAboutHumanZipyo();
+  const handleOpenHumanZipyoModal = () => {
+    openModal();
+  };
 
   return (
     <SearchResultGaugeChartContainer>
+      {AboutHumanZipyoModal}
       <SearchResultItemTtile>
         <div className="title-container">
           <p className="title">인간지표 점수</p>
@@ -45,7 +48,7 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo
         </div>
         <div className="info-container">
           <p>인간지표 점수란 무엇인가요?</p>
-          <InfoSVG className="btn_info" onClick={openModal} />
+          <InfoSVG className="btn_info" onClick={handleOpenHumanZipyoModal} />
         </div>
       </SearchResultItemTtile>
       <GuageChart score={stockScore?.score ?? 0} />
@@ -55,7 +58,6 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo
           <p>인간지표는 공식 지표가 아니므로 참고 용도로만 활용해 주세요</p>
         </div>
       </SearchResultAlertContainer>
-      <Modal />
     </SearchResultGaugeChartContainer>
   );
 };
@@ -77,10 +79,15 @@ const SearchResultChart = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
 };
 
 const SearchResultWordCloud = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
-  const { Modal, openModal } = useModal({ Component: AntVoicePopUp });
+  const { Modal: AboutAntVoiceModal, openModal } = useAboutAntVoice();
+
+  const handleOpenAntVoiceModal = () => {
+    openModal();
+  };
 
   return (
     <SearchResultWordCloudContainer>
+      {AboutAntVoiceModal}
       <SearchResultItemTtile>
         <div className="title-container">
           <p className="title">자주 언급되는 단어</p>
@@ -88,13 +95,12 @@ const SearchResultWordCloud = ({ stockInfo }: { stockInfo: StockDetailInfo }) =>
         </div>
         <div className="info-container">
           <p>자주 언급되는 단어란 무엇인가요?</p>
-          <InfoSVG className="btn_info" onClick={openModal} />
+          <InfoSVG className="btn_info" onClick={handleOpenAntVoiceModal} />
         </div>
       </SearchResultItemTtile>
       <SearchResultWordCloudContents>
         <StockWordCloud symbol={stockInfo.symbol} country={stockInfo.country} />
       </SearchResultWordCloudContents>
-      <Modal />
     </SearchResultWordCloudContainer>
   );
 };
