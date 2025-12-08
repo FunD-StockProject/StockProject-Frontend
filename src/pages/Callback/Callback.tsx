@@ -58,10 +58,7 @@ const Callback = () => {
         if (res.profileImageUrl) {
           localStorage.setItem('profileImg', res.profileImageUrl);
         }
-        // navigate(-1);
-        navigate('/', {
-          replace: true,
-        });
+        navigate(-2);
       } catch (err) {
         console.error(err);
         setError('error');

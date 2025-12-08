@@ -13,16 +13,15 @@ export const useNotificationsQuery = ({ useMock = false }: { useMock?: boolean }
     ({ pageParam = 0 }) =>
       useMock
         ? Promise.resolve({
-          content: mockNotifications,
-          totalElements: mockNotifications.length,
-          totalPages: 1,
-          size: PAGE_SIZE,
-          number: pageParam,
-        })
+            content: mockNotifications,
+            totalElements: mockNotifications.length,
+            totalPages: 1,
+            size: PAGE_SIZE,
+            number: pageParam,
+          })
         : fetchNotification(pageParam, PAGE_SIZE),
     {
       ...queryOptions,
-      enabled: !!localStorage.getItem('access_token'),
       getNextPageParam: (lastPage) => {
         // 현재 페이지가 마지막 페이지보다 작으면 다음 페이지 번호 반환
         const currentPage = lastPage.number;
@@ -35,8 +34,6 @@ export const useNotificationsQuery = ({ useMock = false }: { useMock?: boolean }
       },
     },
   );
-
-  console.log(result.data?.pages.flatMap((page) => page.content));
 
   return {
     ...result,

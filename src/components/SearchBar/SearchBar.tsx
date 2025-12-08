@@ -7,6 +7,7 @@ import CrossSVG from '@assets/icons/cross.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import AutoCompleteKeywords from './AutoComplete/Keywords/Keywords';
 import AutoCompleteStocks from './AutoComplete/Stocks/Stocks';
+import PopularKeywords from './PopularKeywords/PopularKeywords';
 import PopularStocks from './PopularStocks/PopularStocks';
 import RecentStocks from './RecentStocks/RecentStocks';
 import {
@@ -25,6 +26,7 @@ const SearchBar = ({
   const navigate = useNavigate();
 
   const [searchType, setSearchType] = useState<SearchCategoryKey>(initial.type);
+
   const selectedSearchType = SEARCH_CATEGORY_MAP[searchType].text;
   const [searchValue, setSearchValue] = useState<string>(initial.value);
 
@@ -78,11 +80,13 @@ const SearchBar = ({
           ) : (
             <AutoCompleteKeywords searchValue={searchValue.trim()} />
           )
-        ) : (
+        ) : searchType === 'STOCK' ? (
           <>
             <RecentStocks />
             <PopularStocks />
           </>
+        ) : (
+          <PopularKeywords setSearchValue={setSearchValue} />
         )}
       </SearchBarContainer>
     </SearchBarLayout>

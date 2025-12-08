@@ -1,9 +1,8 @@
 import { WordFrequency } from '@ts/Interfaces';
 import { StockCountryKey } from '@ts/StockCountry';
-import { PERIOD_CODE, PopularStocks, StockDetailInfo } from './types';
+import { enableMock, fetchData } from '../common/base';
 import {
   fetchChartMock,
-  fetchIndexScoreMock,
   fetchKeywordsMock,
   fetchPopularStocksMock,
   fetchRelevantMock,
@@ -12,7 +11,7 @@ import {
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
 } from './mock';
-import { enableMock, fetchData } from '../common/base';
+import { PERIOD_CODE, PopularStocks, StockDetailInfo } from './types';
 
 export const fetchScore = async (id: number, country: string) => {
   if (enableMock) return fetchScoreMock;
@@ -47,18 +46,8 @@ export const fetchStockInfo = (stockId: number, country: StockCountryKey) => {
   return fetchData(`/stock/${stockId}/info/${country}`);
 };
 
-export const fetchKeywords = (country: string): Promise<string[]> => {
-  if (enableMock) return Promise.resolve(fetchKeywordsMock);
-  return fetchData(`/keyword/popular/${country}`);
-};
-
 export const fetchStockTable = (category: string, country: string) => {
   return fetchData(`/stock/category/${category}/${country}`);
-};
-
-export const fetchIndexScore = () => {
-  if (enableMock) return fetchIndexScoreMock;
-  return fetchData(`/score/index`);
 };
 
 export const fetchStockSummary = (symbol: string, country: StockCountryKey) => {
@@ -79,16 +68,22 @@ export const fetchAutoComplete = (name: string) => {
   return fetchData(`/stock/autocomplete?keyword=${name}`);
 };
 
-export const fetchSearchKeyword = (keywordName: string) => {
-  return fetchData(`/keyword/${keywordName}/stocks`);
-};
-
 export const fetchPopularStocks = (): Promise<PopularStocks[]> => {
   if (enableMock) return Promise.resolve(fetchPopularStocksMock as PopularStocks[]);
   return fetchData(`/stock/rankings/hot`);
 };
 
-export const fetchPopularKeywords = (): Promise<string[]> => {
+// keyword
+
+export const fetchSearchKeyword = (keywordName: string) => {
+  return fetchData(`/keyword/${keywordName}/stocks`);
+};
+
+export const fetchKeywordRankings = (): Promise<string[]> => {
   return fetchData('/keyword/rankings');
 };
 
+export const fetchPopularKeywords = (country: string): Promise<string[]> => {
+  if (enableMock) return Promise.resolve(fetchKeywordsMock);
+  return fetchData(`/keyword/popular/${country}`);
+};

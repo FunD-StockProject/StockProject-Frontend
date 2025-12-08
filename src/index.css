@@ -15,7 +15,6 @@
 }
 
 :root {
-  color: rgba(255, 255, 255, 0.87);
   color-scheme: light dark;
   font-weight: 400;
   line-height: 1.5;
@@ -54,7 +53,7 @@ body {
   justify-items: center;
 
   margin: 0px;
-  background-color: #000000;
+  background-color: rgba(255, 255, 255, 0.2);
   min-width: 320px;
   min-height: 100vh;
   overflow: hidden;

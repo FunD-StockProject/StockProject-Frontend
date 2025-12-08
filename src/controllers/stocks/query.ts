@@ -4,32 +4,23 @@ import { CHART_MOVING_AVERAGE_COLOR, CHART_PRICE_FIELD } from '@ts/Constants';
 import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_TYPE } from '@ts/Types';
 import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
+import { STOCK_FETCH_FUNCTIONS, queryOptions } from '../common/query';
 import {
   fetchAutoComplete,
-  fetchIndexScore,
-  fetchKeywords,
+  fetchKeywordRankings,
   fetchPopularKeywords,
   fetchPopularStocks,
-  fetchStockInfo,
   fetchRelevant,
   fetchScore,
   fetchSearchKeyword,
   fetchSearchSymbolName,
   fetchSearchWordCloud,
   fetchStockChart,
+  fetchStockInfo,
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import {
-  AutoCompleteItem,
-  IndexScoreInfo,
-  PERIOD_CODE,
-  PopularItems,
-  StockDetailInfo,
-  StockInfo,
-  StockTableInfo,
-} from './types';
-import { STOCK_FETCH_FUNCTIONS, queryOptions } from '../common/query';
+import { AutoCompleteItem, PERIOD_CODE, PopularItems, StockDetailInfo, StockInfo, StockTableInfo } from './types';
 
 export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
   return useQuery<StockDetailInfo>(
@@ -72,24 +63,12 @@ export const useChartInfoQuery = (id: number, periodCode: PERIOD_CODE, startDate
   );
 };
 
-export const useKeywordsQuery = (country: string) => {
-  return useQuery<string[]>(['keywords', country], () => fetchKeywords(country), queryOptions);
-};
-
 export const useStockTableInfoQuery = (category: string, country: string) => {
   return useQuery<StockTableInfo>(
     ['stockTableInfo', category, country],
     () => fetchStockTable(category, country),
     queryOptions,
   );
-};
-
-export const useIndexScoreQuery = () => {
-  return useQuery<IndexScoreInfo>(['indexScore'], () => fetchIndexScore(), queryOptions);
-};
-
-export const useKeywordSearchQuery = (keywordName: string) => {
-  return useQuery<string[]>(['keywordSearch', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
 };
 
 export const useStockSummaryQuery = (symbol: string, country: StockCountryKey) => {
@@ -224,22 +203,10 @@ export const useStockChartQuery = (stockId: number, period: string) => {
 
 export const usePopularStockFetchQuery = () => {
   const { data = [] } = useQuery(
-    ['PopularStocksFetch'],
+    ['popularStocks'],
     async () => {
       const popularStocks = await Promise.resolve(fetchPopularStocks());
       return popularStocks.map((stock) => ({ ...stock, value: stock.symbolName })) as PopularItems[];
-    },
-    { ...queryOptions, placeholderData: [] },
-  );
-  return [data] as const;
-};
-
-export const usePopularKeywordQuery = () => {
-  const { data = [] } = useQuery(
-    ['PopularKeywordFetch'],
-    async () => {
-      const popularKeywords = await Promise.resolve(fetchPopularKeywords());
-      return popularKeywords.map((keyword) => ({ value: keyword })) as PopularItems[];
     },
     { ...queryOptions, placeholderData: [] },
   );
@@ -305,5 +272,23 @@ export const useAutoCompleteStockQuery = (input: string) => {
     cacheTime: 10000,
     enabled: !!debouncedValue,
     keepPreviousData: true,
+  });
+};
+
+export const useKeywordSearchQuery = (keywordName: string) => {
+  return useQuery<string[]>(['keywordSearch', keywordName], () => fetchSearchKeyword(keywordName), queryOptions);
+};
+
+export const usePopularKeywordsQuery = (country: string) => {
+  return useQuery<string[]>(['popularKeywords', country], () => fetchPopularKeywords(country), {
+    ...queryOptions,
+    placeholderData: [],
+  });
+};
+
+export const useKeywordRankingsQuery = () => {
+  return useQuery<string[]>(['keywordRankings'], () => fetchKeywordRankings(), {
+    ...queryOptions,
+    placeholderData: [],
   });
 };

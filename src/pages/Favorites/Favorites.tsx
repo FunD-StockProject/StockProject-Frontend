@@ -111,15 +111,25 @@ const Favorites = () => {
 
   const [OffNotificationModal, openOffNotificationModal, closeOffNotificationModal] = ConfirmModal({
     title: '알림을 해제할까요?',
-    description: '관심 종목은 유지된 채, 알림만 해제돼요',
+    description: (
+      <>
+        관심 종목은 유지된 채, <wbr />
+        알림만 해제돼요
+      </>
+    ),
     onConfirm: handleNotificationToggle,
     isInverse: true,
     actionText: ['해제하기', '취소'],
   });
 
   const [DeleteFavoritesModal, openDeleteFavoritesModal, closeDeleteFavoritesModal] = ConfirmModal({
-    title: '정말 삭제하시겠어요?',
-    description: '관심내역에서 삭제되고 변동 알림이 중단됩니다',
+    title: '정말 해제하시겠어요?',
+    description: (
+      <>
+        관심내역에서 삭제되고 <wbr />
+        변동 알림이 중단됩니다
+      </>
+    ),
     onConfirm: handleDeleteFavorites,
     isInverse: true,
     actionText: ['삭제', '취소'],

@@ -8,7 +8,8 @@ export const Overlay = styled.div(
   }),
   {
     position: 'fixed',
-    left: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
     right: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -20,6 +21,7 @@ export const Overlay = styled.div(
     WebkitBackdropFilter: 'blur(5px)',
     background: 'linear-gradient(180deg, rgba(16, 16, 16, 0.4) 0%, #101010 44.56%)',
     gap: '20px',
+    maxWidth: '1280px',
   },
 );
 

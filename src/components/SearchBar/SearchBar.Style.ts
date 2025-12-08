@@ -4,7 +4,8 @@ import { theme } from '@styles/themes';
 const SearchBarLayout = styled.div({
   position: 'fixed',
   top: 0,
-  left: 0,
+  left: '50%',
+  transform: 'translateX(-50%)',
   width: '100%',
   height: '100%',
   background: 'rgba(0, 0, 0)',
@@ -12,10 +13,11 @@ const SearchBarLayout = styled.div({
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden auto ',
+  maxWidth: '1280px',
 });
 
 const SearchBarContainer = styled.div({
-  padding: '20px',
+  padding: '20px 0',
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
@@ -23,6 +25,7 @@ const SearchBarContainer = styled.div({
 });
 
 const SearchBarContents = styled.div({
+  padding: '0 20px',
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
@@ -126,6 +129,7 @@ const SearchBarInput = styled.label({
 });
 
 const SearchBarItemContainer = styled.div({
+  padding: '0 20px',
   display: 'flex',
   flexDirection: 'column',
   gap: '20px',

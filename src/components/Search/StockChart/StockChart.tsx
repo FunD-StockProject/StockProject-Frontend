@@ -208,7 +208,7 @@ const StockChartView = ({
 
   const [canvasPos, setCanvasPos, canvasPosRef] = useStateRef<any>({
     curr: {
-      x: 900,
+      x: 0,
     },
     prev: {
       x: 0,
@@ -269,7 +269,7 @@ const StockChartView = ({
 
     setCanvasPos({
       curr: {
-        x: width - GRID_GAP.X / 2,
+        x: (3 * width) / 4,
       },
       prev: {
         x: 0,
@@ -369,7 +369,7 @@ const StockChartView = ({
 
     const scoreChartList = getChartScoreItems(chartItems, scaledScore, scaledVolume);
 
-    drawPriceChart(dateGrid, chartPriceItems, chartSMAItems, recentPriceItem);
+    drawPriceChart(dateGrid, priceGrid, chartPriceItems, chartSMAItems, recentPriceItem);
     drawScoreChart(dateGrid, scoreChartList);
   }, [chartData, priceCanvasSize, canvasPos, barSize, priceScale, scoreScale]);
 
@@ -699,6 +699,7 @@ const StockChartView = ({
 
   const drawPriceChart = (
     dateGrid: any[],
+    priceGrid: any[],
     chartPriceItems: any[],
     chartSMAItems: Record<
       string,
@@ -838,8 +839,8 @@ const StockChartView = ({
     const width = chartContainerRef.current?.offsetWidth ?? 0;
     const itemWidth = scaledBarSize * barGap;
 
-    const MinX = itemWidth * (3 / 2);
-    const MaxX = width + itemWidth * (stateRef.current.chartLength - 5 / 2);
+    const MinX = (3 * width) / 4;
+    const MaxX = (3 * width) / 4 + itemWidth * stateRef.current.chartLength;
     const canvasX = x + (canvasPosRef.current.curr.x - x) * (scaledBarSize / barSize);
 
     const currX = canvasX < MinX ? MinX : canvasX > MaxX ? MaxX : canvasX;
@@ -909,8 +910,8 @@ const StockChartView = ({
       const width = chartContainerRef.current?.offsetWidth ?? 0;
       const itemWidth = barSize * barGap;
 
-      const MinX = itemWidth * (3 / 2);
-      const MaxX = width + itemWidth * (stateRef.current.chartLength - 5 / 2);
+      const MinX = (3 * width) / 4;
+      const MaxX = (3 * width) / 4 + itemWidth * stateRef.current.chartLength;
       const canvasX = canvasPosRef.current.curr.x + deltaX;
 
       const currX = canvasX < MinX ? MinX : canvasX > MaxX ? MaxX : canvasX;

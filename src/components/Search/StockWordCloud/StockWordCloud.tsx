@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { WordCloudItem } from '@ts/Interfaces';
 import { StockCountryKey } from '@ts/StockCountry';
 import { useIsMobile } from '@hooks/useIsMobile';
@@ -33,7 +32,6 @@ const StockWordCloudContents = ({
 };
 
 const StockWordCloud = ({ symbol, country }: { symbol: string; country: StockCountryKey }) => {
-  const { state } = useLocation();
   const isMobile = useIsMobile();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,9 +50,8 @@ const StockWordCloud = ({ symbol, country }: { symbol: string; country: StockCou
   const testTextRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (symbol == state?.symbol) return;
     setCurrentIndex(-1);
-  }, [state]);
+  }, [symbol, country]);
 
   useEffect(() => {
     if (!wordCloud || currentIndex > wordCloud.length) return;

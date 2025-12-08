@@ -2,13 +2,12 @@ import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
-import { getItemLocalStorage } from '@utils/LocalStorage';
+import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
-// import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
-import { StockDetailInfo } from '@controllers/stocks/types';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import { useStockSummaryQuery } from '@controllers/stocks/query';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import KoreaPNG from '@assets/flags/korea.png';
 import {
   SearchTitleContainer,
@@ -123,7 +122,7 @@ const SearchTitleDetail = ({
 const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { data: summary = [], isLoading } = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
   const navigate = useNavigate();
-  const isLogin = !!getItemLocalStorage('access_token');
+  const { isLogin } = useLogin();
 
   const { mutate: buyExperiment } = useBuyExperimentMutation();
 
@@ -136,18 +135,6 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
     navigate(webPath.labStep(), { state: { step: 3 } });
   };
 
-  // const handleLogin = () => {
-  //   navigate(webPath.login());
-  // };
-
-  // const [LoginModal, openLoginModal] = ConfirmModal({
-  //   title: '모의 매수를 진행하려면, 로그인이 필요해요!',
-  //   description: '나만의 투자심리 분석 보고서를 받고 싶다면, 로그인을 진행해주세요',
-  //   onConfirm: handleLogin,
-  //   isInverse: true,
-  //   actionText: ['로그인하기', '취소'],
-  // });
-
   const [showMoreDesc, setShowMoreDesc] = useState(false);
 
   const handleClickMore = () => {
@@ -157,7 +144,6 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   return (
     stockInfo && (
       <SearchTitleContainer>
-        {/* <LoginModal /> */}
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
         {!isLoading && (

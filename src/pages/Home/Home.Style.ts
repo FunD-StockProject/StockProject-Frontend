@@ -16,7 +16,7 @@ const HomeHeaderContainer = styled.div({
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '10px',
+  gap: '8px',
 
   ['>svg']: {
     width: '100px',
@@ -111,7 +111,7 @@ const HomeContents = styled.div({
   padding: '90px 60px',
 
   [media[0]]: {
-    gap: '52px',
+    gap: '32px',
     padding: '28px 0px 52px',
   },
 });

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import FavoritesSVG from '@assets/bottomNav/favorites.svg?react';
@@ -6,13 +7,9 @@ import LabSVG from '@assets/bottomNav/lab.svg?react';
 import MyPageSVG from '@assets/bottomNav/myPage.svg?react';
 import ShortViewSVG from '@assets/bottomNav/shortView.svg?react';
 import { NavContainer, NavItem } from './BottomNavigation.Style';
-import { useEffect, useState } from 'react';
-
 
 const BottomNavigation = () => {
   const location = useLocation();
-  // const hiddenPaths = [webPath.login(), webPath.register(), webPath.registerDone()];
-  // if (hiddenPaths.includes(location.pathname)) return null;
   const navigate = useNavigate();
   const navItems = [
     { label: '홈', icon: <HomeSVG />, path: '/' },
@@ -22,7 +19,7 @@ const BottomNavigation = () => {
     { label: 'My', icon: <MyPageSVG />, path: webPath.mypage() },
   ];
   const currentPath = location.pathname;
-  const activeIndex = navItems.findIndex(item => item.path === currentPath);
+  const activeIndex = navItems.findIndex((item) => item.path === currentPath);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {

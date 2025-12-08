@@ -12,22 +12,21 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
   const isRootPage = location.pathname === '/';
-  const isLoginPage = location.pathname.startsWith(webPath.login());
-  const isRegisterPage = location.pathname.startsWith(webPath.register());
-  const isWithdrawPage = location.pathname.startsWith(webPath.withdraw());
-  const isTermPage = location.pathname.startsWith(webPath.term());
-  const isCallbackPage = location.pathname.startsWith(webPath.callback());
-  const isUsagePage = location.pathname.startsWith(webPath.usage());
-  const isNotificationPage = location.pathname.startsWith(webPath.notification());
 
-  const isBottomNavigationVisible =
-    !isLoginPage &&
-    !isRegisterPage &&
-    !isWithdrawPage &&
-    !isTermPage &&
-    !isCallbackPage &&
-    !isUsagePage &&
-    !isNotificationPage;
+  const isBottomNavigationVisible = (
+    [
+      'login',
+      'register',
+      'editProfile',
+      'withdraw',
+      'term',
+      'callback',
+      'usage',
+      'notification',
+    ] as (keyof typeof webPath)[]
+  ).reduce((acc, path) => {
+    return acc && !location.pathname.startsWith(webPath[path]());
+  }, true);
 
   return (
     <StyledMainlayout>

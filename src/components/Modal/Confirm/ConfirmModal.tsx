@@ -10,12 +10,14 @@ const ConfirmModalLayout = styled.div({
   height: '100%',
   zIndex: '100',
   top: '0',
-  left: '0',
+  left: '50%',
+  transform: 'translateX(-50%)',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '32px',
   boxSizing: 'border-box',
   backdropFilter: 'blur(5px)',
+  maxWidth: '1280px',
 });
 
 const ConfirmModalContainer = styled.div({
@@ -68,7 +70,8 @@ const ConfirmModalTextContainer = styled.div({
     ['&.desc']: {
       ...theme.font.body16Medium,
       color: theme.colors.sub_gray7,
-      whiteSpace: 'pre-line',
+      whiteSpace: 'nowrap',
+      wordBreak: 'keep-all',
     },
   },
 });
@@ -81,7 +84,7 @@ const ConfirmModal = ({
   actionText = ['네', '아니오'],
 }: {
   title: string;
-  description?: string;
+  description?: string | React.ReactNode;
   onConfirm: () => void;
   isInverse?: boolean;
   actionText?: string[];
