@@ -39,6 +39,9 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
 
   const headerTitle = {
     [webPath.register()]: '회원가입',
+    [webPath.registerDone()]: '회원가입',
+    [webPath.editProfile()]: '내 정보 수정',
+    [webPath.editeProfileDone()]: '내 정보 수정',
     [webPath.about()]: '인간지표란?',
     [webPath.callbackKakao()]: '로그인',
     [webPath.usage()]: 'PWA 사용방법',
@@ -47,7 +50,6 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     ['searchBar']: '검색',
     ['labTutorial']: '실험실 소개',
     ['labPurchase']: '포트폴리오 생성하기',
-    [webPath.editProfile()]: '내 정보 수정',
   };
 
   const handleBefore = () => {

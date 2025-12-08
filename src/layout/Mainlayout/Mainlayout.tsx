@@ -14,6 +14,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isRootPage = location.pathname === '/';
   const isLoginPage = location.pathname.startsWith(webPath.login());
   const isRegisterPage = location.pathname.startsWith(webPath.register());
+  const isEditProfilePage = location.pathname.startsWith(webPath.editProfile());
   const isWithdrawPage = location.pathname.startsWith(webPath.withdraw());
   const isTermPage = location.pathname.startsWith(webPath.term());
   const isCallbackPage = location.pathname.startsWith(webPath.callback());
@@ -23,6 +24,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isBottomNavigationVisible =
     !isLoginPage &&
     !isRegisterPage &&
+    !isEditProfilePage &&
     !isWithdrawPage &&
     !isTermPage &&
     !isCallbackPage &&

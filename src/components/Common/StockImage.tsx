@@ -35,7 +35,6 @@ const StockImage = ({
   // 이미지 로딩 실패 시 기본 이미지로 변경
   const handleImageError = () => {
     if (!imageError) {
-      console.log('image error', stockId, imageUrl);
       setImageError(true);
       setImageSrc(DEFAULT_STOCK_IMAGE);
       customOnError?.();

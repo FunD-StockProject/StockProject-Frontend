@@ -225,7 +225,7 @@ const EditProfile = () => {
 
     localStorage.setItem('username', values.name);
     localStorage.setItem('birth', values.birth);
-    navigate(webPath.registerDone());
+    navigate(webPath.editeProfileDone());
   };
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
