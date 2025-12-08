@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getItemLocalStorage } from '@utils/LocalStorage';
 import useLogin from '@hooks/useLogin';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';

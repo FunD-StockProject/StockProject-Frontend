@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
-import { getItemLocalStorage } from '@utils/LocalStorage';
 import { NotificationItem } from '@utils/notificationMapper';
 import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
