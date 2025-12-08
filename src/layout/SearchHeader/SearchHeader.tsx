@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useLogin from '@hooks/useLogin';
 import useToast from '@hooks/useToast';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+import Toast from '@components/Toast/Toast';
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
@@ -61,57 +62,10 @@ const IconButton = styled.button(
   },
 );
 
-const SearchHeaderToast = styled.div(
-  ({ closing }: { closing: boolean }) => ({
-    opacity: closing ? 0 : 1,
-    transition: 'opacity 0.3s ease-in-out',
-  }),
-  {
-    position: 'fixed',
-    bottom: 'calc(96px + 24px)',
-    zIndex: '10',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    right: '20px',
-    background: 'rgba(0, 0, 0, 0.75)',
-    // width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: '5px',
-    border: '1px solid rgba(73, 80, 87, 0.5)',
-    padding: '12px 16px',
-    boxSizing: 'border-box',
-    backdropFilter: 'blur(5px)',
-    boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.5)',
-    gap: '10px',
-    maxWidth: '1280px',
-    width: 'calc(min(100%, 1280px) - 40px)',
-
-    ['>svg']: {
-      width: '20px',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-    },
-
-    ['>p']: {
-      margin: '0',
-      ...theme.font.detail12Semibold,
-      color: theme.colors.sub_gray2,
-
-      ['&.cancel']: {
-        color: theme.colors.sub_gray5,
-        textDecoration: 'underline',
-        marginLeft: 'auto',
-        cursor: 'pointer',
-      },
-    },
-  },
-);
-
 const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const navigate = useNavigate();
   const { isLogin, handleLogin } = useLogin();
-  const { toast, showToast } = useToast();
+  const { toast, showToast, hideToast } = useToast();
 
   const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
   const { mutate: addBookMark } = useAddBookmarkMutation();
@@ -188,7 +142,8 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
           <BellSVG onClick={onBellClick} />
         </IconButton>
       </RightSection>
-      {toast.enabled && <SearchHeaderToast closing={toast.closing}>{toast.message}</SearchHeaderToast>}
+      <Toast toast={toast} hideToast={hideToast} />
+      {/* {toast.enabled && <SearchHeaderToast closing={toast.closing}>{toast.message}</SearchHeaderToast>} */}
     </SearchHeaderWrapper>
   );
 };

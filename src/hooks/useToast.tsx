@@ -24,7 +24,11 @@ const useToast = (defaultDuration: number = 1500) => {
       if (ref.current) clearTimeout(ref.current);
     });
 
-    setToast({ message, enabled: true, closing: false, duration });
+    setToast({ message, enabled: true, closing: true, duration });
+
+    fadeTimeoutRef.current = setTimeout(() => {
+      setToast((prev) => ({ ...prev, closing: false }));
+    }, 0);
 
     // 페이드아웃 시작 (duration - 0.3초 전)
     fadeTimeoutRef.current = setTimeout(() => {
@@ -38,10 +42,16 @@ const useToast = (defaultDuration: number = 1500) => {
   };
 
   const hideToast = () => {
+    if (toast.closing) return;
+
     [toastTimeoutRef, fadeTimeoutRef].forEach((ref) => {
       if (ref.current) clearTimeout(ref.current);
     });
-    setToast((prev) => ({ ...prev, enabled: false, closing: false }));
+    setToast((prev) => ({ ...prev, closing: true }));
+
+    fadeTimeoutRef.current = setTimeout(() => {
+      setToast((prev) => ({ ...prev, enabled: false }));
+    }, 300);
   };
 
   // 컴포넌트 언마운트 시 타이머 정리
