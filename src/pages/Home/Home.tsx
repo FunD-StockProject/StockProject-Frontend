@@ -5,12 +5,13 @@ import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
-import IndexScore from '@components/Home/IndexScore/IndexScore';
+import HomeInfo from '@components/Home/IndexScore/HomeInfo';
 import Keywords from '@components/Home/Keywords/Keywords';
 import StockTable from '@components/Home/StockTable/StockTable';
 import SearchBar from '@components/SearchBar/SearchBar';
 import { useUnreadCountQuery } from '@controllers/notification/query';
 import AlarmSVG from '@assets/icons/alarm.svg?react';
+import QuestionMarkCircleSVG from '@assets/icons/question_mark_circle.svg?react';
 import SearchSVG from '@assets/icons/search.svg?react';
 import FullLogoWhiteSVG from '@assets/logo/full_logo_white.svg?react';
 import {
@@ -26,6 +27,10 @@ const HomeHeader = () => {
   const { data: notificationCount } = useUnreadCountQuery();
   const navigate = useNavigate();
   const { isLogin } = useLogin();
+
+  const handleQuestionMarkClick = () => {
+    navigate(webPath.about());
+  };
 
   const handleNotificationClick = () => {
     navigate(webPath.notification());
@@ -45,6 +50,9 @@ const HomeHeader = () => {
   return (
     <HomeHeaderContainer>
       <FullLogoWhiteSVG />
+      <HomeHeaderButton onClick={handleQuestionMarkClick}>
+        <QuestionMarkCircleSVG />
+      </HomeHeaderButton>
       <HomeHeaderButton
         className={!isLogin || notificationCount?.unreadCount ? 'enable' : ''}
         onClick={handleNotificationClick}
@@ -91,7 +99,7 @@ const Home = () => {
       </HomeTabMenuContainer>
       <Banner />
       <HomeContents>
-        <IndexScore country={country} />
+        <HomeInfo country={country} />
         <CardList type="HOT" country={country} />
         <CardList type="RISING" country={country} />
         <CardList type="DESCENT" country={country} />

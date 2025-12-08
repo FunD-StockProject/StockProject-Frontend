@@ -6,12 +6,41 @@ const StockCardContainer = styled.div({
   display: 'flex',
   overflow: 'auto',
   scrollSnapType: 'x mandatory',
-  padding: '0px 20px',
-  gap: '12px',
 
-  msOverflowStyle: 'none',
+  transition: 'background-color 0.1s ease-in-out',
+  backgroundColor: theme.colors.sub_black,
+
+  [':hover']: {
+    backgroundColor: theme.colors.sub_gray5,
+  },
+
+  ['>div']: {
+    display: 'flex',
+    gap: '12px',
+    padding: '0px 20px 8px',
+    backgroundColor: theme.colors.sub_black,
+  },
+
   ['::-webkit-scrollbar']: {
-    display: 'none',
+    height: '6px',
+  },
+  ['::-webkit-scrollbar-track']: {
+    background: theme.colors.sub_black,
+  },
+  ['::-webkit-scrollbar-thumb']: {
+    background: 'inherit',
+    borderRadius: '4px',
+  },
+
+  ['@media (max-width: 768px)']: {
+    ['>div']: {
+      padding: '0px 20px',
+    },
+
+    msOverflowStyle: 'none',
+    ['::-webkit-scrollbar']: {
+      display: 'none',
+    },
   },
 });
 

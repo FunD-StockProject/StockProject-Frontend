@@ -7,7 +7,6 @@ import { formatDateISO, formatLocalDateToDate } from '@utils/Date';
 import { STOCK_FETCH_FUNCTIONS, queryOptions } from '../common/query';
 import {
   fetchAutoComplete,
-  fetchIndexScore,
   fetchKeywordRankings,
   fetchPopularKeywords,
   fetchPopularStocks,
@@ -21,15 +20,7 @@ import {
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import {
-  AutoCompleteItem,
-  IndexScoreInfo,
-  PERIOD_CODE,
-  PopularItems,
-  StockDetailInfo,
-  StockInfo,
-  StockTableInfo,
-} from './types';
+import { AutoCompleteItem, PERIOD_CODE, PopularItems, StockDetailInfo, StockInfo, StockTableInfo } from './types';
 
 export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
   return useQuery<StockDetailInfo>(
@@ -78,10 +69,6 @@ export const useStockTableInfoQuery = (category: string, country: string) => {
     () => fetchStockTable(category, country),
     queryOptions,
   );
-};
-
-export const useIndexScoreQuery = () => {
-  return useQuery<IndexScoreInfo>(['indexScore'], () => fetchIndexScore(), queryOptions);
 };
 
 export const useStockSummaryQuery = (symbol: string, country: StockCountryKey) => {

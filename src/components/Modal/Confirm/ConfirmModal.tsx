@@ -10,12 +10,14 @@ const ConfirmModalLayout = styled.div({
   height: '100%',
   zIndex: '100',
   top: '0',
-  left: '0',
+  left: '50%',
+  transform: 'translateX(-50%)',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '32px',
   boxSizing: 'border-box',
   backdropFilter: 'blur(5px)',
+  maxWidth: '1280px',
 });
 
 const ConfirmModalContainer = styled.div({

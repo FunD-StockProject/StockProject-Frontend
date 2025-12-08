@@ -3,7 +3,6 @@ import { StockCountryKey } from '@ts/StockCountry';
 import { enableMock, fetchData } from '../common/base';
 import {
   fetchChartMock,
-  fetchIndexScoreMock,
   fetchKeywordsMock,
   fetchPopularStocksMock,
   fetchRelevantMock,
@@ -49,11 +48,6 @@ export const fetchStockInfo = (stockId: number, country: StockCountryKey) => {
 
 export const fetchStockTable = (category: string, country: string) => {
   return fetchData(`/stock/category/${category}/${country}`);
-};
-
-export const fetchIndexScore = () => {
-  if (enableMock) return fetchIndexScoreMock;
-  return fetchData(`/score/index`);
 };
 
 export const fetchStockSummary = (symbol: string, country: StockCountryKey) => {

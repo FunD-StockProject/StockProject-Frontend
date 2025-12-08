@@ -5,8 +5,8 @@ import { diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
 import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { StockInfo } from '@controllers/stocks/types';
 import { useHomeStockFetchQuery } from '@controllers/stocks/query';
+import { StockInfo } from '@controllers/stocks/types';
 import {
   LargeStockCardContainer,
   LargeStockCardContent,
@@ -100,15 +100,17 @@ const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryK
   return (
     suspend || (
       <StockCardContainer>
-        {curStocks?.map((stock: StockInfo) => (
-          <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
-            {type === 'HOT' ? (
-              <LargeStockCard stock={stock} country={country} />
-            ) : (
-              <SmallStockCard stock={stock} country={country} />
-            )}
-          </StockCardItem>
-        ))}
+        <div>
+          {curStocks?.map((stock: StockInfo) => (
+            <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
+              {type === 'HOT' ? (
+                <LargeStockCard stock={stock} country={country} />
+              ) : (
+                <SmallStockCard stock={stock} country={country} />
+              )}
+            </StockCardItem>
+          ))}
+        </div>
       </StockCardContainer>
     )
   );
