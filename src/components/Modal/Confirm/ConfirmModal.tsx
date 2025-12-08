@@ -68,7 +68,8 @@ const ConfirmModalTextContainer = styled.div({
     ['&.desc']: {
       ...theme.font.body16Medium,
       color: theme.colors.sub_gray7,
-      whiteSpace: 'pre-line',
+      whiteSpace: 'nowrap',
+      wordBreak: 'keep-all',
     },
   },
 });
@@ -81,7 +82,7 @@ const ConfirmModal = ({
   actionText = ['네', '아니오'],
 }: {
   title: string;
-  description?: string;
+  description?: string | React.ReactNode;
   onConfirm: () => void;
   isInverse?: boolean;
   actionText?: string[];
