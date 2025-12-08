@@ -369,7 +369,7 @@ const StockChartView = ({
 
     const scoreChartList = getChartScoreItems(chartItems, scaledScore, scaledVolume);
 
-    drawPriceChart(dateGrid, chartPriceItems, chartSMAItems, recentPriceItem);
+    drawPriceChart(dateGrid, priceGrid, chartPriceItems, chartSMAItems, recentPriceItem);
     drawScoreChart(dateGrid, scoreChartList);
   }, [chartData, priceCanvasSize, canvasPos, barSize, priceScale, scoreScale]);
 
@@ -699,6 +699,7 @@ const StockChartView = ({
 
   const drawPriceChart = (
     dateGrid: any[],
+    priceGrid: any[],
     chartPriceItems: any[],
     chartSMAItems: Record<
       string,
