@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
+import useLogin from '@hooks/useLogin';
 import { webPath } from '@router/index';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
@@ -21,14 +22,13 @@ import {
   HomeTabMenuLabel,
 } from './Home.Style';
 
-const Home = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [country, setCountry] = useState<StockCountryKey>('KOREA');
+const HomeHeader = () => {
   const { data: notificationCount } = useUnreadCountQuery();
+  const navigate = useNavigate();
+  const { isLogin } = useLogin();
 
-  const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCountry(e.target.value as StockCountryKey);
+  const handleNotificationClick = () => {
+    navigate(webPath.notification());
   };
 
   const handleSearchModalOpen = () => {
@@ -42,6 +42,33 @@ const Home = () => {
     });
   };
 
+  return (
+    <HomeHeaderContainer>
+      <FullLogoWhiteSVG />
+      <HomeHeaderButton
+        className={!isLogin || notificationCount?.unreadCount ? 'enable' : ''}
+        onClick={handleNotificationClick}
+      >
+        <AlarmSVG />
+      </HomeHeaderButton>
+      <HomeHeaderButton onClick={handleSearchModalOpen}>
+        <SearchSVG />
+      </HomeHeaderButton>
+    </HomeHeaderContainer>
+  );
+};
+
+const Home = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [country, setCountry] = useState<StockCountryKey>('KOREA');
+
+  const isSearchModalOpen = location.state && 'search' in location.state;
+
+  const handleTabChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCountry(e.target.value as StockCountryKey);
+  };
+
   const handleKeywordClick = (keyword: string) => () => {
     navigate('.', {
       state: {
@@ -50,24 +77,10 @@ const Home = () => {
     });
   };
 
-  const handleNotificationClick = () => {
-    navigate(webPath.notification());
-  };
-
-  const isSearchModalOpen = location.state && 'search' in location.state;
-
   return (
     <HomeContainer>
       {isSearchModalOpen && <SearchBar initial={location.state.search} />}
-      <HomeHeaderContainer>
-        <FullLogoWhiteSVG />
-        <HomeHeaderButton className={notificationCount?.unreadCount ? 'enable' : ''} onClick={handleNotificationClick}>
-          <AlarmSVG />
-        </HomeHeaderButton>
-        <HomeHeaderButton onClick={handleSearchModalOpen}>
-          <SearchSVG />
-        </HomeHeaderButton>
-      </HomeHeaderContainer>
+      <HomeHeader />
       <HomeTabMenuContainer>
         {STOCK_COUNTRIES.map(({ key, text }, i) => (
           <HomeTabMenuLabel key={`TAB_MENU_${key}`}>

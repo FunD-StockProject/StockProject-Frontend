@@ -58,10 +58,7 @@ const Callback = () => {
         if (res.profileImageUrl) {
           localStorage.setItem('profileImg', res.profileImageUrl);
         }
-        // navigate(-1);
-        navigate(localStorage.getItem('before_login_path') ?? webPath.home(), {
-          replace: true,
-        });
+        navigate(-2);
       } catch (err) {
         console.error(err);
         setError('error');

@@ -85,7 +85,6 @@ const NotificationPage = () => {
     fetchNextPage,
     isFetchingNextPage,
   } = useNotificationsQuery({ useMock: !isLogin });
-  console.log(notifications);
 
   useEffect(() => {
     const handleMoreNotifications = () => {

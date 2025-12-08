@@ -25,10 +25,7 @@ const SearchBar = ({
 }) => {
   const navigate = useNavigate();
 
-  const [searchType, setSearchType] = useState<SearchCategoryKey>(
-    // initial.type
-    'KEYWORD',
-  );
+  const [searchType, setSearchType] = useState<SearchCategoryKey>(initial.type);
 
   const selectedSearchType = SEARCH_CATEGORY_MAP[searchType].text;
   const [searchValue, setSearchValue] = useState<string>(initial.value);
