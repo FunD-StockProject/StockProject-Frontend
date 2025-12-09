@@ -24,6 +24,7 @@ import {
   ReportClassChartContainer,
   ReportClassContainer,
   ReportClassSummary,
+  ReportHelpTextContainer,
   ReportPatternChartContainer,
   ReportPatternContainer,
   ReportPatternSummary,
@@ -164,10 +165,10 @@ const ReportClass = (
 
   return (
     <ReportClassContainer>
+      <ReportHelpTextContainer onClick={handleClickHelpModal}>
+        <QuestionMarkSVG /> <span>다른 유형은 뭐가 있어요?</span>
+      </ReportHelpTextContainer>
       <ReportClassChartContainer>
-        <div className="help" onClick={handleClickHelpModal}>
-          <QuestionMarkSVG /> <span>다른 유형은 뭐가 있어요?</span>
-        </div>
         <ReportClassChart
           reportClass={reportClass}
           successRate={humanIndex.userScore}
@@ -211,10 +212,10 @@ const ReportPattern = (
 
   return (
     <ReportPatternContainer>
+      <ReportHelpTextContainer onClick={handleClickHelpModal}>
+        <QuestionMarkSVG /> <span>각 사분면은 무슨 패턴이에요?</span>
+      </ReportHelpTextContainer>
       <ReportPatternChartContainer>
-        <div className="help" onClick={handleClickHelpModal}>
-          <QuestionMarkSVG /> <span>각 사분면은 무슨 패턴이에요?</span>
-        </div>
         <ReportPatternChart
           reportPatternsQuadrant={patternQuadrantList.find((e) => investmentPattern.patternType === e.title)?.key}
           reportPatternsCoordinates={history.map((e) => ({
@@ -447,7 +448,7 @@ const LabResult = () => {
   // }, [experimentReport]);
 
   const { data: portfolioResult, isLoading: isPortfolioResultLoading } = usePortfolioResultQuery();
-  const { data: experimentStatus, isLoading: _isExperimentStatusLoading } = useExperimentStatusQuery();
+  const { data: experimentStatus, isLoading: isExperimentStatusLoading } = useExperimentStatusQuery();
 
   const { Modal: AboutReportClassModal, openModal: openAboutReportClassModal } = useAboutReportClass();
   const { Modal: AboutReportPatternModal, openModal: openAboutReportPatternModal } = useAboutReportPattern();
@@ -543,6 +544,10 @@ const LabResult = () => {
   }, [portfolioResult]);
 
   const EmptyWrapper = useMemo(() => {
+    if (isPortfolioResultLoading || isExperimentStatusLoading) {
+      return null;
+    }
+
     if (!experimentStatus?.totalTradeCount) {
       return (
         <LabResultEmptyContainer>
@@ -585,7 +590,7 @@ const LabResult = () => {
         hasNavbar
       />
     );
-  }, []);
+  }, [experimentStatus, portfolioResult]);
 
   return (
     <LabResultContainer
