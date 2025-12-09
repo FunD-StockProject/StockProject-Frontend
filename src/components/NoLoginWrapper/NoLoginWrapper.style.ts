@@ -22,6 +22,8 @@ export const Overlay = styled.div(
     background: 'linear-gradient(180deg, rgba(16, 16, 16, 0.4) 0%, #101010 44.56%)',
     gap: '20px',
     maxWidth: '1280px',
+    width: '100%',
+    overflow: 'auto',
   },
 );
 
