@@ -31,7 +31,6 @@ const TutorialContainer = styled.div({
 const TutorialContent = styled.div({
   display: 'flex',
   flexShrink: '0',
-  width: '100%',
   overflow: 'auto',
   scrollSnapType: 'x mandatory',
   gap: '24px',
@@ -41,6 +40,38 @@ const TutorialContent = styled.div({
   msOverflowStyle: 'none',
   ['::-webkit-scrollbar']: {
     display: 'none',
+  },
+});
+
+const TutorialContentSlideButtonContainer = styled.div({
+  position: 'absolute',
+  height: '100px',
+  left: '50%',
+  bottom: '55%',
+  transform: 'translateX(-50%)',
+  width: '480px',
+
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  zIndex: '10',
+
+  ['@media (max-width: 480px)']: {
+    display: 'none',
+  },
+
+  ['>svg']: {
+    width: '48px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    cursor: 'pointer',
+
+    ['&.left']: {
+      transform: 'scaleX(-1)',
+    },
+    ['&.right']: {
+      transform: 'scaleX(1)',
+    },
   },
 });
 
@@ -266,4 +297,5 @@ export {
   TutorialItemCircleButtonContainer,
   ButtonContainer,
   TutorialTextContainer,
+  TutorialContentSlideButtonContainer,
 };

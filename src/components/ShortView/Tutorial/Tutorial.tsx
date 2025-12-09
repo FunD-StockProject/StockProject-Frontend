@@ -3,12 +3,14 @@ import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import Button from '@components/Common/Button';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import MoneySVG from '@assets/icons/money.svg?react';
+import ShortViewChevronRightSVG from '@assets/icons/shortview/chevronRight.svg?react';
 import ShortViewMockImage from '@assets/short_view_mock.png';
 import SwipeHandPNG from '@assets/swipe_hand.png';
 import {
   ButtonContainer,
   TutorialContainer,
   TutorialContent,
+  TutorialContentSlideButtonContainer,
   TutorialItem,
   TutorialItemCircleButtonContainer,
   TutorialItemContent,
@@ -95,6 +97,15 @@ const ShortViewTutorial = () => {
     };
   }, []);
 
+  const handleClickSlideButton = (direction: 'left' | 'right') => () => {
+    const container = containerRef.current;
+    if (!container) return;
+    container.scrollTo({
+      left: container.scrollLeft + (direction === 'left' ? -container.clientWidth : container.clientWidth),
+      behavior: 'smooth',
+    });
+  };
+
   if (tutorialWatched) return null;
 
   return (
@@ -110,6 +121,10 @@ const ShortViewTutorial = () => {
               </TutorialTextContainer>
             </TutorialItem>
           ))}
+          <TutorialContentSlideButtonContainer>
+            <ShortViewChevronRightSVG className="left" onClick={handleClickSlideButton('left')} />
+            <ShortViewChevronRightSVG className="right" onClick={handleClickSlideButton('right')} />
+          </TutorialContentSlideButtonContainer>
         </TutorialContent>
         <TutorialStep>
           {TutorialSteps.map((_, i) => (
