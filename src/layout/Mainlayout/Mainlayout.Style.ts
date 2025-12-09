@@ -18,7 +18,6 @@ export const MainContent = styled.div(
   }),
   {
     position: 'relative',
-    overflow: 'auto',
     width: '100%',
     flexGrow: '1',
     display: 'flex',

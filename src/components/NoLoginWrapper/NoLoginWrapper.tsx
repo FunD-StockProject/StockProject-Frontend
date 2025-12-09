@@ -39,21 +39,23 @@ const NoLoginWrapper = (props: NoLoginWrapperProps) => {
       hasHeader={hasHeader}
       hasNavbar={hasNavbar}
     >
-      <TitleContainer>
-        <p className="title">{title}</p>
-        <p className="description">{description}</p>
-      </TitleContainer>
-      {children}
-      <ButtonContainer>
-        <button className="primary" onClick={handleClick}>
-          {buttonText}
-        </button>
-        {SecondaryButtonText && (
-          <button className="secondary" onClick={handleSecondaryClick}>
-            {SecondaryButtonText}
+      <div>
+        <TitleContainer>
+          <p className="title">{title}</p>
+          <p className="description">{description}</p>
+        </TitleContainer>
+        {children}
+        <ButtonContainer>
+          <button className="primary" onClick={handleClick}>
+            {buttonText}
           </button>
-        )}
-      </ButtonContainer>
+          {SecondaryButtonText && (
+            <button className="secondary" onClick={handleSecondaryClick}>
+              {SecondaryButtonText}
+            </button>
+          )}
+        </ButtonContainer>
+      </div>
     </Overlay>
   );
 };

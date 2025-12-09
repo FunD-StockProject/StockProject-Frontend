@@ -14,8 +14,18 @@ const TutorialContainer = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  gap: '24px',
-  overflow: 'hidden auto',
+
+  ['>div']: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '24px',
+    overflow: 'auto',
+    overscrollBehavior: 'contain',
+    padding: '20px',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
 });
 
 const TutorialContent = styled.div({
@@ -24,8 +34,9 @@ const TutorialContent = styled.div({
   width: '100%',
   overflow: 'auto',
   scrollSnapType: 'x mandatory',
-  padding: '0px 20px',
   gap: '24px',
+  flexGrow: 1,
+  maxHeight: '560px',
 
   msOverflowStyle: 'none',
   ['::-webkit-scrollbar']: {
@@ -40,7 +51,7 @@ const TutorialItem = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '56px',
+  gap: '48px',
   padding: '0px 20px',
   boxSizing: 'border-box',
 });
@@ -69,66 +80,58 @@ const TutorialItemContent = styled.div({
   justifyContent: 'center',
   width: '100%',
   position: 'relative',
-  padding: '20px 0 0',
+  flexGrow: 1,
 });
 
 const TutorialItemTinderCard = styled.div({
-  position: 'relative',
-  width: '100%',
-  boxSizing: 'border-box',
-  maxWidth: '300px',
+  position: 'absolute',
+  height: '100%',
   display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 
-  ['>img']: {
+  ['>img:first-of-type']: {
     position: 'relative',
-    zIndex: '10',
-    width: '100%',
     height: '100%',
     objectFit: 'contain',
     borderRadius: '8px',
     boxShadow: '0px 4px 40px 0px rgba(255, 255, 255, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
     border: `1px solid ${theme.colors.sub_gray9}`,
+    boxSizing: 'border-box',
+    zIndex: '10',
   },
 });
 
-const TutorialItemTinderCardShadow1 = styled.div({
+const TutorialItemTinderCardShadow = styled.span({
   position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  width: 'calc(100% - 32px)',
   height: '100%',
   background: theme.colors.sub_black,
   borderRadius: '8px',
   boxShadow: '0px 4px 40px 0px rgba(255, 255, 255, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
   border: `1px solid ${theme.colors.sub_gray9}`,
-  bottom: '-16px',
-  zIndex: '9',
-});
+  boxSizing: 'border-box',
 
-const TutorialItemTinderCardShadow2 = styled.div({
-  position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  width: 'calc(100% - 64px)',
-  height: '100%',
-  background: theme.colors.sub_black,
-  borderRadius: '8px',
-  boxShadow: '0px 4px 40px 0px rgba(255, 255, 255, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
-  border: `1px solid ${theme.colors.sub_gray9}`,
-  bottom: '-32px',
-  zIndex: '8',
+  ['&:nth-of-type(1)']: {
+    bottom: '-12px',
+    width: '90%',
+    zIndex: '9',
+  },
+  ['&:nth-of-type(2)']: {
+    bottom: '-24px',
+    width: '80%',
+    zIndex: '8',
+  },
 });
 
 const TutorialItemSwipeHand = styled.img(
   ({ isLeft }: { isLeft?: boolean }) => ({
-    left: isLeft ? '50%' : 'auto',
-    right: isLeft ? 'auto' : '50%',
+    left: isLeft ? '40%' : 'auto',
+    right: isLeft ? 'auto' : '40%',
     transform: isLeft ? 'scaleX(1) translateX(-90%)' : 'scaleX(-1) translateX(-90%)',
   }),
   {
-    width: '63%',
-    bottom: '-10px',
-    maxWidth: '250px',
+    width: '75%',
+    bottom: '0px',
     position: 'absolute',
     objectFit: 'contain',
     zIndex: '10',
@@ -212,13 +215,13 @@ const TutorialItemCircleButtonContainer = styled.div({
 const ButtonContainer = styled.div({
   width: '100%',
   display: 'flex',
-  justifyContent: 'center',
   boxSizing: 'border-box',
-  padding: '0px 20px 20px',
+  padding: '0px 20px',
+  justifyContent: 'center',
+  maxWidth: '300px',
 
   ['>button']: {
-    width: '100%',
-    maxWidth: '300px',
+    width: '100dvw',
 
     transition: 'opacity 0.3s ease-in-out',
 
@@ -255,11 +258,10 @@ export {
   TutorialContainer,
   TutorialContent,
   TutorialItem,
+  TutorialItemTinderCardShadow,
   TutorialStep,
   TutorialItemContent,
   TutorialItemTinderCard,
-  TutorialItemTinderCardShadow1,
-  TutorialItemTinderCardShadow2,
   TutorialItemSwipeHand,
   TutorialItemCircleButtonContainer,
   ButtonContainer,
