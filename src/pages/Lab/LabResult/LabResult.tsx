@@ -14,12 +14,13 @@ import {
   PortfolioResultInvestmentPattern,
   PortfolioResultScoreTable,
 } from '@controllers/experiment/api';
-import { usePortfolioResultQuery } from '@controllers/experiment/query';
+import { useExperimentStatusQuery, usePortfolioResultQuery } from '@controllers/experiment/query';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 import {
   LabResultContainer,
   LabResultContent,
   LabResultDescription,
+  LabResultEmptyContainer,
   ReportClassChartContainer,
   ReportClassContainer,
   ReportClassSummary,
@@ -446,7 +447,7 @@ const LabResult = () => {
   // }, [experimentReport]);
 
   const { data: portfolioResult, isLoading: isPortfolioResultLoading } = usePortfolioResultQuery();
-  console.log(portfolioResult);
+  const { data: experimentStatus, isLoading: _isExperimentStatusLoading } = useExperimentStatusQuery();
 
   const { Modal: AboutReportClassModal, openModal: openAboutReportClassModal } = useAboutReportClass();
   const { Modal: AboutReportPatternModal, openModal: openAboutReportPatternModal } = useAboutReportPattern();
@@ -541,8 +542,30 @@ const LabResult = () => {
     ];
   }, [portfolioResult]);
 
-  return (
-    <LabResultContainer>
+  const EmptyWrapper = useMemo(() => {
+    if (!experimentStatus?.totalTradeCount) {
+      return (
+        <LabResultEmptyContainer>
+          <p className="title">진행중인 실험이 없어요😢</p>
+          <p className="subtitle">지금 바로 나만의 포트폴리오를 만들어볼까요?</p>
+          <button>모의매수 시작하기</button>
+        </LabResultEmptyContainer>
+      );
+    }
+
+    if (!portfolioResult) {
+      return (
+        <LabResultEmptyContainer>
+          <p className="title">아직 완성된 실험이 없어요</p>
+          <p className="subtitle">
+            실험 완료까지 D-1남았어요! <br />
+            조금만 기다려주세요
+          </p>
+        </LabResultEmptyContainer>
+      );
+    }
+
+    return (
       <NoLoginWrapper
         title={
           <>
@@ -561,8 +584,20 @@ const LabResult = () => {
         hasHeader
         hasNavbar
       />
+    );
+  }, []);
+
+  return (
+    <LabResultContainer
+    // style={{
+    //   height: 'calc(100dvh - 156px)',
+    //   boxSizing: 'border-box',
+    //   overflow: 'hidden',
+    // }}
+    >
       {AboutReportClassModal}
       {AboutReportPatternModal}
+      {EmptyWrapper}
       <ScrollTopButton />
       {resultReportItems.map((e, idx) => {
         return (
