@@ -12,6 +12,48 @@ const LabResultContainer = styled.div({
     width: '100%',
     height: '4px',
     background: theme.colors.sub_gray10,
+    flexShrink: '0',
+  },
+});
+
+const LabResultEmptyContainer = styled.div({
+  position: 'fixed',
+  top: '60px',
+  bottom: '96px',
+  width: '100%',
+  background: 'linear-gradient(180deg, rgba(16, 16, 16, 0.4) 0%, #101010 81.02%)',
+  backdropFilter: 'blur(2.5px)',
+  zIndex: '10',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  ['>p']: {
+    margin: '0',
+    textAlign: 'center',
+
+    ['&.title']: {
+      ...theme.font.title20Semibold,
+      color: theme.colors.sub_gray2,
+    },
+
+    ['&.subtitle']: {
+      ...theme.font.body14Medium,
+      color: theme.colors.sub_gray4,
+    },
+  },
+
+  ['>button']: {
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_gray11,
+    background: theme.colors.sub_white,
+    borderRadius: '999px',
+    padding: '10px 0px',
+    width: '170px',
+    border: 'none',
+    cursor: 'pointer',
   },
 });
 
@@ -124,6 +166,25 @@ const ReportRecommendSummary = styled.div({
   },
 });
 
+const ReportHelpTextContainer = styled.div({
+  display: 'flex',
+  justifyContent: 'end',
+  gap: '4px',
+
+  ['>svg']: {
+    width: '14px',
+    height: 'auto',
+    aspectRatio: '1/1',
+    fill: theme.colors.sub_gray7,
+  },
+
+  ['>span']: {
+    textDecoration: 'underline',
+    ...theme.font.detail10Medium,
+    color: theme.colors.sub_gray5,
+  },
+});
+
 // ReportClass
 
 const ReportClassContainer = styled.div({
@@ -141,25 +202,6 @@ const ReportClassChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-
-  ['>div.help']: {
-    display: 'flex',
-    justifyContent: 'end',
-    gap: '4px',
-
-    ['>svg']: {
-      width: '14px',
-      height: 'auto',
-      aspectRatio: '1/1',
-      fill: theme.colors.sub_gray7,
-    },
-
-    ['>span']: {
-      textDecoration: 'underline',
-      ...theme.font.detail10Medium,
-      color: theme.colors.sub_gray5,
-    },
-  },
 });
 
 const ReportClassSummary = styled.p({
@@ -194,25 +236,6 @@ const ReportPatternChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-
-  ['>div.help']: {
-    display: 'flex',
-    justifyContent: 'end',
-    gap: '4px',
-
-    ['>svg']: {
-      width: '14px',
-      height: 'auto',
-      aspectRatio: '1/1',
-      fill: theme.colors.sub_gray7,
-    },
-
-    ['>span']: {
-      textDecoration: 'underline',
-      ...theme.font.detail10Medium,
-      color: theme.colors.sub_gray5,
-    },
-  },
 });
 
 const ReportPatternSummary = styled.div({
@@ -253,4 +276,6 @@ export {
   ReportPatternContainer,
   ReportPatternChartContainer,
   ReportPatternSummary,
+  LabResultEmptyContainer,
+  ReportHelpTextContainer,
 };

@@ -41,6 +41,7 @@ const ModalLayout = styled.div(
       display: 'flex',
       flexDirection: 'column',
       overflow: 'auto',
+      overscrollBehavior: 'contain',
     },
   },
 );

@@ -46,6 +46,7 @@ const ModalContainer = styled.div({
   maxHeight: '100%',
   height: '100%',
   padding: '20px 0',
+  overscrollBehavior: 'contain',
 });
 
 const ModalTitleContainer = styled.div({

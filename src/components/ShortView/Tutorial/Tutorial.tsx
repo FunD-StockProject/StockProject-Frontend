@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
-import useLogin from '@hooks/useLogin';
 import Button from '@components/Common/Button';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import MoneySVG from '@assets/icons/money.svg?react';
+import ShortViewChevronRightSVG from '@assets/icons/shortview/chevronRight.svg?react';
 import ShortViewMockImage from '@assets/short_view_mock.png';
 import SwipeHandPNG from '@assets/swipe_hand.png';
 import {
   ButtonContainer,
   TutorialContainer,
   TutorialContent,
+  TutorialContentSlideButtonContainer,
   TutorialItem,
   TutorialItemCircleButtonContainer,
   TutorialItemContent,
   TutorialItemSwipeHand,
   TutorialItemTinderCard,
-  TutorialItemTinderCardShadow1,
-  TutorialItemTinderCardShadow2,
+  TutorialItemTinderCardShadow,
   TutorialStep,
   TutorialTextContainer,
 } from './Tutorial.Style';
@@ -27,8 +27,8 @@ const TutorialSteps = [
       <TutorialItemContent>
         <TutorialItemTinderCard>
           <img src={ShortViewMockImage} alt="short view mock" />
-          <TutorialItemTinderCardShadow1 />
-          <TutorialItemTinderCardShadow2 />
+          <TutorialItemTinderCardShadow />
+          <TutorialItemTinderCardShadow />
         </TutorialItemTinderCard>
       </TutorialItemContent>
     ),
@@ -40,8 +40,8 @@ const TutorialSteps = [
       <TutorialItemContent>
         <TutorialItemTinderCard>
           <img src={ShortViewMockImage} alt="short view mock" />
+          <TutorialItemSwipeHand src={SwipeHandPNG} alt="swipe hand" />
         </TutorialItemTinderCard>
-        <TutorialItemSwipeHand src={SwipeHandPNG} alt="swipe hand" />
         <TutorialItemCircleButtonContainer className="money">
           <MoneySVG />
           <span>모의매수</span>
@@ -56,8 +56,8 @@ const TutorialSteps = [
       <TutorialItemContent>
         <TutorialItemTinderCard>
           <img src={ShortViewMockImage} alt="short view mock" />
+          <TutorialItemSwipeHand isLeft src={SwipeHandPNG} alt="swipe hand" />
         </TutorialItemTinderCard>
-        <TutorialItemSwipeHand isLeft src={SwipeHandPNG} alt="swipe hand" />
         <TutorialItemCircleButtonContainer className="cross">
           <CrossSVG />
           <span>다시 안보기</span>
@@ -70,8 +70,6 @@ const TutorialSteps = [
 ];
 
 const ShortViewTutorial = () => {
-  const { isLogin } = useLogin();
-
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [tutorialWatched, setTutorialWatched] = useState(getItemLocalStorage('ShortViewTutorialWatched'));
 
@@ -99,31 +97,46 @@ const ShortViewTutorial = () => {
     };
   }, []);
 
-  if (tutorialWatched || !isLogin) return null;
+  const handleClickSlideButton = (direction: 'left' | 'right') => () => {
+    const container = containerRef.current;
+    if (!container) return;
+    container.scrollTo({
+      left: container.scrollLeft + (direction === 'left' ? -container.clientWidth : container.clientWidth),
+      behavior: 'smooth',
+    });
+  };
+
+  if (tutorialWatched) return null;
 
   return (
     <TutorialContainer>
-      <TutorialContent ref={containerRef}>
-        {TutorialSteps.map(({ content, title, description }, i) => (
-          <TutorialItem key={`TUTORIAL-ITEM-${i}`}>
-            {content}
-            <TutorialTextContainer>
-              <p className="title">{title}</p>
-              <p className="description">{description}</p>
-            </TutorialTextContainer>
-          </TutorialItem>
-        ))}
-      </TutorialContent>
-      <TutorialStep>
-        {TutorialSteps.map((_, i) => (
-          <span key={`TUTORIAL-STEP-${i}`} className={stepIndex === i ? 'current' : ''} />
-        ))}
-      </TutorialStep>
-      <ButtonContainer>
-        <Button disabled={stepIndex !== TutorialSteps.length - 1} onClick={handleClickTutorialEnd}>
-          지금 사용해보기 →
-        </Button>
-      </ButtonContainer>
+      <div>
+        <TutorialContent ref={containerRef}>
+          {TutorialSteps.map(({ content, title, description }, i) => (
+            <TutorialItem key={`TUTORIAL-ITEM-${i}`}>
+              {content}
+              <TutorialTextContainer>
+                <p className="title">{title}</p>
+                <p className="description">{description}</p>
+              </TutorialTextContainer>
+            </TutorialItem>
+          ))}
+          <TutorialContentSlideButtonContainer>
+            <ShortViewChevronRightSVG className="left" onClick={handleClickSlideButton('left')} />
+            <ShortViewChevronRightSVG className="right" onClick={handleClickSlideButton('right')} />
+          </TutorialContentSlideButtonContainer>
+        </TutorialContent>
+        <TutorialStep>
+          {TutorialSteps.map((_, i) => (
+            <span key={`TUTORIAL-STEP-${i}`} className={stepIndex === i ? 'current' : ''} />
+          ))}
+        </TutorialStep>
+        <ButtonContainer>
+          <Button disabled={stepIndex !== TutorialSteps.length - 1} onClick={handleClickTutorialEnd}>
+            지금 사용해보기 →
+          </Button>
+        </ButtonContainer>
+      </div>
     </TutorialContainer>
   );
 };

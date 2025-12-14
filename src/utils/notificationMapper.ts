@@ -21,8 +21,8 @@ export const mapNotificationResponseToItem = (response: NotificationResponse): N
   const scoreDiff = (response.newScore ?? 0) - (response.oldScore ?? 0);
   const sign = !scoreDiff ? '' : scoreDiff > 0 ? '+' : '-';
   const emoji = scoreDiff > 0 ? '🔥' : '💧';
-  const content = `[${response.stockName}] 인간지표 ${sign}${scoreDiff}${emoji}`;
-  const description = response.body ?? `민심 ${sign === '+' ? '급등' : '급하락'} 중! 지금 확인해보세요`;
+  const content = `[${response.stockName}] 인간지표 ${sign}${scoreDiff}점${emoji}`;
+  const description = `민심 ${sign === '+' ? '급등' : '급락'} 중! 지금 확인해보세요`;
 
   const date = new Date(response.createdAt);
 
