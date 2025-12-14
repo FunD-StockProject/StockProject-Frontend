@@ -64,8 +64,8 @@ const Login = () => {
       client_id: import.meta.env.VITE_APPLE_CLIENT_ID, // Service ID
       redirect_uri: redirectUri,
       response_type: 'code',
-      response_mode: 'query', // 프론트엔드에서 GET으로 받기
-      scope: 'name email',
+      response_mode: 'query', // email만 요청 시 query 가능한지 테스트
+      scope: '', // name 제거, email만 유지
       state,
       nonce,
     });
