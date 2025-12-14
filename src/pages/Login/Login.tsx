@@ -63,8 +63,8 @@ const Login = () => {
     const params = new URLSearchParams({
       client_id: import.meta.env.VITE_APPLE_CLIENT_ID, // Service ID
       redirect_uri: redirectUri,
-      response_type: 'code', // 필요 시 'code id_token' 조합 사용
-      response_mode: 'form_post', // form_post도 가능(서버 처리에 맞춰 선택)
+      response_type: 'code',
+      response_mode: 'query', // 프론트엔드에서 GET으로 받기
       scope: 'name email',
       state,
       nonce,
