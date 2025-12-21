@@ -19,6 +19,7 @@ import {
   RecortSheetTitleContainer,
 } from './ExperimentDetail.Style';
 import { ExperimentDetailModalData } from './useExperimentDetail';
+import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
 
 // const DPR = window.devicePixelRatio;
 
@@ -44,8 +45,8 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
   const indexList: ExperimentDetailIndex[] = useMemo(() => {
     if (!experimentDetail) return [];
 
-    const { buyAt, status, buyScore, buyPrice, currentScore, currentPrice, roi } = experimentDetail;
-
+    const { buyAt, status, buyScore, buyPrice, currentScore, currentPrice, roi, country } = experimentDetail;
+    const currency = STOCK_COUNTRY_MAP[country].currency;
     return [
       {
         key: 'buyDate',
@@ -57,13 +58,13 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
         key: 'buyTime',
         title: '매수시점',
         value: `${buyScore}점`,
-        subValue: `${buyPrice?.toLocaleString()}원`,
+        subValue: `${currency}${buyPrice?.toLocaleString()}`,
       },
       {
         key: 'currentTime',
         title: '현재시점',
         value: `${currentScore}점`,
-        subValue: `${currentPrice?.toLocaleString()}원`,
+        subValue: `${currency}${currentPrice?.toLocaleString()}`,
       },
       {
         key: 'roi',
@@ -264,19 +265,19 @@ const ExperimentDetailChart = ({
 
     return selectedTradeInfo
       ? [
-          {
-            name: '인간지표',
-            value: `${currentScore}점`,
-            diff: `(${scoreDiffSign}${Math.abs(scoreDiff)}점)`,
-            delta: scoreDiff,
-          },
-          {
-            name: '수익률',
-            value: `${roi.toFixed(1)}%`,
-            diff: `(${roiDiffSign}${Math.abs(roiDiff).toFixed(1)}%)`,
-            delta: roiDiff,
-          },
-        ]
+        {
+          name: '인간지표',
+          value: `${currentScore}점`,
+          diff: `(${scoreDiffSign}${Math.abs(scoreDiff)}점)`,
+          delta: scoreDiff,
+        },
+        {
+          name: '수익률',
+          value: `${roi.toFixed(1)}%`,
+          diff: `(${roiDiffSign}${Math.abs(roiDiff).toFixed(1)}%)`,
+          delta: roiDiff,
+        },
+      ]
       : null;
   }, [selectedTradeInfo, buyScore, buyPrice]);
 

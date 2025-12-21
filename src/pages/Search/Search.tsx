@@ -30,13 +30,13 @@ import {
 
 const SearchResultGaugeChart = ({ stockInfo: { stockId, country } }: { stockInfo: StockDetailInfo }) => {
   const [stockScore, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
-
-  if (suspend) return null;
-
   const { Modal: AboutHumanZipyoModal, openModal } = useAboutHumanZipyo();
+
   const handleOpenHumanZipyoModal = () => {
     openModal();
   };
+
+  if (suspend) return null;
 
   return (
     <SearchResultGaugeChartContainer>

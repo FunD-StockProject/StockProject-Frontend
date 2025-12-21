@@ -66,6 +66,7 @@ export interface ExperimentDetailResponse {
   buyPrice: number;
   currentPrice: number;
   buyAt: string;
+  country: StockCountryKey;
 }
 
 export interface ExperimentReportStatisticDto {
