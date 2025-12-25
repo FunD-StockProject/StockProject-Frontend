@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
+import { webPath } from '@router/index';
 import FearPopUp from '@components/PopUp/FearPopUp/FearPopUp';
 import { useIndexScoreQuery } from '@controllers/score/query';
 import DictSVG from '@assets/footer/footer_dict.svg?react';
@@ -33,6 +35,8 @@ const scoreIndexCountry: Record<StockCountryKey, ScoreIndex[]> = {
 };
 
 const HomeInfo = ({ country }: { country: StockCountryKey }) => {
+  const navigate = useNavigate();
+
   const { data: indexScore } = useIndexScoreQuery();
 
   const transformed: Record<ScoreIndex, { name: string; value: number; diff: number }> = useMemo(
@@ -53,6 +57,10 @@ const HomeInfo = ({ country }: { country: StockCountryKey }) => {
       ),
     [indexScore],
   );
+
+  const handleBannerClick = () => {
+    navigate(webPath.about());
+  };
 
   const { Modal, openModal } = useModal({
     Component: FearPopUp,
@@ -81,7 +89,7 @@ const HomeInfo = ({ country }: { country: StockCountryKey }) => {
           );
         })}
       </HomeInfoScoreContainer>
-      <HomeInfoBannerContainer>
+      <HomeInfoBannerContainer onClick={handleBannerClick}>
         <DictSVG />
         <div>
           <p className="title">도대체 인간지표가 뭐지?</p>

@@ -39,6 +39,7 @@ const HomeInfoScoreItemHeader = styled.div({
     width: '16px',
     height: '16px',
     fill: theme.colors.sub_gray1,
+    cursor: 'pointer',
   },
 });
 
@@ -78,6 +79,7 @@ const HomeInfoBannerContainer = styled.div({
   background: theme.colors.sub_gray11,
   borderRadius: '4px',
   gap: '16px',
+  cursor: 'pointer',
 
   ['>svg']: {
     width: '24px',
