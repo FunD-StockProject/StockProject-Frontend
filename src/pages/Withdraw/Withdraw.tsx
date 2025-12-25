@@ -31,6 +31,8 @@ const Withdraw = () => {
     localStorage.removeItem('provider');
     localStorage.removeItem('useremail');
     localStorage.removeItem('username');
+    localStorage.removeItem('birth');
+    localStorage.removeItem('profileImg');
     navigate(webPath.withdrawDone());
   };
 

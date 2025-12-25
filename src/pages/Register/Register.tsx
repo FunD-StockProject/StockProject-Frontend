@@ -5,7 +5,7 @@ import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
-import { fetchAuthRegister } from '@controllers/auth/api';
+import { fetchAuthNickname, fetchAuthRegister } from '@controllers/auth/api';
 import CheckSVG from '@assets/check.svg?react';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import ProfilePNG from '@assets/profile.png';
@@ -87,6 +87,13 @@ const Register = () => {
           ? value.slice(0, 10)
           : value;
 
+    if (formatted != values[name as keyof typeof values]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
+
     setValues((prev) => ({
       ...prev,
       [name]: formatted,
@@ -103,6 +110,11 @@ const Register = () => {
 
   const handleChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+
+    setErrors((prev) => ({
+      ...prev,
+      termsAgreed: '',
+    }));
 
     if (!checked) setCheckedAll(false);
     setTerms((prev) => ({ ...prev, [name]: checked }));
@@ -125,13 +137,15 @@ const Register = () => {
       errors.name = '닉네임을 입력해주세요';
     } else if (values.name.length > 8) {
       errors.name = '닉네임은 최대 8자까지 입력할 수 있어요';
+    } else if (values.name.includes(' ')) {
+      errors.name = '닉네임에 띄어쓰기를 사용할 수 없어요';
     } else if (!nameRefex.test(values.name)) {
       errors.name = '닉네임은 한글만 사용할 수 있어요';
-    } else if (false) {
-      // const res = await fetchAuthNickname(values.name);
-      // console.log(res);
-      // 닉네임 중복 API
-      errors.name = '이미 사용 중인 닉네임입니다';
+    } else {
+      const res = await fetchAuthNickname(values.name);
+      if (res.duplicate) {
+        errors.name = '이미 사용 중인 닉네임입니다';
+      }
     }
 
     if (!values.email) {
