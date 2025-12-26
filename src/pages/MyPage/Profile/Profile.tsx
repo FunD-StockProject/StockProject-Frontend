@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';

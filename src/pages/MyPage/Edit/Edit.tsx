@@ -62,7 +62,7 @@ const EditProfileButton = styled.button({
 const EditProfile = () => {
   const navigate = useNavigate();
 
-  const { userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
+  const { userInfo, setUserInfo } = useAuthInfo();
   const [isProgileImageChanged, setIsProfileImageChanged] = useState(false);
 
   const oldValues = {

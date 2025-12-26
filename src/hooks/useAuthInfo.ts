@@ -13,7 +13,7 @@ const useAuthInfo = () => {
   const navigate = useNavigate();
   const [beforeLoginDepth, setBeforeLoginDepth] = useLocalStorageState<number>('before_login_depth');
   const [accessToken, setAccessToken, removeAccessToken] = useLocalStorageState<string>('access_token');
-  const [refreshToken, setRefreshToken, removeRefreshToken] = useLocalStorageState<string>('refresh_token');
+  const [, setRefreshToken, removeRefreshToken] = useLocalStorageState<string>('refresh_token');
   const [userInfo, _setUserInfo, removeUserInfo] = useLocalStorageState<UserInfo>('user_info');
   const isLogin = !!accessToken;
 
