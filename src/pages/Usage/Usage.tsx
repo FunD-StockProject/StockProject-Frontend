@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { detectPlatform } from '@utils/Detector';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import AddToHomeAndroidPNG from '@assets/PWA/Android/AddToHome.png';
 import ShareButtonAndroidPNG from '@assets/PWA/Android/ShareButton.png';
 import AddToHomeIOSPNG from '@assets/PWA/IOS/AddToHome.png';
@@ -14,18 +15,10 @@ import {
 } from './Usage.Style';
 
 const Usage = () => {
-  const setVisibleTime = () => {
-    const now = new Date();
-    const fiveMinAgo = new Date(now);
-
-    fiveMinAgo.setHours(now.getHours() - 23);
-    fiveMinAgo.setMinutes(now.getMinutes() - 55);
-
-    localStorage.setItem('LAST_VISIT_POPUP', fiveMinAgo.toISOString());
-  };
+  const [, setLastVisit] = useLocalStorageState<string>('last_visit_page');
 
   useEffect(() => {
-    setVisibleTime();
+    setLastVisit(new Date(new Date().getTime() - (new Date().getTime() % (1000 * 60 * 60 * 24))).toDateString());
   }, []);
 
   const isIOS = detectPlatform() === 'iOS';

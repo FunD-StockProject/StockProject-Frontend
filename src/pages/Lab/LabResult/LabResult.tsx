@@ -1,4 +1,5 @@
 import { Fragment, useMemo } from 'react';
+import useAuthInfo from '@hooks/useAuthInfo';
 import ScrollTopButton from '@components/Common/ScrollTopButton/ScrollTopButton';
 import ReportClassChart from '@components/Lab/ReportClassChart/ReportClassChart';
 import { ReportClassType, reportClassList } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
@@ -453,6 +454,8 @@ const LabResult = () => {
   const { Modal: AboutReportClassModal, openModal: openAboutReportClassModal } = useAboutReportClass();
   const { Modal: AboutReportPatternModal, openModal: openAboutReportPatternModal } = useAboutReportPattern();
 
+  const { userInfo } = useAuthInfo();
+
   const resultReportItems = useMemo(() => {
     if (!portfolioResult || isPortfolioResultLoading) return [];
 
@@ -498,7 +501,7 @@ const LabResult = () => {
         title: '나의 인간지표는?',
         description: (
           <LabResultDescription color={reportClass.color}>
-            <b>{localStorage.getItem('username')}님</b>은{' '}
+            <b>{userInfo?.nickname}님</b>은{' '}
             <span>
               {reportClass.emoji} {reportClass.title}
             </span>{' '}

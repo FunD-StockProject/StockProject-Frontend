@@ -50,6 +50,7 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
       // console.log('Error 401: 인증 에러 발생. refetch 시도');
 
       const refreshToken = localStorage.getItem('refresh_token');
+      console.log(1, refreshToken);
 
       const reissueRes = await fetch(`${baseURL}/auth/reissue`, {
         method: 'POST',
@@ -96,12 +97,12 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
       throw new Error(`${res.status} Error!!`);
     }
     await wait(0);
-    
+
     // 204 No Content 응답 처리
     if (res.status === 204) {
       return null;
     }
-    
+
     const data = await res.json();
     return data;
   } catch (error) {
@@ -116,4 +117,3 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
 // }
 
 export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
-

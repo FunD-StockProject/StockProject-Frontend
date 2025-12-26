@@ -249,6 +249,8 @@ const Register = () => {
       location.state?.provider.toUpperCase(),
     );
 
+    console.log(profileImage);
+
     if (!res) return;
 
     navigate(webPath.registerDone());

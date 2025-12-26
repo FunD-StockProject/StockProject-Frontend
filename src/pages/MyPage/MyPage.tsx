@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/auth/api';
@@ -23,7 +23,7 @@ import {
 import MyPageProfile from './Profile/Profile';
 
 const MyPage = () => {
-  const { isLogin } = useLogin();
+  const { isLogin, clearAuthInfo } = useAuthInfo();
   const { data: favorites = [] } = useBookmarkListQuery();
   const { data: experimentStatus } = useExperimentStatusQuery();
 
@@ -58,12 +58,7 @@ const MyPage = () => {
 
   const handleLogout = async () => {
     await fetchAuthLogout();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('provider');
-    localStorage.removeItem('useremail');
-    localStorage.removeItem('username');
-    localStorage.removeItem('profileImg');
+    clearAuthInfo();
 
     window.location.href = '/';
   };

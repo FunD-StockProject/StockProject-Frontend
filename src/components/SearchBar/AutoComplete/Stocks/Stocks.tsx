@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
-import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
 import extractMatchedSegments from '@utils/extractMatchedSegments';
+import useRecentStocks from '@hooks/useRecentStocks';
 import { webPath } from '@router/index';
 import {
   SearchBarItemContainer,
@@ -18,18 +18,14 @@ import { AutoCompleteStocksItem } from './Stocks.Style';
 const AutoCompleteStocks = ({ searchValue }: { searchValue: string }) => {
   const navigate = useNavigate();
   const [searchedStocks, setSearchedStocks] = useAutoComplete(fetchAutoComplete, 'symbolName');
+  const { addRecentStock } = useRecentStocks();
 
   useEffect(() => {
     setSearchedStocks(searchValue);
   }, [searchValue]);
 
   const handleStockClick = (symbolName: string, country: StockCountryKey) => () => {
-    setItemLocalStorage('RecentStocks', [
-      { symbolName, country },
-      ...getItemLocalStorage('RecentStocks', []).filter(
-        (item: { symbolName: string }) => item.symbolName !== symbolName,
-      ),
-    ]);
+    addRecentStock(symbolName, country);
 
     navigate(webPath.search(), { state: { symbolName: symbolName, country: country }, replace: true });
   };

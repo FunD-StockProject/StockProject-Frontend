@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import { webPath } from '@router/index';
 import PWAPNG from '@assets/PWA/PWA.png';
 import CrossSVG from '@assets/icons/cross.svg?react';
@@ -13,34 +14,26 @@ import {
 } from './PWAinfoPopUp.style';
 
 const PWAInfoPopUp = ({}: {}) => {
-  const [showPopUp, setShowPopUp] = useState(false);
-  const isMobile = useIsMobile();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const today = new Date();
-    const VISITED = localStorage.getItem('LAST_VISIT_POPUP'); // 마지막 방문 시간을 로컬 스토리지에서 가져옴
-
-    const handleMainPop = () => {
-      if (VISITED) {
-        const lastVisit = new Date(VISITED);
-        const diff = today.getTime() - lastVisit.getTime();
-        const diffHours = diff / (1000 * 60 * 60);
-
-        if (diffHours < 24) {
-          return;
-        }
+  const isMobile = useIsMobile();
+  const [lastVisit, setLastVisit] = useLocalStorageState<string>('last_visit_page');
+  const [showPopUp, setShowPopUp] = useState(
+    (() => {
+      if (!lastVisit) {
+        return true;
       }
 
-      setShowPopUp(true);
-    };
+      const diff = new Date().getTime() - new Date(lastVisit).getTime();
+      if (diff < 1000 * 60 * 60 * 24) {
+        return false;
+      }
 
-    handleMainPop();
-  }, []);
+      return true;
+    })(),
+  );
 
   const closePopUp24Hours = () => {
-    const today = new Date();
-    localStorage.setItem('LAST_VISIT_POPUP', today.toISOString());
+    setLastVisit(new Date(new Date().getTime() - (new Date().getTime() % (1000 * 60 * 60 * 24))).toDateString());
     setShowPopUp(false);
   };
 

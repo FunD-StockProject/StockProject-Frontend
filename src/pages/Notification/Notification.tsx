@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { NotificationItem } from '@utils/notificationMapper';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
@@ -75,7 +75,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationItem[]
 };
 
 const NotificationPage = () => {
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuthInfo();
 
   const {
     notifications = [],

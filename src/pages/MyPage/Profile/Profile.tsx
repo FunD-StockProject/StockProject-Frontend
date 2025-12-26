@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchUpdateUserImage } from '@controllers/auth/api';
@@ -52,15 +52,14 @@ const ProfileContents = styled.div({
 
 const MyPageProfile = () => {
   const navigate = useNavigate();
-  const { isLogin, handleLogin } = useLogin();
+  const { isLogin, userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
 
-  const [profileImage, setProfileImage] = useState<string | null>(localStorage.getItem('profileImg'));
-  const username = localStorage.getItem('username') ?? '아직 정보가 없어요!';
-  const useremail = localStorage.getItem('useremail') ?? '로그인을 진행해주세요';
+  const username = userInfo?.nickname ?? '아직 정보가 없어요!';
+  const useremail = userInfo?.email ?? '로그인을 진행해주세요';
 
   const handleClickProfile = () => {
     if (!isLogin) {
-      handleLogin();
+      handleNavigateLogin();
     } else {
       navigate(webPath.editProfile());
     }
@@ -84,8 +83,7 @@ const MyPageProfile = () => {
     reader.onloadend = async () => {
       const data = await fetchUpdateUserImage(reader.result as string);
       if (data) {
-        setProfileImage(reader.result as string);
-        localStorage.setItem('profileImg', reader.result as string);
+        setUserInfo({ profileImage: reader.result as string });
       } else {
         alert('프로필 이미지 업데이트 실패');
       }
@@ -101,7 +99,7 @@ const MyPageProfile = () => {
   return (
     <ProfileContainer onClick={handleClickProfile}>
       <ProfileCircle
-        profileImage={profileImage ?? ProfilePNG}
+        profileImage={userInfo?.profileImage ?? ProfilePNG}
         handleChangeFile={handleChangeFile}
         size="medium"
         canEdit={isLogin}

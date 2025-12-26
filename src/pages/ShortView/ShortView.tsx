@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
@@ -40,7 +40,7 @@ interface MouseDrag {
 const ShortView = () => {
   const navigate = useNavigate();
 
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuthInfo();
   const { toast, showToast, hideToast } = useToast();
   const {
     data: shortviewStocks = [],

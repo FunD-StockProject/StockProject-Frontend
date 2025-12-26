@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import CloseSVG from '@assets/close.svg?react';
 import AppleLoginSVG from '@assets/login/apple.svg?react';
 import GoogleLoginSVG from '@assets/login/google.svg?react';
@@ -16,9 +17,9 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+  const [recentProvider] = useLocalStorageState<string>('recent_provider');
 
   const handleGoogleLogin = () => {
-    localStorage.setItem('lastLoginProvider', 'google');
     const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
     const state = uuidv4(); // CSRF 방지
     localStorage.setItem('oauth_state', state);
@@ -38,7 +39,6 @@ const Login = () => {
   };
 
   const handleNaverLogin = () => {
-    localStorage.setItem('lastLoginProvider', 'naver');
     const redirectUri = `${window.location.origin}/login/oauth2/code/naver`;
     const state = uuidv4();
     localStorage.setItem('oauth_state', state);
@@ -56,7 +56,6 @@ const Login = () => {
   const handleAppleLogin = () => {
     const state = uuidv4();
     const nonce = uuidv4(); // 권장
-    localStorage.setItem('lastLoginProvider', 'apple');
     localStorage.setItem('oauth_state', state);
 
     const redirectUri = `${window.location.origin}/login/oauth2/code/apple`;
@@ -74,7 +73,6 @@ const Login = () => {
   };
 
   const handleKakaoLogin = () => {
-    localStorage.setItem('lastLoginProvider', 'kakao');
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
 
     const state = uuidv4();
@@ -133,11 +131,7 @@ const Login = () => {
       </LoginBannerContainer>
       <LoginButtonContainer>
         {loginProviders.map((e) => (
-          <LoginButton
-            key={`LOGIN_PROVIDER_IMG_${e.key}`}
-            isRecent={e.key == localStorage.getItem('recent_login_provider')}
-            onClick={e.method}
-          >
+          <LoginButton key={`LOGIN_PROVIDER_IMG_${e.key}`} isRecent={e.key == recentProvider} onClick={e.method}>
             {<e.svg />}
           </LoginButton>
         ))}
