@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { webPath } from '@router/index';
 import ExperimentItemComponent from '@components/Lab/ExperimentItem/ExperimentItem';
+import Loading from '@components/Loading/Loading';
 import { ExperimentDetailModalData } from '@components/Modal/ExperimentDetail/useExperimentDetail';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import AddStockSVG from '@assets/icons/addStock.svg?react';
@@ -66,6 +67,11 @@ const LabCurrent = ({
 
   return (
     <LabCurrentContainer>
+      <Loading
+        isLoading={isExperimentStatusLoading}
+        title="실험 현황을 불러오고 있어요"
+        desc="잠시만 기다려주세요..."
+      />
       {totalTradeCount === 0 && (
         <LabCurrentFirstTimeContainer>
           <div>
