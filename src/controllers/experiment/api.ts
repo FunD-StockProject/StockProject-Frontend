@@ -58,6 +58,7 @@ export interface ExperimentDetailTradeInfo {
 
 export interface ExperimentDetailResponse {
   symbolName: string;
+  stockId: number;
   roi: number;
   status: ExperimentStatus;
   tradeInfos: ExperimentDetailTradeInfo[];

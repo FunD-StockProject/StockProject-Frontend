@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
+import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { ExperimentDetailTradeInfo } from '@controllers/experiment/api';
 import { useExperimentDetailQuery } from '@controllers/experiment/query';
@@ -19,7 +22,6 @@ import {
   RecortSheetTitleContainer,
 } from './ExperimentDetail.Style';
 import { ExperimentDetailModalData } from './useExperimentDetail';
-import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
 
 // const DPR = window.devicePixelRatio;
 
@@ -40,6 +42,7 @@ export interface ExperimentDetailIndex {
 }
 
 const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: ExperimentDetailModalData }) => {
+  const navigate = useNavigate();
   const { data: experimentDetail, isLoading } = useExperimentDetailQuery(experimentId);
 
   const indexList: ExperimentDetailIndex[] = useMemo(() => {
@@ -75,14 +78,20 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
     ];
   }, [experimentDetail]);
 
+  const handleClickTitle = () => {
+    navigate(webPath.search(), {
+      state: { symbolName: experimentDetail?.symbolName, country: experimentDetail?.country },
+    });
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   if (!experimentDetail) return null;
 
   return (
     <ExperimentDetailContent>
-      <RecortSheetTitleContainer>
-        <StockImage stockId={1} />
+      <RecortSheetTitleContainer onClick={handleClickTitle}>
+        <StockImage stockId={experimentDetail.stockId} />
         <p>{experimentDetail.symbolName}</p>
       </RecortSheetTitleContainer>
       <ExperimentDetailIndexListContainer>
@@ -265,19 +274,19 @@ const ExperimentDetailChart = ({
 
     return selectedTradeInfo
       ? [
-        {
-          name: '인간지표',
-          value: `${currentScore}점`,
-          diff: `(${scoreDiffSign}${Math.abs(scoreDiff)}점)`,
-          delta: scoreDiff,
-        },
-        {
-          name: '수익률',
-          value: `${roi.toFixed(1)}%`,
-          diff: `(${roiDiffSign}${Math.abs(roiDiff).toFixed(1)}%)`,
-          delta: roiDiff,
-        },
-      ]
+          {
+            name: '인간지표',
+            value: `${currentScore}점`,
+            diff: `(${scoreDiffSign}${Math.abs(scoreDiff)}점)`,
+            delta: scoreDiff,
+          },
+          {
+            name: '수익률',
+            value: `${roi.toFixed(1)}%`,
+            diff: `(${roiDiffSign}${Math.abs(roiDiff).toFixed(1)}%)`,
+            delta: roiDiff,
+          },
+        ]
       : null;
   }, [selectedTradeInfo, buyScore, buyPrice]);
 
