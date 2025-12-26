@@ -1,5 +1,6 @@
 import { StockCountryKey } from '@ts/StockCountry';
 import { StockSectorKey } from '@ts/StockSector';
+import { ReportClassKey } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
 import { fetchAuthData } from '@controllers/common/base';
 import type { StockInfo } from '@controllers/stocks/types';
 
@@ -91,49 +92,47 @@ export interface ExperimentReportResponse {
   reportPatternDtos: ExperimentReportPatternDto[];
 }
 
-export interface PortfolioResultScoreTable {
-  range: string;
-  avg: number;
-  median: number;
+interface PortfolioResultRecommendScoreTable {
+  min: number;
+  max: number;
+  avgYieldTotal: number;
+  avgYieldUser: number;
 }
 
-export interface PortfolioResultProfit {
+export interface PortfolioResultRecommend {
+  weeklyExperimentCount: number;
+  bestYieldScore: number;
+  worstYieldScore: number;
+  scoreTable: PortfolioResultRecommendScoreTable[];
+}
+
+export interface PortfolioResultHumanIndicator {
+  type: ReportClassKey;
+  percentile: number;
+  successRate: number;
+  totalBuyCount: number;
+  successCount: number;
+}
+
+export interface PortfolioResultPatternHistory {
+  date: string;
   score: number;
-  range: string;
-}
-export interface PortfolioResultExperimentSummary {
-  totalExperiments: number;
-  highestProfit: PortfolioResultProfit;
-  lowestProfit: PortfolioResultProfit;
+  yield: number;
+  stockId: number;
+  stockName: string;
+  duplicateName: boolean;
 }
 
-export interface PortfolioResultHumanIndex {
-  userScore: number;
-  userType: string;
-  successRate: string;
-  maintainRate: string;
-  purchasedCount: number;
-  profitCount: number;
-  sameGradeUserRate: number;
+export interface PortfolioResultPattern {
+  type: string;
+  percentile: number;
+  history: PortfolioResultPatternHistory[];
 }
 
-export interface PortfolioResultInvestmentPattern {
-  patternType: string;
-  patternDescription: string;
-  avgScore: number;
-}
-
-export interface PortfolioResultHistory {
-  x: number;
-  y: number;
-  label: string;
-}
 export interface PortfolioResultResponse {
-  scoreTable: PortfolioResultScoreTable[];
-  experimentSummary: PortfolioResultExperimentSummary;
-  humanIndex: PortfolioResultHumanIndex;
-  investmentPattern: PortfolioResultInvestmentPattern;
-  history: PortfolioResultHistory[];
+  recommend: PortfolioResultRecommend;
+  humanIndicator: PortfolioResultHumanIndicator;
+  pattern: PortfolioResultPattern;
 }
 
 // POST /experiment/{stockId}/buy/{country}

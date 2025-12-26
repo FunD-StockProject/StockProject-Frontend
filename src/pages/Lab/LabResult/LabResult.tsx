@@ -4,16 +4,14 @@ import ScrollTopButton from '@components/Common/ScrollTopButton/ScrollTopButton'
 import ReportClassChart from '@components/Lab/ReportClassChart/ReportClassChart';
 import { ReportClassType, reportClassList } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
 import ReportPatternChart from '@components/Lab/ReportPatternChart/ReportPatternChart';
-import { PatternQuadrant, patternQuadrantList } from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
+import { patternQuadrantList } from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
 import useAboutReportClass from '@components/Modal/AboutReportClass/useAboutReportClass';
 import useAboutReportPattern from '@components/Modal/AboutReportPattern/useAboutReportPattern';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import {
-  PortfolioResultExperimentSummary,
-  PortfolioResultHistory,
-  PortfolioResultHumanIndex,
-  PortfolioResultInvestmentPattern,
-  PortfolioResultScoreTable,
+  PortfolioResultHumanIndicator,
+  PortfolioResultPattern,
+  PortfolioResultRecommend,
 } from '@controllers/experiment/api';
 import { useExperimentStatusQuery, usePortfolioResultQuery } from '@controllers/experiment/query';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
@@ -34,36 +32,27 @@ import {
   ReportRecommendTable,
 } from './LabResult.Style';
 
-const ReportRecommend = (
-  //   {
-  //   reportStatisticDtos,
-  //   weeklyExperimentCount,
-  // }: {
-  //   reportStatisticDtos: ExperimentReportStatisticDto[];
-  //   weeklyExperimentCount: number;
-  // }
-  {
-    scoreTable,
-    experimentSummary,
-  }: {
-    scoreTable: PortfolioResultScoreTable[];
-    experimentSummary: PortfolioResultExperimentSummary;
-  },
-) => {
-  const tableHeaders = ['인간지표 점수대', '평균 ROI', '내 평균 ROI'];
+const ReportRecommend = ({ recommend }: { recommend: PortfolioResultRecommend }) => {
+  const { weeklyExperimentCount, scoreTable } = recommend;
+  const tableHeaders = ['인간지표 점수대', '전체 평균 수익률', '내 평균 수익률'];
 
-  // const highestProfitScoreRange = reportStatisticDtos.reduce(
-  //   (acc, curr) => {
-  //     return curr.userAvgRoi > acc.userAvgRoi ? curr : acc;
-  //   },
-  //   { scoreRange: '', userAvgRoi: -Infinity },
-  // ).scoreRange;
-  // const lowestProfitScoreRange = reportStatisticDtos.reduce(
-  //   (acc, curr) => {
-  //     return curr.userAvgRoi < acc.userAvgRoi ? curr : acc;
-  //   },
-  //   { scoreRange: '', userAvgRoi: Infinity },
-  // ).scoreRange;
+  const [lowestProfit, highestProfit] = ['min', 'max'].map((initial) =>
+    scoreTable.reduce(
+      (acc, curr) => {
+        if (initial === 'min' ? curr.avgYieldUser > acc.value : curr.avgYieldUser < acc.value) {
+          return acc;
+        }
+        return {
+          range: curr.min === 90 ? '90점 이상' : `${curr.min}~${curr.max}점`,
+          value: curr.avgYieldUser,
+        };
+      },
+      {
+        range: '',
+        value: initial === 'min' ? Infinity : -Infinity,
+      },
+    ),
+  );
 
   return (
     <ReportRecommendContainer>
@@ -77,92 +66,54 @@ const ReportRecommend = (
         </thead>
         <tbody>
           {scoreTable.map((e, idx) => {
-            const { range, avg, median } = e;
+            const { min, max, avgYieldTotal, avgYieldUser } = e;
 
-            const avgSign = !avg ? '' : avg > 0 ? '+' : '-';
-            const medianSign = !median ? '' : median > 0 ? '+' : '-';
+            const avgYieldTotalSign = !avgYieldTotal ? '' : avgYieldTotal > 0 ? '+' : '-';
+            const avgYieldUserSign = !avgYieldUser ? '' : avgYieldUser > 0 ? '+' : '-';
+
+            const range = min === 90 ? '90점 이상' : `${min}~${max}점`;
 
             return (
               <tr key={`REPORT_RECOMMEND_TABLE_ROW_${idx}`}>
                 <td>{range}</td>
                 <td>
-                  {avgSign}
-                  {Math.abs(avg).toFixed(1)}%
+                  {avgYieldTotalSign}
+                  {Math.abs(avgYieldTotal).toFixed(1)}%
                 </td>
                 <td>
-                  {medianSign}
-                  {Math.abs(median).toFixed(1)}%
+                  {avgYieldUserSign}
+                  {Math.abs(avgYieldUser).toFixed(1)}%
                 </td>
               </tr>
             );
           })}
-          {/* {reportStatisticDtos.map((statistic, idx) => {
-            const { scoreRange, totalAvgRoi, userAvgRoi } = statistic;
-
-            const totalAvgRoiSign = !totalAvgRoi ? '' : totalAvgRoi > 0 ? '+' : '-';
-            const userAvgRoiSign = !userAvgRoi ? '' : userAvgRoi > 0 ? '+' : '-';
-
-            return (
-              <tr key={`REPORT_RECOMMEND_TABLE_ROW_${idx}`}>
-                <td>{scoreRange}</td>
-                <td>
-                  {totalAvgRoiSign}
-                  {Math.abs(totalAvgRoi).toFixed(1)}%
-                </td>
-                <td>
-                  {userAvgRoiSign}
-                  {Math.abs(userAvgRoi).toFixed(1)}%
-                </td>
-              </tr>
-            );
-          })} */}
         </tbody>
       </ReportRecommendTable>
       <ReportRecommendSummary>
-        <p className="primary">이번주에 총 {experimentSummary.totalExperiments}건의 실험을 진행하셨습니다.</p>
+        <p className="primary">이번주에 총 {weeklyExperimentCount}건의 실험을 진행하셨습니다.</p>
         <p className="secondary">
-          ☺️ 가장 높은 수익률 | <b>{experimentSummary.highestProfit.range} 구간</b> <br />
-          😭 가장 낮은 수익률 | <b>{experimentSummary.lowestProfit.range} 구간</b>
+          ☺️ 가장 높은 수익률 | <b>{highestProfit.range} 구간</b> <br />
+          😭 가장 낮은 수익률 | <b>{lowestProfit.range} 구간</b>
         </p>
-        {/* <p className="primary">이번주에 총 {weeklyExperimentCount}건의 실험을 진행하셨습니다.</p>
-        <p className="secondary">
-          ☺️ 가장 높은 수익률 | <b>{highestProfitScoreRange} 구간</b> <br />
-          😭 가장 낮은 수익률 | <b>{lowestProfitScoreRange} 이상 구간</b>
-        </p> */}
       </ReportRecommendSummary>
     </ReportRecommendContainer>
   );
 };
 
-const ReportClass = (
-  {
-    reportClass,
-    humanIndex,
-    openHelpModal,
-  }: {
-    reportClass: ReportClassType;
-    humanIndex: PortfolioResultHumanIndex;
-    openHelpModal: () => void;
-  },
-  //   {
-  //   reportClass,
-  //   successRate,
-  //   totalUserExperiments,
-  //   successUserExperiments,
-  //   sameGradeUserRate,
-  //   openHelpModal,
-  // }: {
-  //   reportClass: ReportClassType;
-  //   successRate: number;
-  //   totalUserExperiments: number;
-  //   successUserExperiments: number;
-  //   sameGradeUserRate: number;
-  //   openHelpModal: () => void;
-  // }
-) => {
+const ReportClass = ({
+  humanIndicator,
+  openHelpModal,
+}: {
+  humanIndicator: PortfolioResultHumanIndicator;
+  openHelpModal: () => void;
+}) => {
+  const { type, percentile, successRate, totalBuyCount, successCount } = humanIndicator;
+
   const handleClickHelpModal = () => {
     openHelpModal();
   };
+
+  const reportClass = reportClassList.find((e) => e.key === type) as ReportClassType;
 
   return (
     <ReportClassContainer>
@@ -170,46 +121,23 @@ const ReportClass = (
         <QuestionMarkSVG /> <span>다른 유형은 뭐가 있어요?</span>
       </ReportHelpTextContainer>
       <ReportClassChartContainer>
-        <ReportClassChart
-          reportClass={reportClass}
-          successRate={humanIndex.userScore}
-          sameGradeUserRate={humanIndex.sameGradeUserRate}
-          // reportClass={reportClass} successRate={successRate} sameGradeUserRate={sameGradeUserRate}
-        />
+        <ReportClassChart reportClass={reportClass} successRate={successRate} sameGradeUserRate={percentile} />
       </ReportClassChartContainer>
       <ReportClassSummary>
-        <span>{humanIndex.purchasedCount}개</span> 종목을 사서, <span>{humanIndex.profitCount}개</span> 오르는 당신의
-        유형!
+        <span>{totalBuyCount}개</span> 종목을 사서, <span>{successCount}개</span> 오르는 당신의 유형!
       </ReportClassSummary>
     </ReportClassContainer>
   );
 };
 
-const ReportPattern = (
-  {
-    reportPattern,
-    investmentPattern,
-    history,
-    openHelpModal,
-  }: {
-    reportPattern: PatternQuadrant;
-    investmentPattern: PortfolioResultInvestmentPattern;
-    history: PortfolioResultHistory[];
-    openHelpModal: () => void;
-  },
-  //   {
-  //   reportPatternsQuadrant,
-  //   reportPatternsCoordinates,
-  //   openHelpModal,
-  // }: {
-  //   reportPatternsQuadrant: PatternQuadrantKey;
-  //   reportPatternsCoordinates: { dateLabel: string; x: number; y: number }[];
-  //   openHelpModal: () => void;
-  // }
-) => {
+const ReportPattern = ({ pattern, openHelpModal }: { pattern: PortfolioResultPattern; openHelpModal: () => void }) => {
+  const { type, percentile, history } = pattern;
+
   const handleClickHelpModal = () => {
     openHelpModal();
   };
+
+  const reportPattern = patternQuadrantList.find((e) => e.key === type) ?? patternQuadrantList[0];
 
   return (
     <ReportPatternContainer>
@@ -218,236 +146,21 @@ const ReportPattern = (
       </ReportHelpTextContainer>
       <ReportPatternChartContainer>
         <ReportPatternChart
-          reportPatternsQuadrant={patternQuadrantList.find((e) => investmentPattern.patternType === e.title)?.key}
-          reportPatternsCoordinates={history.map((e) => ({
-            dateLabel: e.label,
-            x: e.x,
-            y: e.y + 50,
-          }))}
-          // reportPatternsQuadrant={reportPatternsQuadrant}
-          // reportPatternsCoordinates={reportPatternsCoordinates}
+          reportPatternsQuadrant={patternQuadrantList.find((e) => type === e.key)?.key}
+          reportPatternHistory={history}
         />
       </ReportPatternChartContainer>
       <ReportPatternSummary>
         <p className="title">
-          {reportPattern.emoji} {reportPattern.title} 이란?
+          {reportPattern.emoji} {reportPattern.title} 이란? ({percentile}% 유저가 이에 속해요)
         </p>
-        <p className="description">
-          {/* 여기 문구 추가해야함 */}
-          {investmentPattern.patternDescription} <br />= 남들이 관심 없을 때 진입을 해두는 경우가 많아요!
-        </p>
+        <p className="description">{reportPattern.description}</p>
       </ReportPatternSummary>
     </ReportPatternContainer>
   );
 };
 
-// const getResultReportItems = ({
-//   recommendedScoreRange,
-//   reportStatisticDtos,
-//   weeklyExperimentCount,
-//   reportClass,
-//   successRate,
-//   totalUserExperiments,
-//   successUserExperiments,
-//   sameGradeUserRate,
-//   reportPatternsQuadrant,
-//   reportPatternsCoordinates,
-//   openAboutReportClassModal,
-//   openAboutReportPatternModal,
-//   reportPatternText,
-// }: {
-//   recommendedScoreRange: string;
-//   reportStatisticDtos: ExperimentReportStatisticDto[];
-//   weeklyExperimentCount: number;
-//   reportClass: ReportClassType;
-//   successRate: number;
-//   totalUserExperiments: number;
-//   successUserExperiments: number;
-//   sameGradeUserRate: number;
-//   reportPatternsQuadrant: PatternQuadrantKey;
-//   reportPatternsCoordinates: { dateLabel: string; x: number; y: number }[];
-//   openAboutReportClassModal: () => void;
-//   openAboutReportPatternModal: () => void;
-//   reportPatternText: string;
-// }) => {
-//   return [
-//     {
-//       title: (
-//         <>
-//           인간지표로 보는 <wbr />내 매수 타이밍 잡는 법!
-//         </>
-//       ),
-//       description: (
-//         <LabResultDescription color="sub_gray10" isSmall>
-//           다음 매수 때는, <span>✨{recommendedScoreRange} 구간</span> 에 주목해보세요!
-//         </LabResultDescription>
-//       ),
-//       report: (
-//         <ReportRecommend reportStatisticDtos={reportStatisticDtos} weeklyExperimentCount={weeklyExperimentCount} />
-//       ),
-//     },
-//     {
-//       title: '나의 인간지표는?',
-//       description: (
-//         <LabResultDescription color={reportClass.color}>
-//           <b>{localStorage.getItem('username')}님</b>은{' '}
-//           <span>
-//             {reportClass.emoji} {reportClass.title}
-//           </span>{' '}
-//           지표!
-//         </LabResultDescription>
-//       ),
-//       report: (
-//         <ReportClass
-//           reportClass={reportClass}
-//           successRate={successRate}
-//           totalUserExperiments={totalUserExperiments}
-//           successUserExperiments={successUserExperiments}
-//           sameGradeUserRate={sameGradeUserRate}
-//           openHelpModal={openAboutReportClassModal}
-//         />
-//       ),
-//     },
-//     {
-//       title: '그동안 지켜본 당신의 투자패턴은',
-//       description: (
-//         <LabResultDescription color="sub_blue6">
-//           <span>{reportPatternText}</span> 에 속하는 경우가 많아요
-//         </LabResultDescription>
-//       ),
-//       report: (
-//         <ReportPattern
-//           reportPatternsQuadrant={reportPatternsQuadrant}
-//           reportPatternsCoordinates={reportPatternsCoordinates}
-//           openHelpModal={openAboutReportPatternModal}
-//         />
-//       ),
-//     },
-//   ];
-// };
-
 const LabResult = () => {
-  // const { data: experimentReport, isLoading } = useExperimentReportQuery();
-  // const resultReportItems = useMemo(() => {
-  //   if (isLoading) return [];
-  //   if (!experimentReport)
-  //     return getResultReportItems({
-  //       recommendedScoreRange: '',
-  //       reportStatisticDtos: [],
-  //       weeklyExperimentCount: 0,
-  //       reportClass: reportClassList[0],
-  //       successRate: 0,
-  //       totalUserExperiments: 0,
-  //       successUserExperiments: 0,
-  //       sameGradeUserRate: 0,
-  //       reportPatternsQuadrant: 'top-right',
-  //       reportPatternsCoordinates: [],
-  //       openAboutReportClassModal: () => {},
-  //       openAboutReportPatternModal: () => {},
-  //       reportPatternText: '',
-  //     });
-
-  //   const {
-  //     reportStatisticDtos,
-  //     reportPatternDtos,
-  //     weeklyExperimentCount,
-  //     totalUserExperiments,
-  //     successUserExperiments,
-  //     sameGradeUserRate,
-  //   } = experimentReport ?? {};
-
-  //   //
-
-  //   const recommendedScoreRange = reportStatisticDtos.reduce(
-  //     (acc, curr) => {
-  //       const currRoiDiff = curr.userAvgRoi - curr.totalAvgRoi;
-  //       const minRoiDiff = acc.userAvgRoi - acc.totalAvgRoi;
-
-  //       return currRoiDiff < minRoiDiff ? curr : acc;
-  //     },
-  //     { scoreRange: '', userAvgRoi: Infinity, totalAvgRoi: -Infinity },
-  //   ).scoreRange;
-
-  //   //
-
-  //   const successRate = (successUserExperiments / totalUserExperiments) * 100;
-
-  //   const reportClass = reportClassList.find((e) => successRate < e.max) ?? reportClassList[0];
-
-  //   //
-
-  //   const positiveRoiMax = reportPatternDtos.reduce((acc, curr) => {
-  //     if (curr.roi < 0) return acc;
-  //     return Math.max(acc, curr.roi);
-  //   }, 0);
-
-  //   const negativeRoiMin = reportPatternDtos.reduce((acc, curr) => {
-  //     if (curr.roi > 0) return acc;
-  //     return Math.min(acc, curr.roi);
-  //   }, 0);
-
-  //   const reportPatternsCoordinates = reportPatternDtos.map((e) => {
-  //     const date = new Date(e.buyAt);
-  //     const [month, day] = [date.getMonth() + 1, date.getDate()].map((e) => e.toString().padStart(2, '0'));
-  //     const dateLabel = `${month}${day}`;
-
-  //     const x = e.score * 0.8 + 10;
-  //     const y = (e.roi >= 0 ? e.roi / positiveRoiMax : -e.roi / negativeRoiMin) * 40 + 50;
-
-  //     return { dateLabel, x, y };
-  //   });
-
-  //   const reportPatternsQuadrant = reportPatternsCoordinates
-  //     .reduce(
-  //       (acc, curr) => {
-  //         const x = curr.x - 50;
-  //         const y = curr.y - 50;
-
-  //         const quadrant = x >= 0 ? (y >= 0 ? 0 : 1) : y >= 0 ? 3 : 2;
-
-  //         acc[quadrant][0] += x;
-  //         acc[quadrant][1] += y;
-
-  //         return acc;
-  //       },
-  //       [
-  //         [0, 0],
-  //         [0, 0],
-  //         [0, 0],
-  //         [0, 0],
-  //       ],
-  //     )
-  //     .reduce<{ quadrant: PatternQuadrantKey; vectorLength: number }>(
-  //       (acc, curr, index) => {
-  //         const vectorLength = Math.sqrt(curr[0] ** 2 + curr[1] ** 2);
-  //         if (vectorLength > acc.vectorLength) {
-  //           acc.quadrant = patternQuadrantKeys[index];
-  //           acc.vectorLength = vectorLength;
-  //         }
-  //         return acc;
-  //       },
-  //       { quadrant: 'top-right', vectorLength: 0 },
-  //     ).quadrant;
-
-  //   const reportPatternText = patternQuadrantMap[reportPatternsQuadrant].title;
-
-  //   return getResultReportItems({
-  //     recommendedScoreRange,
-  //     reportStatisticDtos,
-  //     weeklyExperimentCount,
-  //     reportClass,
-  //     successRate,
-  //     totalUserExperiments,
-  //     successUserExperiments,
-  //     sameGradeUserRate,
-  //     reportPatternsQuadrant,
-  //     reportPatternsCoordinates,
-  //     openAboutReportClassModal,
-  //     openAboutReportPatternModal,
-  //     reportPatternText,
-  //   });
-  // }, [experimentReport]);
-
   const { data: portfolioResult, isLoading: isPortfolioResultLoading } = usePortfolioResultQuery();
   const { data: experimentStatus, isLoading: isExperimentStatusLoading } = useExperimentStatusQuery();
 
@@ -459,22 +172,25 @@ const LabResult = () => {
   const resultReportItems = useMemo(() => {
     if (!portfolioResult || isPortfolioResultLoading) return [];
 
-    const { scoreTable, experimentSummary, humanIndex, investmentPattern, history } = portfolioResult;
+    const { recommend, humanIndicator, pattern } = portfolioResult;
 
-    const recommendedScoreRange = scoreTable.reduce(
-      (acc, curr) => {
-        const currRoiDiff = curr.avg - curr.median;
-        const minRoiDiff = acc.avg - acc.median;
+    const recommendedScoreRange = (() => {
+      const range = recommend.scoreTable.reduce(
+        (acc, curr) => {
+          const currRoiDiff = curr.avgYieldUser - curr.avgYieldTotal;
+          const minRoiDiff = acc.avgYieldUser - acc.avgYieldTotal;
 
-        return currRoiDiff < minRoiDiff ? curr : acc;
-      },
-      { range: '', avg: Infinity, median: -Infinity },
-    ).range;
+          return currRoiDiff < minRoiDiff ? curr : acc;
+        },
+        { min: 0, max: 0, avgYieldUser: Infinity, avgYieldTotal: -Infinity },
+      );
 
-    const reportClass = reportClassList.find((e) => humanIndex.userType === e.title) ?? reportClassList[0];
+      return range.min === 90 ? '90점 이상' : `${range.min}~${range.max + 1}점`;
+    })();
 
-    const reportPattern =
-      patternQuadrantList.find((e) => investmentPattern.patternType === e.title) ?? patternQuadrantList[0];
+    const reportClass = reportClassList.find((e) => humanIndicator.type === e.key) ?? reportClassList[0];
+
+    const reportPattern = patternQuadrantList.find((e) => pattern.type === e.key) ?? patternQuadrantList[0];
 
     return [
       {
@@ -488,14 +204,7 @@ const LabResult = () => {
             다음 매수 때는, <span>✨{recommendedScoreRange} 구간</span> 에 주목해보세요!
           </LabResultDescription>
         ),
-        report: (
-          <ReportRecommend
-            // reportStatisticDtos={reportStatisticDtos}
-            // weeklyExperimentCount={weeklyExperimentCount}
-            scoreTable={scoreTable}
-            experimentSummary={experimentSummary}
-          />
-        ),
+        report: <ReportRecommend recommend={recommend} />,
       },
       {
         title: '나의 인간지표는?',
@@ -508,19 +217,7 @@ const LabResult = () => {
             지표!
           </LabResultDescription>
         ),
-        report: (
-          <ReportClass
-            reportClass={reportClass}
-            humanIndex={humanIndex}
-            openHelpModal={openAboutReportClassModal}
-            // reportClass={reportClass}
-            // successRate={successRate}
-            // totalUserExperiments={totalUserExperiments}
-            // successUserExperiments={successUserExperiments}
-            // sameGradeUserRate={sameGradeUserRate}
-            // openHelpModal={openAboutReportClassModal}
-          />
-        ),
+        report: <ReportClass humanIndicator={humanIndicator} openHelpModal={openAboutReportClassModal} />,
       },
       {
         title: '그동안 지켜본 당신의 투자패턴은',
@@ -532,16 +229,7 @@ const LabResult = () => {
             에 속하는 경우가 많아요
           </LabResultDescription>
         ),
-        report: (
-          <ReportPattern
-            reportPattern={reportPattern}
-            investmentPattern={investmentPattern}
-            history={history}
-            // reportPatternsQuadrant={reportPatternsQuadrant}
-            // reportPatternsCoordinates={reportPatternsCoordinates}
-            openHelpModal={openAboutReportPatternModal}
-          />
-        ),
+        report: <ReportPattern pattern={pattern} openHelpModal={openAboutReportPatternModal} />,
       },
     ];
   }, [portfolioResult]);
@@ -596,13 +284,7 @@ const LabResult = () => {
   }, [experimentStatus, portfolioResult]);
 
   return (
-    <LabResultContainer
-    // style={{
-    //   height: 'calc(100dvh - 156px)',
-    //   boxSizing: 'border-box',
-    //   overflow: 'hidden',
-    // }}
-    >
+    <LabResultContainer>
       {AboutReportClassModal}
       {AboutReportPatternModal}
       {EmptyWrapper}
