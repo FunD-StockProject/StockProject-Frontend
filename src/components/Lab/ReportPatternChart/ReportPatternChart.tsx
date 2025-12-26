@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { PortfolioResultPatternHistory } from '@controllers/experiment/api';
 import { theme } from '@styles/themes';
 import {
   ReportPatternChartAxisLabel,
@@ -10,12 +11,12 @@ import {
 import { PatternQuadrantKey, patternQuadrantList } from './ReportPatternChart.Type';
 
 const ReportPatternChart = ({
-  reportPatternsQuadrant = 'top-right',
-  reportPatternsCoordinates = [],
+  reportPatternsQuadrant = 'value-preemptive',
+  reportPatternHistory = [],
   isTutorial = false,
 }: {
   reportPatternsQuadrant?: PatternQuadrantKey;
-  reportPatternsCoordinates?: { dateLabel: string; x: number; y: number }[];
+  reportPatternHistory?: PortfolioResultPatternHistory[];
   isTutorial?: boolean;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,26 +95,26 @@ const ReportPatternChart = ({
         {isTutorial ? (
           <ReportPatternChartTutorialQuadrant>
             {patternQuadrantList.map((e) => (
-              <div key={`REPORT_PATTERN_TUTORIAL_QUADRANT_${e.key}`} className={e.key.split('-').join(' ')}>
+              <div key={`REPORT_PATTERN_TUTORIAL_QUADRANT_${e.key}`} className={e.key}>
                 <div>
                   <p className="title">
                     {e.emoji} {e.title}
                   </p>
-                  <p className="description">{e.description}</p>
+                  <p className="description">{e.score}</p>
                 </div>
                 <span>→ {e.roi}</span>
               </div>
             ))}
           </ReportPatternChartTutorialQuadrant>
         ) : (
-          reportPatternsCoordinates.map((e) => (
+          reportPatternHistory.map((e, i) => (
             <ReportPatternChartItem
-              key={`REPORT_PATTERN_ITEM_${e.dateLabel}`}
-              x={e.x}
-              y={e.y}
+              key={`REPORT_PATTERN_ITEM_${e.date}_${i}`}
+              x={e.score}
+              y={e.yield + 50}
               quadrant={reportPatternsQuadrant}
             >
-              <p>{e.dateLabel}</p>
+              <p>{e.date}</p>
               <span />
             </ReportPatternChartItem>
           ))

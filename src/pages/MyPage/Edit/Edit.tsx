@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
-import { fetchUpdateUserImage, fetchUpdateUserProfile } from '@controllers/auth/api';
+import { fetchAuthNickname, fetchUpdateUserImage, fetchUpdateUserProfile } from '@controllers/auth/api';
 import { theme } from '@styles/themes';
 import ProfilePNG from '@assets/profile.png';
 
@@ -61,13 +62,14 @@ const EditProfileButton = styled.button({
 const EditProfile = () => {
   const navigate = useNavigate();
 
-  const [profileImage, setProfileImage] = useState<string | null>(localStorage.getItem('profileImg'));
+  const { userInfo, setUserInfo } = useAuthInfo();
+  const [isProgileImageChanged, setIsProfileImageChanged] = useState(false);
 
   const oldValues = {
-    profileImage: localStorage.getItem('profileImg') ?? '',
-    name: localStorage.getItem('username') ?? '',
-    email: localStorage.getItem('useremail') ?? '',
-    birth: localStorage.getItem('birth') ?? '',
+    profileImage: userInfo?.profileImage ?? '',
+    name: userInfo?.nickname ?? '',
+    email: userInfo?.email ?? '',
+    birth: '',
   };
 
   const [values, setValues] = useState({
@@ -99,15 +101,16 @@ const EditProfile = () => {
       errors.name = '닉네임을 입력해주세요';
     } else if (values.name.length > 8) {
       errors.name = '닉네임은 최대 8자까지 입력할 수 있어요';
+    } else if (values.name.includes(' ')) {
+      errors.name = '닉네임에 띄어쓰기를 사용할 수 없어요';
     } else if (!nameRefex.test(values.name)) {
       errors.name = '닉네임은 한글만 사용할 수 있어요';
-    } else if (false) {
-      // const res = await fetchAuthNickname(values.name);
-      // console.log(res);
-      // 닉네임 중복 API
-      errors.name = '이미 사용 중인 닉네임입니다';
+    } else if (values.name !== oldValues.name) {
+      const res = await fetchAuthNickname(values.name);
+      if (res.duplicate) {
+        errors.name = '이미 사용 중인 닉네임입니다';
+      }
     }
-
     if (!values.email) {
       errors.email = '이메일을 입력해주세요';
     } else if (!emailRegex.test(values.email)) {
@@ -129,7 +132,7 @@ const EditProfile = () => {
       values.name === oldValues.name &&
       values.email === oldValues.email &&
       values.birth === oldValues.birth &&
-      profileImage === oldValues.profileImage
+      !isProgileImageChanged
     ) {
       errors.name = ' ';
       errors.birth = '수정된 내용이 없습니다.';
@@ -154,6 +157,13 @@ const EditProfile = () => {
         : name === 'name'
           ? value.slice(0, 10)
           : value;
+
+    if (formatted != values[name as keyof typeof values]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
 
     setValues((prev) => ({
       ...prev,
@@ -223,8 +233,8 @@ const EditProfile = () => {
 
     if (!res) return;
 
-    localStorage.setItem('username', values.name);
-    localStorage.setItem('birth', values.birth);
+    setUserInfo({ nickname: values.name });
+    //birth는 나중에 얻어와야 함
     navigate(webPath.editeProfileDone());
   };
 
@@ -238,8 +248,8 @@ const EditProfile = () => {
     reader.onloadend = async () => {
       const data = await fetchUpdateUserImage(reader.result as string);
       if (data) {
-        setProfileImage(data.profile_image_url);
-        localStorage.setItem('profileImg', data.profile_image_url);
+        setUserInfo({ profileImage: reader.result as string });
+        setIsProfileImageChanged(true);
       } else {
         alert('프로필 이미지 업데이트 실패');
       }
@@ -249,7 +259,11 @@ const EditProfile = () => {
   return (
     <RegisterContainer>
       <RegisterContent>
-        <ProfileCircle profileImage={profileImage ?? ProfilePNG} handleChangeFile={handleChangeFile} size="large" />
+        <ProfileCircle
+          profileImage={userInfo?.profileImage ?? ProfilePNG}
+          handleChangeFile={handleChangeFile}
+          size="large"
+        />
         <EditProfileValueContainer>
           {valueInputs.map((e) => (
             <MyPageInput

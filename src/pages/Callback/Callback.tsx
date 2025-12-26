@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useAuthInfo from '@hooks/useAuthInfo';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import { webPath } from '@router/index';
 import { ProviderKey, fetchOAuth2Login } from '@controllers/auth/api';
 import BlueAlert from '@assets/blueAlert.svg?react';
@@ -9,6 +11,8 @@ import Loading from '@assets/loading.png';
 const Callback = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { beforeLoginDepth, setAuthInfo, clearAuthInfo } = useAuthInfo();
+  const [, setRecentProvider] = useLocalStorageState<string>('recent_provider');
 
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
@@ -24,12 +28,7 @@ const Callback = () => {
 
       const provider = location.pathname.split('/').at(-1);
 
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('useremail');
-      localStorage.removeItem('username');
-      localStorage.removeItem('provider');
-      localStorage.removeItem('profileImg');
+      clearAuthInfo();
 
       try {
         const res = await fetchOAuth2Login(code, state, provider as ProviderKey);
@@ -44,21 +43,19 @@ const Callback = () => {
           return;
         }
 
-        console.log(res);
-
-        localStorage.setItem('access_token', res.access_token);
         (window as any).ReactNativeWebView?.postMessage(JSON.stringify({ type: 'TOKEN', token: res.access_token }));
         // const token = res.access_token;
         // (window as any).ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', token }));
-        localStorage.setItem('refresh_token', res.refresh_token);
-        localStorage.setItem('useremail', res.email);
-        localStorage.setItem('username', res.nickname);
-        localStorage.setItem('provider', provider as string);
-        localStorage.setItem('recent_login_provider', provider as string);
-        if (res.profileImageUrl) {
-          localStorage.setItem('profileImg', res.profileImageUrl);
-        }
-        navigate(-2);
+        setAuthInfo(res.access_token, res.refresh_token, {
+          email: res.email,
+          nickname: res.nickname,
+          profileImage: res.profileImageUrl,
+          provider: res.provider,
+        });
+        setRecentProvider(provider as string);
+
+        const currentDepth = window.history.length;
+        navigate(Math.min((beforeLoginDepth ?? 100) - currentDepth, -2));
       } catch (err) {
         console.error(err);
         setError('error');

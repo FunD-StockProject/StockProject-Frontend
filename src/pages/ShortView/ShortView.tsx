@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
+import Loading from '@components/Loading/Loading';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
@@ -40,7 +41,7 @@ interface MouseDrag {
 const ShortView = () => {
   const navigate = useNavigate();
 
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuthInfo();
   const { toast, showToast, hideToast } = useToast();
   const {
     data: shortviewStocks = [],
@@ -60,11 +61,6 @@ const ShortView = () => {
       fetchNextShortview();
     }
   }, [currentIdx, shortviewStocks, isFetchingNextShortview]);
-
-  if (isLoadingShortview) {
-    console.log('loading Shortview Page');
-    // return <div>Loading...</div>;
-  }
 
   const { mutate: addBookmark } = useAddBookmarkMutation();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
@@ -342,6 +338,7 @@ const ShortView = () => {
 
   return (
     <ShortViewContainer>
+      <Loading isLoading={isLoadingShortview} title="숏뷰를 불러오고 있어요" desc="잠시만 기다려주세요..." />
       <ShortViewContent ref={containerRef} onPointerDown={handlePointerDown}>
         {shortviewStocks.map(
           (stock, idx) =>

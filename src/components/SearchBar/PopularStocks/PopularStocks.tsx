@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
-import { getItemLocalStorage, setItemLocalStorage } from '@utils/LocalStorage';
+import useRecentStocks from '@hooks/useRecentStocks';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { usePopularStockFetchQuery } from '@controllers/stocks/query';
@@ -11,16 +11,13 @@ import { PopularStocksItem, PopularStocksItemContents } from './PopularStocks.St
 const PopularStocks = () => {
   const navigate = useNavigate();
 
+  const { addRecentStock } = useRecentStocks();
+
   const [popularStocks] = usePopularStockFetchQuery();
   console.log(popularStocks);
 
   const handlePopularStockClick = (symbolName: string, country: StockCountryKey) => () => {
-    setItemLocalStorage('RecentStocks', [
-      { symbolName, country },
-      ...getItemLocalStorage('RecentStocks', []).filter(
-        (item: { symbolName: string }) => item.symbolName !== symbolName,
-      ),
-    ]);
+    addRecentStock(symbolName, country);
 
     navigate(webPath.search(), { state: { symbolName: symbolName, country: country }, replace: true });
   };

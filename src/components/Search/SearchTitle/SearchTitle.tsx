@@ -2,7 +2,7 @@ import { AnimatePresence, Variants, useCycle } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
@@ -122,7 +122,7 @@ const SearchTitleDetail = ({
 const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { data: summary = [], isLoading } = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
   const navigate = useNavigate();
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuthInfo();
 
   const { mutate: buyExperiment } = useBuyExperimentMutation();
 

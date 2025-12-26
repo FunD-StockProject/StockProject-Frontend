@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import CardList from '@components/CardList/CardList';
 import Banner from '@components/Home/Banner/Banner';
@@ -26,7 +26,7 @@ import {
 const HomeHeader = () => {
   const { data: notificationCount } = useUnreadCountQuery();
   const navigate = useNavigate();
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuthInfo();
 
   const handleQuestionMarkClick = () => {
     navigate(webPath.about());

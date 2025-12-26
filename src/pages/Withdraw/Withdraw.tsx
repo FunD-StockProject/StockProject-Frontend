@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthWithdraw } from '@controllers/auth/api';
@@ -12,6 +13,7 @@ import WithdrawPNG from '@assets/withdraw.png';
 
 const Withdraw = () => {
   const navigate = useNavigate();
+  const { clearAuthInfo } = useAuthInfo();
 
   const UserService = [
     { icon: <LabSVG />, name: '매수 타이밍 실험실' },
@@ -26,11 +28,7 @@ const Withdraw = () => {
 
   const handleWithdraw = async () => {
     await fetchAuthWithdraw();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('provider');
-    localStorage.removeItem('useremail');
-    localStorage.removeItem('username');
+    clearAuthInfo();
     navigate(webPath.withdrawDone());
   };
 

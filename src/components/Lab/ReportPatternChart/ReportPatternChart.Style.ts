@@ -48,11 +48,11 @@ const ReportPatternChartItem = styled.div(
     const inQuadrant =
       x - 50 >= 0
         ? y - 50 >= 0
-          ? quadrant === 'top-right'
-          : quadrant === 'bottom-right'
+          ? quadrant === 'trend-preemptive'
+          : quadrant === 'lagging-follower'
         : y - 50 >= 0
-          ? quadrant === 'top-left'
-          : quadrant === 'bottom-left';
+          ? quadrant === 'value-preemptive'
+          : quadrant === 'reverse-investor';
 
     return {
       left: `${x}%`,
@@ -92,10 +92,10 @@ const ReportPatternChartItem = styled.div(
 
 const ReportPatternChartQuadrant = styled.div(
   ({ quadrant }: { quadrant: PatternQuadrantKey }) => ({
-    top: quadrant.includes('top') ? '0' : '',
-    left: quadrant.includes('left') ? '0' : '',
-    right: quadrant.includes('right') ? '0' : '',
-    bottom: quadrant.includes('bottom') ? '0' : '',
+    top: ['trend-preemptive', 'value-preemptive'].includes(quadrant) ? '0' : '',
+    left: ['value-preemptive', 'reverse-investor'].includes(quadrant) ? '0' : '',
+    right: ['trend-preemptive', 'lagging-follower'].includes(quadrant) ? '0' : '',
+    bottom: ['reverse-investor', 'lagging-follower'].includes(quadrant) ? '0' : '',
   }),
   {
     position: 'absolute',
@@ -128,16 +128,20 @@ const ReportPatternChartTutorialQuadrant = styled.div({
     padding: '12px',
     boxSizing: 'border-box',
 
-    ['&.top']: {
+    ['&.trend-preemptive']: {
       top: '0',
-    },
-    ['&.right']: {
       right: '0',
     },
-    ['&.bottom']: {
+    ['&.lagging-follower']: {
+      right: '0',
       bottom: '0',
     },
-    ['&.left']: {
+    ['&.reverse-investor']: {
+      left: '0',
+      bottom: '0',
+    },
+    ['&.value-preemptive']: {
+      top: '0',
       left: '0',
     },
 

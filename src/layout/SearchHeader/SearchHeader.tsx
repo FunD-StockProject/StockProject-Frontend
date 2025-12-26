@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import useLogin from '@hooks/useLogin';
+import useAuthInfo from '@hooks/useAuthInfo';
 import useToast from '@hooks/useToast';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import Toast from '@components/Toast/Toast';
@@ -64,7 +64,7 @@ const IconButton = styled.button(
 
 const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const navigate = useNavigate();
-  const { isLogin, handleLogin } = useLogin();
+  const { isLogin, handleNavigateLogin } = useAuthInfo();
   const { toast, showToast, hideToast } = useToast();
 
   const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
@@ -125,7 +125,7 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const [LoginModal, openLoginModal] = ConfirmModal({
     title: '관심종목 알림을 받으려면, 로그인이 필요해요!',
     description: '관심종목의 심리가 급등/급락할때 알림을 받고싶다면, 로그인을 진행해주세요',
-    onConfirm: handleLogin,
+    onConfirm: handleNavigateLogin,
     isInverse: true,
     actionText: ['로그인하기', '취소'],
   });
