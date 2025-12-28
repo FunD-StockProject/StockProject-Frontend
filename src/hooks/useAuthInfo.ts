@@ -9,6 +9,10 @@ interface UserInfo {
   provider: string;
 }
 
+interface LoginOptions {
+  returnState?: unknown; // 로그인 후 돌아갈 때 복원할 React Router state
+}
+
 const useAuthInfo = () => {
   const navigate = useNavigate();
   const [beforeLoginDepth, setBeforeLoginDepth] = useLocalStorageState<number>('before_login_depth');
@@ -17,8 +21,20 @@ const useAuthInfo = () => {
   const [userInfo, _setUserInfo, removeUserInfo] = useLocalStorageState<UserInfo>('user_info');
   const isLogin = !!accessToken;
 
-  const handleNavigateLogin = () => {
+  const handleNavigateLogin = (options?: LoginOptions) => {
     setBeforeLoginDepth(window.history.length);
+
+    // 현재 경로 저장 (OAuth 리다이렉트 후에도 복원 가능하도록)
+    const returnPath = window.location.pathname + window.location.search;
+    sessionStorage.setItem('login_return_path', returnPath);
+
+    // React Router state 저장 (명시적으로 전달받아야 함)
+    if (options?.returnState !== undefined) {
+      sessionStorage.setItem('login_return_state', JSON.stringify(options.returnState));
+    } else {
+      sessionStorage.removeItem('login_return_state');
+    }
+
     navigate(webPath.login());
   };
 

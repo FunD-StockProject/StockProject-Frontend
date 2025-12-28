@@ -122,10 +122,19 @@ const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
     toggleNotification(stockInfo.stockId);
   };
 
+  const handleLoginWithState = () => {
+    handleNavigateLogin({
+      returnState: {
+        symbolName: stockInfo.symbolName,
+        country: stockInfo.country,
+      },
+    });
+  };
+
   const [LoginModal, openLoginModal] = ConfirmModal({
     title: '관심종목 알림을 받으려면, 로그인이 필요해요!',
     description: '관심종목의 심리가 급등/급락할때 알림을 받고싶다면, 로그인을 진행해주세요',
-    onConfirm: handleNavigateLogin,
+    onConfirm: handleLoginWithState,
     isInverse: true,
     actionText: ['로그인하기', '취소'],
   });
