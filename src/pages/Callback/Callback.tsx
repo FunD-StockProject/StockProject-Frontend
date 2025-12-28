@@ -54,8 +54,27 @@ const Callback = () => {
         });
         setRecentProvider(provider as string);
 
+        // 저장된 state 복원
+        const returnStateStr = sessionStorage.getItem('login_return_state');
+        const returnState = returnStateStr ? JSON.parse(returnStateStr) : undefined;
+        sessionStorage.removeItem('login_return_state');
+
+        // 기존 로직: beforeLoginDepth 사용 (없으면 sessionStorage fallback)
         const currentDepth = window.history.length;
-        navigate(Math.min((beforeLoginDepth ?? 100) - currentDepth, -2));
+        const savedReturnPath = sessionStorage.getItem('login_return_path');
+
+        if (beforeLoginDepth && currentDepth > 0 && !returnState) {
+          // 기존 로직: 히스토리 기반 이동 (state 없을 때만)
+          const navigateDelta = Math.min((beforeLoginDepth ?? 100) - currentDepth, -2);
+          navigate(navigateDelta);
+        } else if (savedReturnPath) {
+          // Fallback: sessionStorage 경로 사용 (state 보존 가능)
+          sessionStorage.removeItem('login_return_path');
+          navigate(savedReturnPath, { replace: true, state: returnState });
+        } else {
+          // 최종 fallback: 홈으로
+          navigate('/', { replace: true, state: returnState });
+        }
       } catch (err) {
         console.error(err);
         setError('error');
