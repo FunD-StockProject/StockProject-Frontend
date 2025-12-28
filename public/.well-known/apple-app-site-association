@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAM_ID.com.durumi99.humanzipyoapp",
+        "appID": "C9TY6BF2XS.com.durumi99.humanzipyoapp",
         "paths": [
           "/login/oauth2/code/*"
         ]
