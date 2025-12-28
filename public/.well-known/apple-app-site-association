@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAM_ID.com.durumi99.humanzipyoapp",
+        "paths": [
+          "/login/oauth2/code/*"
+        ]
+      }
+    ]
+  }
+}
+
