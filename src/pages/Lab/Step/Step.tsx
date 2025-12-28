@@ -79,6 +79,7 @@ const LabStep = () => {
           SecondaryButtonText="홈으로 가기"
           hasHeader
           hasNavbar
+          returnState={{ step }}
         />
       )}
       <LabStepHeader step={step} />

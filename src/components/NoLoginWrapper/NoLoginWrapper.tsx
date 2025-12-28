@@ -12,16 +12,17 @@ export interface NoLoginWrapperProps {
   SecondaryButtonText?: string;
   hasHeader?: boolean;
   hasNavbar?: boolean;
+  returnState?: unknown; // 로그인 후 돌아올 때 복원할 state
 }
 
 const NoLoginWrapper = (props: NoLoginWrapperProps) => {
   const { isLogin, handleLogin } = useLogin();
   const navigate = useNavigate();
 
-  const { title, description, buttonText, children, className, SecondaryButtonText, hasHeader, hasNavbar } = props;
+  const { title, description, buttonText, children, className, SecondaryButtonText, hasHeader, hasNavbar, returnState } = props;
 
   const handleClick = () => {
-    handleLogin();
+    handleLogin({ returnState });
   };
 
   const handleSecondaryClick = () => {

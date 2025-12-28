@@ -58,7 +58,16 @@ const Callback = () => {
         if (res.profileImageUrl) {
           localStorage.setItem('profileImg', res.profileImageUrl);
         }
-        navigate(-2);
+
+        // 저장된 경로와 state로 이동 (없으면 홈으로)
+        const returnPath = sessionStorage.getItem('login_return_path') || '/';
+        const returnStateStr = sessionStorage.getItem('login_return_state');
+        const returnState = returnStateStr ? JSON.parse(returnStateStr) : undefined;
+
+        sessionStorage.removeItem('login_return_path');
+        sessionStorage.removeItem('login_return_state');
+
+        navigate(returnPath, { replace: true, state: returnState });
       } catch (err) {
         console.error(err);
         setError('error');
