@@ -48,7 +48,7 @@ const StockTable = ({ country }: { country: StockCountryKey }) => {
   return (
     <StockTableContainer>
       <HomeItemTtile>
-        <p className="title">종목 차트별 인간지표 TOP5</p>
+        <p className="title">종목 차트별 인간지표</p>
         <p className="update-time">어제 {updateTime} 기준</p>
       </HomeItemTtile>
       <StockTableContent>

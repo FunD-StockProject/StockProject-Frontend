@@ -57,6 +57,7 @@ const ExperimentDetailIndexItemContainer = styled.div({
 
     ['>p.value']: {
       ...theme.font.body14Semibold,
+      color: theme.colors.sub_white,
     },
 
     ['>p.subValue']: {
