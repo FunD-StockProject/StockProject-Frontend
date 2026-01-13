@@ -111,41 +111,39 @@ export const SearchTitleDetailSymbol = styled.span({
   },
 
   ['>img']: {
-    height: '20px',
+    height: '13px',
   },
 });
 
-//
+// export const SearchTitleDescriptionContainer = styled.div(
+//   ({ showMoreDesc }: { showMoreDesc: boolean }) => ({
+//     WebkitLineClamp: showMoreDesc ? '' : '2',
+//     ['>button']: {
+//       display: showMoreDesc ? 'none' : 'block',
+//     },
+//   }),
+//   {
+//     overflow: 'hidden',
+//     WebkitBoxOrient: 'vertical',
+//     display: '-webkit-box',
 
-export const SearchTitleDescriptionContainer = styled.div(
-  ({ showMoreDesc }: { showMoreDesc: boolean }) => ({
-    WebkitLineClamp: showMoreDesc ? '' : '2',
-    ['>button']: {
-      display: showMoreDesc ? 'none' : 'block',
-    },
-  }),
-  {
-    overflow: 'hidden',
-    WebkitBoxOrient: 'vertical',
-    display: '-webkit-box',
+//     ['>p']: {
+//       ...theme.font.body14Medium,
+//       color: theme.colors.sub_gray4,
+//       margin: '0',
+//       whiteSpace: 'pre-line',
+//     },
 
-    ['>p']: {
-      ...theme.font.body14Medium,
-      color: theme.colors.sub_gray4,
-      margin: '0',
-      whiteSpace: 'pre-line',
-    },
-
-    ['>button']: {
-      ...theme.font.body14Medium,
-      color: theme.colors.sub_gray4,
-      float: 'right',
-      marginTop: '21px',
-      marginRight: '8px',
-      padding: '0px',
-      background: 'none',
-      border: 'none',
-      shapeOutside: 'border-box',
-    },
-  },
-);
+//     ['>button']: {
+//       ...theme.font.body14Medium,
+//       color: theme.colors.sub_gray4,
+//       float: 'right',
+//       marginTop: '21px',
+//       marginRight: '8px',
+//       padding: '0px',
+//       background: 'none',
+//       border: 'none',
+//       shapeOutside: 'border-box',
+//     },
+//   },
+// );
