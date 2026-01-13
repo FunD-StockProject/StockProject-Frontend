@@ -76,6 +76,10 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', newRefreshToken);
 
+      // localStorage 변경을 React state에 반영하기 위한 커스텀 이벤트 발생
+      window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key: 'access_token' } }));
+      window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key: 'refresh_token' } }));
+
       (window as any).ReactNativeWebView?.postMessage(JSON.stringify({ type: 'TOKEN', token: access_token }));
       // const token = localStorage.getItem('access_token');
       // if (token && window.ReactNativeWebView) {

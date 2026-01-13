@@ -21,6 +21,7 @@ import {
   LabPurchaseGridItemText,
   LabPurchaseToast,
 } from './Purchase.Style';
+import { SectorRecommendStockInfo } from '@controllers/experiment/api';
 
 const priceToText = (price: number, country: StockCountryKey) => {
   const _price = price.toLocaleString();
@@ -47,9 +48,8 @@ const LabPurchase = () => {
 
   const [purchased, setPurchased] = useState<number[]>([]);
   const { mutate: buyExperiment } = useBuyExperimentMutation();
-  const { data: sectorRecommendStockInfos } = useSectorRecommendQuery(selectedCountry, selectedSector);
+  const { data: sectorRecommendStockInfo } = useSectorRecommendQuery(selectedCountry, selectedSector);
 
-  console.log(sectorRecommendStockInfos);
 
   const { toast, showToast } = useToast();
   const handlePrevStep = () => {
@@ -65,14 +65,14 @@ const LabPurchase = () => {
     });
   };
 
-  const handleClickPurchase = (stockInfo: StockDetailInfo) => () => {
+  const handleClickPurchase = (stockInfo: StockDetailInfo | SectorRecommendStockInfo) => () => {
     buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
-
+    const name = 'stockName' in stockInfo ? stockInfo.stockName : stockInfo.symbolName;
     showToast(
       <>
         <CheckSVG />
         <p>
-          {stockInfo.symbolName} {priceToText(stockInfo.price, stockInfo.country)}(으)로 매수 완료되었습니다.
+          {name} {priceToText(stockInfo.price, stockInfo.country)}(으)로 매수 완료되었습니다.
         </p>
       </>,
     );
@@ -134,6 +134,35 @@ const LabPurchase = () => {
             ) : null;
           })}
         </div>
+        <LabPurchaseGridContainer>
+          {sectorRecommendStockInfo?.map((e) => {
+            const disabled = purchased.some((b) => b == e.stockId);
+
+            return (
+              <LabPurchaseGridItemContainer key={`SELECTED_STOCK_${e.stockId}`}>
+                <div>
+                  <StockImage stockId={e.stockId} />
+                  <p>{e.stockName}</p>
+                  <div>
+                    <LabPurchaseGridItemText delta={e.priceDiff} className="price">
+                      {priceToText(e.price, e.country)}{' '}
+                      <span>({diffToValue(Number(e.priceDiffPerCent.toFixed(1)))}%)</span>
+                    </LabPurchaseGridItemText>
+                    <LabPurchaseGridItemText delta={e.priceDiff} className="score">
+                      {e.score}점{' '}
+                      <span>
+                        {diffToValue(e.diff)}점 {e.diff > 0 ? <UpSVG /> : e.diff < 0 ? <DownSVG /> : '-'}
+                      </span>
+                    </LabPurchaseGridItemText>
+                  </div>
+                </div>
+                <button disabled={disabled} onClick={handleClickPurchase(e)}>
+                  {disabled ? '매수완료' : '매수하기'}
+                </button>
+              </LabPurchaseGridItemContainer>
+            );
+          })}
+        </LabPurchaseGridContainer>
       </LabPurchaseContents>
       <StepButtonContainer>
         <button onClick={handlePrevStep}>이전</button>

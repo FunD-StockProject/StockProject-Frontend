@@ -8,7 +8,6 @@ export type { StockInfo };
 
 export interface SectorRecommendStockInfo {
   stockId: number;
-  imageUrl: string;
   stockName: string;
   price: number;
   priceDiff: number;
@@ -17,6 +16,14 @@ export interface SectorRecommendStockInfo {
   diff: number;
   keywords: string[];
   country: StockCountryKey;
+}
+
+export interface SectorRecommendResponse {
+  items: SectorRecommendStockInfo[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface BuyExperimentResponse {
@@ -169,12 +176,12 @@ export const fetchSectorRecommend = async (
   const countryPath = country == 'KOREA' ? 'domestic' : 'overseas';
 
   try {
-    const res = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
-    // 204 No Content인 경우 빈 배열 반환
-    if (!res || (Array.isArray(res) && res.length === 0)) {
+    const res: SectorRecommendResponse = await fetchAuthData(`/stock/sector/${countryPath}/${sectorKey}/recommend`);
+    // 204 No Content인 경우 또는 items가 없는 경우 빈 배열 반환
+    if (!res || !res.items || res.items.length === 0) {
       return [];
     }
-    return res;
+    return res.items;
   } catch (error) {
     console.error('fetchSectorRecommend error:', error);
     return [];
