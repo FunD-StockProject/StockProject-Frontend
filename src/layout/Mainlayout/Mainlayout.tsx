@@ -10,7 +10,7 @@ import { MainContent, StyledMainlayout } from './Mainlayout.Style';
 
 const Mainlayout = ({ children }: LayoutProps) => {
   const location = useLocation();
-
+  const visiblePWAInfoPopUp = false;
   const isRootPage = location.pathname === '/';
 
   const isBottomNavigationVisible = (
@@ -36,7 +36,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
         {isRootPage && <Footer />}
       </MainContent>
 
-      {isRootPage && !detectPWA() && <PWAInfoPopUp />}
+      {visiblePWAInfoPopUp && isRootPage && !detectPWA() && <PWAInfoPopUp />}
       {isBottomNavigationVisible && <BottomNavigation />}
     </StyledMainlayout>
   );

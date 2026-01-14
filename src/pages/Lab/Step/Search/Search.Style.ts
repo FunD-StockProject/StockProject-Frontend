@@ -372,7 +372,7 @@ const LabSearchModalResultItemInfoContainer = styled.div(
         alignItems: 'center',
         gap: '4px',
         ...theme.font.detail12Semibold,
-
+        color: theme.colors.sub_white,
         ['>span']: {
           ['>svg']: {
             width: '8px',

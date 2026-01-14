@@ -6,12 +6,11 @@ import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
-import { useStockSummaryQuery } from '@controllers/stocks/query';
 import { StockDetailInfo } from '@controllers/stocks/types';
 import KoreaPNG from '@assets/flags/korea.png';
+import OverseaPNG from '@assets/flags/oversea.png';
 import {
   SearchTitleContainer,
-  SearchTitleDescriptionContainer,
   SearchTitleDetailContainer,
   SearchTitleDetailSymbol,
   SearchTitleHeaderContainer,
@@ -34,7 +33,6 @@ const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockI
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
   const concurrency = country === 'KOREA' ? '₩' : '$';
-
   useEffect(() => {
     if (titleTextRef.current) {
       const { offsetWidth, scrollWidth } = titleTextRef.current;
@@ -94,7 +92,7 @@ const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockI
 };
 
 const SearchTitleDetail = ({
-  stockInfo: { exchangeNum, symbol, priceDiff, priceDiffPerCent },
+  stockInfo: { exchangeNum, symbol, priceDiff, priceDiffPerCent, country },
 }: {
   stockInfo: StockDetailInfo;
 }) => {
@@ -103,13 +101,14 @@ const SearchTitleDetail = ({
   const diffSign = priceDiff > 0 ? '+' : priceDiff < 0 ? '-' : '';
   const diffPercentText = Math.abs(priceDiffPerCent).toFixed(2);
   const diffValueText = diffSign + Math.abs(priceDiff).toLocaleString();
+  const flag = country === 'KOREA' ? KoreaPNG : OverseaPNG;
 
   return (
     <SearchTitleDetailContainer delta={priceDiff}>
       <span className="market-code">{marketCode}</span>
       <SearchTitleDetailSymbol>
         <p>{symbol}</p>
-        <img src={KoreaPNG} alt="arrow" />
+        <img src={flag} alt="arrow" />
       </SearchTitleDetailSymbol>
       <span className="price-diff">
         {diffValueText}
@@ -120,7 +119,6 @@ const SearchTitleDetail = ({
 };
 
 const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
-  const { data: summary = [], isLoading } = useStockSummaryQuery(stockInfo.symbol, stockInfo.country);
   const navigate = useNavigate();
   const { isLogin } = useAuthInfo();
 
@@ -132,31 +130,15 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       return;
     }
     buyExperiment({ stockId: stockInfo.stockId, country: stockInfo.country });
-    navigate(webPath.labStep(), { state: { step: 3 } });
+    navigate(webPath.labStep(), { state: { step: 4 } });
   };
 
-  const [showMoreDesc, setShowMoreDesc] = useState(false);
-
-  const handleClickMore = () => {
-    setShowMoreDesc(true);
-  };
 
   return (
     stockInfo && (
       <SearchTitleContainer>
         <SearchTitleName stockInfo={stockInfo} />
         <SearchTitleDetail stockInfo={stockInfo} />
-        {!isLoading && (
-          <SearchTitleDescriptionContainer showMoreDesc={showMoreDesc}>
-            <button onClick={handleClickMore}>더보기</button>
-            <p>
-              {summary.reduce((acc, e, i) => {
-                return acc + (i ? '\n' : '') + e;
-              }, '')}
-            </p>
-          </SearchTitleDescriptionContainer>
-        )}
-
         <Button onClick={handleClickBuy}>모의 매수하기</Button>
       </SearchTitleContainer>
     )

@@ -103,10 +103,12 @@ const LabPurchaseGridItemContainer = styled.div({
 
         ['&.price']: {
           ...theme.font.body14Medium,
+          color: theme.colors.sub_white,
         },
 
         ['&.score']: {
           ...theme.font.detail12Semibold,
+          color: theme.colors.sub_white,
         },
       },
     },

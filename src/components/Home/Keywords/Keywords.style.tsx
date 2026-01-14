@@ -30,6 +30,7 @@ const KeywordItem = styled.div({
     overflow: 'hidden',
     textAlign: 'center',
     ...theme.font.body16Semibold,
+    color: theme.colors.sub_white,
   },
 });
 
