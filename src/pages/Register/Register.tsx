@@ -51,9 +51,13 @@ const termInputs: TermInputItem[] = [
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // WebView 환경 감지
+  const isWebView = !!(window as any).ReactNativeWebView;
+
   const [values, setValues] = useState({
     name: '',
-    email: location.state?.email,
+    email: location.state?.email || sessionStorage.getItem('register_email') || '',
     birth: '',
   });
 
@@ -240,19 +244,37 @@ const Register = () => {
       return;
     }
 
+    const provider = location.state?.provider || sessionStorage.getItem('register_provider') || '';
+
     const res = await fetchAuthRegister(
       profileImage as string,
       values.email,
       values.name,
       values.birth,
       true,
-      location.state?.provider.toUpperCase(),
+      provider.toUpperCase(),
     );
 
     console.log(profileImage);
 
     if (!res) return;
 
+    // sessionStorage 정리
+    sessionStorage.removeItem('register_email');
+    sessionStorage.removeItem('register_provider');
+
+    // WebView 환경: 앱으로 토큰 전달
+    if (isWebView && res.access_token) {
+      (window as any).ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          type: 'TOKEN',
+          token: res.access_token,
+        }),
+      );
+      return;
+    }
+
+    // 일반 브라우저: Done 페이지로 이동
     navigate(webPath.registerDone());
   };
 
