@@ -24,7 +24,13 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
-    const state = uuidv4(); // CSRF 방지
+
+    // state에 환경 정보 포함 (CSRF 방지 + 환경 구분)
+    const stateObj = {
+      csrf: uuidv4(),
+      isWebView: isWebView,
+    };
+    const state = btoa(JSON.stringify(stateObj)); // Base64 인코딩
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
@@ -57,7 +63,12 @@ const Login = () => {
 
   const handleNaverLogin = () => {
     const redirectUri = `${window.location.origin}/login/oauth2/code/naver`;
-    const state = uuidv4();
+
+    const stateObj = {
+      csrf: uuidv4(),
+      isWebView: isWebView,
+    };
+    const state = btoa(JSON.stringify(stateObj));
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
@@ -71,7 +82,11 @@ const Login = () => {
   };
 
   const handleAppleLogin = () => {
-    const state = uuidv4();
+    const stateObj = {
+      csrf: uuidv4(),
+      isWebView: isWebView,
+    };
+    const state = btoa(JSON.stringify(stateObj));
     const nonce = uuidv4(); // 권장
     localStorage.setItem('oauth_state', state);
 
@@ -92,7 +107,11 @@ const Login = () => {
   const handleKakaoLogin = () => {
     const redirectUri = `${window.location.origin}/login/oauth2/code/kakao`;
 
-    const state = uuidv4();
+    const stateObj = {
+      csrf: uuidv4(),
+      isWebView: isWebView,
+    };
+    const state = btoa(JSON.stringify(stateObj));
     localStorage.setItem('oauth_state', state);
 
     const params = new URLSearchParams({
