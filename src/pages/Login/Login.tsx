@@ -23,8 +23,7 @@ const Login = () => {
   const isWebView = !!(window as any).ReactNativeWebView;
 
   const handleGoogleLogin = () => {
-    // 웹 브라우저에서는 ?web=true 추가하여 Universal Link 회피
-    const redirectUri = `${window.location.origin}/login/oauth2/code/google${!isWebView ? '?web=true' : ''}`;
+    const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
 
     // state에 환경 정보 포함 (CSRF 방지 + 환경 구분)
     const stateObj = {
