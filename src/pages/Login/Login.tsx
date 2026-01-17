@@ -23,7 +23,10 @@ const Login = () => {
   const isWebView = !!(window as any).ReactNativeWebView;
 
   const handleGoogleLogin = () => {
-    const redirectUri = `${window.location.origin}/login/oauth2/code/google`;
+    // WebView: 커스텀 스킴 사용, 웹: HTTPS URL 사용
+    const redirectUri = isWebView
+      ? 'humanzipyoapp://login/oauth2/code/google'
+      : `${window.location.origin}/login/oauth2/code/google`;
 
     // state에 환경 정보 포함 (CSRF 방지 + 환경 구분)
     const stateObj = {

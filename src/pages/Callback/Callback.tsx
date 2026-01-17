@@ -23,21 +23,13 @@ const Callback = () => {
     (async () => {
       const searchParams = new URLSearchParams(location.search);
       const code = searchParams.get('code') ?? '';
-      const stateParam = searchParams.get('state') ?? '';
       const redirectUri = window.location.origin + location.pathname;
       const state = btoa(redirectUri);
 
       const provider = location.pathname.split('/').at(-1);
 
-      // state 파라미터에서 환경 정보 추출
-      let isWebViewFromState = false;
-      try {
-        const stateObj = JSON.parse(atob(stateParam));
-        isWebViewFromState = stateObj.isWebView || false;
-      } catch (e) {
-        // 파싱 실패 시 현재 환경 기준으로 판단
-        isWebViewFromState = !!(window as any).ReactNativeWebView;
-      }
+      // 현재 실제 환경 확인 (state가 아닌 실제 환경)
+      const isCurrentlyInWebView = !!(window as any).ReactNativeWebView;
 
       clearAuthInfo();
 
@@ -45,8 +37,8 @@ const Callback = () => {
         const res = await fetchOAuth2Login(code, state, provider as ProviderKey);
 
         if (res.state === 'NEED_REGISTER') {
-          // state에서 추출한 환경 정보 사용
-          if (isWebViewFromState) {
+          // 현재 WebView에 있으면 postMessage
+          if (isCurrentlyInWebView) {
             (window as any).ReactNativeWebView?.postMessage(
               JSON.stringify({
                 type: 'NEED_REGISTER',
@@ -57,7 +49,7 @@ const Callback = () => {
             return;
           }
 
-          // 일반 브라우저: 웹에서 회원가입 진행
+          // 브라우저에 있으면 웹에서 회원가입 진행
           navigate(webPath.register(), {
             state: {
               provider,
@@ -66,10 +58,16 @@ const Callback = () => {
           });
           return;
         }
-        if (isWebViewFromState)
-          (window as any).ReactNativeWebView?.postMessage(JSON.stringify({ type: 'TOKEN', token: res.access_token }));
-        // const token = res.access_token;
-        // (window as any).ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', token }));
+
+        // 로그인 성공 - 현재 WebView에 있으면 postMessage
+        if (isCurrentlyInWebView) {
+          (window as any).ReactNativeWebView?.postMessage(
+            JSON.stringify({ type: 'TOKEN', token: res.access_token })
+          );
+          return;
+        }
+
+        // 브라우저에 있으면 웹에서 로그인 처리
         setAuthInfo(res.access_token, res.refresh_token, {
           email: res.email,
           nickname: res.nickname,
