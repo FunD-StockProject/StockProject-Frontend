@@ -81,8 +81,6 @@ export const useSocialAuth = () => {
   const handleOAuthCallback = useCallback(
     async (code: string, provider: string, state: string) => {
       console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider, state });
-      const providerLowerCase = provider.toLowerCase() as ProviderKey;
-      console.log('🔵 [웹] provider 소문자 변환:', providerLowerCase);
 
       clearAuthInfo();
       setIsLoading(true);
@@ -90,7 +88,7 @@ export const useSocialAuth = () => {
 
       try {
         console.log('🔵 [웹] fetchOAuth2Login 호출 시작');
-        const res = await fetchOAuth2Login(code, state, providerLowerCase);
+        const res = await fetchOAuth2Login(code, state, provider.toLowerCase() as ProviderKey);
         console.log('🔵 [웹] fetchOAuth2Login 응답:', res);
 
         if (res.state === 'NEED_REGISTER') {
@@ -134,7 +132,7 @@ export const useSocialAuth = () => {
           profileImage: res.profileImageUrl,
           provider: res.provider,
         });
-        setRecentProvider(providerLowerCase);
+        setRecentProvider(provider);
 
         // 저장된 return path로 이동
         const savedReturnPath = sessionStorage.getItem('login_return_path');
@@ -172,11 +170,7 @@ export const useSocialAuth = () => {
 
         if (type === MESSAGE_TYPES.AUTH_SUCCESS) {
           console.log('✅ [웹] AUTH_SUCCESS 처리:', data);
-          // URL에서 state 파라미터 가져오기
-          const params = new URLSearchParams(window.location.search);
-          const stateParam = params.get('state') || '';
-          console.log('🔔 [웹] URL에서 추출한 state:', stateParam);
-          handleOAuthCallback(data.code, data.provider, stateParam);
+          handleOAuthCallback(data.code, data.provider, data.state || '');
         } else if (type === MESSAGE_TYPES.AUTH_ERROR) {
           console.error('OAuth auth error:', data.error);
           setError('로그인에 실패했습니다. 다시 시도해주세요.');
@@ -216,8 +210,8 @@ export const useSocialAuth = () => {
         const parsedState: OAuthState = stateParam ? JSON.parse(atob(stateParam)) : {};
 
         if (parsedState?.fromWebView) {
-          // WebView에서 온 경우 Deep Link로 복귀
-          window.location.href = `${URL_SCHEME}?code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}`;
+          // WebView에서 온 경우 Deep Link로 복귀 (state도 함께 전달)
+          window.location.href = `${URL_SCHEME}?code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}&state=${encodeURIComponent(stateParam || '')}`;
         } else {
           // 브라우저에서 온 경우 직접 처리
           const provider = location.pathname.split('/').at(-1);
