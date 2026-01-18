@@ -47,7 +47,7 @@ const PopularKeywords = ({ setSearchValue }: { setSearchValue: (value: string) =
 
   return (
     <Wrapper>
-      <p>가장 많이 언급되는 키워드!</p>
+      <p>현재 가장 많이 언급되는 키워드</p>
       <PopularKeywordsContainer>
         {keywordRankings?.map((e) => (
           <span key={`KEYWORD_RANKING_${e}`} onClick={handlePopularKeywordClick(e)}>

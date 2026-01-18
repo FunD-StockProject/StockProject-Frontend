@@ -8,7 +8,7 @@ import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { StockTableInfo } from '@controllers/stocks/types';
 import { useStockTableInfoQuery } from '@controllers/stocks/query';
-import { HomeItemTtile } from '../Title/Title.Style';
+import { HomeItemTitle } from '../Title/Title.Style';
 import {
   StockTableContainer,
   StockTableContent,
@@ -47,10 +47,10 @@ const StockTable = ({ country }: { country: StockCountryKey }) => {
 
   return (
     <StockTableContainer>
-      <HomeItemTtile>
+      <HomeItemTitle>
         <p className="title">종목 차트별 인간지표</p>
         <p className="update-time">어제 {updateTime} 기준</p>
-      </HomeItemTtile>
+      </HomeItemTitle>
       <StockTableContent>
         <StockTableTabContainer>
           {StockTableTab.map(({ key, text }, idx) => (

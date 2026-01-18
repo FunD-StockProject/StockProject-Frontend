@@ -44,7 +44,7 @@ const SearchBarSelectBox = styled.div({
     cursor: 'pointer',
     border: `1.5px solid transparent`,
     background: theme.colors.sub_gray11,
-
+    color: theme.colors.sub_gray2,
     ...theme.font.body16Medium,
 
     ['>svg']: {
@@ -62,6 +62,7 @@ const SearchBarSelectBox = styled.div({
       ['+ul']: {
         display: 'block',
         borderColor: theme.colors.sub_gray7,
+        color: theme.colors.sub_gray2,
       },
     },
   },

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
-const HomeItemTtile = styled.div({
+const HomeItemTitle = styled.div({
   display: 'flex',
   padding: '0px 20px',
   gap: '6px',
@@ -35,4 +35,4 @@ const HomeItemTtile = styled.div({
   },
 });
 
-export { HomeItemTtile };
+export { HomeItemTitle };
