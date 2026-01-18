@@ -79,14 +79,10 @@ export const useSocialAuth = () => {
   );
 
   const handleOAuthCallback = useCallback(
-    async (code: string, provider: string) => {
-      console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider });
+    async (code: string, provider: string, state: string) => {
+      console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider, state });
       const providerLowerCase = provider.toLowerCase() as ProviderKey;
       console.log('🔵 [웹] provider 소문자 변환:', providerLowerCase);
-      const redirectUri = window.location.origin + location.pathname;
-      const state = btoa(redirectUri);
-      console.log('🔵 [웹] redirectUri:', redirectUri);
-      console.log('🔵 [웹] state:', state);
 
       clearAuthInfo();
       setIsLoading(true);
@@ -176,7 +172,11 @@ export const useSocialAuth = () => {
 
         if (type === MESSAGE_TYPES.AUTH_SUCCESS) {
           console.log('✅ [웹] AUTH_SUCCESS 처리:', data);
-          handleOAuthCallback(data.code, data.provider);
+          // URL에서 state 파라미터 가져오기
+          const params = new URLSearchParams(window.location.search);
+          const stateParam = params.get('state') || '';
+          console.log('🔔 [웹] URL에서 추출한 state:', stateParam);
+          handleOAuthCallback(data.code, data.provider, stateParam);
         } else if (type === MESSAGE_TYPES.AUTH_ERROR) {
           console.error('OAuth auth error:', data.error);
           setError('로그인에 실패했습니다. 다시 시도해주세요.');
@@ -221,9 +221,9 @@ export const useSocialAuth = () => {
         } else {
           // 브라우저에서 온 경우 직접 처리
           const provider = location.pathname.split('/').at(-1);
-          if (provider) {
+          if (provider && stateParam) {
             setIsLoading(true);
-            handleOAuthCallback(code, provider);
+            handleOAuthCallback(code, provider, stateParam);
           }
         }
       } catch (error) {
