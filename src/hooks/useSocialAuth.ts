@@ -81,6 +81,8 @@ export const useSocialAuth = () => {
   const handleOAuthCallback = useCallback(
     async (code: string, provider: string) => {
       console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider });
+      const providerLowerCase = provider.toLowerCase() as ProviderKey;
+      console.log('🔵 [웹] provider 소문자 변환:', providerLowerCase);
       const redirectUri = window.location.origin + location.pathname;
       const state = btoa(redirectUri);
       console.log('🔵 [웹] redirectUri:', redirectUri);
@@ -92,7 +94,7 @@ export const useSocialAuth = () => {
 
       try {
         console.log('🔵 [웹] fetchOAuth2Login 호출 시작');
-        const res = await fetchOAuth2Login(code, state, provider as ProviderKey);
+        const res = await fetchOAuth2Login(code, state, providerLowerCase);
         console.log('🔵 [웹] fetchOAuth2Login 응답:', res);
 
         if (res.state === 'NEED_REGISTER') {
@@ -136,7 +138,7 @@ export const useSocialAuth = () => {
           profileImage: res.profileImageUrl,
           provider: res.provider,
         });
-        setRecentProvider(provider);
+        setRecentProvider(providerLowerCase);
 
         // 저장된 return path로 이동
         const savedReturnPath = sessionStorage.getItem('login_return_path');
