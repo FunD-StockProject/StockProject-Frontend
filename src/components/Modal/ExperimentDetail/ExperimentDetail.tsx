@@ -6,6 +6,7 @@ import StockImage from '@components/Common/StockImage';
 import { ExperimentDetailTradeInfo } from '@controllers/experiment/api';
 import { useExperimentDetailQuery } from '@controllers/experiment/query';
 import { theme } from '@styles/themes';
+import { getFormattedDate } from '@utils/dateFormatter';
 import {
   ColoredDiffLabel,
   ExperimentDetailChartContainer,
@@ -25,15 +26,6 @@ import { ExperimentDetailModalData } from './useExperimentDetail';
 
 // const DPR = window.devicePixelRatio;
 
-const getFormattedDate = (_date: Date | string) => {
-  const date = new Date(_date);
-  const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map((num) =>
-    num.toString().padStart(2, '0'),
-  );
-
-  return `${year}.${month}.${day}`;
-};
-
 export interface ExperimentDetailIndex {
   key: string;
   title: string;
@@ -49,6 +41,7 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
     if (!experimentDetail) return [];
 
     const { buyAt, status, buyScore, buyPrice, currentScore, currentPrice, roi, country } = experimentDetail;
+    console.log(roi);
     const currency = STOCK_COUNTRY_MAP[country].currency;
     return [
       {
@@ -72,7 +65,7 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
       {
         key: 'roi',
         title: '수익률',
-        value: `${!roi ? '' : roi > 0 ? '+' : ''}${(isNaN(roi!) ? 0 : roi!).toFixed(1)}%`,
+        value: `${roi && roi > 0 ? '+' : ''}${(isNaN(roi!) ? 0 : roi!).toFixed(1)}%`,
         subValue: `${roi}`,
       },
     ];
@@ -110,7 +103,6 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
 
 const ExperimentDetailIndexItem = ({ indexItem }: { indexItem: ExperimentDetailIndex }) => {
   const { key, title, value, subValue } = indexItem;
-
   return (
     <ExperimentDetailIndexItemContainer key={key} className={key}>
       <p className="title">{title}</p>
@@ -267,29 +259,28 @@ const ExperimentDetailChart = ({
 
     const { score: currentScore, price: currentPrice } = selectedTradeInfo;
     const scoreDiff = currentScore - buyScore;
-    const scoreDiffSign = !scoreDiff ? '' : scoreDiff > 0 ? '+' : '-';
-    const roi = ((currentPrice - buyPrice) / buyPrice) * 100;
+    const scoreDiffSign = scoreDiff > 0 ? '+' : '';
+    const roi = buyPrice !== 0 ? ((currentPrice - buyPrice) / buyPrice) * 100 : 0;
     const roiDiff = roi;
-    const roiDiffSign = !roiDiff ? '' : roiDiff > 0 ? '+' : '-';
+    const roiDiffSign = roiDiff > 0 ? '+' : '';
 
     return selectedTradeInfo
       ? [
-          {
-            name: '인간지표',
-            value: `${currentScore}점`,
-            diff: `(${scoreDiffSign}${Math.abs(scoreDiff)}점)`,
-            delta: scoreDiff,
-          },
-          {
-            name: '수익률',
-            value: `${roi.toFixed(1)}%`,
-            diff: `(${roiDiffSign}${Math.abs(roiDiff).toFixed(1)}%)`,
-            delta: roiDiff,
-          },
-        ]
+        {
+          name: '인간지표',
+          value: `${currentScore}점`,
+          diff: `(${scoreDiffSign}${scoreDiff}점)`,
+          delta: scoreDiff,
+        },
+        {
+          name: '수익률',
+          value: `${roiDiffSign}${roi.toFixed(1)}%`,
+          diff: `(${roiDiffSign}${roiDiff.toFixed(1)}%)`,
+          delta: roiDiff,
+        },
+      ]
       : null;
   }, [selectedTradeInfo, buyScore, buyPrice]);
-
   return (
     <ExperimentDetailChartContainer>
       <ExperimentDetailChartGraphContainer>
