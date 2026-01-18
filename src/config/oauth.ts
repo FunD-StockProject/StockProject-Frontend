@@ -1,10 +1,10 @@
 export const URL_SCHEME = 'humanzipyoapp://';
 
 export const SOCIAL_PROVIDER = {
-  GOOGLE: 'GOOGLE',
-  KAKAO: 'KAKAO',
-  NAVER: 'NAVER',
-  APPLE: 'APPLE',
+  GOOGLE: 'google',
+  KAKAO: 'kakao',
+  NAVER: 'naver',
+  APPLE: 'apple',
 } as const;
 
 export type SocialProvider = typeof SOCIAL_PROVIDER[keyof typeof SOCIAL_PROVIDER];

@@ -67,7 +67,7 @@ export const useSocialAuth = () => {
         (window as any).ReactNativeWebView.postMessage(
           JSON.stringify({
             type: MESSAGE_TYPES.OPEN_EXTERNAL_BROWSER,
-            provider: provider.toLowerCase(),
+            provider: provider,
             url,
           })
         );
@@ -87,8 +87,12 @@ export const useSocialAuth = () => {
       setError(null);
 
       try {
-        console.log('🔵 [웹] fetchOAuth2Login 호출 시작');
-        const res = await fetchOAuth2Login(code, state, provider.toLowerCase() as ProviderKey);
+        // API는 state로 redirect URI의 base64 인코딩 값을 기대합니다
+        const redirectUri = window.location.origin + `/login/oauth2/code/${provider}`;
+        const apiState = btoa(redirectUri);
+
+        console.log('🔵 [웹] fetchOAuth2Login 호출 시작', { redirectUri, apiState });
+        const res = await fetchOAuth2Login(code, apiState, provider as ProviderKey);
         console.log('🔵 [웹] fetchOAuth2Login 응답:', res);
 
         if (res.state === 'NEED_REGISTER') {
@@ -205,17 +209,19 @@ export const useSocialAuth = () => {
       return;
     }
 
-    if (code) {
+    if (code && stateParam) {
       try {
-        const parsedState: OAuthState = stateParam ? JSON.parse(atob(stateParam)) : {};
+        const parsedState: OAuthState = JSON.parse(atob(stateParam));
 
         if (parsedState?.fromWebView) {
           // WebView에서 온 경우 Deep Link로 복귀 (state도 함께 전달)
           window.location.href = `${URL_SCHEME}?code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}&state=${encodeURIComponent(stateParam || '')}`;
         } else {
-          // 브라우저에서 온 경우 직접 처리
+          // 브라우저에서 온 경우: URL 파라미터 제거 후 처리하여 무한 루프 방지
           const provider = location.pathname.split('/').at(-1);
-          if (provider && stateParam) {
+          if (provider) {
+            // URL에서 쿼리 파라미터 제거
+            window.history.replaceState({}, '', location.pathname);
             setIsLoading(true);
             handleOAuthCallback(code, provider, stateParam);
           }
@@ -226,7 +232,7 @@ export const useSocialAuth = () => {
         setIsLoading(false);
       }
     }
-  }, [location.pathname, handleOAuthCallback]);
+  }, [location.pathname, location.search, handleOAuthCallback]);
 
   // WebView 메시지 리스너 등록
   useEffect(() => {
