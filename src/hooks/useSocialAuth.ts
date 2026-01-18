@@ -80,15 +80,20 @@ export const useSocialAuth = () => {
 
   const handleOAuthCallback = useCallback(
     async (code: string, provider: string) => {
+      console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider });
       const redirectUri = window.location.origin + location.pathname;
       const state = btoa(redirectUri);
+      console.log('🔵 [웹] redirectUri:', redirectUri);
+      console.log('🔵 [웹] state:', state);
 
       clearAuthInfo();
       setIsLoading(true);
       setError(null);
 
       try {
+        console.log('🔵 [웹] fetchOAuth2Login 호출 시작');
         const res = await fetchOAuth2Login(code, state, provider as ProviderKey);
+        console.log('🔵 [웹] fetchOAuth2Login 응답:', res);
 
         if (res.state === 'NEED_REGISTER') {
           // WebView에서는 네이티브에 메시지 전송
@@ -148,8 +153,11 @@ export const useSocialAuth = () => {
         } else {
           navigate('/', { replace: true });
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('OAuth callback error:', error);
+        console.error('Error message:', error?.message);
+        console.error('Error stack:', error?.stack);
+        console.error('Error response:', error?.response?.data);
         setError('로그인에 실패했습니다. 다시 시도해주세요.');
         setIsLoading(false);
       }
@@ -160,9 +168,12 @@ export const useSocialAuth = () => {
   const handleWebViewMessage = useCallback(
     (event: MessageEvent) => {
       try {
+        console.log('🔔 [웹] WebView 메시지 수신:', event.data);
         const { type, data } = JSON.parse(event.data);
+        console.log('🔔 [웹] 파싱된 메시지:', { type, data });
 
         if (type === MESSAGE_TYPES.AUTH_SUCCESS) {
+          console.log('✅ [웹] AUTH_SUCCESS 처리:', data);
           handleOAuthCallback(data.code, data.provider);
         } else if (type === MESSAGE_TYPES.AUTH_ERROR) {
           console.error('OAuth auth error:', data.error);
@@ -186,7 +197,7 @@ export const useSocialAuth = () => {
     if (error) {
       console.error('OAuth error:', error);
       const parsedState: OAuthState = stateParam
-        ? JSON.parse(atob(stateParam)) // URLSearchParams.get()이 이미 디코딩하므로 atob만 사용
+        ? JSON.parse(atob(stateParam))
         : {};
 
       if (parsedState?.fromWebView) {
@@ -198,9 +209,9 @@ export const useSocialAuth = () => {
       return;
     }
 
-    if (code && stateParam) {
+    if (code) {
       try {
-        const parsedState: OAuthState = JSON.parse(atob(stateParam)); // URLSearchParams.get()이 이미 디코딩하므로 atob만 사용
+        const parsedState: OAuthState = stateParam ? JSON.parse(atob(stateParam)) : {};
 
         if (parsedState?.fromWebView) {
           // WebView에서 온 경우 Deep Link로 복귀
@@ -224,13 +235,16 @@ export const useSocialAuth = () => {
   // WebView 메시지 리스너 등록
   useEffect(() => {
     if (!isWebView) {
+      console.log('⚠️ [웹] WebView 환경이 아님 - 메시지 리스너 미등록');
       return;
     }
 
+    console.log('✅ [웹] WebView 메시지 리스너 등록');
     window.addEventListener('message', handleWebViewMessage);
     document.addEventListener('message', handleWebViewMessage as EventListener);
 
     return () => {
+      console.log('🗑️ [웹] WebView 메시지 리스너 제거');
       window.removeEventListener('message', handleWebViewMessage);
       document.removeEventListener('message', handleWebViewMessage as EventListener);
     };
