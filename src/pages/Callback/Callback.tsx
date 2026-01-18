@@ -15,8 +15,11 @@ const Callback = () => {
   const { beforeLoginDepth, setAuthInfo, clearAuthInfo } = useAuthInfo();
   const [, setRecentProvider] = useLocalStorageState<string>('recent_provider');
 
-  // Google 로그인을 위한 useSocialAuth 훅 호출
-  useSocialAuth();
+  // Google 로그인을 위한 useSocialAuth 훅 호출 (Google인 경우만)
+  const provider = location.pathname.split('/').at(-1);
+  if (provider === 'google') {
+    useSocialAuth();
+  }
 
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
