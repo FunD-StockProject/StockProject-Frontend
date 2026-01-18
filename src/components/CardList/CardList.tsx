@@ -1,7 +1,7 @@
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
-import { HomeItemTtile } from '@components/Home/Title/Title.Style';
+import { HomeItemTitle } from '@components/Home/Title/Title.Style';
 import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
 import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
 import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
@@ -25,12 +25,12 @@ const CardList = ({ type, country }: { type: CardListType; country: StockCountry
 
   return (
     <CardListContainer>
-      <HomeItemTtile>
+      <HomeItemTitle>
         <p className="title">{`${cardListTitle[type]}`}</p>
         <InfoSVG onClick={openModal} />
         <p className="update-time">어제 {updateTime} 기준</p>
         <Modal />
-      </HomeItemTtile>
+      </HomeItemTitle>
       <StockCard type={type} country={country} />
     </CardListContainer>
   );
