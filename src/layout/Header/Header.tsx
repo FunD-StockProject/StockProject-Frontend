@@ -59,13 +59,17 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     }
   };
 
-  if (!headerTitle[location]) return null;
+  // OAuth 콜백 경로는 동적 파라미터를 포함하므로 startsWith로 확인
+  const isOAuthCallback = location.startsWith('/login/oauth2/code/');
+  const title = isOAuthCallback ? '로그인' : headerTitle[location];
+
+  if (!title) return null;
 
   return (
     <HeaderContainer>
       <HeaderContents>
         <ArrowLeftSVG onClick={handleBefore} />
-        <p>{headerTitle[location]}</p>
+        <p>{title}</p>
       </HeaderContents>
     </HeaderContainer>
   );

@@ -101,40 +101,4 @@ const LoginButton = styled.div(
   },
 );
 
-const LoginStatusContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '10px',
-  justifyContent: 'center',
-  flexGrow: 1,
-
-  ['>img']: {
-    width: '72px',
-    height: '72px',
-  },
-
-  ['>svg']: {
-    width: '72px',
-    height: '72px',
-    fill: '#3457FD',
-  },
-});
-
-const LoginStatusTitle = styled.p({
-  margin: 0,
-  fontSize: '20px',
-  fontWeight: 600,
-  textAlign: 'center',
-  color: theme.colors.sub_white
-});
-
-const LoginStatusDesc = styled.p({
-  margin: 0,
-  fontSize: '14px',
-  fontWeight: 500,
-  textAlign: 'center',
-  color: '#666',
-});
-
-export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginButton, LoginStatusContainer, LoginStatusTitle, LoginStatusDesc };
+export { LoginContainer, LoginBannerContainer, LoginBannerContents, LoginButtonContainer, LoginButton };
