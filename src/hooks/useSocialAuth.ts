@@ -118,18 +118,7 @@ export const useSocialAuth = () => {
           return;
         }
 
-        // 로그인 성공
-        if (isWebView && (window as any).ReactNativeWebView) {
-          (window as any).ReactNativeWebView.postMessage(
-            JSON.stringify({
-              type: MESSAGE_TYPES.TOKEN,
-              token: res.access_token
-            })
-          );
-          return;
-        }
-
-        // 브라우저에서 로그인 처리
+        // 로그인 성공 - WebView와 브라우저 모두 동일하게 처리
         setAuthInfo(res.access_token, res.refresh_token, {
           email: res.email,
           nickname: res.nickname,
@@ -137,6 +126,16 @@ export const useSocialAuth = () => {
           provider: res.provider,
         });
         setRecentProvider(provider);
+
+        // WebView인 경우 네이티브 앱에도 알림
+        if (isWebView && (window as any).ReactNativeWebView) {
+          (window as any).ReactNativeWebView.postMessage(
+            JSON.stringify({
+              type: MESSAGE_TYPES.TOKEN,
+              token: res.access_token
+            })
+          );
+        }
 
         // 저장된 return path로 이동
         const savedReturnPath = sessionStorage.getItem('login_return_path');
