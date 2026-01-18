@@ -1,6 +1,5 @@
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
 import AboutPage from '@pages/About/About';
-import Callback from '@pages/Callback/Callback';
 import Favorites from '@pages/Favorites/Favorites';
 import Lab from '@pages/Lab/Lab';
 import RecordSheet from '@pages/Lab/RecordSheet/RecordSheet';
@@ -41,11 +40,6 @@ export const webPath = {
   labRecordSheet: () => '/lab/recordsheet',
   term: () => '/term',
   about: () => '/about',
-  callback: () => '/login/oauth2/code',
-  callbackKakao: () => '/login/oauth2/code/kakao',
-  callbackGoogle: () => '/login/oauth2/code/google',
-  callbackNaver: () => '/login/oauth2/code/naver',
-  callbackApple: () => '/login/oauth2/code/apple',
   notification: () => '/notification',
 };
 
@@ -99,12 +93,13 @@ const routes = [
       { path: webPath.labRecordSheet(), element: <RecordSheet /> },
       { path: webPath.term(), element: <Term /> },
       { path: webPath.about(), element: <AboutPage /> },
-      { path: webPath.callbackKakao(), element: <Callback /> },
-      { path: webPath.callbackGoogle(), element: <Callback /> },
-      { path: webPath.callbackNaver(), element: <Callback /> },
-      { path: webPath.callbackApple(), element: <Callback /> },
       { path: webPath.usage(), element: <Usage /> },
       { path: webPath.notification(), element: <NotificationPage /> },
+      // OAuth 콜백 경로 - useSocialAuth 훅이 자동으로 처리
+      { path: '/login/oauth2/code/google', element: <div>Loading...</div> },
+      { path: '/login/oauth2/code/naver', element: <div>Loading...</div> },
+      { path: '/login/oauth2/code/kakao', element: <div>Loading...</div> },
+      { path: '/login/oauth2/code/apple', element: <div>Loading...</div> },
     ],
   },
 ];

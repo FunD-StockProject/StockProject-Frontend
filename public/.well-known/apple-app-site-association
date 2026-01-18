@@ -5,7 +5,8 @@
       {
         "appID": "C9TY6BF2XS.com.durumi99.humanzipyoapp",
         "paths": [
-          "/login/oauth2/code/*"
+          "NOT /login/oauth2/code/*",
+          "/*"
         ]
       }
     ]
