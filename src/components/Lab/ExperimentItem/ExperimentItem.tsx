@@ -1,6 +1,7 @@
 import StockImage from '@components/Common/StockImage';
 import { ExperimentItem } from '@controllers/experiment/api';
 import { ColoredDiffLabel, ExperimentItemContainer, ExperimentItemContent } from './ExperimentItem.Style';
+import { getFormattedDate } from '@utils/dateFormatter';
 
 const ExperimentItemComponent = ({
   experiment,
@@ -12,21 +13,20 @@ const ExperimentItemComponent = ({
   handleClickExperimentDetail: (experimentId: number) => void;
 }) => {
   const { stockId, symbolName, buyAt, status, buyPrice, roi } = experiment;
-
-  const dateText = ((date: Date) => {
-    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map((num) =>
-      num.toString().padStart(2, '0'),
-    );
-
-    return `${year}.${month}.${day}`;
-  })(new Date(buyAt));
+  const dateText = getFormattedDate(buyAt);
   const statusText = status === 'PROGRESS' ? '실험중' : '완료';
 
-  const daysAgo = Math.floor((new Date().getTime() - new Date(buyAt).getTime()) / (24 * 60 * 60 * 1000));
+  const daysAgo = (() => {
+    // buyAt이 배열 형태인 경우 Date 객체로 변환
+    const buyDate = Array.isArray(buyAt)
+      ? new Date(buyAt[0], buyAt[1] - 1, buyAt[2], buyAt[3] || 0, buyAt[4] || 0, buyAt[5] || 0)
+      : new Date(buyAt);
+    return Math.floor((new Date().getTime() - buyDate.getTime()) / (24 * 60 * 60 * 1000));
+  })();
 
   const diff = roi;
   const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
-  const diffPercent = (Math.abs(diff / buyPrice) * 100).toFixed(1);
+  const diffPercent = buyPrice !== 0 ? (Math.abs(diff / buyPrice) * 100).toFixed(1) : '0.0';
   const diffPercentText = sign + diffPercent + '%';
 
   return (
