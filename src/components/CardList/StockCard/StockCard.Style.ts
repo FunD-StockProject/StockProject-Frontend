@@ -10,10 +10,6 @@ const StockCardContainer = styled.div({
   transition: 'background-color 0.1s ease-in-out',
   backgroundColor: theme.colors.sub_black,
 
-  [':hover']: {
-    backgroundColor: theme.colors.sub_gray5,
-  },
-
   ['>div']: {
     display: 'flex',
     gap: '12px',
