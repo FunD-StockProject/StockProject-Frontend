@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import useLocalStorageState from '@hooks/useLocalStorageState';
+import { useSocialAuth } from '@hooks/useSocialAuth';
+import { SOCIAL_PROVIDER } from '../../config/oauth';
 import CloseSVG from '@assets/close.svg?react';
 import AppleLoginSVG from '@assets/login/apple.svg?react';
 import GoogleLoginSVG from '@assets/login/google.svg?react';
@@ -18,50 +20,13 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const [recentProvider] = useLocalStorageState<string>('recent_provider');
+  const { signInWithOAuth, isLoading, error } = useSocialAuth();
 
   // WebView 환경 감지
   const isWebView = !!(window as any).ReactNativeWebView;
 
   const handleGoogleLogin = () => {
-    // WebView: 커스텀 스킴 사용, 웹: HTTPS URL 사용
-    const redirectUri = isWebView
-      ? 'humanzipyoapp://login/oauth2/code/google'
-      : `${window.location.origin}/login/oauth2/code/google`;
-
-    // state에 환경 정보 포함 (CSRF 방지 + 환경 구분)
-    const stateObj = {
-      csrf: uuidv4(),
-      isWebView: isWebView,
-    };
-    const state = btoa(JSON.stringify(stateObj)); // Base64 인코딩
-    localStorage.setItem('oauth_state', state);
-
-    const params = new URLSearchParams({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      redirect_uri: redirectUri,
-      response_type: 'code',
-      scope: 'openid email profile',
-      access_type: 'offline',
-      prompt: 'consent',
-      include_granted_scopes: 'true',
-      state,
-    });
-
-    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-
-    if (isWebView) {
-      // WebView 환경: 구글 로그인은 외부 브라우저로 열도록 네이티브에 요청
-      (window as any).ReactNativeWebView?.postMessage(
-        JSON.stringify({
-          type: 'OAUTH_LOGIN_EXTERNAL',
-          provider: 'google',
-          url: oauthUrl,
-        }),
-      );
-    } else {
-      // 일반 브라우저: 직접 이동
-      window.location.href = oauthUrl;
-    }
+    signInWithOAuth(SOCIAL_PROVIDER.GOOGLE);
   };
 
   const handleNaverLogin = () => {
@@ -168,6 +133,29 @@ const Login = () => {
           </p>
         </LoginBannerContents>
       </LoginBannerContainer>
+      {error && (
+        <div style={{
+          color: '#ff4444',
+          textAlign: 'center',
+          fontSize: '14px',
+          marginBottom: '10px',
+          padding: '10px',
+          backgroundColor: '#fff1f0',
+          borderRadius: '8px'
+        }}>
+          {error}
+        </div>
+      )}
+      {isLoading && (
+        <div style={{
+          textAlign: 'center',
+          fontSize: '14px',
+          marginBottom: '10px',
+          color: '#666'
+        }}>
+          로그인 처리 중...
+        </div>
+      )}
       <LoginButtonContainer>
         {loginProviders.map((e) => (
           <LoginButton key={`LOGIN_PROVIDER_IMG_${e.key}`} isRecent={e.key == recentProvider} onClick={e.method}>

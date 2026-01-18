@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import useLocalStorageState from '@hooks/useLocalStorageState';
+import { useSocialAuth } from '@hooks/useSocialAuth';
 import { webPath } from '@router/index';
 import { ProviderKey, fetchOAuth2Login } from '@controllers/auth/api';
 import BlueAlert from '@assets/blueAlert.svg?react';
@@ -13,6 +14,9 @@ const Callback = () => {
   const location = useLocation();
   const { beforeLoginDepth, setAuthInfo, clearAuthInfo } = useAuthInfo();
   const [, setRecentProvider] = useLocalStorageState<string>('recent_provider');
+
+  // Google 로그인을 위한 useSocialAuth 훅 호출
+  useSocialAuth();
 
   const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState('');
@@ -27,6 +31,13 @@ const Callback = () => {
       const state = btoa(redirectUri);
 
       const provider = location.pathname.split('/').at(-1);
+
+      // Google 로그인은 useSocialAuth 훅에서 자동으로 처리됩니다.
+      // 이 Callback 페이지는 Naver, Apple, Kakao 로그인에 사용됩니다.
+      if (provider === 'google') {
+        // Google은 useSocialAuth 훅에서 처리하므로 여기서는 return
+        return;
+      }
 
       // 현재 실제 환경 확인 (state가 아닌 실제 환경)
       const isCurrentlyInWebView = !!(window as any).ReactNativeWebView;
