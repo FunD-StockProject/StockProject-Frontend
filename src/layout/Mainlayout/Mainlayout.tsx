@@ -4,12 +4,16 @@ import { webPath } from '@router/index';
 import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
 import Header from '@layout/Header/Header';
 import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
+import { useSocialAuth } from '@hooks/useSocialAuth';
 import Footer from '../Footer/Footer';
 import { LayoutProps } from './Mainlayout.Props';
 import { MainContent, StyledMainlayout } from './Mainlayout.Style';
 
 const Mainlayout = ({ children }: LayoutProps) => {
   const location = useLocation();
+
+  // OAuth 콜백 처리를 위해 전역에서 useSocialAuth 훅 호출
+  useSocialAuth();
   const visiblePWAInfoPopUp = false;
   const isRootPage = location.pathname === '/';
 
@@ -20,7 +24,6 @@ const Mainlayout = ({ children }: LayoutProps) => {
       'editProfile',
       'withdraw',
       'term',
-      'callback',
       'usage',
       'notification',
     ] as (keyof typeof webPath)[]

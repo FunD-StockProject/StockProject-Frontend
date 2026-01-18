@@ -43,7 +43,6 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
     [webPath.editProfile()]: '내 정보 수정',
     [webPath.editeProfileDone()]: '내 정보 수정',
     [webPath.about()]: '인간지표란?',
-    [webPath.callbackKakao()]: '로그인',
     [webPath.usage()]: 'PWA 사용방법',
     [webPath.notification()]: '알림',
     [webPath.labRecordSheet()]: '매수 기록지',
