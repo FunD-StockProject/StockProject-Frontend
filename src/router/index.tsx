@@ -15,6 +15,7 @@ import Term from '@pages/Term/Term';
 import Usage from '@pages/Usage/Usage';
 import Withdraw from '@pages/Withdraw/Withdraw';
 import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
+import OAuthCallback from '@pages/OAuthCallback/OAuthCallback';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
 import Home from '../pages/Home/Home';
 import Search from '../pages/Search/Search';
@@ -41,6 +42,7 @@ export const webPath = {
   term: () => '/term',
   about: () => '/about',
   notification: () => '/notification',
+  oauthCallback: () => '/login/oauth2/code/:provider',
 };
 
 const Root = () => {
@@ -95,11 +97,7 @@ const routes = [
       { path: webPath.about(), element: <AboutPage /> },
       { path: webPath.usage(), element: <Usage /> },
       { path: webPath.notification(), element: <NotificationPage /> },
-      // OAuth 콜백 경로 - useSocialAuth 훅이 자동으로 처리
-      { path: '/login/oauth2/code/google', element: <div>Loading...</div> },
-      { path: '/login/oauth2/code/naver', element: <div>Loading...</div> },
-      { path: '/login/oauth2/code/kakao', element: <div>Loading...</div> },
-      { path: '/login/oauth2/code/apple', element: <div>Loading...</div> },
+      { path: webPath.oauthCallback(), element: <OAuthCallback /> },
     ],
   },
 ];
