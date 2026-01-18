@@ -1,13 +1,13 @@
 import CommonPopUp from '../CommonPopUp';
-import { PopUpContent, PopUpTitle, StyledSpan } from '../CommonPopUp.style';
+import { PopUpContent, PopUpTitle } from '../CommonPopUp.style';
 
 const ZipyoPopUp = ({ onClose }: { onClose: () => void }) => (
   <CommonPopUp onClose={onClose}>
-    <PopUpTitle>지금 민심 떡락중인 지표는?</PopUpTitle>
+    <PopUpTitle>💧 현재 민심 급하락 중</PopUpTitle>
     <PopUpContent>
       <div>
-        현재 개미들의 민심이 <StyledSpan>부정적으로 급하락중인 </StyledSpan>
-        종목입니다. 다양한 커뮤니티 데이터를 분석해 인간지표 점수를 계산했습니다.
+        현재 각종 주식 커뮤니티에서
+        투자자들의 민심이 부정적으로 급하락 중인 종목입니다.
       </div>
     </PopUpContent>
   </CommonPopUp>

@@ -1,5 +1,5 @@
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
-import { STOCK_COUNTRY_MAP, StockCountryKey } from '@ts/StockCountry';
+import { StockCountryKey } from '@ts/StockCountry';
 import useModal from '@hooks/useModal';
 import { HomeItemTtile } from '@components/Home/Title/Title.Style';
 import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
@@ -11,9 +11,9 @@ import StockCard from './StockCard/StockCard';
 
 type CardListType = 'HOT' | 'RISING' | 'DESCENT';
 const cardListTitle: Record<CardListType, string> = {
-  HOT: '가장 HOT 한',
-  RISING: '🔥지금 민심 떡상 중인',
-  DESCENT: '💧지금 민심 떡락 중인',
+  HOT: '👑 현재 시장 반응 TOP 3',
+  RISING: '🔥 현재 민심 급상승 중',
+  DESCENT: '💧 현재 민심 급하락 중',
 };
 
 const CardList = ({ type, country }: { type: CardListType; country: StockCountryKey }) => {
@@ -22,12 +22,11 @@ const CardList = ({ type, country }: { type: CardListType; country: StockCountry
   });
 
   const updateTime = STOCK_UPDATE_TIME[country];
-  const title = `${cardListTitle[type]} ${type === 'HOT' ? `${STOCK_COUNTRY_MAP[country].text}지표` : ''}`;
 
   return (
     <CardListContainer>
       <HomeItemTtile>
-        <p className="title">{title}</p>
+        <p className="title">{`${cardListTitle[type]}`}</p>
         <InfoSVG onClick={openModal} />
         <p className="update-time">어제 {updateTime} 기준</p>
         <Modal />
