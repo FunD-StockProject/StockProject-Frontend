@@ -34,7 +34,7 @@ const fetchData = async (path: string, init: RequestInit = {}, isFormData: boole
 const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: boolean = false) => {
   try {
     const url = `${baseURL}${path}`;
-    let token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
     let res = await fetch(url, {
       method: 'GET',
       ...init,
