@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+import FCMTestButton from '@components/MyPage/FCMTestButton/FCMTestButton';
 import { fetchAuthLogout } from '@controllers/auth/api';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
 import { useBookmarkListQuery } from '@controllers/preference/query';
@@ -172,6 +173,7 @@ const MyPage = () => {
           </MyPageDefaultContainer>
         )}
         <span className="divider" />
+        <FCMTestButton />
         <MyPageSNSContainer>
           <InstagramSVG onClick={handleClickInstagram} />
           <LinkedInSVG onClick={handleClickLinkedIn} />
