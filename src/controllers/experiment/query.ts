@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { StockCountryKey } from '@ts/StockCountry';
+import { StockSectorKey } from '@ts/StockSector';
 import { queryOptions } from '@controllers/common/query';
 import {
   fetchBuyExperiment,
@@ -9,7 +10,6 @@ import {
   fetchPortfolioResult,
   fetchSectorRecommend,
 } from './api';
-import { StockSectorKey } from '@ts/StockSector';
 
 // ----- Queries -----
 export const useExperimentStatusQuery = () => {
@@ -52,7 +52,6 @@ export const useBuyExperimentMutation = () => {
     },
   );
 };
-
 
 export const useSectorRecommendQuery = (country: StockCountryKey, sectorKey: StockSectorKey | undefined) => {
   return useQuery(['sectorRecommend', country, sectorKey], () => fetchSectorRecommend(country, sectorKey!), {

@@ -1,7 +1,7 @@
+import { getFormattedDate } from '@utils/dateFormatter';
 import StockImage from '@components/Common/StockImage';
 import { ExperimentItem } from '@controllers/experiment/api';
 import { ColoredDiffLabel, ExperimentItemContainer, ExperimentItemContent } from './ExperimentItem.Style';
-import { getFormattedDate } from '@utils/dateFormatter';
 
 const ExperimentItemComponent = ({
   experiment,

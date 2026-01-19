@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { TextBodyProps, TextDetailProps, TextDisplayProps, TextHeadingProps, TextTitleProps } from './Text.Props';
 import { media, theme } from '../../styles/themes';
+import { TextBodyProps, TextDetailProps, TextDisplayProps, TextHeadingProps, TextTitleProps } from './Text.Props';
 
 /**
  * TextHeading

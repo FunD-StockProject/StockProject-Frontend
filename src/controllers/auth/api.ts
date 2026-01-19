@@ -1,4 +1,4 @@
-import { fetchAuthData, fetchData, Headers, baseURL, wait } from '@controllers/common/base';
+import { Headers, baseURL, fetchAuthData, fetchData, wait } from '@controllers/common/base';
 
 export type ProviderKey = 'kakao' | 'google' | 'naver' | 'apple';
 

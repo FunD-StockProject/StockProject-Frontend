@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import useLocalStorageState from '@hooks/useLocalStorageState';
 import { useSocialAuth } from '@hooks/useSocialAuth';
-import { SOCIAL_PROVIDER } from '../../config/oauth';
 import CloseSVG from '@assets/close.svg?react';
 import AppleLoginSVG from '@assets/login/apple.svg?react';
 import GoogleLoginSVG from '@assets/login/google.svg?react';
 import KakaoLoginSVG from '@assets/login/kakao.svg?react';
 import NaverLoginSVG from '@assets/login/naver.svg?react';
 import LogoWithTitleWhiteSVG from '@assets/logo_with_title_white.svg?react';
+import { SOCIAL_PROVIDER } from '../../config/oauth';
 import {
   LoginBannerContainer,
   LoginBannerContents,

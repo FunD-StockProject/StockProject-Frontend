@@ -133,7 +133,6 @@ const SearchTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
     navigate(webPath.labStep(), { state: { step: 4 } });
   };
 
-
   return (
     stockInfo && (
       <SearchTitleContainer>

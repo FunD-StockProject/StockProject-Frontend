@@ -105,4 +105,3 @@ export interface StockPreferenceStatus {
   isBookmarked: boolean;
   isNotificationOn: boolean;
 }
-

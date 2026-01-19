@@ -6,8 +6,7 @@ export const drawLine = (ctx: any, pathList: any) => {
   ctx.stroke(
     new Path2D(
       pathList.reduce(
-        (acc: any, [x, y]: [number, number], i: number) =>
-          acc + `${i ? 'L' : 'M'} ${DPR * x} ${DPR * y} `,
+        (acc: any, [x, y]: [number, number], i: number) => acc + `${i ? 'L' : 'M'} ${DPR * x} ${DPR * y} `,
         '',
       ),
     ),

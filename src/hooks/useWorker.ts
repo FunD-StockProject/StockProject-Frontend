@@ -1,5 +1,5 @@
 // useWorker.ts
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type UseWorkerResult = [result: any, postMessage: (message: any) => void];
 

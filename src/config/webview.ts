@@ -7,4 +7,4 @@ export const MESSAGE_TYPES = {
   NEED_REGISTER: 'NEED_REGISTER',
 } as const;
 
-export type MessageType = typeof MESSAGE_TYPES[keyof typeof MESSAGE_TYPES];
+export type MessageType = (typeof MESSAGE_TYPES)[keyof typeof MESSAGE_TYPES];

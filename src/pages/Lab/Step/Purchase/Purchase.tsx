@@ -6,9 +6,10 @@ import { diffToValue } from '@utils/ScoreConvert';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { StockDetailInfo } from '@controllers/stocks/types';
+import { SectorRecommendStockInfo } from '@controllers/experiment/api';
 import { useBuyExperimentMutation, useSectorRecommendQuery } from '@controllers/experiment/query';
 import { stockInfoQueries } from '@controllers/stocks/query';
+import { StockDetailInfo } from '@controllers/stocks/types';
 import CheckSVG from '@assets/icons/check.svg?react';
 import DownSVG from '@assets/icons/down.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
@@ -21,7 +22,6 @@ import {
   LabPurchaseGridItemText,
   LabPurchaseToast,
 } from './Purchase.Style';
-import { SectorRecommendStockInfo } from '@controllers/experiment/api';
 
 const priceToText = (price: number, country: StockCountryKey) => {
   const _price = price.toLocaleString();
@@ -44,12 +44,12 @@ const LabPurchase = () => {
   } = location.state; // 섹터 키 배열
   const [selectedSector, setSelectedSector] = useState<StockSectorKey | undefined>(selectedSectorKeys?.[0]); // 첫 번째 섹터를 기본 선택
 
-  const selectedStockInfos = ((stockInfoQueries(selectedStocks) ?? []).map((query) => query.data).filter(Boolean) ?? []) as StockDetailInfo[];
+  const selectedStockInfos = ((stockInfoQueries(selectedStocks) ?? []).map((query) => query.data).filter(Boolean) ??
+    []) as StockDetailInfo[];
 
   const [purchased, setPurchased] = useState<number[]>([]);
   const { mutate: buyExperiment } = useBuyExperimentMutation();
   const { data: sectorRecommendStockInfo } = useSectorRecommendQuery(selectedCountry, selectedSector);
-
 
   const { toast, showToast } = useToast();
   const handlePrevStep = () => {

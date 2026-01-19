@@ -7,7 +7,7 @@ export const SOCIAL_PROVIDER = {
   APPLE: 'apple',
 } as const;
 
-export type SocialProvider = typeof SOCIAL_PROVIDER[keyof typeof SOCIAL_PROVIDER];
+export type SocialProvider = (typeof SOCIAL_PROVIDER)[keyof typeof SOCIAL_PROVIDER];
 
 export interface AuthConfig {
   endpoint: string;

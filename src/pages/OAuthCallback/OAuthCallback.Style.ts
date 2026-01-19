@@ -27,7 +27,7 @@ const StatusTitle = styled.p({
   fontSize: '20px',
   fontWeight: 600,
   textAlign: 'center',
-  color: theme.colors.sub_white
+  color: theme.colors.sub_white,
 });
 
 const StatusDesc = styled.p({

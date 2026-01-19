@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
+import { getFormattedDate } from '@utils/dateFormatter';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { ExperimentDetailTradeInfo } from '@controllers/experiment/api';
 import { useExperimentDetailQuery } from '@controllers/experiment/query';
 import { theme } from '@styles/themes';
-import { getFormattedDate } from '@utils/dateFormatter';
 import {
   ColoredDiffLabel,
   ExperimentDetailChartContainer,
@@ -266,19 +266,19 @@ const ExperimentDetailChart = ({
 
     return selectedTradeInfo
       ? [
-        {
-          name: '인간지표',
-          value: `${currentScore}점`,
-          diff: `(${scoreDiffSign}${scoreDiff}점)`,
-          delta: scoreDiff,
-        },
-        {
-          name: '수익률',
-          value: `${roiDiffSign}${roi.toFixed(1)}%`,
-          diff: `(${roiDiffSign}${roiDiff.toFixed(1)}%)`,
-          delta: roiDiff,
-        },
-      ]
+          {
+            name: '인간지표',
+            value: `${currentScore}점`,
+            diff: `(${scoreDiffSign}${scoreDiff}점)`,
+            delta: scoreDiff,
+          },
+          {
+            name: '수익률',
+            value: `${roiDiffSign}${roi.toFixed(1)}%`,
+            diff: `(${roiDiffSign}${roiDiff.toFixed(1)}%)`,
+            delta: roiDiff,
+          },
+        ]
       : null;
   }, [selectedTradeInfo, buyScore, buyPrice]);
   return (

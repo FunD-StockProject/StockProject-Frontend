@@ -1,26 +1,38 @@
-import { theme } from "@styles/themes";
+import { theme } from '@styles/themes';
 
 // 타입별 이모지 매핑
 export const getTypeEmoji = (type: string): string => {
   switch (type) {
-    case '완전 인간 아님': return '😱';
-    case '인간 아님': return '🙁';
-    case '평범 인간': return '😐';
-    case '인간 맞음': return '☺️';
-    case '인간 완전 맞음': return '😆';
-    default: return '🚨';
+    case '완전 인간 아님':
+      return '😱';
+    case '인간 아님':
+      return '🙁';
+    case '평범 인간':
+      return '😐';
+    case '인간 맞음':
+      return '☺️';
+    case '인간 완전 맞음':
+      return '😆';
+    default:
+      return '🚨';
   }
 };
 
 // 점수대별 배경 색상 매핑
 export const getTypeColor = (type: string): string => {
   switch (type) {
-    case '완전 인간 아님': return theme.colors.red;
-    case '인간 아님': return theme.colors.red;
-    case '평범 인간': return theme.colors.sub_gray9;
-    case '인간 맞음': return theme.colors.sub_gray1;
-    case '인간 완전 맞음': return theme.colors.sub_gray1;
-    default: return theme.colors.sub_gray1;
+    case '완전 인간 아님':
+      return theme.colors.red;
+    case '인간 아님':
+      return theme.colors.red;
+    case '평범 인간':
+      return theme.colors.sub_gray9;
+    case '인간 맞음':
+      return theme.colors.sub_gray1;
+    case '인간 완전 맞음':
+      return theme.colors.sub_gray1;
+    default:
+      return theme.colors.sub_gray1;
   }
 };
 
@@ -52,4 +64,4 @@ export const calculateSuccessRate = (profitCount: number, totalCount: number): s
   if (rate >= 40) return '40~60%';
   if (rate >= 20) return '20~40%';
   return '0~20%';
-}; 
+};

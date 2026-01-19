@@ -1,4 +1,3 @@
-
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
@@ -21,16 +20,15 @@ export const TopBar = styled.div<{ statusRate: number }>`
   border-bottom: 4px solid ${theme.colors.sub_gray11};
 
   &::before {
-    content: '';
     position: absolute;
     bottom: -4px;
     left: 0;
-    height: 4px;
-    width: ${({ statusRate }) => `${statusRate}%`};
     background: ${theme.colors.sub_gray9};
-  }  
+    width: ${({ statusRate }) => `${statusRate}%`};
+    height: 4px;
+    content: '';
+  }
 `;
-
 
 export const BackIcon = styled.div`
   position: absolute;
@@ -54,7 +52,7 @@ export const TabContainer = styled.div`
 
 export const InnerContainer = styled.div`
   padding: 24px;
-  padding-bottom: 120px; 
+  padding-bottom: 120px;
   overflow-y: auto;
   justify-content: space-between;
 `;
@@ -76,25 +74,25 @@ export const NavButtonContainer = styled.div`
   margin-top: 100px;
 `;
 
-export const NavButton = styled.button<{ next?: boolean, active?: boolean }>`
+export const NavButton = styled.button<{ next?: boolean; active?: boolean }>`
   ${theme.font.body18Semibold};
   flex: 1;
   padding: 12px;
   margin: 0 4px;
   border-radius: 8px;
   border: none;
-  background: ${({ next, active }) => active ? theme.colors.sub_blue6 : next ? theme.colors.sub_gray8 : theme.colors.sub_gray11};
-  color: ${({ next, active }) => active ? theme.colors.sub_white : next ? theme.colors.sub_black : theme.colors.sub_gray5};
-  
+  background: ${({ next, active }) =>
+    active ? theme.colors.sub_blue6 : next ? theme.colors.sub_gray8 : theme.colors.sub_gray11};
+  color: ${({ next, active }) =>
+    active ? theme.colors.sub_white : next ? theme.colors.sub_black : theme.colors.sub_gray5};
 `;
 
 export const IndustryTag = styled.div<{ selected: boolean }>`
   padding: 8px 16px;
-  background: ${({ selected }) => selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10};
-  color: ${({ selected }) => selected ? theme.colors.sub_white : theme.colors.sub_gray6};
+  background: ${({ selected }) => (selected ? theme.colors.sub_blue6 : theme.colors.sub_gray10)};
+  color: ${({ selected }) => (selected ? theme.colors.sub_white : theme.colors.sub_gray6)};
   border-radius: 50px;
 `;
-
 
 export const SearchInput = styled.input`
   background: transparent;
@@ -102,9 +100,9 @@ export const SearchInput = styled.input`
   outline: none;
   flex: 1;
   color: white;
-  
-  &::placeholder{
-  ${theme.font.body16Medium}
+
+  &::placeholder {
+    ${theme.font.body16Medium}
     color: ${theme.colors.sub_gray7};
   }
 `;
@@ -118,13 +116,12 @@ export const SearchIconWrapper = styled.div`
 
 export const SearchBar = styled.div`
   background: ${theme.colors.sub_gray11};
-  color:white;
+  color: white;
   border-radius: 8px;
   display: flex;
   align-items: center;
   padding: 10px 12px;
 `;
-
 
 export const ToastStyle = styled.div`
   ${theme.font.detail12Semibold}
@@ -134,7 +131,7 @@ export const ToastStyle = styled.div`
   left: 50%;
   transform: translateX(-50%);
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.80);
+  background: rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(73, 80, 87, 0.5);
   border-radius: 5px;
   z-index: 1000;
@@ -148,7 +145,6 @@ export const ToastStyle = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 
 export const Divider = styled.div`
   background-color: ${theme.colors.sub_gray11};
