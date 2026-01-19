@@ -11,10 +11,10 @@
     function e(a) {
       if (r[a]) return r[a].exports;
       var n = (r[a] = { exports: {}, id: a, loaded: !1 });
-      return t[a].call(n.exports, n, n.exports, e), (n.loaded = !0), n.exports;
+      return (t[a].call(n.exports, n, n.exports, e), (n.loaded = !0), n.exports);
     }
     var r = {};
-    return (e.m = t), (e.c = r), (e.p = '/'), e(0);
+    return ((e.m = t), (e.c = r), (e.p = '/'), e(0));
   })([
     function (t, e, r) {
       'use strict';
@@ -32,11 +32,11 @@
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t) {
           var e = void 0,
             r = function a(r) {
-              (e = requestAnimationFrame(a)), t(r);
+              ((e = requestAnimationFrame(a)), t(r));
             };
           return (
             r(0),
@@ -44,7 +44,7 @@
               return cancelAnimationFrame(e);
             }
           );
-        });
+        }));
     },
     function (t, e, r) {
       'use strict';
@@ -62,7 +62,11 @@
         d = 2,
         s = function (t, e, r, a) {
           var n,
-            l = ((n = ((n = o.append.call(t, 'g')), o.attr).call(n, 'id', 'digit-' + a)), o.style).call(n, 'filter', 'url(#motionFilter-' + a + ')');
+            l = ((n = ((n = o.append.call(t, 'g')), o.attr).call(n, 'id', 'digit-' + a)), o.style).call(
+              n,
+              'filter',
+              'url(#motionFilter-' + a + ')',
+            );
           return (
             u.forEach(function (t, a) {
               var n;
@@ -73,11 +77,12 @@
         },
         p = function (t, e) {
           var r;
-          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = o.append.call(t, 'filter')), o.attr).call(r, 'id', 'motionFilter-' + e)), o.attr).call(
+          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = o.append.call(t, 'filter')), o.attr).call(
             r,
-            'width',
-            '300%',
+            'id',
+            'motionFilter-' + e,
           )),
+          o.attr).call(r, 'width', '300%')),
           o.attr).call(r, 'x', '-100%')),
           o.append).call(r, 'feGaussianBlur')),
           o.attr).call(r, 'class', 'blurValues')),
@@ -86,22 +91,30 @@
         },
         v = function (t) {
           var e;
-          return ((e = ((e = ((e = ((e = ((e = o.append.call(t, 'filter')), o.attr).call(e, 'id', 'createShadowFailFilter')), o.attr).call(e, 'width', '300%')),
+          return ((e = ((e = ((e = ((e = ((e = o.append.call(t, 'filter')), o.attr).call(
+            e,
+            'id',
+            'createShadowFailFilter',
+          )),
+          o.attr).call(e, 'width', '300%')),
           o.attr).call(e, 'x', '-100%')),
           o.append).call(e, 'feGaussianBlur')),
           o.attr).call(e, 'stdDeviation', '0 0');
         },
         y = function (t, e) {
           var r;
-          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r =
-            o.append.call(t, 'linearGradient')),
-          o.attr).call(r, 'id', 'gradient-' + e)),
-          o.attr).call(r, 'x1', '0%')),
-          o.attr).call(r, 'y1', '0%')),
-          o.attr).call(r, 'x2', '0%')),
-          o.attr).call(r, 'y2', '100%')),
-          o.append).call(r, 'stop')),
-          o.attr).call(r, 'offset', '0')),
+          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r = ((r =
+            ((r = ((r = ((r = ((r = ((r = ((r = ((r = o.append.call(t, 'linearGradient')), o.attr).call(
+              r,
+              'id',
+              'gradient-' + e,
+            )),
+            o.attr).call(r, 'x1', '0%')),
+            o.attr).call(r, 'y1', '0%')),
+            o.attr).call(r, 'x2', '0%')),
+            o.attr).call(r, 'y2', '100%')),
+            o.append).call(r, 'stop')),
+            o.attr).call(r, 'offset', '0')),
           o.attr).call(r, 'stop-color', 'white')),
           o.attr).call(r, 'stop-opacity', '0')),
           o.select).call(r, '#gradient-' + e)),
@@ -122,7 +135,12 @@
         },
         h = function (t, e) {
           var r;
-          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = o.append.call(t, 'mask')), o.attr).call(r, 'id', 'mask-' + e)), o.append).call(r, 'rect')),
+          return ((r = ((r = ((r = ((r = ((r = ((r = ((r = o.append.call(t, 'mask')), o.attr).call(
+            r,
+            'id',
+            'mask-' + e,
+          )),
+          o.append).call(r, 'rect')),
           o.attr).call(r, 'x', 0)),
           o.attr).call(r, 'y', 0)),
           o.attr).call(r, 'width', '100%')),
@@ -131,11 +149,12 @@
         },
         m = function (t, e, r) {
           var a;
-          return ((a = ((a = ((a = o.attr.call(t, 'width', e)), o.attr).call(a, 'height', r)), o.attr).call(a, 'viewBox', '0 0 ' + e + ' ' + r)), o.style).call(
+          return ((a = ((a = ((a = o.attr.call(t, 'width', e)), o.attr).call(a, 'height', r)), o.attr).call(
             a,
-            'overflow',
-            'hidden',
-          );
+            'viewBox',
+            '0 0 ' + e + ' ' + r,
+          )),
+          o.style).call(a, 'overflow', 'hidden');
         };
       e['default'] = function (t) {
         var e,
@@ -162,12 +181,19 @@
         var A = o.append.call(O, 'svg'),
           G = ((e = o.append.call(A, 'svg')), o.attr).call(e, 'mask', 'url(#mask-' + F + ')'),
           C = o.append.call(A, 'defs');
-        y(C, F), h(C, F), v(C);
+        (y(C, F), h(C, F), v(C));
         var H = String(a).replace(/ /g, ' ').split(''),
           q = String(n).replace(/ /g, ' ').split(''),
           z = q.map(function (t, e) {
             var r = e + '-' + F;
-            return { id: r, node: s(G, S, g, r), filter: p(C, r), from: u.indexOf(H[e]), value: u.indexOf(t), offset: { x: 0, y: E } };
+            return {
+              id: r,
+              node: s(G, S, g, r),
+              filter: p(C, r),
+              from: u.indexOf(H[e]),
+              value: u.indexOf(t),
+              offset: { x: 0, y: E },
+            };
           }),
           I = [];
         z.forEach(function (t, e) {
@@ -179,7 +205,8 @@
               delay: (z.length - 1 - e) * w + j,
               step: function (e) {
                 var n;
-                (t.offset.y = E + (e % (S * g * f))), ((n = t.node), o.attr).call(n, 'transform', 'translate(' + t.offset.x + ', ' + t.offset.y + ')');
+                ((t.offset.y = E + (e % (S * g * f))),
+                  ((n = t.node), o.attr).call(n, 'transform', 'translate(' + t.offset.x + ', ' + t.offset.y + ')'));
                 var l = (a - r) / 2,
                   i = Math.abs(Math.abs(e - r - l) - l) / 100;
                 ((n = t.filter), o.attr).call(n, 'stdDeviation', '0 ' + i);
@@ -196,11 +223,11 @@
           I.push(n);
         });
         var L = function (t) {
-            (B = 0),
+            ((B = 0),
               z.forEach(function (t) {
                 var e = t.node.getBBox(),
                   r = e.width;
-                (t.offset.x = B), (B += r + _);
+                ((t.offset.x = B), (B += r + _));
               }),
               z.forEach(function (t) {
                 var e;
@@ -209,7 +236,7 @@
               m(A, B, k),
               I.forEach(function (e) {
                 return e.update(t);
-              });
+              }));
           },
           N = (0, l['default'])(L);
         return N;
@@ -220,20 +247,20 @@
       function a(t) {
         return t && t.__esModule ? t : { default: t };
       }
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t) {
           var e = document.createElementNS(l['default'].svg, t);
-          return this.appendChild(e), e;
-        });
+          return (this.appendChild(e), e);
+        }));
       var n = r(6),
         l = a(n);
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t, e) {
-          return this.setAttribute(t, e), this;
-        });
+          return (this.setAttribute(t, e), this);
+        }));
     },
     function (t, e, r) {
       'use strict';
@@ -279,29 +306,29 @@
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }), (e['default'] = { svg: 'http://www.w3.org/2000/svg' });
+      (Object.defineProperty(e, '__esModule', { value: !0 }), (e['default'] = { svg: 'http://www.w3.org/2000/svg' }));
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t) {
           return t === String(t) ? document.querySelector(t) : t;
-        });
+        }));
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t, e) {
           var r = arguments.length <= 2 || void 0 === arguments[2] ? '' : arguments[2];
-          return this.style.setProperty(t, e, r), this;
-        });
+          return (this.style.setProperty(t, e, r), this);
+        }));
     },
     function (t, e) {
       'use strict';
-      Object.defineProperty(e, '__esModule', { value: !0 }),
+      (Object.defineProperty(e, '__esModule', { value: !0 }),
         (e['default'] = function (t) {
-          return (this.textContent = t), this;
-        });
+          return ((this.textContent = t), this);
+        }));
     },
     function (t, e) {
       'use strict';
@@ -346,7 +373,7 @@
             if (!g) {
               m || ((m = t), d(h));
               var r = Math.min(Math.max(t - m - i, 0), l) / l;
-              (h = u(r) * (a - e) + e), p(h), 1 === r && ((g = !0), y(h));
+              ((h = u(r) * (a - e) + e), p(h), 1 === r && ((g = !0), y(h)));
             }
           };
         return { update: b };

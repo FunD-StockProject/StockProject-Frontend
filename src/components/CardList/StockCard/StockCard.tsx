@@ -87,7 +87,9 @@ export const SmallStockCard = ({
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>
-          {keywords?.map((e) => <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>)}
+          {keywords?.map((e) => (
+            <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>
+          ))}
         </SmallStockCardContentKeywords>
       </SmallStockCardContent>
     </SmallStockCardContainer>

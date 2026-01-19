@@ -43,8 +43,8 @@ body {
 } */
 
 html {
-  margin: 0px;
   zoom: 1; /* 기본 줌 설정 */
+  margin: 0px;
 }
 
 body {

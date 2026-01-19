@@ -31,7 +31,7 @@ export const toDate = (dateInput: Date | string | number[]): Date => {
       dateInput[2],
       dateInput[3] || 0,
       dateInput[4] || 0,
-      dateInput[5] || 0
+      dateInput[5] || 0,
     );
   }
   return new Date(dateInput);

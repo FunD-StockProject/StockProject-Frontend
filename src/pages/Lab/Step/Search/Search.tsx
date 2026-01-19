@@ -6,8 +6,8 @@ import { diffToValue } from '@utils/ScoreConvert';
 import useToast from '@hooks/useToast';
 import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
-import { AutoCompleteStockItem, StockDetailInfo } from '@controllers/stocks/types';
 import { useAutoCompleteStockQuery, usePopularStockFetchQuery } from '@controllers/stocks/query';
+import { AutoCompleteStockItem, StockDetailInfo } from '@controllers/stocks/types';
 import AlertSVG from '@assets/icons/alert.svg?react';
 import ChevronLeftNarrowSVG from '@assets/icons/chevronLeftNarrow.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
@@ -60,7 +60,7 @@ const LabSearchModal = ({
 
   const searchedStocks = useMemo(
     () => allStocks.filter((stock: AutoCompleteStockItem) => stock.country === selectedCountry),
-    [allStocks, selectedCountry]
+    [allStocks, selectedCountry],
   );
 
   const hasSearchValue = !!value;
@@ -193,11 +193,7 @@ interface LabSearchLocationState {
 const LabSearch = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    step,
-    country = 'KOREA',
-    isOpenModal = false,
-  } = (location.state as LabSearchLocationState) || {};
+  const { step, country = 'KOREA', isOpenModal = false } = (location.state as LabSearchLocationState) || {};
 
   const showModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 

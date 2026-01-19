@@ -14,15 +14,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isRootPage = location.pathname === '/';
 
   const isBottomNavigationVisible = (
-    [
-      'login',
-      'register',
-      'editProfile',
-      'withdraw',
-      'term',
-      'usage',
-      'notification',
-    ] as (keyof typeof webPath)[]
+    ['login', 'register', 'editProfile', 'withdraw', 'term', 'usage', 'notification'] as (keyof typeof webPath)[]
   ).reduce((acc, path) => {
     return acc && !location.pathname.startsWith(webPath[path]());
   }, true);

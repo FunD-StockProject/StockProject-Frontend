@@ -1,7 +1,7 @@
 import { useSocialAuth } from '@hooks/useSocialAuth';
-import Loading from '@assets/loading.png';
 import BlueAlert from '@assets/blueAlert.svg?react';
-import { OAuthCallbackContainer, StatusTitle, StatusDesc } from './OAuthCallback.Style';
+import Loading from '@assets/loading.png';
+import { OAuthCallbackContainer, StatusDesc, StatusTitle } from './OAuthCallback.Style';
 
 const OAuthCallback = () => {
   const { error } = useSocialAuth();

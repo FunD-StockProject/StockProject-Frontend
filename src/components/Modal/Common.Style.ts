@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { theme } from "@styles/themes";
+import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
 
 export const Modal = styled.div`
   position: fixed;
@@ -56,9 +56,9 @@ export const ModalButtons = styled.div`
 export const ModalButton = styled.button`
   flex: 1;
   background: ${theme.colors.sub_gray2};
-  color: ${theme.colors.sub_gray8}; 
+  color: ${theme.colors.sub_gray8};
   border: none;
-  padding:  12px 0;
+  padding: 12px 0;
   border-radius: 500px;
   font-size: 18px;
   font-weight: 700;
@@ -68,4 +68,4 @@ export const ModalButton = styled.button`
 export const ModalButtonPrimary = styled(ModalButton)`
   background: ${theme.colors.sub_black};
   color: ${theme.colors.sub_white};
-`; 
+`;

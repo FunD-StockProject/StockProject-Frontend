@@ -12,4 +12,3 @@ export const STOCK_FETCH_FUNCTIONS: Record<STOCK_TYPE, (country: string) => Prom
   DESCENT: fetchDescentStocks,
   RELATED: () => Promise.resolve([]),
 };
-

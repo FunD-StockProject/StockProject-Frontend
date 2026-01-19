@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_CONFIGS, URL_SCHEME, type SocialProvider } from '../config/oauth';
+import { webPath } from '@router/index';
+import { type ProviderKey, fetchOAuth2Login } from '@controllers/auth/api';
+import { AUTH_CONFIGS, type SocialProvider, URL_SCHEME } from '../config/oauth';
 import { MESSAGE_TYPES } from '../config/webview';
-import { fetchOAuth2Login, type ProviderKey } from '@controllers/auth/api';
 import useAuthInfo from './useAuthInfo';
 import useLocalStorageState from './useLocalStorageState';
-import { webPath } from '@router/index';
 
 interface OAuthState {
   csrf: string;
@@ -69,13 +69,13 @@ export const useSocialAuth = () => {
             type: MESSAGE_TYPES.OPEN_EXTERNAL_BROWSER,
             provider: provider,
             url,
-          })
+          }),
         );
       } else {
         window.location.href = url;
       }
     },
-    [isWebView]
+    [isWebView],
   );
 
   const handleOAuthCallback = useCallback(
@@ -103,7 +103,7 @@ export const useSocialAuth = () => {
                 type: MESSAGE_TYPES.NEED_REGISTER,
                 email: res.email,
                 provider,
-              })
+              }),
             );
             return;
           }
@@ -132,8 +132,8 @@ export const useSocialAuth = () => {
           (window as any).ReactNativeWebView.postMessage(
             JSON.stringify({
               type: MESSAGE_TYPES.TOKEN,
-              token: res.access_token
-            })
+              token: res.access_token,
+            }),
           );
         }
 
@@ -161,7 +161,7 @@ export const useSocialAuth = () => {
         setIsLoading(false);
       }
     },
-    [isWebView, location.pathname, navigate, setAuthInfo, setRecentProvider, clearAuthInfo]
+    [isWebView, location.pathname, navigate, setAuthInfo, setRecentProvider, clearAuthInfo],
   );
 
   const handleWebViewMessage = useCallback(
@@ -183,7 +183,7 @@ export const useSocialAuth = () => {
         console.error('Error parsing web message:', error);
       }
     },
-    [handleOAuthCallback]
+    [handleOAuthCallback],
   );
 
   // URL에서 OAuth 콜백 처리
@@ -195,9 +195,7 @@ export const useSocialAuth = () => {
 
     if (error) {
       console.error('OAuth error:', error);
-      const parsedState: OAuthState = stateParam
-        ? JSON.parse(atob(stateParam))
-        : {};
+      const parsedState: OAuthState = stateParam ? JSON.parse(atob(stateParam)) : {};
 
       if (parsedState?.fromWebView) {
         window.location.href = `${URL_SCHEME}?error=${encodeURIComponent(error)}`;

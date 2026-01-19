@@ -144,7 +144,7 @@ const SentimentContent = styled.div({
   ...theme.font.body14Medium,
   display: 'flex',
   flexDirection: 'column',
-  gap: '2px'
+  gap: '2px',
 });
 
 const SentimentDesc = styled.p({

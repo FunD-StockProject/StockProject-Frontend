@@ -19,7 +19,17 @@ const NoLoginWrapper = (props: NoLoginWrapperProps) => {
   const { isLogin, handleNavigateLogin } = useAuthInfo();
   const navigate = useNavigate();
 
-  const { title, description, buttonText, children, className, SecondaryButtonText, hasHeader, hasNavbar, returnState } = props;
+  const {
+    title,
+    description,
+    buttonText,
+    children,
+    className,
+    SecondaryButtonText,
+    hasHeader,
+    hasNavbar,
+    returnState,
+  } = props;
 
   const handleClick = () => {
     handleNavigateLogin({ returnState });

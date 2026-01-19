@@ -11,7 +11,12 @@ import GuageChart from '@components/Search/GuageChart/GuageChart';
 import SearchTitle from '@components/Search/SearchTitle/SearchTitle';
 import StockChart from '@components/Search/StockChart/StockChart';
 import StockWordCloud from '@components/Search/StockWordCloud/StockWordCloud';
-import { useRelevantStockFetchQuery, useScoreQuery, useStockSummaryQuery, useSymbolNameSearchQuery } from '@controllers/stocks/query';
+import {
+  useRelevantStockFetchQuery,
+  useScoreQuery,
+  useStockSummaryQuery,
+  useSymbolNameSearchQuery,
+} from '@controllers/stocks/query';
 import { StockDetailInfo, StockInfo } from '@controllers/stocks/types';
 import InfoSVG from '@assets/icons/info.svg?react';
 import {
@@ -19,6 +24,7 @@ import {
   SearchResultAlertContainer,
   SearchResultChartContainer,
   SearchResultChartContents,
+  SearchResultCompanyInfoContainer,
   SearchResultContainer,
   SearchResultContents,
   SearchResultGaugeChartContainer,
@@ -28,11 +34,10 @@ import {
   SearchResultTabLabel,
   SearchResultWordCloudContainer,
   SearchResultWordCloudContents,
-  SearchResultCompanyInfoContainer,
-  SentimentSection,
-  SentimentTitle,
   SentimentContent,
   SentimentDesc,
+  SentimentSection,
+  SentimentTitle,
 } from './Search.Style';
 
 type TabKey = 'HUMAN_INDEX' | 'STOCK_CHART' | 'KEYWORD' | 'COMPANY_INFO';
@@ -76,8 +81,12 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country, symbolName } }:
         </div>
       </SearchResultItemTtile>
       <div className="gauge-description">
-        <p>({industry}) 산업의 평균은 {industryAverage}점 이며,</p>
-        <p>({symbolName})는 상위 {ranking}% 입니다.</p>
+        <p>
+          ({industry}) 산업의 평균은 {industryAverage}점 이며,
+        </p>
+        <p>
+          ({symbolName})는 상위 {ranking}% 입니다.
+        </p>
       </div>
       <div className="gauge-chart-wrapper">
         <GuageChart score={stockScore?.score ?? 0} />
@@ -89,11 +98,10 @@ const SearchResultGaugeChart = ({ stockInfo: { stockId, country, symbolName } }:
         <SentimentTitle>종목 분위기</SentimentTitle>
         <SentimentContent>
           <SentimentDesc>
-            ▲ 최근 한달 평균 대비 {scoreDiff > 0 ? '+' : ''}{scoreDiff}점
+            ▲ 최근 한달 평균 대비 {scoreDiff > 0 ? '+' : ''}
+            {scoreDiff}점
           </SentimentDesc>
-          <SentimentDesc>
-            해당 종목의 한 달 간의 평균 값은 ({monthlyAverage})점 입니다.
-          </SentimentDesc>
+          <SentimentDesc>해당 종목의 한 달 간의 평균 값은 ({monthlyAverage})점 입니다.</SentimentDesc>
           <SentimentDesc>
             ({symbolName})에 대한 투자자들의 심리가 {sentiment} 있어요.
           </SentimentDesc>

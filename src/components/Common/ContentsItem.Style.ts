@@ -12,36 +12,35 @@ const ContentsItemContainer = styled.div({
   },
 });
 
-const ContentsItemTitle = styled.div<{ color?: themeColor }>(
-  ({ color }) =>
-    css({
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      gap: '8px',
-      color: theme.colors.grayscale10,
-      ...theme.font.title20Semibold,
+const ContentsItemTitle = styled.div<{ color?: themeColor }>(({ color }) =>
+  css({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '8px',
+    color: theme.colors.grayscale10,
+    ...theme.font.title20Semibold,
+
+    ['.btn_info']: {
+      height: '0.8em',
+      marginLeft: '4px',
+      cursor: 'pointer',
+    },
+
+    ['svg']: {
+      width: 'auto',
+      height: '0.9em',
+      fill: color ? theme.colors[color] : '',
+    },
+
+    [media[0]]: {
+      gap: '6px',
 
       ['.btn_info']: {
-        height: '0.8em',
-        marginLeft: '4px',
-        cursor: 'pointer',
+        marginLeft: '0px',
       },
-
-      ['svg']: {
-        width: 'auto',
-        height: '0.9em',
-        fill: color ? theme.colors[color] : '',
-      },
-
-      [media[0]]: {
-        gap: '6px',
-
-        ['.btn_info']: {
-          marginLeft: '0px',
-        },
-      },
-    })
+    },
+  }),
 );
 
 const ContentsItemContent = styled.div({
@@ -54,7 +53,6 @@ const ContentsItemContent = styled.div({
     margin: '0 0px',
   },
 });
-
 
 export const DetailText = styled.div({
   ...theme.font.detail12Medium,
