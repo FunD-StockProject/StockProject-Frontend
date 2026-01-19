@@ -58,9 +58,8 @@ export default FCMTestButton;
 const Container = styled.div`
   margin: 20px 0;
   padding: 16px;
-  background-color: ${({ theme }) => theme.colors.sub_gray1};
   border-radius: 8px;
-  border: 1px dashed ${({ theme }) => theme.colors.sub_gray5};
+  background-color: #f5f5f5;
 `;
 
 const TestButton = styled.button`
@@ -92,10 +91,8 @@ const TestButton = styled.button`
 const ResultText = styled.pre`
   margin-top: 12px;
   padding: 12px;
-  background-color: ${({ theme }) => theme.colors.sub_gray2};
   border-radius: 4px;
   font-size: 13px;
   line-height: 1.5;
   white-space: pre-wrap;
-  color: ${({ theme }) => theme.colors.text1};
 `;
