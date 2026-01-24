@@ -14,7 +14,6 @@ const PopularStocks = () => {
   const { addRecentStock } = useRecentStocks();
 
   const [popularStocks] = usePopularStockFetchQuery();
-  console.log(popularStocks);
 
   const handlePopularStockClick = (symbolName: string, country: StockCountryKey) => () => {
     addRecentStock(symbolName, country);

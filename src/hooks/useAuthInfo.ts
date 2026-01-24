@@ -42,7 +42,6 @@ const useAuthInfo = () => {
   };
 
   const setAuthInfo = (accessToken: string, refreshToken: string, userInfo: UserInfo) => {
-    console.log(2, accessToken);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUserInfo(userInfo);

@@ -47,10 +47,7 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
     });
 
     if (res.status === 401) {
-      // console.log('Error 401: 인증 에러 발생. refetch 시도');
-
       const refreshToken = localStorage.getItem('refresh_token');
-      console.log(1, refreshToken);
 
       const reissueRes = await fetch(`${baseURL}/auth/reissue`, {
         method: 'POST',

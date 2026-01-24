@@ -1,24 +1,27 @@
+import { Suspense, lazy } from 'react';
 import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
-import AboutPage from '@pages/About/About';
-import Favorites from '@pages/Favorites/Favorites';
-import Lab from '@pages/Lab/Lab';
-import RecordSheet from '@pages/Lab/RecordSheet/RecordSheet';
-import LabStep from '@pages/Lab/Step/Step';
-import Login from '@pages/Login/Login';
-import Done from '@pages/MyPage/Done/Done';
-import EditProfile from '@pages/MyPage/Edit/Edit';
-import MyPage from '@pages/MyPage/MyPage';
-import NotificationPage from '@pages/Notification/Notification';
-import OAuthCallback from '@pages/OAuthCallback/OAuthCallback';
-import Register from '@pages/Register/Register';
-import ShortView from '@pages/ShortView/ShortView';
-import Term from '@pages/Term/Term';
-import Usage from '@pages/Usage/Usage';
-import Withdraw from '@pages/Withdraw/Withdraw';
-import WithdrawDone from '@pages/WithdrawDone/WithdrawDone';
 import Mainlayout from '../layout/Mainlayout/Mainlayout';
-import Home from '../pages/Home/Home';
-import Search from '../pages/Search/Search';
+
+// Lazy load all pages for code splitting
+const Home = lazy(() => import('../pages/Home/Home'));
+const Search = lazy(() => import('../pages/Search/Search'));
+const AboutPage = lazy(() => import('@pages/About/About'));
+const Favorites = lazy(() => import('@pages/Favorites/Favorites'));
+const Lab = lazy(() => import('@pages/Lab/Lab'));
+const RecordSheet = lazy(() => import('@pages/Lab/RecordSheet/RecordSheet'));
+const LabStep = lazy(() => import('@pages/Lab/Step/Step'));
+const Login = lazy(() => import('@pages/Login/Login'));
+const Done = lazy(() => import('@pages/MyPage/Done/Done'));
+const EditProfile = lazy(() => import('@pages/MyPage/Edit/Edit'));
+const MyPage = lazy(() => import('@pages/MyPage/MyPage'));
+const NotificationPage = lazy(() => import('@pages/Notification/Notification'));
+const OAuthCallback = lazy(() => import('@pages/OAuthCallback/OAuthCallback'));
+const Register = lazy(() => import('@pages/Register/Register'));
+const ShortView = lazy(() => import('@pages/ShortView/ShortView'));
+const Term = lazy(() => import('@pages/Term/Term'));
+const Usage = lazy(() => import('@pages/Usage/Usage'));
+const Withdraw = lazy(() => import('@pages/Withdraw/Withdraw'));
+const WithdrawDone = lazy(() => import('@pages/WithdrawDone/WithdrawDone'));
 
 export type TermKey = 'agreeTerm' | 'agreePrivacy' | 'agreeMarketing';
 
@@ -48,7 +51,9 @@ export const webPath = {
 const Root = () => {
   return (
     <Mainlayout>
-      <Outlet />
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
       <ScrollRestoration />
     </Mainlayout>
   );

@@ -57,7 +57,6 @@ const ShortView = () => {
     if (isFetchingNextShortview) return;
     if (shortviewStocks.length === 0) return;
     if (currentIdx >= shortviewStocks.length - 2) {
-      console.log('fetch next');
       fetchNextShortview();
     }
   }, [currentIdx, shortviewStocks, isFetchingNextShortview]);
