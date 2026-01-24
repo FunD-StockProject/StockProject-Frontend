@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MARKET_CODES } from '@ts/Constants';
 import useAuthInfo from '@hooks/useAuthInfo';
+import { useQueryComponent } from '@hooks/useQueryComponent';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
+import { useScoreQuery } from '@controllers/stocks/query';
 import { StockDetailInfo } from '@controllers/stocks/types';
 import KoreaPNG from '@assets/flags/korea.png';
 import OverseaPNG from '@assets/flags/oversea.png';
@@ -16,11 +18,14 @@ import {
   SearchTitleHeaderContainer,
   SearchTitleHeaderText,
   SearchTitleHeaderTextAnimated,
+  SearchTitlePrice,
+  SearchTitlePriceWrapper,
+  SearchTitleScoreBadge,
 } from './SearchTitle.Style';
 
 const BASE_DELAY = 1500;
 
-const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockInfo: StockDetailInfo }) => {
+const SearchTitleName = ({ stockInfo: { symbolName, country, price, stockId } }: { stockInfo: StockDetailInfo }) => {
   const { state } = useLocation();
 
   const titleTextRef = useRef<HTMLDivElement>(null);
@@ -32,6 +37,7 @@ const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockI
     instant: BASE_DELAY,
   });
   const [animation, cycleAnimation] = useCycle(...Object.keys(animationDelay));
+  const [stockScore, suspend] = useQueryComponent({ query: useScoreQuery(stockId, country) });
   const concurrency = country === 'KOREA' ? '₩' : '$';
   useEffect(() => {
     if (titleTextRef.current) {
@@ -83,10 +89,17 @@ const SearchTitleName = ({ stockInfo: { symbolName, country, price } }: { stockI
           </SearchTitleHeaderTextAnimated>
         </AnimatePresence>
       </SearchTitleHeaderText>
-      <p className="price">
-        {concurrency}
-        {price.toLocaleString()}
-      </p>
+      <SearchTitlePriceWrapper>
+        <SearchTitlePrice>
+          {concurrency}
+          {price.toLocaleString()}
+        </SearchTitlePrice>
+        {!suspend && stockScore && (
+          <SearchTitleScoreBadge>
+            <p>인간지표 {stockScore.score}점</p>
+          </SearchTitleScoreBadge>
+        )}
+      </SearchTitlePriceWrapper>
     </SearchTitleHeaderContainer>
   );
 };
