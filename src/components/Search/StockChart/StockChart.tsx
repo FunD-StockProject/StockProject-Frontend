@@ -1167,7 +1167,6 @@ const StockChart = ({
   const [chartData, updateChartData] = useStockChartQuery(stockId, selectedPeriod);
 
   const handlePeriodClick = (period: PERIOD_CODE) => (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(period);
     e.preventDefault();
     e.stopPropagation();
     setSelectedPeriod(period);

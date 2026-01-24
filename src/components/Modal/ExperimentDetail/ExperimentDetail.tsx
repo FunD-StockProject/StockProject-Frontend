@@ -41,7 +41,6 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
     if (!experimentDetail) return [];
 
     const { buyAt, status, buyScore, buyPrice, currentScore, currentPrice, roi, country } = experimentDetail;
-    console.log(roi);
     const currency = STOCK_COUNTRY_MAP[country].currency;
     return [
       {

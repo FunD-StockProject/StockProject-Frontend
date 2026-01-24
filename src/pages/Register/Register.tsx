@@ -255,8 +255,6 @@ const Register = () => {
       provider.toUpperCase(),
     );
 
-    console.log(profileImage);
-
     if (!res) return;
 
     // sessionStorage 정리

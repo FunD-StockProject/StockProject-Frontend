@@ -74,7 +74,6 @@ const ShortViewTutorial = () => {
   const [tutorialWatched, setTutorialWatched] = useLocalStorageState<boolean>('tutorial_watched_shortview');
 
   const handleClickTutorialEnd = () => {
-    console.log('tutorial end');
     setTutorialWatched(true);
   };
 
