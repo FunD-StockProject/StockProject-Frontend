@@ -24,7 +24,6 @@ export const SearchTitleContainer = styled.div({
 export const SearchTitleHeaderContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  // alignItems: 'center',
 
   fontWeight: '700',
   fontSize: '42px',
@@ -34,12 +33,18 @@ export const SearchTitleHeaderContainer = styled.div({
   [media[0]]: {
     fontSize: '32px',
   },
+});
 
-  ['>p.price']: {
-    ...theme.font.heading24Semibold,
-    color: theme.colors.sub_white,
-    margin: '0',
-  },
+export const SearchTitlePriceWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+});
+
+export const SearchTitlePrice = styled.p({
+  ...theme.font.heading24Semibold,
+  color: theme.colors.sub_white,
+  margin: '0',
 });
 
 export const SearchTitleHeaderText = styled.div({
@@ -112,6 +117,27 @@ export const SearchTitleDetailSymbol = styled.span({
 
   ['>img']: {
     height: '13px',
+  },
+});
+
+export const SearchTitleScoreBadge = styled.div({
+  boxSizing: 'border-box',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '2px 10px',
+  gap: '10px',
+  width: 'fit-content',
+  height: '31px',
+  border: `1px solid ${theme.colors.sub_gray9}`,
+  borderRadius: '50px',
+
+  ['>p']: {
+    ...theme.font.body18Medium,
+    color: theme.colors.sub_gray6,
+    margin: '0',
+    whiteSpace: 'nowrap',
   },
 });
 

@@ -64,7 +64,7 @@ export const useChartInfoQuery = (id: number, periodCode: PERIOD_CODE, startDate
 };
 
 export const useStockTableInfoQuery = (category: string, country: string) => {
-  return useQuery<StockTableInfo>(
+  return useQuery<StockTableInfo[]>(
     ['stockTableInfo', category, country],
     () => fetchStockTable(category, country),
     queryOptions,

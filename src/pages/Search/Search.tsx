@@ -205,7 +205,6 @@ const Search = () => {
   const [stockInfo] = useQueryComponent({
     query: useSymbolNameSearchQuery(state?.symbolName, state?.country),
   });
-
   const [selectedTab, setSelectedTab] = useState<TabKey>('HUMAN_INDEX');
 
   const handleTabChange = (tab: TabKey) => {
