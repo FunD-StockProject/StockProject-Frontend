@@ -64,7 +64,7 @@ const PWAInfoPopUp = ({}: {}) => {
                 인간지표를 누려보세요.
               </p>
             </PWAInfoTextContainer>
-            <img src={PWAPNG} width={'140px'} />
+            <img src={PWAPNG} loading="lazy" width={'140px'} />
           </PWAInfoContents>
           <PWAInfoButtonContainer>
             <button className="white" onClick={closePopUp24Hours}>

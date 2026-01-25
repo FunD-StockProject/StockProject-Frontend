@@ -38,7 +38,7 @@ const LabCountry = () => {
             canNext={!!selectedCountry}
             isSelected={selectedCountry == e.key}
           >
-            <img src={e.img} />
+            <img src={e.img} loading="lazy" />
             <p>{e.text}</p>
           </LabTutorialCountryItemContainer>
         ))}

@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { VitePluginRadar } from 'vite-plugin-radar';
 import svgr from 'vite-plugin-svgr';
 import wasm from 'vite-plugin-wasm';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   esbuild: {
@@ -17,6 +18,11 @@ export default defineConfig({
       analytics: {
         id: 'G-EZPQMV95QJ',
       },
+    }),
+    visualizer({
+      filename: './dist/stats.html',
+      open: false,
+      gzipSize: true,
     }),
     VitePWA({
       registerType: 'autoUpdate',
@@ -82,7 +88,7 @@ export default defineConfig({
         assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
-    // 500KB 목표로 설정 (Vercel 권장)
+    // 500KB 목표로 청크 사이즈 제한
     chunkSizeWarningLimit: 500,
     // 소스맵 비활성화로 빌드 크기 감소
     sourcemap: false,

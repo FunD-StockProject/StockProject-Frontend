@@ -47,7 +47,7 @@ const Withdraw = () => {
       </RegisterHeaderContainer>
       <WithdrawContent>
         <WithdrawTitleContainer>
-          <img src={WithdrawPNG} />
+          <img src={WithdrawPNG} loading="lazy" />
           <div>
             <p className="title">정말 탈퇴를 진행하시겠어요?</p>
             <p className="desc">

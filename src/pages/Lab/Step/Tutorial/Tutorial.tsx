@@ -78,7 +78,7 @@ const LabTutorial = () => {
               <span className="divider" />
               <p className="text">{e.title}</p>
             </TutorialItemTitleContainer>
-            <img src={e.img} />
+            <img src={e.img} loading="lazy" />
             <p>{e.description}</p>
           </LabTutorialItemContaienr>
         ))}
