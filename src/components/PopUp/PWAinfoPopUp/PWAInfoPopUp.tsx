@@ -13,7 +13,7 @@ import {
   PWAInfoTextContainer,
 } from './PWAinfoPopUp.style';
 
-const PWAInfoPopUp = ({}: {}) => {
+const PWAInfoPopUp = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [lastVisit, setLastVisit] = useLocalStorageState<string>('last_visit_page');
@@ -64,7 +64,7 @@ const PWAInfoPopUp = ({}: {}) => {
                 인간지표를 누려보세요.
               </p>
             </PWAInfoTextContainer>
-            <img src={PWAPNG} width={'140px'} />
+            <img src={PWAPNG} loading="lazy" width={'140px'} />
           </PWAInfoContents>
           <PWAInfoButtonContainer>
             <button className="white" onClick={closePopUp24Hours}>

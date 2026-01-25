@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { deltaScoreToColor } from '@utils/ScoreConvert';
 import { media, theme } from '@styles/themes';
 
-export const SearchTitleContainer = styled.div({
+const SearchTitleContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '32px',
@@ -21,7 +21,7 @@ export const SearchTitleContainer = styled.div({
   },
 });
 
-export const SearchTitleHeaderContainer = styled.div({
+const SearchTitleHeaderContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
 
@@ -35,19 +35,19 @@ export const SearchTitleHeaderContainer = styled.div({
   },
 });
 
-export const SearchTitlePriceWrapper = styled.div({
+const SearchTitlePriceWrapper = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
 });
 
-export const SearchTitlePrice = styled.p({
+const SearchTitlePrice = styled.p({
   ...theme.font.heading24Semibold,
   color: theme.colors.sub_white,
   margin: '0',
 });
 
-export const SearchTitleHeaderText = styled.div({
+const SearchTitleHeaderText = styled.div({
   ...theme.font.heading24Semibold,
   position: 'relative',
 
@@ -58,7 +58,7 @@ export const SearchTitleHeaderText = styled.div({
   textOverflow: 'ellipsis',
 });
 
-export const SearchTitleHeaderTextAnimated = styled(motion.div)({
+const SearchTitleHeaderTextAnimated = styled(motion.div)({
   willChange: 'transform',
   position: 'absolute',
   top: '0',
@@ -68,7 +68,7 @@ export const SearchTitleHeaderTextAnimated = styled(motion.div)({
 
 //
 
-export const SearchTitleDetailContainer = styled.div(
+const SearchTitleDetailContainer = styled.div(
   ({ delta }: { delta: number }) => ({
     ['>span.price-diff']: {
       color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
@@ -104,7 +104,7 @@ export const SearchTitleDetailContainer = styled.div(
   },
 );
 
-export const SearchTitleDetailSymbol = styled.span({
+const SearchTitleDetailSymbol = styled.span({
   display: 'flex',
   alignItems: 'center',
   gap: '4px',
@@ -120,7 +120,7 @@ export const SearchTitleDetailSymbol = styled.span({
   },
 });
 
-export const SearchTitleScoreBadge = styled.div({
+const SearchTitleScoreBadge = styled.div({
   boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'row',
@@ -141,7 +141,7 @@ export const SearchTitleScoreBadge = styled.div({
   },
 });
 
-// export const SearchTitleDescriptionContainer = styled.div(
+// const SearchTitleDescriptionContainer = styled.div(
 //   ({ showMoreDesc }: { showMoreDesc: boolean }) => ({
 //     WebkitLineClamp: showMoreDesc ? '' : '2',
 //     ['>button']: {
@@ -173,3 +173,15 @@ export const SearchTitleScoreBadge = styled.div({
 //     },
 //   },
 // );
+
+export {
+  SearchTitleContainer,
+  SearchTitleHeaderContainer,
+  SearchTitlePriceWrapper,
+  SearchTitlePrice,
+  SearchTitleHeaderText,
+  SearchTitleHeaderTextAnimated,
+  SearchTitleDetailContainer,
+  SearchTitleDetailSymbol,
+  SearchTitleScoreBadge,
+};

@@ -113,7 +113,7 @@ const AboutPage = () => {
           </p>
           <AboutTrustFooter>
             <p>주식투자심리도우미</p>
-            <img src={CommonRulePNG} alt="info" />
+            <img src={CommonRulePNG} alt="info" loading="lazy" />
             <LogoWhiteSVG />
           </AboutTrustFooter>
         </AboutTrustContents>

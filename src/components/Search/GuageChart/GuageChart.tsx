@@ -38,7 +38,7 @@ const GuageChart = ({ score }: { score: number }) => {
 
               {index === scoreIndex && (
                 <GuageChartItemBalloon index={index}>
-                  <img src={scoreImage} alt="score-image" />
+                  <img src={scoreImage} alt="score-image" loading="lazy" />
                 </GuageChartItemBalloon>
               )}
             </GuageChartItem>

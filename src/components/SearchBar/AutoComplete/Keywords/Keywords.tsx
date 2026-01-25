@@ -29,7 +29,7 @@ const AutoCompleteKeywords = ({ searchValue }: { searchValue: string }) => {
         검색결과
         {matchedKeyword && (
           <p>
-            <b>'{matchedKeyword}'</b>이(가) 가장 많이 언급된 종목순으로 노출됩니다
+            <b>&apos;{matchedKeyword}&apos;</b>이(가) 가장 많이 언급된 종목순으로 노출됩니다
           </p>
         )}
       </SearchBarItemTitle>
@@ -48,7 +48,7 @@ const AutoCompleteKeywords = ({ searchValue }: { searchValue: string }) => {
           })
         ) : (
           <AutoCompleteEmptyContainer>
-            <p className="empty_title">'{searchValue}' 검색어에 해당하는 결과가 없어요 😭</p>
+            <p className="empty_title">&apos;{searchValue}&apos; 검색어에 해당하는 결과가 없어요 😭</p>
             <p className="empty_subtitle">다른 종목을 다시 검색해보세요</p>
           </AutoCompleteEmptyContainer>
         )}

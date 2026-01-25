@@ -15,8 +15,8 @@ export const useQueryComponent = <T,>({ query }: { query: UseQueryResult<T> }) =
     return () => clearTimeout(timeoutId);
   }, []);
 
-  if (isLoading) return [null, isDeferred && <LoadingComponent />] as const;
-  if (isError) return [null, <ErrorComponent />] as const;
+  if (isLoading) return [null, isDeferred && <LoadingComponent key="loading" />] as const;
+  if (isError) return [null, <ErrorComponent key="error" />] as const;
 
   return [data] as const;
 };

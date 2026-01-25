@@ -52,7 +52,7 @@ const AutoCompleteStocks = ({ searchValue }: { searchValue: string }) => {
           ))
         ) : (
           <AutoCompleteEmptyContainer>
-            <p className="empty_title">'{searchValue}' 검색어에 해당하는 결과가 없어요 😭</p>
+            <p className="empty_title">&apos;{searchValue}&apos; 검색어에 해당하는 결과가 없어요 😭</p>
             <p className="empty_subtitle">다른 종목을 다시 검색해보세요</p>
           </AutoCompleteEmptyContainer>
         )}

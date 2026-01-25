@@ -51,7 +51,7 @@ const Usage = () => {
               <p className="index">{index + 1}</p>
               <p className="title">{step.title}</p>
             </UsageStepItemTitle>
-            <img src={step.image} />
+            <img src={step.image} loading="lazy" />
           </UsageStepItemContainer>
         ))}
       </UsageStepContainer>

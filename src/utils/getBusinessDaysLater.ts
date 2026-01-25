@@ -39,7 +39,7 @@ const isHoliday = (date: Date, country: string): boolean => {
 
 export const getBusinessDaysLater = (startDate: Date, days: number, country: string): string => {
   let count = 0;
-  let current = new Date(startDate);
+  const current = new Date(startDate);
 
   while (count < days) {
     current.setDate(current.getDate() + 1);

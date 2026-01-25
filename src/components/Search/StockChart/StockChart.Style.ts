@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { media, theme, themeColor } from '@styles/themes';
 
-export const StockChartContainer = styled.div({
+const StockChartContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '18px',
@@ -12,7 +12,7 @@ export const StockChartContainer = styled.div({
   },
 });
 
-export const StockChartHeader = styled.div({
+const StockChartHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -24,7 +24,7 @@ export const StockChartHeader = styled.div({
   },
 });
 
-export const StockChartHeaderContents = styled.div({
+const StockChartHeaderContents = styled.div({
   display: 'flex',
   gap: '8px',
 
@@ -33,7 +33,7 @@ export const StockChartHeaderContents = styled.div({
   },
 });
 
-export const StockChartHeaderItem = styled.div(
+const StockChartHeaderItem = styled.div(
   ({ background }: { background?: themeColor }) => ({
     background: background ? theme.colors[background] : theme.colors.transparent,
   }),
@@ -49,42 +49,7 @@ export const StockChartHeaderItem = styled.div(
   },
 );
 
-export const StockChartStyledCanvas = styled.canvas({
-  position: 'absolute',
-
-  width: '100%',
-  height: '100%',
-});
-
-export const StockChartGridContainer = styled.div({
-  display: 'grid',
-  gridTemplateRows: '600px 40px',
-  gridTemplateColumns: '42px auto 72px',
-
-  fontSize: '15px',
-
-  [media[0]]: {
-    gridTemplateRows: '400px 19px',
-    gridTemplateColumns: '28px auto 48px',
-
-    fontSize: '11px',
-  },
-
-  '> div': {
-    position: 'relative',
-
-    overflow: 'hidden',
-  },
-
-  [media[0]]: {
-    gridTemplateRows: '400px 19px',
-    gridTemplateColumns: '28px auto 48px',
-
-    fontSize: '11px',
-  },
-});
-
-export const ChartLabelBase = styled.span({
+const ChartLabelBase = styled.span({
   boxSizing: 'border-box',
   padding: '4px 12px',
 
@@ -101,7 +66,7 @@ export const ChartLabelBase = styled.span({
   },
 });
 
-export const ChartLabel = styled.span(
+const ChartLabel = styled.span(
   {
     position: 'absolute',
 
@@ -148,7 +113,7 @@ export const ChartLabel = styled.span(
   }),
 );
 
-export const ExtremeLabel = styled.span(
+const ExtremeLabel = styled.span(
   {
     position: 'absolute',
 
@@ -177,7 +142,7 @@ export const ExtremeLabel = styled.span(
   }),
 );
 
-export const StockChartCanvasRefContainer = styled.canvas({
+const StockChartCanvasRefContainer = styled.canvas({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -186,7 +151,7 @@ export const StockChartCanvasRefContainer = styled.canvas({
   height: '100%',
 });
 
-export const StockChartViewContainer = styled.div({
+const StockChartViewContainer = styled.div({
   display: 'flex',
   flexGrow: '1',
 
@@ -197,7 +162,7 @@ export const StockChartViewContainer = styled.div({
   },
 });
 
-export const StockChartItemContainer = styled.div(
+const StockChartItemContainer = styled.div(
   {
     display: 'flex',
     flexDirection: 'column',
@@ -210,7 +175,7 @@ export const StockChartItemContainer = styled.div(
     },
 );
 
-export const StockChartItemContent = styled.div(
+const StockChartItemContent = styled.div(
   {
     position: 'relative',
 
@@ -247,7 +212,7 @@ export const StockChartItemContent = styled.div(
   }),
 );
 
-export const StockChartItemCanvasContainer = styled.div({
+const StockChartItemCanvasContainer = styled.div({
   position: 'relative',
 
   display: 'flex',
@@ -256,11 +221,11 @@ export const StockChartItemCanvasContainer = styled.div({
   height: '100%',
 });
 
-export const StockInfoDeltaLabel = styled.span(({ delta }: { delta?: number }) => ({
+const StockInfoDeltaLabel = styled.span(({ delta }: { delta?: number }) => ({
   color: theme.colors[!delta ? 'grayscale60' : delta > 0 ? 'red' : 'blue'],
 }));
 
-export const StockChartInfoHeaderItem = styled.div({
+const StockChartInfoHeaderItem = styled.div({
   display: 'flex',
   gap: '4px',
   width: 'auto',
@@ -270,7 +235,7 @@ export const StockChartInfoHeaderItem = styled.div({
   userSelect: 'none',
 });
 
-export const StockChartInfoHeader = styled.div({
+const StockChartInfoHeader = styled.div({
   position: 'absolute',
 
   display: 'flex',
@@ -279,3 +244,21 @@ export const StockChartInfoHeader = styled.div({
   alignItems: 'start',
   padding: '8px',
 });
+
+export {
+  StockChartContainer,
+  StockChartHeader,
+  StockChartHeaderContents,
+  StockChartHeaderItem,
+  ChartLabelBase,
+  ChartLabel,
+  ExtremeLabel,
+  StockChartCanvasRefContainer,
+  StockChartViewContainer,
+  StockChartItemContainer,
+  StockChartItemContent,
+  StockChartItemCanvasContainer,
+  StockInfoDeltaLabel,
+  StockChartInfoHeaderItem,
+  StockChartInfoHeader,
+};

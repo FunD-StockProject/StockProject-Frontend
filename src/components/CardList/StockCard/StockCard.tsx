@@ -45,7 +45,7 @@ export const LargeStockCard = ({
       </LargeStockCardHeader>
       <hr />
       <LargeStockCardContent>
-        <img src={scoreImage} />
+        <img src={scoreImage} loading="lazy" />
         <LargeStockCardContentTextContainer>
           <div>
             <p className="title">민심 키워드</p>
@@ -78,7 +78,7 @@ export const SmallStockCard = ({
 
   return (
     <SmallStockCardContainer onClick={handleClick}>
-      <img src={scoreImage} />
+      <img src={scoreImage} loading="lazy" />
       <SmallStockCardContent>
         <SmallStockCardContentTitle>
           <p className="name">{symbolName}</p>

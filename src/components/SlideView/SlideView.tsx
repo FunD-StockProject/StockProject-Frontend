@@ -27,6 +27,7 @@ const SlideView = ({ keyName, list, count }: { keyName: string; list: JSX.Elemen
   const itemConatinerRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setWidth, widthRef] = useStateRef<number>(0);
   const isMobile = useIsMobile();
 

@@ -4,22 +4,18 @@ export type ProviderKey = 'kakao' | 'google' | 'naver' | 'apple';
 
 // GET /auth/nickname
 export const fetchAuthNickname = async (nickname: string) => {
-  try {
-    const url = `${baseURL}/auth/nickname?nickname=${nickname}`;
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: {
-        ...Headers,
-      },
-    });
-    if (!res.ok) {
-      throw new Error(`${res.status} Error!!`);
-    }
-    await wait(0);
-    return await res.json();
-  } catch (error) {
-    throw error;
+  const url = `${baseURL}/auth/nickname?nickname=${nickname}`;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      ...Headers,
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`${res.status} Error!!`);
   }
+  await wait(0);
+  return await res.json();
 };
 
 export const fetchOAuth2Login = async (_code: string, _state: string, provider: ProviderKey) => {
@@ -44,72 +40,64 @@ export const fetchAuthRegister = async (
   marketingAgreement: boolean,
   provider: string,
 ) => {
-  try {
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('nickname', nickname);
-    formData.append('birth_date', birth_date);
-    formData.append('marketingAgreement', String(marketingAgreement));
-    formData.append('provider', provider);
+  const formData = new FormData();
+  formData.append('email', email);
+  formData.append('nickname', nickname);
+  formData.append('birth_date', birth_date);
+  formData.append('marketingAgreement', String(marketingAgreement));
+  formData.append('provider', provider);
 
-    if (imageBase64) {
-      const byteString = atob(imageBase64.split(',')[1]);
-      const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
+  if (imageBase64) {
+    const byteString = atob(imageBase64.split(',')[1]);
+    const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
 
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      const blob = new Blob([ab], { type: mimeString });
-      const file = new File([blob], 'profile.png', { type: mimeString });
-      formData.append('image', file);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
     }
 
-    return fetchData(
-      '/auth/register',
-      {
-        method: 'POST',
-        body: formData,
-      },
-      true,
-    );
-  } catch (error) {
-    throw error;
+    const blob = new Blob([ab], { type: mimeString });
+    const file = new File([blob], 'profile.png', { type: mimeString });
+    formData.append('image', file);
   }
+
+  return fetchData(
+    '/auth/register',
+    {
+      method: 'POST',
+      body: formData,
+    },
+    true,
+  );
 };
 
 // PATCH /user/image
 export const fetchUpdateUserImage = async (imageBase64: string) => {
-  try {
-    const formData = new FormData();
-    if (imageBase64) {
-      const byteString = atob(imageBase64.split(',')[1]);
-      const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
+  const formData = new FormData();
+  if (imageBase64) {
+    const byteString = atob(imageBase64.split(',')[1]);
+    const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
 
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      const blob = new Blob([ab], { type: mimeString });
-      const file = new File([blob], 'profile.png', { type: mimeString });
-      formData.append('image', file);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
     }
 
-    return fetchAuthData(
-      '/user/image',
-      {
-        method: 'PATCH',
-        body: formData,
-      },
-      true,
-    );
-  } catch (error) {
-    throw error;
+    const blob = new Blob([ab], { type: mimeString });
+    const file = new File([blob], 'profile.png', { type: mimeString });
+    formData.append('image', file);
   }
+
+  return fetchAuthData(
+    '/user/image',
+    {
+      method: 'PATCH',
+      body: formData,
+    },
+    true,
+  );
 };
 
 // PATCH /user/profile

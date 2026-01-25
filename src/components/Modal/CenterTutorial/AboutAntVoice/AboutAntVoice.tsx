@@ -1,24 +1,6 @@
-import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
 import AntVoicePNG from '@assets/design/antVoice.png';
 import { ModalContainer, ModalContent, ModalTitleContainer } from '../CenterTutotial.Style';
-
-const AntVoiceImage = styled.img({
-  width: 'auto',
-  objectFit: 'cover',
-  margin: '0 16px',
-  boxSizing: 'border-box',
-});
-
-const AntVoiceDescription = styled.div({
-  ...theme.font.detail12Semibold,
-  color: theme.colors.sub_gray11,
-  padding: '16px 12px',
-  background: theme.colors.sub_white,
-  borderRadius: '8px',
-  margin: '0 16px',
-  wordBreak: 'keep-all',
-});
+import { AntVoiceDescription, AntVoiceImage } from './AboutAntVoice.Style';
 
 const AboutAntVoice = () => {
   return (

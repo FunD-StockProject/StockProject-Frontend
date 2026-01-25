@@ -79,6 +79,7 @@ export const useSocialAuth = () => {
   );
 
   const handleOAuthCallback = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (code: string, provider: string, _state: string) => {
       clearAuthInfo();
       setIsLoading(true);
