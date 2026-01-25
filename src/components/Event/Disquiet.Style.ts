@@ -23,7 +23,7 @@ const elevator = keyframes({
   },
 });
 
-export const DisquietViewStyled = styled.div({
+const DisquietViewStyled = styled.div({
   position: 'absolute',
   top: 0,
   right: 300,
@@ -39,7 +39,7 @@ export const DisquietViewStyled = styled.div({
   animation: shiny + ' 12s ease-in-out 1s infinite',
 });
 
-export const DisquietViewContainer = styled.div({
+const DisquietViewContainer = styled.div({
   position: 'absolute',
   top: '0',
   right: '0',
@@ -89,7 +89,7 @@ export const DisquietViewContainer = styled.div({
   },
 });
 
-export const DisquietViewTitleContainer = styled.div({
+const DisquietViewTitleContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '12px',
@@ -114,3 +114,5 @@ export const DisquietViewTitleContainer = styled.div({
     },
   },
 });
+
+export { DisquietViewStyled, DisquietViewContainer, DisquietViewTitleContainer };

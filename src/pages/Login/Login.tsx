@@ -54,7 +54,7 @@ const Login = () => {
       <LoginBannerContainer>
         <LogoWithTitleWhiteSVG />
         <LoginBannerContents>
-          <p className="title">당신은 '인간지표'인가요?</p>
+          <p className="title">당신은 &apos;인간지표&apos;인가요?</p>
           <p className="desc">
             주식투자 심리도우미 인간지표에
             <br />

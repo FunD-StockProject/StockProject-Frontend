@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
 
-export const NavContainer = styled('nav')({
+const NavContainer = styled('nav')({
   display: 'flex',
   position: 'fixed',
   bottom: 0,
@@ -16,7 +16,7 @@ export const NavContainer = styled('nav')({
   boxShadow: '0px -2px 10px 0px rgba(255, 255, 255, 0.05)',
 });
 
-export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
+const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -28,3 +28,5 @@ export const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
     fill: isActive ? theme.colors.sub_white : '',
   },
 }));
+
+export { NavContainer, NavItem };

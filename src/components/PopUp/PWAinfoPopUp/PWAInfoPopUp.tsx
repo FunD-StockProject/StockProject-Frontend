@@ -13,7 +13,7 @@ import {
   PWAInfoTextContainer,
 } from './PWAinfoPopUp.style';
 
-const PWAInfoPopUp = ({}: {}) => {
+const PWAInfoPopUp = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [lastVisit, setLastVisit] = useLocalStorageState<string>('last_visit_page');

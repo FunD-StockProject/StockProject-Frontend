@@ -204,7 +204,6 @@ const ExperimentDetailChart = ({
     if (loadChartStatusRef.current.time < fullTime + 10 && !noAnimation) {
       loadChartStatusRef.current.time++;
       loadChartFrameRef.current = requestAnimationFrame(() => drawChart());
-    } else {
     }
     return;
   };

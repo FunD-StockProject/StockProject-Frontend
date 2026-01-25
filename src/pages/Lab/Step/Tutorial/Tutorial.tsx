@@ -72,7 +72,7 @@ const LabTutorial = () => {
       <LabTutorialListContainer>
         <span className="divider" />
         {labTutorialList.map((e, i) => (
-          <LabTutorialItemContaienr>
+          <LabTutorialItemContaienr key={`LAB_TUTORIAL_${i}`}>
             <TutorialItemTitleContainer>
               <p className="index">STEP {i + 1}</p>
               <span className="divider" />
@@ -84,7 +84,7 @@ const LabTutorial = () => {
         ))}
         <p>
           (주의) 본 기능은 실제 투자가 아닌 <wbr />
-          "가상"으로 진행되는 모의매수 기능입니다.
+          &quot;가상&quot;으로 진행되는 모의매수 기능입니다.
         </p>
       </LabTutorialListContainer>
       <StepButtonContainer>

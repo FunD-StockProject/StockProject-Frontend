@@ -4,40 +4,38 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default [
+  {
+    ignores: [
+      'dist/**',
+      'public/assets/**',
+      'node_modules/**',
+      'build/**',
+      '*.config.js',
+      '*.config.ts',
+      'src/utils/test.js',
+      'src/utils/worker/**',
+      'src/utils/wasm/**',
+    ],
+  },
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   { languageOptions: { globals: globals.browser } },
-  {
-    'jsx-runtime': {
-      env: {
-        browser: true,
-        es6: true,
-        node: true,
-      },
-      plugins: ['@typescript-eslint', 'react', 'prettier'],
-      extends: [
-        'prettier',
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:prettier/recommended',
-        'plugin:@typescript-eslint/recommended',
-      ],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        project: './tsconfig.json',
-      },
-      rules: {
-        'prettier/prettier': 'error',
-        'react/react-in-jsx-scope': 0,
-        'react/prefer-stateless-function': 0,
-        'react/jsx-filename-extension': 0,
-        'react/jsx-one-expression-per-line': 0,
-        'no-nested-ternary': 0,
-      },
-    },
-  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  {
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+    rules: {
+      'react/react-in-jsx-scope': 0,
+      'react/prefer-stateless-function': 0,
+      'react/jsx-filename-extension': 0,
+      'react/jsx-one-expression-per-line': 0,
+      'no-nested-ternary': 0,
+      'react/prop-types': 0,
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
 ];

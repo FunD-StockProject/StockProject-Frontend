@@ -5,8 +5,8 @@ const useCanvas = (setCanvas: (canvas: HTMLCanvasElement) => void) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas && setCanvas(canvas);
-  }, []);
+    if (canvas) setCanvas(canvas);
+  }, [setCanvas]);
 
   return canvasRef;
 };
