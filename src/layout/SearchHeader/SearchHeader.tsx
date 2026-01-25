@@ -1,4 +1,4 @@
-import { MESSAGE_TYPES } from '@config/webview';
+import { MESSAGE_TYPES } from '../../config/webview';
 import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import useLocalStorageState from '@hooks/useLocalStorageState';
