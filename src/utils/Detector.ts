@@ -23,4 +23,8 @@ const detectPWA = () => {
   return window.matchMedia('(display-mode: standalone)').matches;
 };
 
-export { detectBrowser, detectPlatform, detectPWA };
+const detectWebView = () => {
+  return !!(window as any).ReactNativeWebView;
+};
+
+export { detectBrowser, detectPlatform, detectPWA, detectWebView };
