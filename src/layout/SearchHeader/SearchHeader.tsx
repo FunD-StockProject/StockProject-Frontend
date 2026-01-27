@@ -1,4 +1,3 @@
-import { MESSAGE_TYPES } from '../../config/webview';
 import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import useLocalStorageState from '@hooks/useLocalStorageState';
@@ -18,6 +17,7 @@ import HeartIcon from '@assets/icons/heart.svg?react';
 import ToastBellSVG from '@assets/icons/toast/bell.svg?react';
 import ToastBellCrossSVG from '@assets/icons/toast/bell_cross.svg?react';
 import ToastHeartSVG from '@assets/icons/toast/heart.svg?react';
+import { MESSAGE_TYPES } from '../../config/webview';
 import { IconButton, RightSection, SearchHeaderWrapper } from './SearchHeader.Style';
 
 const SearchHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
