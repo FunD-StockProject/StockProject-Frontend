@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { safeRandomUUID } from '@utils/random';
 import { webPath } from '@router/index';
 import { type ProviderKey, fetchOAuth2Login } from '@controllers/auth/api';
 import { AUTH_CONFIGS, type SocialProvider, URL_SCHEME } from '../config/oauth';
@@ -51,7 +52,7 @@ export const useSocialAuth = () => {
   const signInWithOAuth = useCallback(
     async (provider: SocialProvider) => {
       const stateObj: OAuthState = {
-        csrf: crypto.randomUUID(),
+        csrf: safeRandomUUID(),
         isWebView,
         fromWebView: isWebView,
         provider: provider,
@@ -109,7 +110,7 @@ export const useSocialAuth = () => {
           }
 
           // 브라우저에서는 회원가입 페이지로 이동
-          navigate(webPath.register(), {
+          navigate(webPath.register, {
             state: {
               provider,
               email: res.email,

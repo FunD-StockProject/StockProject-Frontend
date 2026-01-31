@@ -37,13 +37,16 @@ const useModal = <T,>({
 
   const { state = {} } = location;
 
-  const modalRef = useRef<HTMLDivElement>(null);
   const [isShowModal, setIsShowModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [modalData, setModalData] = useState<T>();
+
+  const modalRef = useRef<HTMLDivElement>(null);
   const showModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const openModal = (modalData: T) => {
     localStorage.setItem('scrollPosition', window.scrollY.toString());
-    navigate('', {
+    navigate(location, {
       state: {
         ...state,
         [modalKey]: {
@@ -55,11 +58,8 @@ const useModal = <T,>({
   };
 
   const closeModal = () => {
-    setIsShowModal(false);
-    showModalTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem('scrollPosition', window.scrollY.toString());
-      navigate(-1);
-    }, showDelay);
+    localStorage.setItem('scrollPosition', window.scrollY.toString());
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -69,10 +69,20 @@ const useModal = <T,>({
       localStorage.removeItem('scrollPosition');
     }
 
-    const { isOpen } = location?.state?.[modalKey] ?? {};
-    showModalTimeoutRef.current = setTimeout(() => {
-      setIsShowModal(isOpen);
-    }, 0);
+    const { isOpen, modalData } = location?.state?.[modalKey] ?? {};
+    if (isOpen) {
+      setIsOpenModal(true);
+      setModalData(modalData);
+      showModalTimeoutRef.current = setTimeout(() => {
+        setIsShowModal(true);
+      }, 0);
+    } else {
+      setIsShowModal(false);
+      showModalTimeoutRef.current = setTimeout(() => {
+        setIsOpenModal(false);
+        setModalData(undefined);
+      }, showDelay);
+    }
   }, [location]);
 
   const handleClickOutSide = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -82,8 +92,8 @@ const useModal = <T,>({
   };
 
   const Modal = useMemo(() => {
-    const { isOpen, modalData } = location?.state?.[modalKey] ?? {};
-    if (!isOpen) return null;
+    if (!isOpenModal) return null;
+
     return (
       <Layout
         isShowModal={isShowModal}
@@ -92,10 +102,10 @@ const useModal = <T,>({
         handleClickOutSide={handleClickOutSide}
         showDelay={showDelay}
       >
-        <Component modalData={modalData} />
+        <Component modalData={modalData!} />
       </Layout>
     );
-  }, [location, isShowModal]);
+  }, [isShowModal, isOpenModal, modalData]);
 
   return {
     Modal,

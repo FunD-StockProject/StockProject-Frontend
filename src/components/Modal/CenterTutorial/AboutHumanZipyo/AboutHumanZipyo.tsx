@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
 import { theme } from '@styles/themes';
 import LogoSVG from '@assets/logo_blue.svg?react';
@@ -156,11 +155,7 @@ const scoreRange = [
 ];
 
 const AboutHumanZipyo = () => {
-  const navigate = useNavigate();
-
-  const handleClickAbout = () => {
-    navigate(webPath.about());
-  };
+  const { navToAbout } = useRouter();
 
   return (
     <ModalContainer>
@@ -202,7 +197,7 @@ const AboutHumanZipyo = () => {
               대규모 감정분석 모델을 통해 각종 커뮤니티에서 투자자들 반응을 긍/부정으로 파악하여 점수를 산출해요
             </p>
           </div>
-          <button onClick={handleClickAbout}>산출 방식 자세히 보기 → </button>
+          <button onClick={navToAbout}>산출 방식 자세히 보기 → </button>
         </HumanZipyoHowToContainer>
         <HumanZipyoSubText>*공식 지표가 아니므로 참고 용도로 활용해 주세요</HumanZipyoSubText>
       </ModalContent>

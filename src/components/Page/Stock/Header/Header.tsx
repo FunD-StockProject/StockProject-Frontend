@@ -1,0 +1,103 @@
+import useAuthInfo from '@hooks/useAuthInfo';
+import useToast from '@hooks/useToast';
+import useRouter from '@router/useRouter';
+import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+import Toast from '@components/Toast/Toast';
+import {
+  useAddBookmarkMutation,
+  useDeleteBookmarkMutation,
+  useStockPreferenceQuery,
+  useToggleNotificationMutation,
+} from '@controllers/preference/query';
+import { StockDetailInfo } from '@controllers/stocks/types';
+import ArrowLeftSVG from '@assets/icons/arrowLeft.svg?react';
+import BellSVG from '@assets/icons/bell.svg?react';
+import HeartSVG from '@assets/icons/heart.svg?react';
+import ToastBellSVG from '@assets/icons/toast/bell.svg?react';
+import ToastBellCrossSVG from '@assets/icons/toast/bell_cross.svg?react';
+import ToastHeartSVG from '@assets/icons/toast/heart.svg?react';
+import { HeaderContainer, HeaderIconButton } from './Header.Style';
+
+const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
+  const { navToBack } = useRouter();
+  const { isLogin, handleNavigateLogin } = useAuthInfo();
+  const { toast, showToast, hideToast } = useToast();
+
+  const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
+  const { mutate: addBookMark } = useAddBookmarkMutation();
+  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
+  const { mutate: toggleNotification } = useToggleNotificationMutation();
+  const isBookmark = stockPreference?.isBookmarked ?? false;
+  const isNotification = stockPreference?.isNotificationEnabled ?? false;
+
+  const onHeartClick = () => {
+    if (!stockInfo) return;
+
+    if (!isLogin) {
+      openLoginModal();
+      return;
+    }
+
+    if (!isBookmark) {
+      showToast(
+        <>
+          <ToastHeartSVG />
+          <p>관심 등록 완료! 민심 급변 시 알림 드릴게요</p>
+        </>,
+      );
+      addBookMark(stockInfo.stockId);
+    } else {
+      deleteBookmark(stockInfo.stockId);
+    }
+  };
+
+  const onBellClick = () => {
+    if (!stockInfo) return;
+
+    if (!isLogin) {
+      openLoginModal();
+      return;
+    }
+
+    showToast(
+      isNotification ? (
+        <>
+          <ToastBellCrossSVG />
+          <p>알림이 해제되었어요</p>
+        </>
+      ) : (
+        <>
+          <ToastBellSVG />
+          <p>알림이 설정되었어요</p>
+        </>
+      ),
+    );
+
+    toggleNotification(stockInfo.stockId);
+  };
+
+  const [LoginModal, openLoginModal] = ConfirmModal({
+    title: '관심종목 알림을 받으려면, 로그인이 필요해요!',
+    description: '관심종목의 심리가 급등/급락할때 알림을 받고싶다면, 로그인을 진행해주세요',
+    onConfirm: handleNavigateLogin,
+    isInverse: true,
+    actionText: ['로그인하기', '취소'],
+  });
+
+  return (
+    <HeaderContainer>
+      <LoginModal />
+      <ArrowLeftSVG onClick={navToBack} />
+      <span className="grow" />
+      <HeaderIconButton isActive={isBookmark}>
+        <HeartSVG onClick={onHeartClick} />
+      </HeaderIconButton>
+      <HeaderIconButton isActive={isNotification}>
+        <BellSVG onClick={onBellClick} />
+      </HeaderIconButton>
+      <Toast toast={toast} hideToast={hideToast} />
+    </HeaderContainer>
+  );
+};
+
+export default StockHeader;

@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthWithdraw } from '@controllers/auth/api';
 import AlarmSVG from '@assets/alarm.svg?react';
@@ -12,7 +11,7 @@ import ShortViewSVG from '@assets/shortView.svg?react';
 import WithdrawPNG from '@assets/withdraw.png';
 
 const Withdraw = () => {
-  const navigate = useNavigate();
+  const { navToMyPage, navToWithdrawDone, navToBack } = useRouter();
   const { clearAuthInfo } = useAuthInfo();
 
   const UserService = [
@@ -23,13 +22,13 @@ const Withdraw = () => {
   ];
 
   const handleClickCancelWithdraw = () => {
-    navigate(webPath.mypage());
+    navToMyPage();
   };
 
   const handleWithdraw = async () => {
     await fetchAuthWithdraw();
     clearAuthInfo();
-    navigate(webPath.withdrawDone());
+    navToWithdrawDone();
   };
 
   const [LogoutModal, openLogoutModal] = ConfirmModal({ title: '정말 탈퇴 하시겠어요?', onConfirm: handleWithdraw });
@@ -39,7 +38,7 @@ const Withdraw = () => {
       <LogoutModal />
       <RegisterHeaderContainer>
         <div>
-          <ArrowLeftSVG onClick={() => navigate(-1)} />
+          <ArrowLeftSVG onClick={navToBack} />
           <p>회원 탈퇴</p>
           <span />
         </div>

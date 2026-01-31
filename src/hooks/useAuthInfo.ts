@@ -20,6 +20,7 @@ const useAuthInfo = () => {
   const [, setRefreshToken, removeRefreshToken] = useLocalStorageState<string>('refresh_token');
   const [userInfo, _setUserInfo, removeUserInfo] = useLocalStorageState<UserInfo>('user_info');
   const isLogin = !!accessToken;
+
   const handleNavigateLogin = (options?: LoginOptions) => {
     setBeforeLoginDepth(window.history.length);
 
@@ -34,7 +35,7 @@ const useAuthInfo = () => {
       sessionStorage.removeItem('login_return_state');
     }
 
-    navigate(webPath.login());
+    navigate(webPath.login);
   };
 
   const setUserInfo = (newUserInfo: Partial<UserInfo>) => {

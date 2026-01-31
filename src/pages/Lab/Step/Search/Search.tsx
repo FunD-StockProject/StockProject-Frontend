@@ -4,7 +4,6 @@ import { StockCountryKey } from '@ts/StockCountry';
 import { STOCK_SECTORS, StockSector } from '@ts/StockSector';
 import { diffToValue } from '@utils/ScoreConvert';
 import useToast from '@hooks/useToast';
-import { webPath } from '@router/index';
 import StockImage from '@components/Common/StockImage';
 import { useAutoCompleteStockQuery, usePopularStockFetchQuery } from '@controllers/stocks/query';
 import { AutoCompleteStockItem, StockDetailInfo } from '@controllers/stocks/types';
@@ -16,6 +15,7 @@ import SearchSVG from '@assets/icons/search.svg?react';
 import UpSVG from '@assets/icons/up.svg?react';
 import CheckCircleSelectedSVG from '@assets/lab/checkCircleSelected.svg?react';
 import CheckCircleUnselectedSVG from '@assets/lab/checkCircleUnelected.svg?react';
+import { NextStepProps } from '../Step';
 import { StepButtonContainer } from '../Step.Style';
 import {
   LabSearchContainer,
@@ -190,10 +190,16 @@ interface LabSearchLocationState {
   isOpenModal: boolean;
 }
 
-const LabSearch = () => {
+const LabSearch = ({
+  handlePrevStep,
+  handleNextStep,
+}: {
+  handlePrevStep: () => void;
+  handleNextStep: ({}: NextStepProps) => void;
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { step, country = 'KOREA', isOpenModal = false } = (location.state as LabSearchLocationState) || {};
+  const { country = 'KOREA', isOpenModal = false } = (location.state as LabSearchLocationState) || {};
 
   const showModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -217,21 +223,6 @@ const LabSearch = () => {
 
   const handleRemoveStock = (stockId: number) => {
     setSelectedStocks((prev) => prev.filter((s) => s.stockId !== stockId));
-  };
-
-  const handlePrevStep = () => {
-    navigate(-1);
-  };
-
-  const handleNextStep = () => {
-    navigate(webPath.labStep(), {
-      state: {
-        ...location.state,
-        step: step + 1,
-        sectors: selectedSectors,
-        stocks: selectedStocks,
-      },
-    });
   };
 
   const handleClickSector = (sectorKey: string) => {
@@ -328,7 +319,10 @@ const LabSearch = () => {
       </LabSearchSelectContainer>
       <StepButtonContainer>
         <button onClick={handlePrevStep}>이전</button>
-        <button onClick={handleNextStep} disabled={!enableNextStep}>
+        <button
+          onClick={() => handleNextStep({ stocks: selectedStocks, sectors: selectedSectors })}
+          disabled={!enableNextStep}
+        >
           선택완료
         </button>
       </StepButtonContainer>

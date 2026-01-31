@@ -13,10 +13,10 @@ const BottomNavigation = () => {
   const navigate = useNavigate();
   const navItems = [
     { label: '홈', icon: <HomeSVG />, path: '/' },
-    { label: '관심', icon: <FavoritesSVG />, path: webPath.favorites() },
-    { label: '숏뷰', icon: <ShortViewSVG />, path: webPath.shortView() },
-    { label: '실험실', icon: <LabSVG />, path: webPath.lab() },
-    { label: 'My', icon: <MyPageSVG />, path: webPath.mypage() },
+    { label: '관심', icon: <FavoritesSVG />, path: webPath.favorites },
+    { label: '숏뷰', icon: <ShortViewSVG />, path: webPath.shortView },
+    { label: '실험실', icon: <LabSVG />, path: webPath.lab },
+    { label: 'My', icon: <MyPageSVG />, path: webPath.mypage },
   ];
   const currentPath = location.pathname;
   const activeIndex = navItems.findIndex((item) => item.path === currentPath);

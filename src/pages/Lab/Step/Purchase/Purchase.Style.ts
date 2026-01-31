@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const LabPurchaseContainer = styled.div({
@@ -133,13 +133,13 @@ const LabPurchaseGridItemContainer = styled.div({
 const LabPurchaseGridItemText = styled.p(
   ({ delta }: { delta: number }) => ({
     ['>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+      color: deltaToColor(delta) ?? theme.colors.sub_gray7,
       display: 'flex',
       alignItems: 'center',
       gap: '2px',
 
       ['>svg']: {
-        fill: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+        fill: deltaToColor(delta) ?? theme.colors.sub_gray7,
       },
     },
   }),

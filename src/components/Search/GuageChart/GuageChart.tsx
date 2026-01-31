@@ -11,10 +11,10 @@ import {
 } from './GuageChart.Style';
 
 const GuageChart = ({ score }: { score: number }) => {
+  const scoreRange = [0, 30, 40, 50, 70, 100];
   const scoreText = ['대곰탕', '곰탕', '어?', '"호황"', '대호황!'];
   const scoreIndex = scoreToIndex(score);
   const scoreImage = scoreToImage(score);
-  const scoreRange = [0, 30, 40, 50, 70, 100];
 
   return (
     <GuageChartContainer>

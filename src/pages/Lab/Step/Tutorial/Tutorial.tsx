@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
 import LabTutorial1PNG from '@assets/lab/labTutorial1.png';
 import LabTutorial2PNG from '@assets/lab/labTutorial2.png';
 import LabTutorial3PNG from '@assets/lab/labTutorial3.png';
+import { NextStepProps } from '../Step';
 import { StepButtonContainer } from '../Step.Style';
 import {
   LabTutorialContainer,
@@ -56,23 +55,19 @@ const labTutorialList = [
   },
 ];
 
-const LabTutorial = () => {
-  const navigate = useNavigate();
-
-  const handlePrevStep = () => {
-    navigate(-1);
-  };
-
-  const handleNextStep = () => {
-    navigate(webPath.labStep(), { state: { step: 1 } });
-  };
-
+const LabTutorial = ({
+  handlePrevStep,
+  handleNextStep,
+}: {
+  handlePrevStep: () => void;
+  handleNextStep: ({}: NextStepProps) => void;
+}) => {
   return (
     <LabTutorialContainer>
       <LabTutorialListContainer>
         <span className="divider" />
         {labTutorialList.map((e, i) => (
-          <LabTutorialItemContaienr>
+          <LabTutorialItemContaienr key={`LAB_TUTORIAL_${i}`}>
             <TutorialItemTitleContainer>
               <p className="index">STEP {i + 1}</p>
               <span className="divider" />
@@ -89,7 +84,7 @@ const LabTutorial = () => {
       </LabTutorialListContainer>
       <StepButtonContainer>
         <button onClick={handlePrevStep}>이전</button>
-        <button onClick={handleNextStep}>다음</button>
+        <button onClick={() => handleNextStep({})}>다음</button>
       </StepButtonContainer>
     </LabTutorialContainer>
   );

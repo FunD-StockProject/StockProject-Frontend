@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { diffToValue } from '@utils/ScoreConvert';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
+import useSearchBarModal from '@components/Modal/SearchBar/useSearchBarModal';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import {
   useBookmarkListQuery,
@@ -29,8 +29,8 @@ import {
   FavoritesTitleContainer,
 } from './Favorites.Style';
 
-const Favorites = () => {
-  const navigate = useNavigate();
+const FavoritesPage = () => {
+  const { navToStock, navToHome } = useRouter();
 
   const { data: bookmarkList = [], isLoading } = useBookmarkListQuery();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
@@ -42,28 +42,16 @@ const Favorites = () => {
   const [checkedList, setCheckedList] = useState<number[]>([]);
 
   const handleClickMore = () => {
-    navigate('/');
+    navToHome();
   };
 
   const handleOpenSearchModal = () => {
-    navigate('/', {
-      state: {
-        search: {
-          type: 'STOCK',
-          value: '',
-        },
-      },
-    });
+    openSearchBarModal({});
   };
 
   const handleClickFavoriteItem = (stockName: string, country: StockCountryKey) => () => {
     if (isEditMode) return;
-    navigate(webPath.search(), {
-      state: {
-        symbolName: stockName,
-        country: country,
-      },
-    });
+    navToStock(stockName, country);
   };
 
   const handleClickItemNotification = (stockId: number, isNotification: boolean) => (e: React.MouseEvent) => {
@@ -135,12 +123,15 @@ const Favorites = () => {
     actionText: ['삭제', '취소'],
   });
 
+  const { Modal: SearchBarModal, openModal: openSearchBarModal } = useSearchBarModal();
+
   if (isLoading) {
     // return;
   }
 
   return (
     <FavoritesContainer>
+      {SearchBarModal}
       <OffNotificationModal />
       <DeleteFavoritesModal />
       <NoLoginWrapper
@@ -225,4 +216,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default FavoritesPage;

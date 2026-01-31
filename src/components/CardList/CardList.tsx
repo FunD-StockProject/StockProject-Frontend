@@ -1,15 +1,11 @@
 import { STOCK_UPDATE_TIME } from '@ts/Constants';
 import { StockCountryKey } from '@ts/StockCountry';
-import useModal from '@hooks/useModal';
-import { HomeItemTitle } from '@components/Home/Title/Title.Style';
-import DescentPopUp from '@components/PopUp/DescentPopUp/DescentPopUp';
-import HotPopUp from '@components/PopUp/HotPopUp/HotPopUp';
-import RisingPopUp from '@components/PopUp/RisingPopUp/RisingPopUp';
+import useAboutCardList, { CardListType } from '@components/Modal/CenterTutorial/AboutCardList/useAboutCardList';
+import { useHomeStockFetchQuery } from '@controllers/stocks/query';
 import InfoSVG from '@assets/icons/info.svg?react';
-import { CardListContainer } from './CardList.Style';
+import { CardListContainer, CardListTitle } from './CardList.Style';
 import StockCard from './StockCard/StockCard';
 
-type CardListType = 'HOT' | 'RISING' | 'DESCENT';
 const cardListTitle: Record<CardListType, string> = {
   HOT: '👑 현재 시장 반응 TOP 3',
   RISING: '🔥 현재 민심 급상승 중',
@@ -17,21 +13,20 @@ const cardListTitle: Record<CardListType, string> = {
 };
 
 const CardList = ({ type, country }: { type: CardListType; country: StockCountryKey }) => {
-  const { Modal, openModal } = useModal({
-    Component: type === 'HOT' ? HotPopUp : type === 'RISING' ? RisingPopUp : DescentPopUp,
-  });
-
   const updateTime = STOCK_UPDATE_TIME[country];
+  const { data: stocks } = useHomeStockFetchQuery(type, country);
+
+  const { Modal: AboutCardListModal, openModal: openAboutCardListModal } = useAboutCardList(type);
 
   return (
     <CardListContainer>
-      <HomeItemTitle>
+      {AboutCardListModal}
+      <CardListTitle>
         <p className="title">{`${cardListTitle[type]}`}</p>
-        <InfoSVG onClick={openModal} />
+        <InfoSVG onClick={() => openAboutCardListModal({ type })} />
         <p className="update-time">어제 {updateTime} 기준</p>
-        <Modal />
-      </HomeItemTitle>
-      <StockCard type={type} country={country} />
+      </CardListTitle>
+      <StockCard type={type} stocks={stocks} size={type === 'HOT' ? 'large' : 'small'} country={country} />
     </CardListContainer>
   );
 };

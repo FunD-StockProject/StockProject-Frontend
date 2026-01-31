@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ExperimentItemComponent from '@components/Lab/ExperimentItem/ExperimentItem';
 import Loading from '@components/Loading/Loading';
 import { ExperimentDetailModalData } from '@components/Modal/ExperimentDetail/useExperimentDetail';
@@ -22,10 +21,10 @@ const LabCurrent = ({
 }: {
   openExperimentDetailModal: ({ experimentId }: ExperimentDetailModalData) => void;
 }) => {
-  const navigate = useNavigate();
+  const { navToLabStep, navToLabRecordSheet } = useRouter();
 
   const handleClickTutorial = () => {
-    navigate(webPath.labStep(), { state: { step: 0 } });
+    navToLabStep(0);
   };
 
   const { data: experimentStatus, isLoading: isExperimentStatusLoading } = useExperimentStatusQuery();
@@ -54,11 +53,11 @@ const LabCurrent = ({
   ];
 
   const handleClickAddExperiment = () => {
-    navigate(webPath.labStep(), { state: { step: 1 } });
+    navToLabStep(0);
   };
 
   const handleClickRecordSheet = () => {
-    navigate(webPath.labRecordSheet());
+    navToLabRecordSheet();
   };
 
   const handleClickExperimentDetail = (experimentId: number) => {

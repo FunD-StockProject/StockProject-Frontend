@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const LabSearchContainer = styled.div({
@@ -344,9 +344,9 @@ const LabSearchModalResultItemContainer = styled.div({
 const LabSearchModalResultItemInfoContainer = styled.div(
   ({ delta }: { delta: number }) => ({
     ['>p>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+      color: deltaToColor(delta) ?? theme.colors.sub_gray7,
       ['>svg']: {
-        fill: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+        fill: deltaToColor(delta) ?? theme.colors.sub_gray7,
       },
     },
   }),

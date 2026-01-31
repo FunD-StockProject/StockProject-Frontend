@@ -29,14 +29,21 @@ import {
 } from './ShortView.Style';
 import TinderCard from './TinderCard/TinderCard';
 
-interface MouseDrag {
+type DragState = {
+  active: boolean;
+  startX: number;
+  startY: number;
+  startT: number;
+
   currX: number;
   currY: number;
-  prevX: number;
-  prevY: number;
-  direction: 'center' | 'left' | 'right' | 'top' | 'bottom';
-  active: boolean;
-}
+  currT: number;
+
+  // 최근 샘플 몇 개 (속도 계산 안정화)
+  samples: { x: number; y: number; t: number }[];
+
+  direction?: 'left' | 'right' | 'top' | 'bottom' | 'center';
+};
 
 const ShortView = () => {
   const navigate = useNavigate();
@@ -79,25 +86,39 @@ const ShortView = () => {
 
   const { clientWidth: width, clientHeight: height } = containerRef?.current ?? { clientWidth: 0, clientHeight: 0 };
 
-  const [mouseDrag, _setMouseDrag] = useState<MouseDrag>({
+  const [mouseDrag, _setMouseDrag] = useState<DragState>({
+    active: false,
+
+    startX: 0,
+    startY: 0,
+    startT: 0,
+
     currX: 0,
     currY: 0,
-    prevX: 0,
-    prevY: 0,
+    currT: 0,
+
+    samples: [],
+
     direction: 'center',
-    active: false,
   });
 
-  const mouseDragRef = useRef<MouseDrag>(mouseDrag);
+  const mouseDragRef = useRef<DragState>(mouseDrag);
 
-  const setMouseDrag = (value: Partial<MouseDrag>, init?: boolean) => {
-    const initValue: MouseDrag = {
+  const setMouseDrag = (value: Partial<DragState>, init?: boolean) => {
+    const initValue: DragState = {
+      active: false,
+
+      startX: 0,
+      startY: 0,
+      startT: 0,
+
       currX: 0,
       currY: 0,
-      prevX: 0,
-      prevY: 0,
+      currT: 0,
+
+      samples: [],
+
       direction: 'center',
-      active: false,
     };
 
     _setMouseDrag((prev) => {
@@ -115,46 +136,56 @@ const ShortView = () => {
       ? -width * 3
       : mouseDrag.direction === 'right'
         ? width * 3
-        : mouseDrag.currX - mouseDrag.prevX;
+        : mouseDrag.currX - mouseDrag.startX;
   const cardY =
     mouseDrag.direction === 'top'
       ? -height * 2
       : mouseDrag.direction === 'bottom'
         ? height * 2
-        : mouseDrag.currY - mouseDrag.prevY;
+        : mouseDrag.currY - mouseDrag.startY;
 
   const ratio = Math.min(Math.sqrt(cardX ** 2 + cardY ** 2) / Math.sqrt(width ** 2 + height ** 2), 1);
 
   const prevCardTransform = {
-    transform: `translate3d(0px, ${mouseDrag.direction === 'bottom' ? 0 : -height + cardY}px, 0)`,
+    left: '0',
+    top: `${mouseDrag.direction === 'bottom' ? 0 : -height + cardY}px`,
     scale: `${1}`,
     opacity: `${1}`,
-    transition: `scale 0.1s ease-in-out ${!mouseDrag.active ? ', transform 0.2s ease-in-out' : ''}`,
+    transition: `scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out' : ''}`,
   };
 
   const currentCardTransform = {
-    transform: `translate3d(${cardX}px, ${Math.min(0, cardY)}px, 0) rotate(${(cardX / width) * 15}deg)`,
+    transform: `rotate(${(cardX / width) * 15}deg)`,
+    left: `${cardX}px`,
+    top: `${Math.min(0, cardY)}px`,
     scale: `${mouseDrag.active ? 1.05 : 1}`,
     opacity: `${1}`,
     filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${0.12 * (1 - Math.abs(cardY / (height / 2)))}))`,
-    transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out ${!mouseDrag.active ? ', transform 0.2s ease-in-out' : ''}`,
+    transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out, transform 0.2s ease-in-out' : ''}`,
   };
 
   const nextCardTransform = {
-    transform: `translate3d(0px, 0px, 0)`,
+    left: '0',
+    top: '0',
     scale: `${0.75 + ratio * 0.25}`,
     opacity: `${0.25 + ratio * 0.75}`,
     transition: `${!mouseDrag.active ? 'scale 0.2s ease-in-out, opacity 0.2s ease-in-out' : ''}`,
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    const t = performance.now();
     setMouseDrag(
       {
+        active: true,
+        startX: e.clientX,
+        startY: e.clientY,
+        startT: t,
+
         currX: e.clientX,
         currY: e.clientY,
-        prevX: e.clientX,
-        prevY: e.clientY,
-        active: true,
+        currT: t,
+
+        samples: [{ x: e.clientX, y: e.clientY, t }],
       },
       true,
     );
@@ -162,34 +193,71 @@ const ShortView = () => {
 
   const handlePointerMove = (e: MouseEvent | TouchEvent) => {
     if (!mouseDragRef.current.active) return;
+
+    // 모바일 스크롤 방지: 이벤트마다 preventDefault()가 먹히려면
+    // 리스너가 passive: false 여야 하고, CSS touch-action 설정도 필요함(아래 참고)
+    e.preventDefault();
+
+    const x = 'clientX' in e ? e.clientX : (e as TouchEvent).touches[0].clientX;
+    const y = 'clientY' in e ? e.clientY : (e as TouchEvent).touches[0].clientY;
+    const t = performance.now();
+
+    const nextSamples = [...mouseDragRef.current.samples, { x, y, t }].slice(-5);
     setMouseDrag({
-      currX: 'clientX' in e ? e.clientX : (e as TouchEvent).touches[0].clientX,
-      currY: 'clientY' in e ? e.clientY : (e as TouchEvent).touches[0].clientY,
+      currX: x,
+      currY: y,
+      currT: t,
+      samples: nextSamples,
     });
   };
 
+  function calcVelocityFromSamples(samples: { x: number; y: number; t: number }[]) {
+    if (samples.length < 2) return { vx: 0, vy: 0 };
+    const a = samples[0];
+    const b = samples[samples.length - 1];
+    const dt = Math.max(1, b.t - a.t);
+    return { vx: (b.x - a.x) / dt, vy: (b.y - a.y) / dt };
+  }
   const handlePointerUp = () => {
-    const cardX = mouseDragRef.current.currX - mouseDragRef.current.prevX;
-    const cardY = mouseDragRef.current.currY - mouseDragRef.current.prevY;
-    const { clientWidth: width, clientHeight: height } = containerRef?.current ?? { clientWidth: 0, clientHeight: 0 };
+    const s = mouseDragRef.current;
+    if (!s.active) return;
 
-    const direction =
-      cardX > width / 2
-        ? 'right'
-        : cardX < -width / 2
-          ? 'left'
-          : cardY > height / 2
-            ? 'bottom'
-            : cardY < -height / 2
-              ? 'top'
-              : 'center';
+    const dx = s.currX - s.startX;
+    const dy = s.currY - s.startY;
 
-    setMouseDrag(
-      {
-        direction,
-      },
-      true,
-    );
+    const el = containerRef.current;
+    const width = el?.clientWidth ?? 0;
+    const height = el?.clientHeight ?? 0;
+
+    // ✅ 기준값(튜닝 포인트)
+    const DIST_X = width * 0.28; // 28%만 넘어도 거리로 성공
+    const DIST_Y = height * 0.22;
+
+    const VEL_X = 0.9; // px/ms  (≈ 900px/s)
+    const VEL_Y = 0.9;
+
+    // 속도는 마지막 샘플로 보정하면 더 자연스러움
+    const v = calcVelocityFromSamples(s.samples); // 아래 함수
+
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    // “거리 OR 속도”가 임계치 넘으면 스와이프 인정
+    const passX = absDx > DIST_X || Math.abs(v.vx) > VEL_X;
+    const passY = absDy > DIST_Y || Math.abs(v.vy) > VEL_Y;
+
+    let direction: DragState['direction'] = 'center';
+
+    if (passX || passY) {
+      // 더 우세한 축을 선택 (거리+속도 혼합)
+      const scoreX = absDx + Math.abs(v.vx) * 400; // 400은 가중치(튜닝)
+      const scoreY = absDy + Math.abs(v.vy) * 400;
+
+      if (scoreX >= scoreY) direction = dx > 0 ? 'right' : 'left';
+      else direction = dy > 0 ? 'bottom' : 'top';
+    }
+
+    setMouseDrag({ active: false, direction }, true);
   };
 
   useEffect(() => {
@@ -243,7 +311,7 @@ const ShortView = () => {
 
       buyExperiment({ stockId: currentStock.stockId, country: currentStock.country });
       removeShortviewItem(currentIdx);
-      navigate(webPath.labStep(), { state: { step: 3 } });
+      navigate(webPath.labStep, { state: { step: 3 } });
     }, 200);
   };
 
@@ -325,7 +393,7 @@ const ShortView = () => {
     window.addEventListener('touchend', handlePointerUp);
 
     window.addEventListener('mousemove', handlePointerMove);
-    window.addEventListener('touchmove', handlePointerMove);
+    window.addEventListener('touchmove', handlePointerMove, { passive: false });
 
     return () => {
       window.removeEventListener('mouseup', handlePointerUp);

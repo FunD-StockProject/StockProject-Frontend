@@ -17,10 +17,12 @@ const ModalLayout = styled.div(
     width: '100%',
     height: '100%',
     top: 0,
-    left: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
     right: 0,
     bottom: 0,
     zIndex: '100',
+    maxWidth: '1280px',
 
     display: 'flex',
     flexDirection: 'column',
@@ -30,6 +32,7 @@ const ModalLayout = styled.div(
 
     ['>div']: {
       background: theme.colors.sub_gray4,
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       borderRadius: '8px',
@@ -72,6 +75,23 @@ const ModalContent = styled.div({
   gap: '10px',
 });
 
+const ModalDescriptionContainer = styled.div({
+  margin: '0 16px',
+  display: 'flex',
+  flexDirection: 'column',
+
+  ['>p']: {
+    ...theme.font.body14Semibold,
+    color: theme.colors.sub_gray10,
+    margin: '0',
+    wordBreak: 'keep-all',
+    ['>b']: {
+      ...theme.font.body14Bold,
+      color: theme.colors.sub_blue6,
+    },
+  },
+});
+
 const ModalCloseButton = styled.button({
   ...theme.font.body18Semibold,
   color: theme.colors.sub_gray3,
@@ -81,4 +101,4 @@ const ModalCloseButton = styled.button({
   width: '100%',
 });
 
-export { ModalLayout, ModalContainer, ModalTitleContainer, ModalContent, ModalCloseButton };
+export { ModalLayout, ModalContainer, ModalTitleContainer, ModalContent, ModalDescriptionContainer, ModalCloseButton };

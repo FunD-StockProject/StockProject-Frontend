@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchAuthNickname, fetchUpdateUserImage, fetchUpdateUserProfile } from '@controllers/auth/api';
@@ -60,7 +59,7 @@ const EditProfileButton = styled.button({
 });
 
 const EditProfile = () => {
-  const navigate = useNavigate();
+  const { navToEditProfileDone } = useRouter();
 
   const { userInfo, setUserInfo } = useAuthInfo();
   const [isProgileImageChanged, setIsProfileImageChanged] = useState(false);
@@ -235,7 +234,7 @@ const EditProfile = () => {
 
     setUserInfo({ nickname: values.name });
     //birth는 나중에 얻어와야 함
-    navigate(webPath.editeProfileDone());
+    navToEditProfileDone();
   };
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {

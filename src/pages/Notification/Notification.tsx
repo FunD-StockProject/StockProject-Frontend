@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { NotificationItem } from '@utils/notificationMapper';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import StockImage from '@components/Common/StockImage';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import { useMarkAsReadMutation, useNotificationsQuery } from '@controllers/notification/query';
@@ -32,13 +31,13 @@ const getBeforeTime = (date: Date) => {
 };
 
 const NotificationList = ({ notifications }: { notifications: NotificationItem[] }) => {
-  const navigate = useNavigate();
+  const { navToStock } = useRouter();
 
   const { mutate: readNotification } = useMarkAsReadMutation();
 
   const handleClickNotification = (notificationId: number, symbolName: string, country: StockCountryKey) => () => {
     readNotification(notificationId);
-    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+    navToStock(symbolName, country);
   };
 
   if (notifications.length === 0)

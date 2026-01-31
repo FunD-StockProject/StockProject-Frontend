@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchUpdateUserImage } from '@controllers/auth/api';
 import { theme } from '@styles/themes';
@@ -50,7 +49,7 @@ const ProfileContents = styled.div({
 });
 
 const MyPageProfile = () => {
-  const navigate = useNavigate();
+  const { navToEditProfile } = useRouter();
   const { isLogin, userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
 
   const username = userInfo?.nickname ?? '아직 정보가 없어요!';
@@ -60,7 +59,7 @@ const MyPageProfile = () => {
     if (!isLogin) {
       handleNavigateLogin();
     } else {
-      navigate(webPath.editProfile());
+      navToEditProfile();
     }
   };
 

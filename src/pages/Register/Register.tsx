@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import Button from '@components/Common/Button';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
@@ -49,7 +49,7 @@ const termInputs: TermInputItem[] = [
 ];
 
 const Register = () => {
-  const navigate = useNavigate();
+  const { navToRegisterDone, navToTerm } = useRouter();
   const location = useLocation();
 
   // WebView 환경 감지
@@ -275,13 +275,11 @@ const Register = () => {
     }
 
     // 일반 브라우저: Done 페이지로 이동
-    navigate(webPath.registerDone());
+    navToRegisterDone();
   };
 
   const handleOpenTerm = (termKey: TermKey) => () => {
-    navigate(webPath.term(), {
-      state: { termKey },
-    });
+    navToTerm(termKey);
   };
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {

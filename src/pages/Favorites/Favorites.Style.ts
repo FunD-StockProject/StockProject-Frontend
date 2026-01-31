@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const FavoritesContainer = styled.div({
@@ -172,7 +172,7 @@ const FavoritesItemBellContainer = styled.div(
 const FavoritesItemSubtextContainer = styled.p(
   ({ delta }: { delta: number }) => ({
     ['>span']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_gray1,
+      color: deltaToColor(delta) ?? theme.colors.sub_gray1,
     },
   }),
   {

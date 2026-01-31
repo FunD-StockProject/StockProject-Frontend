@@ -12,6 +12,8 @@ const TinderCardItemContainer = styled.div(
       opacity?: string;
       transition?: string;
       filter?: string;
+      top?: string;
+      left?: string;
     };
     zIndex?: number;
   }) => ({
@@ -152,6 +154,7 @@ const TinderCardItemInfoAboutButton = styled.div({
 
 const TinderCardChartContainer = styled.div({
   position: 'absolute',
+  display: 'flex',
   top: '0',
   left: '0',
   right: '0',
