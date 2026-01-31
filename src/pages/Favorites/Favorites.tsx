@@ -68,7 +68,6 @@ const FavoritesPage = () => {
   };
 
   const handleNotificationToggle = () => {
-    console.log(currentNotificationItemRef.current);
     if (!currentNotificationItemRef.current) return;
     toggleNotification(currentNotificationItemRef.current);
     closeOffNotificationModal();

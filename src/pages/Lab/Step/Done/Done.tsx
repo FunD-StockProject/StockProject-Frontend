@@ -13,7 +13,7 @@ const LabDone = () => {
 
   return (
     <LabDoneContainer>
-      <img src={LabResultPNG} />
+      <img src={LabResultPNG} loading="lazy" />
       <StepButtonContainer>
         <button onClick={handleClickEscape}>매수현황 보러가기</button>
       </StepButtonContainer>

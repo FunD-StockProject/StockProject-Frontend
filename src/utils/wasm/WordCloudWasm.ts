@@ -4,7 +4,6 @@ export async function LoadWordCloudWASM(width: number, height: number): Promise<
   // const response = await fetch('/wasm/wordcloud.wasm');
   // const buffer = await response.arrayBuffer();
   // const module = await WebAssembly.compile(buffer);
-  // console.log(WebAssembly.Module.imports(module));
 
   return new Promise((resolve, reject) => {
     Module({
@@ -17,9 +16,6 @@ export async function LoadWordCloudWASM(width: number, height: number): Promise<
       },
     })
       .then(({ exports }) => {
-        // console.log('WASM exports:', exports);
-        // console.log('Available functions:', Object.keys(exports));
-
         // 타입 안전성을 위한 타입 단언
         const wasmExports = exports as any;
 

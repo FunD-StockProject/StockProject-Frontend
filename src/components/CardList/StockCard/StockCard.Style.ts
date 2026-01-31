@@ -90,14 +90,6 @@ const LargeStockCardHeader = styled.div({
   },
 });
 
-const LargeStockCardHeaderImage = styled.div({
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  background: 'red',
-  flexShrink: '0',
-});
-
 const LargeStockCardContent = styled.div({
   display: 'flex',
   padding: '16px 12px 12px',
@@ -215,7 +207,6 @@ export {
   StockCardItem,
   LargeStockCardContainer,
   LargeStockCardHeader,
-  LargeStockCardHeaderImage,
   LargeStockCardContent,
   LargeStockCardContentTextContainer,
   SmallStockCardContainer,

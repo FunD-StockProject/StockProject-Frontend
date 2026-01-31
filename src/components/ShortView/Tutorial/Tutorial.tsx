@@ -26,7 +26,7 @@ const TutorialSteps = [
     content: (
       <TutorialItemContent>
         <TutorialItemTinderCard>
-          <img src={ShortViewMockImage} alt="short view mock" />
+          <img src={ShortViewMockImage} alt="short view mock" loading="lazy" />
           <TutorialItemTinderCardShadow />
           <TutorialItemTinderCardShadow />
         </TutorialItemTinderCard>
@@ -39,7 +39,7 @@ const TutorialSteps = [
     content: (
       <TutorialItemContent>
         <TutorialItemTinderCard>
-          <img src={ShortViewMockImage} alt="short view mock" />
+          <img src={ShortViewMockImage} alt="short view mock" loading="lazy" />
           <TutorialItemSwipeHand src={SwipeHandPNG} alt="swipe hand" />
         </TutorialItemTinderCard>
         <TutorialItemCircleButtonContainer className="money">
@@ -55,7 +55,7 @@ const TutorialSteps = [
     content: (
       <TutorialItemContent>
         <TutorialItemTinderCard>
-          <img src={ShortViewMockImage} alt="short view mock" />
+          <img src={ShortViewMockImage} alt="short view mock" loading="lazy" />
           <TutorialItemSwipeHand isLeft src={SwipeHandPNG} alt="swipe hand" />
         </TutorialItemTinderCard>
         <TutorialItemCircleButtonContainer className="cross">
@@ -74,7 +74,6 @@ const ShortViewTutorial = () => {
   const [tutorialWatched, setTutorialWatched] = useLocalStorageState<boolean>('tutorial_watched_shortview');
 
   const handleClickTutorialEnd = () => {
-    console.log('tutorial end');
     setTutorialWatched(true);
   };
 

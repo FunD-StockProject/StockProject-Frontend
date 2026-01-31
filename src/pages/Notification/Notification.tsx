@@ -43,7 +43,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationItem[]
   if (notifications.length === 0)
     return (
       <AlarmExampleWrapper>
-        <img src={AlarmExamplePNG} />
+        <img src={AlarmExamplePNG} loading="lazy" />
         <AlarmExampleTextContainer>
           <p className="title">아직은 알림이 없어요</p>
           <p className="description">

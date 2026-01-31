@@ -1,4 +1,6 @@
+import { MESSAGE_TYPES } from '@config/webview';
 import useAuthInfo from '@hooks/useAuthInfo';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import useToast from '@hooks/useToast';
 import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
@@ -29,16 +31,31 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { mutate: toggleNotification } = useToggleNotificationMutation();
   const isBookmark = stockPreference?.isBookmarked ?? false;
   const isNotification = stockPreference?.isNotificationEnabled ?? false;
+  const [accessToken] = useLocalStorageState<string>('access_token');
 
-  const onHeartClick = () => {
+  const checkAndRequestNotificationPermission = async () => {
+    const isWebView = !!(window as any).ReactNativeWebView;
+    if (isWebView) {
+      (window as any).ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: MESSAGE_TYPES.REQUEST_NOTIFICATION_PERMISSION,
+          token: accessToken,
+        }),
+      );
+    }
+  };
+
+  const onHeartClick = async () => {
     if (!stockInfo) return;
-
     if (!isLogin) {
       openLoginModal();
       return;
     }
 
     if (!isBookmark) {
+      // 관심 등록 시 알림 권한 체크 및 요청
+      await checkAndRequestNotificationPermission();
+
       showToast(
         <>
           <ToastHeartSVG />
@@ -51,7 +68,7 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
     }
   };
 
-  const onBellClick = () => {
+  const onBellClick = async () => {
     if (!stockInfo) return;
 
     if (!isLogin) {
@@ -59,19 +76,22 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       return;
     }
 
-    showToast(
-      isNotification ? (
+    if (isNotification) {
+      showToast(
         <>
           <ToastBellCrossSVG />
           <p>알림이 해제되었어요</p>
-        </>
-      ) : (
+        </>,
+      );
+    } else {
+      await checkAndRequestNotificationPermission();
+      showToast(
         <>
           <ToastBellSVG />
           <p>알림이 설정되었어요</p>
-        </>
-      ),
-    );
+        </>,
+      );
+    }
 
     toggleNotification(stockInfo.stockId);
   };

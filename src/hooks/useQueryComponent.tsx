@@ -3,8 +3,8 @@ import { UseQueryResult } from 'react-query';
 import ErrorComponent from '@components/Common/ErrorComponent';
 import LoadingComponent from '@components/Common/LoadingComponent';
 
-export const useQueryComponent = ({ query }: { query: UseQueryResult }) => {
-  const { data, isLoading, isError }: { data: any; isLoading: boolean; isError: boolean } = query;
+export const useQueryComponent = <T,>({ query }: { query: UseQueryResult<T> }) => {
+  const { data, isLoading, isError } = query;
 
   const [isDeferred, setIsDeferred] = useState(false);
 
@@ -15,8 +15,8 @@ export const useQueryComponent = ({ query }: { query: UseQueryResult }) => {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  if (isLoading) return [null, isDeferred && <LoadingComponent />];
-  if (isError) return [null, <ErrorComponent />];
+  if (isLoading) return [null, isDeferred && <LoadingComponent key="loading" />] as const;
+  if (isError) return [null, <ErrorComponent key="error" />] as const;
 
-  return [data];
+  return [data] as const;
 };

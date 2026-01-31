@@ -4,8 +4,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { VitePluginRadar } from 'vite-plugin-radar';
 import svgr from 'vite-plugin-svgr';
 import wasm from 'vite-plugin-wasm';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
+  esbuild: {
+    drop: ['console', 'debugger'], // production 빌드 시 console과 debugger 제거
+  },
   plugins: [
     react(),
     svgr(),
@@ -14,6 +18,11 @@ export default defineConfig({
       analytics: {
         id: 'G-EZPQMV95QJ',
       },
+    }),
+    visualizer({
+      filename: './dist/stats.html',
+      open: false,
+      gzipSize: true,
     }),
     VitePWA({
       registerType: 'autoUpdate',
@@ -62,6 +71,37 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React 관련 라이브러리를 별도 청크로 분리
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // React Query를 별도 청크로 분리
+          'query-vendor': ['react-query'],
+          // UI 라이브러리를 별도 청크로 분리
+          'ui-vendor': ['@emotion/react', '@emotion/styled', 'framer-motion'],
+        },
+        // 파일명 해시 추가로 브라우저 캐싱 최적화
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+    // 500KB 목표로 청크 사이즈 제한
+    chunkSizeWarningLimit: 500,
+    // 소스맵 비활성화로 빌드 크기 감소
+    sourcemap: false,
+    // 최소화 옵션
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+    },
+  },
   resolve: {
     alias: [
       { find: '@ts', replacement: '/src/ts' },

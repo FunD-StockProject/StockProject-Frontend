@@ -19,8 +19,8 @@ const RegisterTermList = ({ termItem }: { termItem: TermItem }) => {
       {termItem.text}
       {termItem.list && (
         <TermListOl listStyle={termItem.listStyle}>
-          {termItem.list.map((item) => (
-            <li>
+          {termItem.list.map((item, index) => (
+            <li key={`TERM_LIST_${index}`}>
               <RegisterTermList termItem={item} />
             </li>
           ))}
@@ -47,8 +47,8 @@ const RegisterTerm = () => {
       <TermContents>
         <p>{name}</p>
         <TermListContainer>
-          {contents.map((content) => (
-            <TermListItemContainer>
+          {contents.map((content, index) => (
+            <TermListItemContainer key={`TERM_CONTENT_${index}`}>
               <TermListItemTitle>{content.title}</TermListItemTitle>
               <TermListItemContent>
                 <RegisterTermList termItem={content} />

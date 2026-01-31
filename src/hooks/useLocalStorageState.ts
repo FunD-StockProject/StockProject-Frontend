@@ -8,7 +8,8 @@ type LocalStorageKey =
   | 'recent_stocks'
   | 'tutorial_watched_shortview'
   | 'recent_provider'
-  | 'last_visit_page';
+  | 'last_visit_page'
+  | 'app_install_popup_last_shown';
 
 const useLocalStorageState = <T>(
   key: LocalStorageKey,

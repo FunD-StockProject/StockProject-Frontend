@@ -237,8 +237,8 @@ export const useAutoComplete = (
         if (!res.length) throw new Error('No results found');
         setSearchState({ value: input, results: res.map((item) => ({ ...item, value: item[key].toUpperCase() })) });
       })
-      .catch((err) => {
-        err;
+      .catch(() => {
+        // Error handling - silently fail
       });
     return;
   };

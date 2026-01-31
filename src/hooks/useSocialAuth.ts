@@ -80,9 +80,8 @@ export const useSocialAuth = () => {
   );
 
   const handleOAuthCallback = useCallback(
-    async (code: string, provider: string, state: string) => {
-      console.log('🔵 [웹] handleOAuthCallback 시작:', { code, provider, state });
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async (code: string, provider: string, _state: string) => {
       clearAuthInfo();
       setIsLoading(true);
       setError(null);
@@ -91,10 +90,7 @@ export const useSocialAuth = () => {
         // API는 state로 redirect URI의 base64 인코딩 값을 기대합니다
         const redirectUri = window.location.origin + `/login/oauth2/code/${provider}`;
         const apiState = btoa(redirectUri);
-
-        console.log('🔵 [웹] fetchOAuth2Login 호출 시작', { redirectUri, apiState });
         const res = await fetchOAuth2Login(code, apiState, provider as ProviderKey);
-        console.log('🔵 [웹] fetchOAuth2Login 응답:', res);
 
         if (res.state === 'NEED_REGISTER') {
           // WebView에서는 네이티브에 메시지 전송
@@ -168,12 +164,9 @@ export const useSocialAuth = () => {
   const handleWebViewMessage = useCallback(
     (event: MessageEvent) => {
       try {
-        console.log('🔔 [웹] WebView 메시지 수신:', event.data);
         const { type, data } = JSON.parse(event.data);
-        console.log('🔔 [웹] 파싱된 메시지:', { type, data });
 
         if (type === MESSAGE_TYPES.AUTH_SUCCESS) {
-          console.log('✅ [웹] AUTH_SUCCESS 처리:', data);
           handleOAuthCallback(data.code, data.provider, data.state || '');
         } else if (type === MESSAGE_TYPES.AUTH_ERROR) {
           console.error('OAuth auth error:', data.error);
@@ -235,16 +228,13 @@ export const useSocialAuth = () => {
   // WebView 메시지 리스너 등록
   useEffect(() => {
     if (!isWebView) {
-      console.log('⚠️ [웹] WebView 환경이 아님 - 메시지 리스너 미등록');
       return;
     }
 
-    console.log('✅ [웹] WebView 메시지 리스너 등록');
     window.addEventListener('message', handleWebViewMessage);
     document.addEventListener('message', handleWebViewMessage as EventListener);
 
     return () => {
-      console.log('🗑️ [웹] WebView 메시지 리스너 제거');
       window.removeEventListener('message', handleWebViewMessage);
       document.removeEventListener('message', handleWebViewMessage as EventListener);
     };

@@ -156,10 +156,11 @@ const Register = () => {
       errors.email = '이메일을 입력해주세요';
     } else if (!emailRegex.test(values.email)) {
       errors.email = '이메일 형식을 확인해주세요';
-    } else if (false) {
-      // 이메일 중복 API
-      errors.email = '이미 가입된 이메일입니다';
     }
+    // else if (false) {
+    //   // 이메일 중복 API
+    //   errors.email = '이미 가입된 이메일입니다';
+    // }
 
     if (values.birth) {
       if (!birthRegex.test(values.birth)) {
@@ -179,9 +180,9 @@ const Register = () => {
       errors.termsAgreed = '필수 약관에 동의해야 가입할 수 있습니다';
     }
 
-    if (false) {
-      errors.system = '서버와의 연결에 문제가 있습니다. 잠시 후 다시 시도해주세요.';
-    }
+    // if (false) {
+    //   errors.system = '서버와의 연결에 문제가 있습니다. 잠시 후 다시 시도해주세요.';
+    // }
 
     return errors;
   };
@@ -254,8 +255,6 @@ const Register = () => {
       true,
       provider.toUpperCase(),
     );
-
-    console.log(profileImage);
 
     if (!res) return;
 
