@@ -245,6 +245,9 @@ const StockChartView = ({
     setZoomPrice(scale);
   }, []);
 
+  const MIN_CANVAS_X = MAX_SCALE_X * (BAR_SIZE + BAR_GAP) * 0.5;
+  const MAX_CANVAS_X = MAX_SCALE_X * (BAR_SIZE + BAR_GAP) * 0.5;
+
   const clampDragDelta = useCallback((rawDelta: number) => {
     const pointerCanvas = pointerCanvasRef.current;
     if (!pointerCanvas) return 0;
@@ -252,11 +255,11 @@ const StockChartView = ({
     const canvasPos = canvasPosRef.current;
     const bar = barSizeRef.current;
 
-    const half = pointerCanvas.clientWidth * 0.5;
     const step = bar.width + bar.gap;
 
-    const minDelta = half - canvasPos.x;
-    const maxDelta = half + step * (chartDataLengthRef.current - 1) - canvasPos.x;
+    const width = pointerCanvas.clientWidth;
+    const minDelta = width - MIN_CANVAS_X - canvasPos.x;
+    const maxDelta = MAX_CANVAS_X + step * (chartDataLengthRef.current - 1) - canvasPos.x;
 
     return clamp(rawDelta, minDelta, maxDelta);
   }, []);
@@ -269,11 +272,11 @@ const StockChartView = ({
     if (lastIndex < 0) return;
 
     const { x, delta } = canvasPosRef.current;
-    const { width, gap } = barSizeRef.current;
+    const barSize = barSizeRef.current;
 
-    const prevStep = width + gap;
+    const prevStep = barSize.width + barSize.gap;
 
-    const prevScale = width / BAR_SIZE;
+    const prevScale = barSize.width / BAR_SIZE;
     const nextScale = clamp(prevScale * Math.exp(-deltaY * ZOOM_SPEED), MIN_SCALE_X, MAX_SCALE_X);
     if (nextScale === prevScale) return;
 
@@ -281,9 +284,9 @@ const StockChartView = ({
     const nextG = BAR_GAP * nextScale;
     const nextStep = nextW + nextG;
 
-    const half = pointerCanvas.clientWidth * 0.5;
-    const minX = half;
-    const maxX = half + nextStep * lastIndex;
+    const width = pointerCanvas.clientWidth;
+    const minX = width - MIN_CANVAS_X;
+    const maxX = MAX_CANVAS_X + nextStep * lastIndex;
 
     const nextVisibleX = clamp(pointerX + ((x + delta - pointerX) / prevStep) * nextStep, minX, maxX);
 
@@ -1040,6 +1043,12 @@ const StockChartView = ({
     chartDataLengthRef.current = chartData.length;
   }, [chartData]);
 
+  const [firstLoading, setFirstLoading] = useState(false);
+  useEffect(() => {
+    if (!chartMaxPrice) return;
+    setFirstLoading(true);
+  }, [chartMaxPrice]);
+
   useEffect(() => {
     const pointerCanvas = pointerCanvasRef.current;
     if (!pointerCanvas) return;
@@ -1051,7 +1060,7 @@ const StockChartView = ({
       x: pointerCanvas.clientWidth - BAR_SIZE * 4,
       delta: 0,
     });
-  }, [period, chartMaxPrice]);
+  }, [period, firstLoading]);
 
   const canvasHeight = useMemo(() => {
     return {
