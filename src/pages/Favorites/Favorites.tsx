@@ -110,13 +110,8 @@ const FavoritesPage = () => {
   });
 
   const [DeleteFavoritesModal, openDeleteFavoritesModal, closeDeleteFavoritesModal] = ConfirmModal({
-    title: '정말 해제하시겠어요?',
-    description: (
-      <>
-        관심내역에서 삭제되고 <wbr />
-        변동 알림이 중단됩니다
-      </>
-    ),
+    title: '정말 삭제하시겠어요?',
+    description: <>변동 알림도 중단돼요</>,
     onConfirm: handleDeleteFavorites,
     isInverse: true,
     actionText: ['삭제', '취소'],

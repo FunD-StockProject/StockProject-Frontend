@@ -64,7 +64,7 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       );
       addBookMark(stockInfo.stockId);
     } else {
-      deleteBookmark(stockInfo.stockId);
+      openDeleteFavoritesModal();
     }
   };
 
@@ -76,25 +76,56 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
       return;
     }
 
-    if (isNotification) {
-      showToast(
-        <>
-          <ToastBellCrossSVG />
-          <p>알림이 해제되었어요</p>
-        </>,
-      );
-    } else {
+    if (!isNotification) {
       await checkAndRequestNotificationPermission();
+      toggleNotification(stockInfo.stockId);
       showToast(
         <>
           <ToastBellSVG />
           <p>알림이 설정되었어요</p>
         </>,
       );
+    } else {
+      openOffNotificationModal();
     }
-
-    toggleNotification(stockInfo.stockId);
   };
+
+  const handleNotificationDelete = async () => {
+    closeOffNotificationModal();
+    toggleNotification(stockInfo.stockId);
+    showToast(
+      <>
+        <ToastBellCrossSVG />
+        <p>알림이 해제되었어요</p>
+      </>,
+    );
+  };
+
+  const handleDeleteFavorites = () => {
+    deleteBookmark(stockInfo.stockId);
+    closeDeleteFavoritesModal();
+  };
+
+  const [OffNotificationModal, openOffNotificationModal, closeOffNotificationModal] = ConfirmModal({
+    title: '알림을 해제할까요?',
+    description: (
+      <>
+        관심 종목은 유지된 채, <wbr />
+        알림만 해제돼요
+      </>
+    ),
+    onConfirm: handleNotificationDelete,
+    isInverse: true,
+    actionText: ['해제하기', '취소'],
+  });
+
+  const [DeleteFavoritesModal, openDeleteFavoritesModal, closeDeleteFavoritesModal] = ConfirmModal({
+    title: '관심 설정을 해제할까요?',
+    description: <>변동 알림도 중단돼요</>,
+    onConfirm: handleDeleteFavorites,
+    isInverse: true,
+    actionText: ['해제하기', '취소'],
+  });
 
   const [LoginModal, openLoginModal] = ConfirmModal({
     title: '관심종목 알림을 받으려면, 로그인이 필요해요!',
@@ -106,6 +137,8 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
 
   return (
     <HeaderContainer>
+      <OffNotificationModal />
+      <DeleteFavoritesModal />
       <LoginModal />
       <ArrowLeftSVG onClick={navToBack} />
       <span className="grow" />
