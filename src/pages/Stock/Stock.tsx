@@ -14,8 +14,6 @@ const StockPage = () => {
 
   if (!stockInfo) return null;
 
-  console.log(stockInfo);
-
   return (
     <StockContainer>
       <StockHeader stockInfo={stockInfo} />

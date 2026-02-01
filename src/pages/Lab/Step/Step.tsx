@@ -85,8 +85,6 @@ const LabStep = () => {
     });
   };
 
-  console.log(state);
-
   const Steps = [
     <LabTutorial handlePrevStep={navToBack} handleNextStep={navToNextStep} />,
     <LabCountry handlePrevStep={navToBack} handleNextStep={navToNextStep} />,

@@ -10,7 +10,7 @@ const ReportClassChart = ({
 }: {
   reportClass: ReportClassType;
   successRate: number;
-  sameGradeUserRate: number;
+  sameGradeUserRate?: number;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -72,6 +72,8 @@ const ReportClassChart = ({
     drawChart(ctx, canvas);
   }, []);
 
+  const { min, max } = reportClass;
+
   return (
     <Container>
       <Content>
@@ -79,9 +81,13 @@ const ReportClassChart = ({
         <TooltipLine successRate={successRate} />
         <TooltipContainer ref={tooltipRef} successRate={successRate} width={tooltipWidth}>
           <p className="title">
-            성공률 <b>{reportClass.range}</b>
+            성공률{' '}
+            <b>
+              {min}
+              {max === 100 ? '% 이상' : `~${max}%`}
+            </b>
           </p>
-          <p className="description">(전체 유저 중 {sameGradeUserRate.toFixed(1)}%)</p>
+          {sameGradeUserRate && <p className="description">(전체 유저 중 {sameGradeUserRate.toFixed(1)}%)</p>}
         </TooltipContainer>
       </Content>
       <IndexContainer className="index">

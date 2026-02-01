@@ -1,6 +1,7 @@
 import { StockCountryKey } from '@ts/StockCountry';
 import { StockSectorKey } from '@ts/StockSector';
 import { ReportClassKey } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
+import { PatternQuadrantKey } from '@components/Lab/ReportPatternChart/ReportPatternChart.Type';
 import { fetchAuthData } from '@controllers/common/base';
 import type { StockInfo } from '@controllers/stocks/types';
 
@@ -119,19 +120,20 @@ export interface PortfolioResultHumanIndicator {
   successRate: number;
   totalBuyCount: number;
   successCount: number;
+  distribution: Record<ReportClassKey, number>;
 }
 
 export interface PortfolioResultPatternHistory {
   date: string;
   score: number;
-  yield: number;
+  roi: number;
   stockId: number;
   stockName: string;
   duplicateName: boolean;
 }
 
 export interface PortfolioResultPattern {
-  type: string;
+  type: PatternQuadrantKey;
   percentile: number;
   history: PortfolioResultPatternHistory[];
 }
