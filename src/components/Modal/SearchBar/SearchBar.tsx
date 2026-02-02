@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SEARCH_CATEGORIES, SEARCH_CATEGORY_MAP, SearchCategoryKey } from '@ts/SearchCategory';
 import ChevronDownSVG from '@assets/icons/chevronDown.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
@@ -20,7 +20,7 @@ const SearchBar = ({
   const [inputValue, setInputValue] = useState<string>(value);
 
   const selectedSearchType = SEARCH_CATEGORY_MAP[searchType].text;
-  const searchValue = useMemo(() => inputValue.trim(), [inputValue]);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const handleSearchTypeMouseDown = useCallback(
     (key: SearchCategoryKey) => () => {
@@ -36,6 +36,16 @@ const SearchBar = ({
   const handleSearchValueClear = useCallback(() => {
     setInputValue('');
   }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const curr = inputValue.trim();
+
+      setSearchValue(curr);
+    }, 200);
+
+    return () => window.clearInterval(id);
+  }, [inputValue]);
 
   return (
     <SearchBarContainer>
