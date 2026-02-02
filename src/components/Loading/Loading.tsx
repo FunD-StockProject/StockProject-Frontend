@@ -11,7 +11,10 @@ const Loading = ({ isLoading, title, desc }: { isLoading?: boolean; title: strin
     <LoadingContainer bottom="96px">
       <BackgroundSVG />
       <LoadingContent>
-        <video src={LoadingWEBM} autoPlay loop muted playsInline />
+        <video autoPlay muted loop playsInline preload="auto">
+          <source src={LoadingWEBM} type="video/webm" />
+          브라우저가 비디오 태그를 지원하지 않습니다.
+        </video>
         <div>
           <p className="title">{title}</p>
           {desc && <p className="desc">{desc}</p>}

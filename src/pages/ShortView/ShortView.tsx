@@ -1,9 +1,9 @@
+import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
 import useToast from '@hooks/useToast';
-import { webPath } from '@router/index';
 import Loading from '@components/Loading/Loading';
+import useMockPurchase from '@components/Modal/MockPurchase/useMockPurchase';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
 import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
@@ -16,6 +16,10 @@ import {
 } from '@controllers/preference/query';
 import { ShortViewItem } from '@controllers/shortview/api';
 import { useShortViewQuery } from '@controllers/shortview/query';
+import { theme } from '@styles/themes';
+import LoadingWEBM from '@assets/Loading.webm';
+import BackgroundSVG from '@assets/background.svg?react';
+import AlertSVG from '@assets/icons/alert.svg?react';
 import CheckSVG from '@assets/icons/check.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import HeartSVG from '@assets/icons/heart.svg?react';
@@ -46,27 +50,21 @@ type DragState = {
 };
 
 const ShortView = () => {
-  const navigate = useNavigate();
-
   const { isLogin } = useAuthInfo();
   const { toast, showToast, hideToast } = useToast();
   const {
     data: shortviewStocks = [],
-    fetchNextPage: fetchNextShortview,
     isLoading: isLoadingShortview,
-    isFetchingNextPage: isFetchingNextShortview,
-    removeItem: removeShortviewItem,
-    appendItem: appendShortviewItem,
+    currentIdx,
+    currentItem,
+    setNextIndex,
+    setPrevIndex,
+    removeItem: removeShortViewItem,
+    appendItem: appendShortViewItem,
+    fetchMore,
+    isFetchingMore,
+    isAtEnd,
   } = useShortViewQuery({ useMock: !isLogin });
-  const [currentIdx, setCurrentIdx] = useState(0);
-
-  useEffect(() => {
-    if (isFetchingNextShortview) return;
-    if (shortviewStocks.length === 0) return;
-    if (currentIdx >= shortviewStocks.length - 2) {
-      fetchNextShortview();
-    }
-  }, [currentIdx, shortviewStocks, isFetchingNextShortview]);
 
   const { mutate: addBookmark } = useAddBookmarkMutation();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
@@ -74,11 +72,9 @@ const ShortView = () => {
   const { mutate: hideStock } = useHideStockMutation();
   const { mutate: unhideStock } = useUnhideStockMutation();
 
-  const currentStock = shortviewStocks[currentIdx] ?? null;
-
   const recentHideStockRef = useRef<ShortViewItem>();
 
-  const { data: stockPreference } = useStockPreferenceQuery(currentStock?.stockId);
+  const { data: stockPreference } = useStockPreferenceQuery(currentItem?.stockId);
   const isBookmark = stockPreference?.isBookmarked ?? false;
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -147,7 +143,7 @@ const ShortView = () => {
 
   const prevCardTransform = {
     left: '0',
-    top: `${mouseDrag.direction === 'bottom' ? 0 : -height + cardY}px`,
+    top: `${mouseDrag.direction === 'bottom' ? 0 : -height + cardY == 0 ? -1000 : -height + cardY}px`,
     scale: `${1}`,
     opacity: `${1}`,
     transition: `scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out' : ''}`,
@@ -159,7 +155,7 @@ const ShortView = () => {
     top: `${Math.min(0, cardY)}px`,
     scale: `${mouseDrag.active ? 1.05 : 1}`,
     opacity: `${1}`,
-    filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${0.12 * (1 - Math.abs(cardY / (height / 2)))}))`,
+    filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${0.12 * (1 - Math.abs(isNaN(cardY / (height / 2)) ? 0 : cardY / (height / 2)))}))`,
     transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out, transform 0.2s ease-in-out' : ''}`,
   };
 
@@ -275,7 +271,7 @@ const ShortView = () => {
 
   const handleScrollUpStock = () => {
     setTimeout(() => {
-      setCurrentIdx((prev) => (prev < shortviewStocks.length - 1 ? prev + 1 : prev));
+      setNextIndex();
 
       setMouseDrag({
         direction: 'center',
@@ -285,7 +281,7 @@ const ShortView = () => {
 
   const handleScrollDownStock = () => {
     setTimeout(() => {
-      setCurrentIdx((prev) => (prev > 0 ? prev - 1 : prev));
+      setPrevIndex();
 
       setMouseDrag({
         direction: 'center',
@@ -294,44 +290,30 @@ const ShortView = () => {
   };
 
   const handlePurchaseStock = () => {
-    setMouseDrag(
-      {
-        direction: 'right',
-      },
-      true,
-    );
+    if (!currentItem) return;
+    buyExperiment({ stockId: currentItem.stockId, country: currentItem.country });
+    openMockPurchaseModal();
 
     setTimeout(() => {
       setMouseDrag({
         direction: 'center',
       });
 
-      if (!currentStock) return;
-
-      buyExperiment({ stockId: currentStock.stockId, country: currentStock.country });
-      removeShortviewItem(currentIdx);
-      navigate(webPath.labStep, { state: { step: 3 } });
+      removeShortViewItem();
     }, 200);
   };
 
   const handleHideStock = () => {
-    setMouseDrag(
-      {
-        direction: 'left',
-      },
-      true,
-    );
-
     setTimeout(() => {
       setMouseDrag({
         direction: 'center',
       });
 
-      if (!currentStock) return;
+      if (!currentItem) return;
 
-      recentHideStockRef.current = currentStock;
-      hideStock(currentStock.stockId);
-      removeShortviewItem(currentIdx);
+      recentHideStockRef.current = currentItem;
+      hideStock(currentItem.stockId);
+      removeShortViewItem();
 
       showToast(
         <>
@@ -351,7 +333,7 @@ const ShortView = () => {
     hideToast();
 
     unhideStock(recentHideStockRef.current.stockId);
-    appendShortviewItem(currentIdx, recentHideStockRef.current);
+    appendShortViewItem(recentHideStockRef.current);
     recentHideStockRef.current = undefined;
 
     setMouseDrag(
@@ -373,7 +355,7 @@ const ShortView = () => {
   };
 
   const handleBookmarkStock = () => {
-    if (!currentStock) return;
+    if (!currentItem) return;
     if (!isBookmark) {
       showToast(
         <>
@@ -381,9 +363,9 @@ const ShortView = () => {
           <p>관심 등록 완료! 민심 급변 시 알림 드릴게요</p>
         </>,
       );
-      addBookmark(currentStock.stockId);
+      addBookmark(currentItem.stockId);
     } else {
-      deleteBookmark(currentStock.stockId);
+      deleteBookmark(currentItem.stockId);
     }
   };
 
@@ -403,8 +385,11 @@ const ShortView = () => {
     };
   }, []);
 
+  const { Modal: MockPurchaseModal, openModal: openMockPurchaseModal } = useMockPurchase();
+
   return (
     <ShortViewContainer>
+      {MockPurchaseModal}
       <Loading isLoading={isLoadingShortview} title="숏뷰를 불러오고 있어요" desc="잠시만 기다려주세요..." />
       <ShortViewContent ref={containerRef} onPointerDown={handlePointerDown}>
         {shortviewStocks.map(
@@ -424,15 +409,61 @@ const ShortView = () => {
               />
             ),
         )}
+        <BackgroundSVG />
+        <div
+          style={{
+            position: 'relative',
+            opacity: isAtEnd ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
+          {isFetchingMore ? (
+            <ShortViewEmptyContainer>
+              <video autoPlay muted loop playsInline preload="auto">
+                <source src={LoadingWEBM} type="video/webm" />
+                브라우저가 비디오 태그를 지원하지 않습니다.
+              </video>
+              <p>새로운 종목을 불러오는 중...</p>
+            </ShortViewEmptyContainer>
+          ) : isAtEnd && shortviewStocks.length ? (
+            <ShortViewEmptyContainer>
+              <AlertSVG />
+              <p>종목을 불러오는 데 실패했어요😭</p>
+              <button onClick={fetchMore}>다시 불러오기</button>
+            </ShortViewEmptyContainer>
+          ) : (
+            ''
+          )}
+        </div>
       </ShortViewContent>
       <ShortViewButtonContainer>
-        <ShortViewButton className="cross" onClick={handleHideStock}>
+        <ShortViewButton
+          className="cross"
+          onClick={() => {
+            setMouseDrag(
+              {
+                direction: 'left',
+              },
+              true,
+            );
+          }}
+        >
           <CrossSVG />
         </ShortViewButton>
         <ShortViewButton className={isBookmark ? 'heart-active' : 'heart'} onClick={handleBookmarkStock}>
           <HeartSVG />
         </ShortViewButton>
-        <ShortViewButton className="money" onClick={handlePurchaseStock}>
+        <ShortViewButton
+          className="money"
+          onClick={() => {
+            setMouseDrag(
+              {
+                direction: 'right',
+              },
+              true,
+            );
+          }}
+        >
           <MoneySVG />
         </ShortViewButton>
         {toast.enabled && <ShortViewToast closing={toast.closing}>{toast.message}</ShortViewToast>}
@@ -458,5 +489,33 @@ const ShortView = () => {
     </ShortViewContainer>
   );
 };
+
+const ShortViewEmptyContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '16px',
+  ['>p']: {
+    margin: '0',
+    ...theme.font.body16Semibold,
+    color: theme.colors.sub_gray4,
+  },
+  ['>button']: {
+    ...theme.font.body14Bold,
+    color: theme.colors.sub_gray4,
+    background: theme.colors.sub_gray10,
+    borderRadius: '8px',
+    padding: '4px 12px',
+    marginTop: '-8px',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  ['>svg, >video']: {
+    width: '80px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    fill: theme.colors.sub_blue6,
+  },
+});
 
 export default ShortView;

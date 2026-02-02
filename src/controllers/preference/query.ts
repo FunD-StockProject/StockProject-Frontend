@@ -28,7 +28,7 @@ export const useBookmarkCountQuery = () => {
   });
 };
 
-export const useStockPreferenceQuery = (stockId: number) => {
+export const useStockPreferenceQuery = (stockId?: number) => {
   return useQuery<PreferenceStockResponse>(['stockPreference', stockId], () => fetchStockPreference(stockId!), {
     ...queryOptions,
     enabled: !!stockId && !!localStorage.getItem('access_token'),

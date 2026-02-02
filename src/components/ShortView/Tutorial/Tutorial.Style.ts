@@ -33,6 +33,8 @@ const TutorialContent = styled.div({
   flexShrink: '0',
   overflow: 'auto',
   scrollSnapType: 'x mandatory',
+  scrollSnapStop: 'always',
+  scrollBehavior: 'smooth',
   gap: '24px',
   flexGrow: 1,
   maxHeight: '560px',

@@ -76,6 +76,12 @@ const ShortViewContent = styled.div({
   display: 'flex',
   flexDirection: 'column-reverse',
   minHeight: '420px',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  ['>svg']: {
+    position: 'absolute',
+  },
 });
 
 const ShortViewToast = styled.div(

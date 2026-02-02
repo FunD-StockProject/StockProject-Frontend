@@ -7,6 +7,7 @@ import useAuthInfo from '@hooks/useAuthInfo';
 import { webPath } from '@router/index';
 import Button from '@components/Common/Button';
 import Marquee from '@components/Common/Marquee/Marquee';
+import useMockPurchase from '@components/Modal/MockPurchase/useMockPurchase';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import { StockDetailInfo } from '@controllers/stocks/types';
 import { TitleContainer, TitleDetailContainer, TitleHeaderContainer } from './StockTitle.Style';
@@ -17,20 +18,24 @@ const StockTitle = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { isLogin } = useAuthInfo();
   const { mutate: buyExperiment } = useBuyExperimentMutation();
 
+  const { Modal: MockPurchaseModal, openModal: openMockPurchaseModal } = useMockPurchase();
+
   const handleClickBuy = useCallback(() => {
     if (!isLogin) {
       navigate(webPath.labStep, { state: { step: 0 } });
       return;
     }
+
     buyExperiment({ stockId, country });
-    navigate(webPath.labStep, { state: { step: 4 } });
-  }, [isLogin, navigate, buyExperiment, stockId, country]);
+    openMockPurchaseModal();
+  }, [isLogin, navigate, buyExperiment, stockId, country, openMockPurchaseModal]);
 
   const marketCode = MARKET_CODES[exchangeNum];
   const countryImage = STOCK_COUNTRY_MAP[country].img;
 
   return (
     <TitleContainer>
+      {MockPurchaseModal}
       <TitleHeaderContainer>
         <Marquee>
           <p className="name">{symbolName}</p>
