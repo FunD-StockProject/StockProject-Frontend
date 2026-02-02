@@ -5,7 +5,6 @@ import BottomNavigation from '@layout/BottomNavigation/BottomNavigation';
 import Header from '@layout/Header/Header';
 import AppInstallPopUp from '@components/PopUp/AppInstallPopUp/AppInstallPopUp';
 import PWAInfoPopUp from '@components/PopUp/PWAinfoPopUp/PWAInfoPopUp';
-import Footer from '../Footer/Footer';
 import { LayoutProps } from './Mainlayout.Props';
 import { MainContent, StyledMainlayout } from './Mainlayout.Style';
 
@@ -19,7 +18,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
   const isBottomNavigationVisible = (
     ['login', 'register', 'editProfile', 'withdraw', 'term', 'usage', 'notification'] as (keyof typeof webPath)[]
   ).reduce((acc, path) => {
-    return acc && !location.pathname.startsWith(webPath[path]());
+    return acc && !location.pathname.startsWith(webPath[path]);
   }, true);
 
   return (
@@ -27,7 +26,6 @@ const Mainlayout = ({ children }: LayoutProps) => {
       <MainContent isNavActive={isBottomNavigationVisible}>
         <Header location={location.pathname} />
         {children}
-        {isRootPage && <Footer />}
       </MainContent>
 
       {visiblePWAInfoPopUp && isRootPage && !detectPWA() && <PWAInfoPopUp />}

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const StockCardContainer = styled.div({
@@ -174,7 +174,7 @@ const SmallStockCardContentTitle = styled.div({
 const SmallStockCardContentScore = styled.div(
   ({ delta, isNew }: { delta: number; isNew: boolean }) => ({
     ['>span']: {
-      color: isNew ? theme.colors.yellow : (deltaScoreToColor(delta) ?? theme.colors.sub_gray7),
+      color: isNew ? theme.colors.yellow : (deltaToColor(delta) ?? theme.colors.sub_gray7),
     },
   }),
   {

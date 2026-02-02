@@ -1,10 +1,10 @@
-import { Suspense, lazy } from 'react';
-import { Outlet, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
-import Mainlayout from '../layout/Mainlayout/Mainlayout';
+import { lazy } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import Root from './Root';
 
 // Lazy load all pages for code splitting
 const Home = lazy(() => import('../pages/Home/Home'));
-const Search = lazy(() => import('../pages/Search/Search'));
+const Stock = lazy(() => import('../pages/Stock/Stock'));
 const AboutPage = lazy(() => import('@pages/About/About'));
 const Favorites = lazy(() => import('@pages/Favorites/Favorites'));
 const Lab = lazy(() => import('@pages/Lab/Lab'));
@@ -26,54 +26,42 @@ const WithdrawDone = lazy(() => import('@pages/WithdrawDone/WithdrawDone'));
 export type TermKey = 'agreeTerm' | 'agreePrivacy' | 'agreeMarketing';
 
 export const webPath = {
-  home: () => '/',
-  search: () => '/search',
-  usage: () => '/usage',
-  shortView: () => '/shortview',
-  mypage: () => '/mypage',
-  login: () => '/mypage/login',
-  register: () => '/mypage/register',
-  registerDone: () => '/mypage/register/done',
-  editProfile: () => '/mypage/edit',
-  editeProfileDone: () => '/mypage/edit/done',
-  withdraw: () => '/mypage/withdraw',
-  favorites: () => '/favorites',
-  withdrawDone: () => '/mypage/withdraw/done',
-  lab: () => '/lab',
-  labStep: () => '/lab/step',
-  labRecordSheet: () => '/lab/recordsheet',
-  term: () => '/term',
-  about: () => '/about',
-  notification: () => '/notification',
-  oauthCallback: () => '/login/oauth2/code/:provider',
-};
-
-const Root = () => {
-  return (
-    <Mainlayout>
-      <Suspense fallback={null}>
-        <Outlet />
-      </Suspense>
-      <ScrollRestoration />
-    </Mainlayout>
-  );
+  home: '/',
+  notification: '/notification',
+  stock: '/stock',
+  about: '/about',
+  term: '/term',
+  favorites: '/favorites',
+  usage: '/usage',
+  shortView: '/shortview',
+  mypage: '/mypage',
+  login: '/mypage/login',
+  register: '/mypage/register',
+  registerDone: '/mypage/register/done',
+  editProfile: '/mypage/edit',
+  editProfileDone: '/mypage/edit/done',
+  withdraw: '/mypage/withdraw',
+  withdrawDone: '/mypage/withdraw/done',
+  lab: '/lab',
+  labStep: '/lab/step',
+  labRecordSheet: '/lab/recordsheet',
+  oauthCallback: '/login/oauth2/code/:provider',
 };
 
 const routes = [
   { path: '*', element: <div>404 Not Found</div> },
-
   {
     path: '/',
     element: <Root />,
     children: [
-      { path: '/', element: <Home /> },
-      { path: webPath.search(), children: [{ path: '', element: <Search /> }] },
-      { path: webPath.favorites(), element: <Favorites /> },
-      { path: webPath.mypage(), element: <MyPage /> },
-      { path: webPath.login(), element: <Login /> },
-      { path: webPath.register(), element: <Register /> },
+      { path: webPath.home, element: <Home /> },
+      { path: webPath.stock, element: <Stock /> },
+      { path: webPath.favorites, element: <Favorites /> },
+      { path: webPath.mypage, element: <MyPage /> },
+      { path: webPath.login, element: <Login /> },
+      { path: webPath.register, element: <Register /> },
       {
-        path: webPath.registerDone(),
+        path: webPath.registerDone,
         element: (
           <Done
             title="회원가입 완료 🎉"
@@ -87,22 +75,22 @@ const routes = [
           />
         ),
       },
-      { path: webPath.editProfile(), element: <EditProfile /> },
+      { path: webPath.editProfile, element: <EditProfile /> },
       {
-        path: webPath.editeProfileDone(),
+        path: webPath.editProfileDone,
         element: <Done title="수정완료 🎉" description="회원 정보를 수정했어요." />,
       },
-      { path: webPath.withdraw(), element: <Withdraw /> },
-      { path: webPath.withdrawDone(), element: <WithdrawDone /> },
-      { path: webPath.shortView(), element: <ShortView /> },
-      { path: webPath.lab(), element: <Lab /> },
-      { path: webPath.labStep(), element: <LabStep /> },
-      { path: webPath.labRecordSheet(), element: <RecordSheet /> },
-      { path: webPath.term(), element: <Term /> },
-      { path: webPath.about(), element: <AboutPage /> },
-      { path: webPath.usage(), element: <Usage /> },
-      { path: webPath.notification(), element: <NotificationPage /> },
-      { path: webPath.oauthCallback(), element: <OAuthCallback /> },
+      { path: webPath.withdraw, element: <Withdraw /> },
+      { path: webPath.withdrawDone, element: <WithdrawDone /> },
+      { path: webPath.shortView, element: <ShortView /> },
+      { path: webPath.lab, element: <Lab /> },
+      { path: webPath.labStep, element: <LabStep /> },
+      { path: webPath.labRecordSheet, element: <RecordSheet /> },
+      { path: webPath.term, element: <Term /> },
+      { path: webPath.about, element: <AboutPage /> },
+      { path: webPath.usage, element: <Usage /> },
+      { path: webPath.notification, element: <NotificationPage /> },
+      { path: webPath.oauthCallback, element: <OAuthCallback /> },
     ],
   },
 ];

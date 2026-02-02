@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const HowToContainer = styled.div({
@@ -148,7 +148,7 @@ const Step2Row = styled.div({
 const Step2Item = styled.span(
   ({ delta }: { delta: number }) => ({
     ['>p']: {
-      color: deltaScoreToColor(delta) ?? theme.colors.sub_black,
+      color: deltaToColor(delta) ?? theme.colors.sub_black,
     },
   }),
   {

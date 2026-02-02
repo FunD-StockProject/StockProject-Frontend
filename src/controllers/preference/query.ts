@@ -28,7 +28,7 @@ export const useBookmarkCountQuery = () => {
   });
 };
 
-export const useStockPreferenceQuery = (stockId: number) => {
+export const useStockPreferenceQuery = (stockId?: number) => {
   return useQuery<PreferenceStockResponse>(['stockPreference', stockId], () => fetchStockPreference(stockId!), {
     ...queryOptions,
     enabled: !!stockId && !!localStorage.getItem('access_token'),
@@ -171,7 +171,7 @@ export const useToggleNotificationMutation = () => {
       }));
 
       qc.setQueryData(['bookmarkList'], (old: any) =>
-        old.map((e: BookmarkItem) => (e.stockId === stockId ? { ...e, isNotificationOn: !e.isNotificationOn } : e)),
+        old?.map((e: BookmarkItem) => (e.stockId === stockId ? { ...e, isNotificationOn: !e.isNotificationOn } : e)),
       );
 
       return { previousPreference };

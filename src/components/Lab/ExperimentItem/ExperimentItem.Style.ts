@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { deltaScoreToColor } from '@utils/ScoreConvert';
+import { deltaToColor } from '@utils/ScoreConvert';
 import { theme } from '@styles/themes';
 
 const ExperimentItemContainer = styled.div({
@@ -70,7 +70,7 @@ const ExperimentItemContent = styled.div({
 });
 
 const ColoredDiffLabel = styled.span(({ delta }: { delta: number }) => ({
-  color: deltaScoreToColor(delta) ?? theme.colors.sub_gray7,
+  color: deltaToColor(delta) ?? theme.colors.sub_gray7,
 }));
 
 export { ExperimentItemContainer, ExperimentItemContent, ColoredDiffLabel };

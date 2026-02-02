@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@hooks/useIsMobile';
 import useLocalStorageState from '@hooks/useLocalStorageState';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import PWAPNG from '@assets/PWA/PWA.png';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import {
@@ -14,7 +13,7 @@ import {
 } from './PWAinfoPopUp.style';
 
 const PWAInfoPopUp = () => {
-  const navigate = useNavigate();
+  const { navToUsage } = useRouter();
   const isMobile = useIsMobile();
   const [lastVisit, setLastVisit] = useLocalStorageState<string>('last_visit_page');
   const [showPopUp, setShowPopUp] = useState(
@@ -43,7 +42,7 @@ const PWAInfoPopUp = () => {
 
   const confirmClick = () => {
     setShowPopUp(false);
-    navigate(webPath.usage());
+    navToUsage();
   };
 
   return (

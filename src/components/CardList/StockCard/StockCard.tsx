@@ -1,11 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
-import { STOCK_TYPE } from '@ts/Types';
 import { diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
-import { useQueryComponent } from '@hooks/useQueryComponent';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import StockImage from '@components/Common/StockImage';
-import { useHomeStockFetchQuery } from '@controllers/stocks/query';
 import { StockInfo } from '@controllers/stocks/types';
 import {
   LargeStockCardContainer,
@@ -28,10 +24,10 @@ export const LargeStockCard = ({
   stock: StockInfo;
   country: StockCountryKey;
 }) => {
-  const navigate = useNavigate();
+  const { navToStock } = useRouter();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+    navToStock(symbolName, country);
   };
 
   const scoreImage = scoreToImage(score);
@@ -68,10 +64,10 @@ export const SmallStockCard = ({
   stock: StockInfo;
   country: StockCountryKey;
 }) => {
-  const navigate = useNavigate();
+  const { navToStock } = useRouter();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+    navToStock(symbolName, country);
   };
 
   const scoreImage = scoreToImage(score);
@@ -87,34 +83,40 @@ export const SmallStockCard = ({
           </SmallStockCardContentScore>
         </SmallStockCardContentTitle>
         <SmallStockCardContentKeywords>
-          {keywords?.map((e) => (
-            <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>
-          ))}
+          {keywords?.map((e) => <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>)}
         </SmallStockCardContentKeywords>
       </SmallStockCardContent>
     </SmallStockCardContainer>
   );
 };
 
-const StockCard = ({ type, country }: { type: STOCK_TYPE; country: StockCountryKey }) => {
-  const [curStocks, suspend] = useQueryComponent({ query: useHomeStockFetchQuery(type, country) });
+const StockCard = ({
+  type,
+  stocks,
+  size,
+  country,
+}: {
+  type: string;
+  stocks: StockInfo[];
+  size: 'large' | 'small';
+  country: StockCountryKey;
+}) => {
+  if (!stocks) return null;
 
   return (
-    suspend || (
-      <StockCardContainer>
-        <div>
-          {curStocks?.map((stock: StockInfo) => (
-            <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
-              {type === 'HOT' ? (
-                <LargeStockCard stock={stock} country={country} />
-              ) : (
-                <SmallStockCard stock={stock} country={country} />
-              )}
-            </StockCardItem>
-          ))}
-        </div>
-      </StockCardContainer>
-    )
+    <StockCardContainer>
+      <div>
+        {stocks.map((stock: StockInfo) => (
+          <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
+            {size === 'large' ? (
+              <LargeStockCard stock={stock} country={country} />
+            ) : (
+              <SmallStockCard stock={stock} country={country} />
+            )}
+          </StockCardItem>
+        ))}
+      </div>
+    </StockCardContainer>
   );
 };
 

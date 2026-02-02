@@ -115,35 +115,20 @@ const ReportPatternChartTutorialQuadrant = styled.div({
   height: '100%',
   top: '0',
   left: '0',
+  padding: '16px 24px',
+  boxSizing: 'border-box',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gridTemplateRows: '1fr 1fr',
 
   ['>div']: {
-    position: 'absolute',
-    width: '50%',
-    height: '50%',
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
+    gap: '8px',
     alignItems: 'start',
     justifyContent: 'center',
-    padding: '12px',
-    boxSizing: 'border-box',
-
-    ['&.trend-preemptive']: {
-      top: '0',
-      right: '0',
-    },
-    ['&.lagging-follower']: {
-      right: '0',
-      bottom: '0',
-    },
-    ['&.reverse-investor']: {
-      left: '0',
-      bottom: '0',
-    },
-    ['&.value-preemptive']: {
-      top: '0',
-      left: '0',
-    },
+    width: '120px',
+    margin: 'auto',
 
     ['>div']: {
       display: 'flex',

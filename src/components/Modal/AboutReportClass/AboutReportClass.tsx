@@ -5,11 +5,21 @@ import {
   reportClassList,
   reportClassMap,
 } from '@components/Lab/ReportClassChart/ReportClassChart.Type';
+import { usePortfolioResultQuery } from '@controllers/experiment/query';
 import QuestionMarkSVG from '@assets/icons/questionMark.svg?react';
 import { Container, Content, ContentHeader, Header, TabContainer, TabItem } from './AboutReportClass.Style';
 
 const AboutReportClass = () => {
+  const { data: portfolioResult } = usePortfolioResultQuery();
   const [isSelected, setIsSelected] = useState<ReportClassKey>('worst');
+
+  if (!portfolioResult) return null;
+  const { humanIndicator } = portfolioResult;
+  const { distribution } = humanIndicator;
+
+  const selectedDistribution = distribution[isSelected];
+
+  const { min, max } = reportClassMap[isSelected];
 
   return (
     <Container>
@@ -25,7 +35,7 @@ const AboutReportClass = () => {
       <TabContainer>
         {reportClassList.map((e) => (
           <TabItem key={e.key} onClick={() => setIsSelected(e.key)} isSelected={isSelected === e.key}>
-            {e.emoji} {e.title}
+            {e.icon} {e.title}
           </TabItem>
         ))}
       </TabContainer>
@@ -33,16 +43,14 @@ const AboutReportClass = () => {
         <ContentHeader>
           <p className="title">{reportClassMap[isSelected].title} 지표란?</p>
           <p className="description">
-            {/* 여기 문구 추가해야 함 */}
-            {reportClassMap[isSelected].description}
+            성공률이 {min}
+            {max === 100 ? '% 이상' : `~${max}%`}인 유형을 말해요
+            <br />
+            유저 중 {selectedDistribution}%가 이에 속한답니다
           </p>
         </ContentHeader>
         <span className="divider" />
-        <ReportClassChart
-          reportClass={reportClassMap[isSelected]}
-          successRate={reportClassMap[isSelected].min + 10}
-          sameGradeUserRate={10}
-        />
+        <ReportClassChart reportClass={reportClassMap[isSelected]} successRate={min + 10} />
       </Content>
     </Container>
   );

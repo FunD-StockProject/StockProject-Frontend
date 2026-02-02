@@ -91,7 +91,6 @@ const HeaderContentsItem = styled.div({
 const Content = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: '8px 10px 12px',
   margin: '0 20px',
   background: theme.colors.sub_gray11,
   borderRadius: '4px',

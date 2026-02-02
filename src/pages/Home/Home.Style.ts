@@ -7,95 +7,46 @@ const HomeContainer = styled.div({
   background: theme.colors.primary100,
 });
 
-// header
-
-const HomeHeaderContainer = styled.div({
-  display: 'flex',
-  padding: '8px 20px',
-  width: '100%',
-  boxSizing: 'border-box',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '8px',
-
-  ['>svg']: {
-    width: '100px',
-    height: 'auto',
-    fill: theme.colors.sub_white,
-    marginRight: 'auto',
-  },
-});
-
-const HomeHeaderButton = styled.div({
-  display: 'flex',
-  gap: '10px',
-  position: 'relative',
-
-  ['>svg']: {
-    width: '36px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    cursor: 'pointer',
-    fill: theme.colors.sub_gray7,
-  },
-
-  ['&.enable']: {
-    ['::after']: {
-      content: '""',
-      position: 'absolute',
-      top: '0',
-      right: '0',
-      margin: '5px',
-      display: 'block',
-      width: '5px',
-      height: 'auto',
-      aspectRatio: '1 / 1',
-      background: theme.colors.sub_red,
-      borderRadius: '50%',
-    },
-  },
-});
-
-// tabMenu
-
 const HomeTabMenuContainer = styled.div({
+  position: 'relative',
   display: 'flex',
   gap: '4px',
-  padding: '24px 20px 0px',
+  padding: '20px 20px 0px',
+
+  ['>span.underline']: {
+    position: 'absolute',
+    bottom: '0',
+    width: '92px',
+    height: '2px',
+    background: theme.colors.sub_white,
+    transform: 'translateX(0)',
+    transition: 'transform 0.1s ease-in-out',
+  },
+
+  ['&:has(> label:last-of-type > input:checked) > span.underline']: {
+    transform: 'translateX(calc(100% + 4px))',
+  },
 });
 
 const HomeTabMenuLabel = styled.label({
   width: '92px',
+  paddingBottom: '8px',
 
   ['>input']: {
     display: 'none',
   },
 
-  ['>.tab_text']: {
+  ['>p']: {
     ...theme.font.body18Semibold,
     color: theme.colors.sub_gray7,
+    textAlign: 'center',
     margin: '0px',
-
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '6px',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    ['::after']: {
-      content: '""',
-      display: 'block',
-      width: '100%',
-      height: '2px',
-    },
+    transition: 'color 0.1s ease-in-out',
   },
 
-  ['> input[type="radio"]:checked']: {
-    ['~.tab_text']: {
+  ['>input[type="radio"]:checked']: {
+    ['~p']: {
       color: theme.colors.sub_gray1,
-      ['::after']: {
-        background: theme.colors.sub_gray1,
-      },
     },
   },
 });
@@ -116,4 +67,4 @@ const HomeContents = styled.div({
   },
 });
 
-export { HomeContainer, HomeHeaderContainer, HomeHeaderButton, HomeTabMenuContainer, HomeTabMenuLabel, HomeContents };
+export { HomeContainer, HomeTabMenuContainer, HomeTabMenuLabel, HomeContents };

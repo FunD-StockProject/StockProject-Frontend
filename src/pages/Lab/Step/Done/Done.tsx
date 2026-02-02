@@ -8,7 +8,7 @@ const LabDone = () => {
   const navigate = useNavigate();
 
   const handleClickEscape = () => {
-    navigate(webPath.lab());
+    navigate(webPath.lab);
   };
 
   return (

@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
 import { fetchUpdateUserImage } from '@controllers/auth/api';
 import ProfilePNG from '@assets/profile.png';
@@ -8,7 +7,7 @@ import RightArrowThickSVG from '@assets/right_arrow_thick.svg?react';
 import { ProfileContainer, ProfileContents } from './Profile.Style';
 
 const MyPageProfile = () => {
-  const navigate = useNavigate();
+  const { navToEditProfile } = useRouter();
   const { isLogin, userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
 
   const username = userInfo?.nickname ?? '아직 정보가 없어요!';
@@ -18,7 +17,7 @@ const MyPageProfile = () => {
     if (!isLogin) {
       handleNavigateLogin();
     } else {
-      navigate(webPath.editProfile());
+      navToEditProfile();
     }
   };
 

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
 import { getFormattedDate } from '@utils/dateFormatter';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import StockImage from '@components/Common/StockImage';
 import { ExperimentDetailTradeInfo } from '@controllers/experiment/api';
 import { useExperimentDetailQuery } from '@controllers/experiment/query';
@@ -34,7 +33,7 @@ export interface ExperimentDetailIndex {
 }
 
 const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: ExperimentDetailModalData }) => {
-  const navigate = useNavigate();
+  const { navToStock } = useRouter();
   const { data: experimentDetail, isLoading } = useExperimentDetailQuery(experimentId);
 
   const indexList: ExperimentDetailIndex[] = useMemo(() => {
@@ -71,9 +70,9 @@ const ExperimentDetail = ({ modalData: { experimentId } }: { modalData: Experime
   }, [experimentDetail]);
 
   const handleClickTitle = () => {
-    navigate(webPath.search(), {
-      state: { symbolName: experimentDetail?.symbolName, country: experimentDetail?.country },
-    });
+    const { symbolName, country } = experimentDetail!;
+
+    navToStock(symbolName, country);
   };
 
   if (isLoading) return <div>Loading...</div>;

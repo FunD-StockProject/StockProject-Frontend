@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import useAuthInfo from '@hooks/useAuthInfo';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
 import { fetchAuthLogout } from '@controllers/auth/api';
 import { useExperimentStatusQuery } from '@controllers/experiment/query';
@@ -30,31 +29,18 @@ const MyPage = () => {
   const FavoriteCount = favorites?.length ?? 0;
   const AlarmCount = favorites?.filter((e) => e.isNotificationOn).length ?? 0;
 
-  const navigate = useNavigate();
-
-  const handleClickServiceGuide = () => {
-    navigate(webPath.about());
-  };
-
-  const handleClickBusinessProposal = () => {
-    window.open('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
-  };
-
-  const handleClickServiceCenter = () => {
-    window.open('https://forms.gle/eus2xRNHGxbSBaAK9');
-  };
-
-  const handleClickTermUse = () => {
-    navigate(webPath.term(), {
-      state: { termKey: 'agreeTerm' },
-    });
-  };
-
-  const handleClickTermPrivacy = () => {
-    navigate(webPath.term(), {
-      state: { termKey: 'agreePrivacy' },
-    });
-  };
+  const {
+    navToAbout,
+    navToTerm,
+    navToWithdraw,
+    navToFavorites,
+    navToLab,
+    openBusinessProposal,
+    openServiceCenter,
+    openInstagram,
+    openLinkedIn,
+    openThreads,
+  } = useRouter();
 
   const handleLogout = async () => {
     await fetchAuthLogout();
@@ -63,29 +49,17 @@ const MyPage = () => {
     window.location.href = '/';
   };
 
-  const handleWithdraw = async () => {
-    navigate(webPath.withdraw());
-  };
-
   const [LogoutModal, openLogoutModal] = ConfirmModal({
     title: '정말 로그아웃 하시겠어요?',
     onConfirm: handleLogout,
   });
-
-  const handleClickMyHumanzipyo = () => {
-    navigate(webPath.favorites());
-  };
-
-  const handleClickMyExperiment = () => {
-    navigate(webPath.lab());
-  };
 
   const detailButtons = [
     {
       key: 'favorites',
       title: '내 인간지표',
       subtitle: '관심 종목 변동 알림 신청하기',
-      onClick: handleClickMyHumanzipyo,
+      onClick: navToFavorites,
       items: [
         { title: '관심 종목', content: `${FavoriteCount}개` },
         { title: '변동알림', content: `${AlarmCount}개` },
@@ -95,7 +69,7 @@ const MyPage = () => {
       key: 'lab',
       title: '모의매수 실험 현황',
       subtitle: '내 투자 타이밍은 적절할까',
-      onClick: handleClickMyExperiment,
+      onClick: navToLab,
       items: [
         { title: '실험 중', content: `${experimentStatus?.progressTradeCount ?? 0}개` },
         { title: '총 실험 수', content: `${experimentStatus?.totalTradeCount ?? 0}개` },
@@ -104,29 +78,17 @@ const MyPage = () => {
     },
   ];
 
-  const handleClickInstagram = () => {
-    window.open('https://www.instagram.com/humanzipyo/');
-  };
-
-  const handleClickLinkedIn = () => {
-    window.open('https://www.linkedin.com/company/humanzipyo');
-  };
-
-  const handleClickThreads = () => {
-    window.open('https://www.threads.net/@humanzipyo');
-  };
-
   const defaultButtons = [
-    { text: '서비스 가이드', onClick: handleClickServiceGuide },
-    { text: '비즈니스 제안', onClick: handleClickBusinessProposal },
-    { text: '고객센터', onClick: handleClickServiceCenter },
-    { text: '서비스 이용약관', onClick: handleClickTermUse },
-    { text: '개인정보 처리방침', onClick: handleClickTermPrivacy },
+    { text: '서비스 가이드', onClick: navToAbout },
+    { text: '비즈니스 제안', onClick: openBusinessProposal },
+    { text: '고객센터', onClick: openServiceCenter },
+    { text: '서비스 이용약관', onClick: () => navToTerm('agreeTerm') },
+    { text: '개인정보 처리방침', onClick: () => navToTerm('agreePrivacy') },
   ];
 
   const authButtons = [
     { text: '로그아웃', onClick: openLogoutModal },
-    { text: '계정탈퇴', onClick: handleWithdraw },
+    { text: '계정탈퇴', onClick: navToWithdraw },
   ];
 
   return (
@@ -173,9 +135,9 @@ const MyPage = () => {
         )}
         <span className="divider" />
         <MyPageSNSContainer>
-          <InstagramSVG onClick={handleClickInstagram} />
-          <LinkedInSVG onClick={handleClickLinkedIn} />
-          <ThreadSVG onClick={handleClickThreads} />
+          <InstagramSVG onClick={openInstagram} />
+          <LinkedInSVG onClick={openLinkedIn} />
+          <ThreadSVG onClick={openThreads} />
         </MyPageSNSContainer>
       </MyPageContents>
     </MyPageContainer>

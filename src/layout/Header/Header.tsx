@@ -38,14 +38,14 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
   const navigate = useNavigate();
 
   const headerTitle = {
-    [webPath.register()]: '회원가입',
-    [webPath.registerDone()]: '회원가입',
-    [webPath.editProfile()]: '내 정보 수정',
-    [webPath.editeProfileDone()]: '내 정보 수정',
-    [webPath.about()]: '인간지표란?',
-    [webPath.usage()]: 'PWA 사용방법',
-    [webPath.notification()]: '알림',
-    [webPath.labRecordSheet()]: '매수 기록지',
+    [webPath.register]: '회원가입',
+    [webPath.registerDone]: '회원가입',
+    [webPath.editProfile]: '내 정보 수정',
+    [webPath.editProfileDone]: '내 정보 수정',
+    [webPath.about]: '인간지표란?',
+    [webPath.usage]: 'PWA 사용방법',
+    [webPath.notification]: '알림',
+    [webPath.labRecordSheet]: '매수 기록지',
     ['searchBar']: '검색',
     ['labTutorial']: '실험실 소개',
     ['labPurchase']: '포트폴리오 생성하기',
@@ -61,7 +61,8 @@ const Header = ({ location, onBefore }: { location: string; onBefore?: () => voi
 
   // OAuth 콜백 경로는 동적 파라미터를 포함하므로 startsWith로 확인
   const isOAuthCallback = location.startsWith('/login/oauth2/code/');
-  const title = isOAuthCallback ? '로그인' : headerTitle[location];
+  const title = isOAuthCallback ? '로그인' : headerTitle[location as keyof typeof headerTitle];
+  // const title = '로그인';
 
   if (!title) return null;
 

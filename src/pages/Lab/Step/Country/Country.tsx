@@ -1,28 +1,17 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRIES, StockCountryKey } from '@ts/StockCountry';
-import { webPath } from '@router/index';
+import { NextStepProps } from '../Step';
 import { StepButtonContainer } from '../Step.Style';
 import { LabCountryContainer, LabTutorialCountryItemContainer, LabTutorialCountryListContainer } from './Country.Style';
 
-const LabCountry = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [selectedCountry, setSelectedCountry] = useState<StockCountryKey>();
-
-  const handlePrevStep = () => {
-    navigate(-1);
-  };
-
-  const handleNextStep = () => {
-    navigate(webPath.labStep(), {
-      state: {
-        ...location.state,
-        step: 2,
-        country: selectedCountry,
-      },
-    });
-  };
+const LabCountry = ({
+  handlePrevStep,
+  handleNextStep,
+}: {
+  handlePrevStep: () => void;
+  handleNextStep: ({}: NextStepProps) => void;
+}) => {
+  const [selectedCountry, setSelectedCountry] = useState<StockCountryKey | undefined>();
 
   const handleClickSelectCountry = (country: StockCountryKey) => () => {
     setSelectedCountry((prev) => (prev == country ? undefined : country));
@@ -45,7 +34,7 @@ const LabCountry = () => {
       </LabTutorialCountryListContainer>
       <StepButtonContainer>
         <button onClick={handlePrevStep}>이전</button>
-        <button onClick={handleNextStep} disabled={!selectedCountry}>
+        <button onClick={() => handleNextStep({ country: selectedCountry })} disabled={!selectedCountry}>
           다음
         </button>
       </StepButtonContainer>

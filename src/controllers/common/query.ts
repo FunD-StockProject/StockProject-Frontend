@@ -2,7 +2,7 @@ import { STOCK_TYPE } from '@ts/Types';
 import { fetchDescentStocks, fetchHotStocks, fetchRisingStocks } from '../stocks/api';
 
 export const queryOptions = {
-  // retry: 5,
+  retry: 5,
   staleTime: 1000,
 };
 

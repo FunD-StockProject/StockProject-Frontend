@@ -23,11 +23,10 @@ import {
 import { AutoCompleteItem, PERIOD_CODE, PopularItems, StockDetailInfo, StockInfo, StockTableInfo } from './types';
 
 export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
-  return useQuery<StockDetailInfo>(
-    ['symbolNameSearch', name, country],
-    () => fetchSearchSymbolName(name, country),
-    queryOptions,
-  );
+  return useQuery<StockDetailInfo>(['symbolNameSearch', name, country], () => fetchSearchSymbolName(name, country), {
+    ...queryOptions,
+    enabled: !!name && !!country,
+  });
 };
 
 export const useStockIdSearchQuery = (stockId: number, country: StockCountryKey) => {
@@ -115,7 +114,7 @@ export const useWordCloudQuery = (
   return [wordCloud] as const;
 };
 
-export const useStockChartQuery = (stockId: number, period: string) => {
+export const useStockChartQuery = (stockId: number, period: PERIOD_CODE) => {
   const [chartData, setChartData] = useState<any>([]);
   const [lastDate, setLastDate] = useState<string>('');
   const firstDate = '1970-01-01';
@@ -153,8 +152,8 @@ export const useStockChartQuery = (stockId: number, period: string) => {
         ),
         score: { value: e.score, delta: e.diff },
         trading: {
-          value: e.accumulatedTradingValue,
-          volume: e.accumulatedTradingVolume,
+          value: Number(e.accumulatedTradingValue),
+          volume: Number(e.accumulatedTradingVolume),
           delta: i ? Number(e.accumulatedTradingVolume) / Number(arr[i - 1].accumulatedTradingVolume) - 1 : 0,
         },
       } as any;

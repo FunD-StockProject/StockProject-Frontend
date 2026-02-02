@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import { STOCK_COUNTRY_MAP } from '@ts/StockCountry';
 import { diffToPercent, diffToValue } from '@utils/ScoreConvert';
-import { webPath } from '@router/index';
+import useRouter from '@router/useRouter';
 import StockImage from '@components/Common/StockImage';
 import StockChart from '@components/Search/StockChart/StockChart';
 import { ShortViewItem } from '@controllers/shortview/api';
@@ -32,37 +31,31 @@ const TinderCard = ({
 }) => {
   const { stockId, stockName, country, price, priceDiff, score, diff, keywords } = stock;
 
-  const navigate = useNavigate();
+  const { navToStock } = useRouter();
 
   const handleClickAboutStock = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    navigate(webPath.search(), {
-      state: {
-        symbolName: stockName,
-        country: country,
-      },
-    });
+    navToStock(stockName, country);
   };
 
   const priceText = STOCK_COUNTRY_MAP[country].currency + price.toLocaleString();
-  const priceDiffText = `${diffToValue(priceDiff)}(${diffToPercent(price, priceDiff, {
-    fixed: 2,
-    sign: false,
-  })})`;
+  const priceDiffText = `${diffToValue(priceDiff)}(${diffToPercent(price, priceDiff, { fixed: 2, sign: false })})`;
 
   const scoreText = `${score}점`;
   const scoreDiffText = `${diffToValue(diff)}점`;
 
+  console.log(transform);
+
   return (
-    <TinderCardItemContainer transform={transform} zIndex={zIndex}>
+    <TinderCardItemContainer zIndex={zIndex} style={{ ...transform }}>
       <TinderCardChartContainer>
         <StockChart
           stockId={stockId}
           symbolName={stockName}
           country={country}
-          chartHeight={{ price: 'calc(100% - 160px)', score: '160px' }}
+          chartHeight={{ price: '1fr', score: '160px' }}
           chartInteractive={false}
         />
       </TinderCardChartContainer>
