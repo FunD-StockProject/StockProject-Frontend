@@ -1,11 +1,14 @@
-import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { detectWebView } from '@utils/Detector';
 import useAuthInfo from '@hooks/useAuthInfo';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import useToast from '@hooks/useToast';
 import Loading from '@components/Loading/Loading';
 import useMockPurchase from '@components/Modal/MockPurchase/useMockPurchase';
 import NoLoginWrapper from '@components/NoLoginWrapper/NoLoginWrapper';
-import ShortViewTutorial from '@components/ShortView/Tutorial/Tutorial';
+import ShortViewAppInduce from '@components/Page/ShortView/AppInduce/AppInduce';
+import ShortViewEmpty from '@components/Page/ShortView/Empty/Empty';
+import ShortViewTutorial from '@components/Page/ShortView/Tutorial/Tutorial';
 import { useBuyExperimentMutation } from '@controllers/experiment/query';
 import {
   useAddBookmarkMutation,
@@ -16,10 +19,7 @@ import {
 } from '@controllers/preference/query';
 import { ShortViewItem } from '@controllers/shortview/api';
 import { useShortViewQuery } from '@controllers/shortview/query';
-import { theme } from '@styles/themes';
-import LoadingWEBM from '@assets/Loading.webm';
 import BackgroundSVG from '@assets/background.svg?react';
-import AlertSVG from '@assets/icons/alert.svg?react';
 import CheckSVG from '@assets/icons/check.svg?react';
 import CrossSVG from '@assets/icons/cross.svg?react';
 import HeartSVG from '@assets/icons/heart.svg?react';
@@ -49,8 +49,39 @@ type DragState = {
   direction?: 'left' | 'right' | 'top' | 'bottom' | 'center';
 };
 
+type Size = { width: number; height: number };
+
+const useElementSize = <T extends HTMLElement>() => {
+  const ref = useRef<T | null>(null);
+  const sizeRef = useRef<Size>({ width: 0, height: 0 });
+  const [size, setSize] = useState<Size>({ width: 0, height: 0 });
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const update = () => {
+      const next = { width: el.clientWidth, height: el.clientHeight };
+      // 값이 같으면 setState 안 해서 불필요 렌더 방지
+      if (next.width === sizeRef.current.width && next.height === sizeRef.current.height) return;
+      sizeRef.current = next;
+      setSize(next);
+    };
+
+    update();
+
+    const ro = new ResizeObserver(() => update());
+    ro.observe(el);
+
+    return () => ro.disconnect();
+  }, []);
+
+  return { ref, size, sizeRef };
+};
+
 const ShortView = () => {
   const { isLogin } = useAuthInfo();
+  const isWebView = detectWebView();
   const { toast, showToast, hideToast } = useToast();
   const {
     data: shortviewStocks = [],
@@ -64,22 +95,20 @@ const ShortView = () => {
     fetchMore,
     isFetchingMore,
     isAtEnd,
-  } = useShortViewQuery({ useMock: !isLogin });
+  } = useShortViewQuery({ useMock: !isLogin || !isWebView });
 
   const { mutate: addBookmark } = useAddBookmarkMutation();
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
   const { mutate: buyExperiment } = useBuyExperimentMutation();
   const { mutate: hideStock } = useHideStockMutation();
   const { mutate: unhideStock } = useUnhideStockMutation();
-
-  const recentHideStockRef = useRef<ShortViewItem>();
-
   const { data: stockPreference } = useStockPreferenceQuery(currentItem?.stockId);
+
+  const [isTutorialWatched] = useLocalStorageState<boolean>('tutorial_watched_shortview');
+  const recentHideStockRef = useRef<ShortViewItem>();
+  const { ref: containerRef, size: containerSize, sizeRef: containerSizeRef } = useElementSize<HTMLDivElement>();
+
   const isBookmark = stockPreference?.isBookmarked ?? false;
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { clientWidth: width, clientHeight: height } = containerRef?.current ?? { clientWidth: 0, clientHeight: 0 };
 
   const [mouseDrag, _setMouseDrag] = useState<DragState>({
     active: false,
@@ -126,46 +155,69 @@ const ShortView = () => {
     });
   };
 
-  const cardX =
-    mouseDrag.direction === 'left'
-      ? -width * 3
-      : mouseDrag.direction === 'right'
-        ? width * 3
-        : mouseDrag.currX - mouseDrag.startX;
-  const cardY =
-    mouseDrag.direction === 'top'
-      ? -height * 2
-      : mouseDrag.direction === 'bottom'
-        ? height * 2
-        : mouseDrag.currY - mouseDrag.startY;
+  const cardTransform = useMemo(() => {
+    const { direction, currX, currY, startX, startY, active } = mouseDrag;
+    const { width, height } = containerSize;
 
-  const ratio = Math.min(Math.sqrt(cardX ** 2 + cardY ** 2) / Math.sqrt(width ** 2 + height ** 2), 1);
+    const dx = currX - startX;
+    const dy = currY - startY;
 
-  const prevCardTransform = {
-    left: '0',
-    top: `${mouseDrag.direction === 'bottom' ? 0 : -height + cardY == 0 ? -1000 : -height + cardY}px`,
-    scale: `${1}`,
-    opacity: `${1}`,
-    transition: `scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out' : ''}`,
-  };
+    const cardX = direction === 'left' ? -width * 3 : direction === 'right' ? width * 3 : dx;
+    const cardY = direction === 'top' ? -height * 2 : direction === 'bottom' ? height * 2 : dy;
 
-  const currentCardTransform = {
-    transform: `rotate(${(cardX / width) * 15}deg)`,
-    left: `${cardX}px`,
-    top: `${Math.min(0, cardY)}px`,
-    scale: `${mouseDrag.active ? 1.05 : 1}`,
-    opacity: `${1}`,
-    filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${0.12 * (1 - Math.abs(isNaN(cardY / (height / 2)) ? 0 : cardY / (height / 2)))}))`,
-    transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out ${!mouseDrag.active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out, transform 0.2s ease-in-out' : ''}`,
-  };
+    const denom = Math.hypot(width, height);
+    const ratio = Math.min(Math.hypot(cardX, cardY) / denom, 1);
 
-  const nextCardTransform = {
-    left: '0',
-    top: '0',
-    scale: `${0.75 + ratio * 0.25}`,
-    opacity: `${0.25 + ratio * 0.75}`,
-    transition: `${!mouseDrag.active ? 'scale 0.2s ease-in-out, opacity 0.2s ease-in-out' : ''}`,
-  };
+    const easeBack = !active ? ', left 0.2s ease-in-out, top 0.2s ease-in-out' : '';
+    const easeBackWithRotate = !active
+      ? ', left 0.2s ease-in-out, top 0.2s ease-in-out, transform 0.2s ease-in-out'
+      : '';
+
+    const prevTop = direction === 'bottom' ? 0 : -height + cardY === 0 ? -1000 : -height + cardY;
+
+    const rotateDeg = (cardX / width) * 15;
+
+    const yNorm = cardY / (height / 2);
+    const yFactor = 1 - Math.abs(Number.isFinite(yNorm) ? yNorm : 0);
+    const shadowAlpha = 0.12 * yFactor;
+
+    const prev = {
+      left: '0',
+      top: `${prevTop}px`,
+      scale: `${1}`,
+      opacity: `${1}`,
+      transition: `scale 0.1s ease-in-out${easeBack}`,
+    };
+
+    const curr = {
+      transform: `rotate(${rotateDeg}deg)`,
+      left: `${cardX}px`,
+      top: `${Math.min(0, cardY)}px`,
+      scale: `${active ? 1.05 : 1}`,
+      opacity: `${1}`,
+      filter: `drop-shadow(0px 4px 50px rgba(255, 255, 255, ${shadowAlpha}))`,
+      transition: `filter 0.2s ease-in-out, scale 0.1s ease-in-out${easeBackWithRotate}`,
+    };
+
+    const next = {
+      left: '0',
+      top: '0',
+      scale: `${0.75 + ratio * 0.25}`,
+      opacity: `${0.25 + ratio * 0.75}`,
+      transition: `${!active ? 'scale 0.2s ease-in-out, opacity 0.2s ease-in-out' : ''}`,
+    };
+
+    return { prev, curr, next };
+  }, [
+    mouseDrag.direction,
+    mouseDrag.currX,
+    mouseDrag.currY,
+    mouseDrag.startX,
+    mouseDrag.startY,
+    mouseDrag.active,
+    containerSize.width,
+    containerSize.height,
+  ]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     const t = performance.now();
@@ -213,6 +265,7 @@ const ShortView = () => {
     const dt = Math.max(1, b.t - a.t);
     return { vx: (b.x - a.x) / dt, vy: (b.y - a.y) / dt };
   }
+
   const handlePointerUp = () => {
     const s = mouseDragRef.current;
     if (!s.active) return;
@@ -220,9 +273,7 @@ const ShortView = () => {
     const dx = s.currX - s.startX;
     const dy = s.currY - s.startY;
 
-    const el = containerRef.current;
-    const width = el?.clientWidth ?? 0;
-    const height = el?.clientHeight ?? 0;
+    const { width, height } = containerSizeRef.current;
 
     // ✅ 기준값(튜닝 포인트)
     const DIST_X = width * 0.28; // 28%만 넘어도 거리로 성공
@@ -338,7 +389,7 @@ const ShortView = () => {
 
     setMouseDrag(
       {
-        currX: -width * 2,
+        currX: -containerSizeRef.current?.width * 2,
         direction: 'center',
       },
       true,
@@ -398,10 +449,10 @@ const ShortView = () => {
               <TinderCard
                 transform={
                   idx == currentIdx
-                    ? currentCardTransform
+                    ? cardTransform.curr
                     : idx == currentIdx + 1
-                      ? nextCardTransform
-                      : prevCardTransform
+                      ? cardTransform.next
+                      : cardTransform.prev
                 }
                 zIndex={3 - (idx - currentIdx)}
                 key={`SHORT-VIEW-ITEM-${stock.stockId}`}
@@ -410,31 +461,7 @@ const ShortView = () => {
             ),
         )}
         <BackgroundSVG />
-        <div
-          style={{
-            position: 'relative',
-            opacity: isAtEnd ? 1 : 0,
-            transition: 'opacity 0.2s ease-in-out',
-          }}
-        >
-          {isFetchingMore ? (
-            <ShortViewEmptyContainer>
-              <video autoPlay muted loop playsInline preload="auto">
-                <source src={LoadingWEBM} type="video/webm" />
-                브라우저가 비디오 태그를 지원하지 않습니다.
-              </video>
-              <p>새로운 종목을 불러오는 중...</p>
-            </ShortViewEmptyContainer>
-          ) : isAtEnd && shortviewStocks.length ? (
-            <ShortViewEmptyContainer>
-              <AlertSVG />
-              <p>종목을 불러오는 데 실패했어요😭</p>
-              <button onClick={fetchMore}>다시 불러오기</button>
-            </ShortViewEmptyContainer>
-          ) : (
-            ''
-          )}
-        </div>
+        <ShortViewEmpty isShow={!isLoadingShortview && isAtEnd} isLoading={isFetchingMore} fetchMore={fetchMore} />
       </ShortViewContent>
       <ShortViewButtonContainer>
         <ShortViewButton
@@ -468,7 +495,7 @@ const ShortView = () => {
         </ShortViewButton>
         {toast.enabled && <ShortViewToast closing={toast.closing}>{toast.message}</ShortViewToast>}
       </ShortViewButtonContainer>
-
+      {!isWebView && <ShortViewAppInduce />}
       <NoLoginWrapper
         title={
           <>
@@ -485,37 +512,9 @@ const ShortView = () => {
         buttonText="회원가입/로그인 하기"
         hasNavbar
       />
-      <ShortViewTutorial />
+      {!isTutorialWatched && <ShortViewTutorial />}
     </ShortViewContainer>
   );
 };
-
-const ShortViewEmptyContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '16px',
-  ['>p']: {
-    margin: '0',
-    ...theme.font.body16Semibold,
-    color: theme.colors.sub_gray4,
-  },
-  ['>button']: {
-    ...theme.font.body14Bold,
-    color: theme.colors.sub_gray4,
-    background: theme.colors.sub_gray10,
-    borderRadius: '8px',
-    padding: '4px 12px',
-    marginTop: '-8px',
-    border: 'none',
-    cursor: 'pointer',
-  },
-  ['>svg, >video']: {
-    width: '80px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    fill: theme.colors.sub_blue6,
-  },
-});
 
 export default ShortView;

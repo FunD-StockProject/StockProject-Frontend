@@ -71,7 +71,7 @@ const TutorialSteps = [
 
 const ShortViewTutorial = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [tutorialWatched, setTutorialWatched] = useLocalStorageState<boolean>('tutorial_watched_shortview');
+  const [, setTutorialWatched] = useLocalStorageState<boolean>('tutorial_watched_shortview');
 
   const handleClickTutorialEnd = () => {
     setTutorialWatched(true);
@@ -103,8 +103,6 @@ const ShortViewTutorial = () => {
       behavior: 'smooth',
     });
   };
-
-  if (tutorialWatched) return null;
 
   return (
     <TutorialContainer>
