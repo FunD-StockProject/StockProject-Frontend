@@ -23,10 +23,7 @@ const NavItem = styled('div')<{ isActive: boolean }>(({ isActive }) => ({
   cursor: 'pointer',
   transition: 'color 0.2s ease',
 
-  '& svg path': {
-    transition: 'fill 0.2s ease',
-    fill: isActive ? theme.colors.sub_white : '',
-  },
+  '& svg path': { transition: 'fill 0.2s ease', fill: isActive ? theme.colors.sub_white : '' },
 }));
 
 export { NavContainer, NavItem };

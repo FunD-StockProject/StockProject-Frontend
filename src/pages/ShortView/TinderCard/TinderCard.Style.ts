@@ -16,10 +16,7 @@ const TinderCardItemContainer = styled.div(
       left?: string;
     };
     zIndex?: number;
-  }) => ({
-    ...transform,
-    zIndex: zIndex,
-  }),
+  }) => ({ ...transform, zIndex: zIndex }),
   {
     position: 'absolute',
     width: '100%',
@@ -52,16 +49,11 @@ const TinderCardItemInfoTitle = styled.div({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  width: '100%',
+  maxWidth: '100%',
   boxSizing: 'border-box',
+  justifyContent: 'flex-start',
 
-  ['>img']: {
-    width: '32px',
-    height: 'auto',
-    aspectRatio: '1 / 1',
-    objectFit: 'cover',
-    borderRadius: '999px',
-  },
+  ['>img']: { width: '32px', height: 'auto', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: '999px' },
 
   ['>p']: {
     margin: '0',
@@ -90,13 +82,9 @@ const TinderCardItemInfoValueContainer = styled.div({
 
 const TinderCardItemInfoValueContents = styled.span(
   ({ delta }: { delta: number }) => ({
-    ['>span']: {
-      color: delta > 0 ? theme.colors.sub_red : theme.colors.sub_blue5,
-    },
+    ['>span']: { color: delta > 0 ? theme.colors.sub_red : theme.colors.sub_blue5 },
 
-    ['>svg']: {
-      fill: delta > 0 ? theme.colors.sub_red : theme.colors.sub_blue5,
-    },
+    ['>svg']: { fill: delta > 0 ? theme.colors.sub_red : theme.colors.sub_blue5 },
   }),
   {
     display: 'flex',
@@ -110,24 +98,13 @@ const TinderCardItemInfoValueContents = styled.span(
     padding: '4px 10px',
     borderRadius: '999px',
 
-    ['>svg']: {
-      width: 'auto',
-    },
+    ['>svg']: { width: 'auto' },
   },
 );
 
-const TinderCardItemInfoExtraContainer = styled.span({
-  display: 'flex',
-  gap: '4px',
-  alignItems: 'center',
-});
+const TinderCardItemInfoExtraContainer = styled.span({ display: 'flex', gap: '4px', alignItems: 'center' });
 
-const TinderCardItemInfoTagsContainer = styled.div({
-  display: 'flex',
-  gap: '6px',
-  flexGrow: '1',
-  overflow: 'hidden',
-});
+const TinderCardItemInfoTagsContainer = styled.div({ display: 'flex', gap: '6px', flexGrow: '1', overflow: 'hidden' });
 
 const TinderCardItemInfoTag = styled.p({
   margin: '0',

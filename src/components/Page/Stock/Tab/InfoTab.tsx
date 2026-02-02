@@ -7,18 +7,11 @@ import StockInfoPanel from './Info/Info';
 import StockKeywordPanel from './Keyword/Keyword';
 import StockZipyoPanel from './Zipyo/Zipyo';
 
-const StockInfoTabContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '36px',
-});
+const StockInfoTabContainer = styled.div({ display: 'flex', flexDirection: 'column', gap: '36px' });
 
 const StockInfoTabHeader = styled.div<{ activeIndex: number; count: number }>(
   ({ activeIndex, count }) => ({
-    ['::after']: {
-      transform: `translateX(calc(${activeIndex} * 100%))`,
-      width: `calc((100% - 40px) / ${count})`,
-    },
+    ['::after']: { transform: `translateX(calc(${activeIndex} * 100%))`, width: `calc((100% - 40px) / ${count})` },
   }),
   {
     position: 'relative',
@@ -46,24 +39,13 @@ const StockInfoTabLabel = styled.label({
   flex: 1,
   textAlign: 'center',
 
-  ['input']: {
-    display: 'none',
-  },
+  ['input']: { display: 'none' },
 
-  ['>p']: {
-    ...theme.font.body16Semibold,
-    color: theme.colors.sub_gray7,
-    margin: '0',
-    transition: 'color 0.2s',
-  },
+  ['>p']: { ...theme.font.body16Semibold, color: theme.colors.sub_gray7, margin: '0', transition: 'color 0.2s' },
 
-  ['&:hover >p']: {
-    color: theme.colors.sub_gray2,
-  },
+  ['&:hover >p']: { color: theme.colors.sub_gray2 },
 
-  ['>input[type="radio"]:checked ~p']: {
-    color: theme.colors.sub_gray1,
-  },
+  ['>input[type="radio"]:checked ~p']: { color: theme.colors.sub_gray1 },
 });
 
 type TabKey = 'HUMAN_INDEX' | 'STOCK_CHART' | 'KEYWORD' | 'COMPANY_INFO';

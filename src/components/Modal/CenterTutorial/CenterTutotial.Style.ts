@@ -7,10 +7,7 @@ const ModalLayout = styled.div(
     backdropFilter: isShowModal ? 'blur(2px)' : '',
     transition: `all ${showDelay}ms ease-in-out`,
 
-    ['>div']: {
-      opacity: isShowModal ? 1 : 0,
-      transition: `all ${showDelay}ms ease-in-out`,
-    },
+    ['>div']: { opacity: isShowModal ? 1 : 0, transition: `all ${showDelay}ms ease-in-out` },
   }),
   {
     position: 'fixed',
@@ -57,23 +54,12 @@ const ModalTitleContainer = styled.div({
   padding: '0 16px',
   gap: '4px',
 
-  ['>svg']: {
-    width: '72px',
-    height: 'auto',
-  },
+  ['>svg']: { width: '72px', height: 'auto' },
 
-  ['>p']: {
-    margin: '0',
-    ...theme.font.body18Semibold,
-    color: theme.colors.sub_black,
-  },
+  ['>p']: { margin: '0', ...theme.font.body18Semibold, color: theme.colors.sub_black },
 });
 
-const ModalContent = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-});
+const ModalContent = styled.div({ display: 'flex', flexDirection: 'column', gap: '10px' });
 
 const ModalDescriptionContainer = styled.div({
   margin: '0 16px',
@@ -85,10 +71,7 @@ const ModalDescriptionContainer = styled.div({
     color: theme.colors.sub_gray10,
     margin: '0',
     wordBreak: 'keep-all',
-    ['>b']: {
-      ...theme.font.body14Bold,
-      color: theme.colors.sub_blue6,
-    },
+    ['>b']: { ...theme.font.body14Bold, color: theme.colors.sub_blue6 },
   },
 });
 

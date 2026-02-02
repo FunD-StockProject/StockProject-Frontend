@@ -41,10 +41,7 @@ const TinderCard = ({
   };
 
   const priceText = STOCK_COUNTRY_MAP[country].currency + price.toLocaleString();
-  const priceDiffText = `${diffToValue(priceDiff)}(${diffToPercent(price, priceDiff, {
-    fixed: 2,
-    sign: false,
-  })})`;
+  const priceDiffText = `${diffToValue(priceDiff)}(${diffToPercent(price, priceDiff, { fixed: 2, sign: false })})`;
 
   const scoreText = `${score}점`;
   const scoreDiffText = `${diffToValue(diff)}점`;
@@ -52,7 +49,7 @@ const TinderCard = ({
   console.log(transform);
 
   return (
-    <TinderCardItemContainer transform={transform} zIndex={zIndex}>
+    <TinderCardItemContainer zIndex={zIndex} style={{ ...transform }}>
       <TinderCardChartContainer>
         <StockChart
           stockId={stockId}
