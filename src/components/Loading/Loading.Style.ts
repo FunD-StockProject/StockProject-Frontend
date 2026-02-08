@@ -35,7 +35,7 @@ const LoadingContent = styled.div({
   justifyContent: 'center',
   gap: '16px',
 
-  ['>video']: {
+  ['>img']: {
     width: '80px',
     height: 'auto',
     aspectRatio: '1 / 1',

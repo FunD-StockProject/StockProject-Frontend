@@ -153,6 +153,12 @@ const RankingLoading = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  padding: '32px',
+
+  ['>img']: {
+    width: '128px',
+    aspectRatio: '1 / 1',
+  },
 });
 
 export {

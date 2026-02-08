@@ -1,6 +1,6 @@
 import { useSocialAuth } from '@hooks/useSocialAuth';
 import BlueAlert from '@assets/blueAlert.svg?react';
-import Loading from '@assets/loading.png';
+import LoadingGIF from '@assets/loading.gif';
 import { OAuthCallbackContainer, StatusDesc, StatusTitle } from './OAuthCallback.Style';
 
 const OAuthCallback = () => {
@@ -16,7 +16,7 @@ const OAuthCallback = () => {
         </>
       ) : (
         <>
-          <img src={Loading} alt="Loading" />
+          <img src={LoadingGIF} alt="Loading" />
           <StatusTitle>잠시만 기다려주세요</StatusTitle>
           <StatusDesc>로그인 정보를 불러오고 있어요</StatusDesc>
         </>

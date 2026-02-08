@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { theme } from '@styles/themes';
-import LoadingWEBM from '@assets/Loading.webm';
 import AlertSVG from '@assets/icons/alert.svg?react';
+import LoadingGIF from '@assets/loading.gif';
 
 const ShortViewEmptyContainer = styled.div({
   position: 'relative',
@@ -31,7 +31,7 @@ const ShortViewEmptyContent = styled.div({
     border: 'none',
     cursor: 'pointer',
   },
-  ['>svg, >video']: {
+  ['>svg, >img']: {
     width: '80px',
     height: 'auto',
     aspectRatio: '1 / 1',
@@ -50,10 +50,7 @@ const ShortViewEmpty = ({
 }) => {
   const LoadingComponent = () => (
     <ShortViewEmptyContent>
-      <video autoPlay muted loop playsInline preload="auto">
-        <source src={LoadingWEBM} type="video/webm" />
-        브라우저가 비디오 태그를 지원하지 않습니다.
-      </video>
+      <img src={LoadingGIF} />
       <p>새로운 종목을 불러오는 중...</p>
     </ShortViewEmptyContent>
   );
