@@ -1,9 +1,8 @@
-import { STOCK_SECTOR_MAP, StockSectorKey } from '@ts/StockSector';
 import { getDiffText } from '@utils/Number';
 import { deltaToCaret } from '@utils/ScoreConvert';
 import useAboutHumanZipyo from '@components/Modal/CenterTutorial/AboutHumanZipyo/useAboutHumanZipyo';
 import GuageChart from '@components/Search/GuageChart/GuageChart';
-import { useScoreQuery } from '@controllers/stocks/query';
+import { useScoreQuery, useStockZipyoDataQuery } from '@controllers/stocks/query';
 import { StockDetailInfo } from '@controllers/stocks/types';
 import { StockItemContainer } from '../../Common.Style';
 import StockItemTitle from '../../ItemTitle';
@@ -17,25 +16,12 @@ import {
 
 const StockZipyoPanel = ({ stockInfo: { stockId, country, symbolName } }: { stockInfo: StockDetailInfo }) => {
   const { data: stockScore } = useScoreQuery(stockId, country);
+  const { data: zipyoData } = useStockZipyoDataQuery(stockId, country);
   const { Modal: AboutHumanZipyoModal, openModal: openAboutHumanZipyoModal } = useAboutHumanZipyo();
 
-  if (!stockScore) return null;
+  if (!stockScore || !zipyoData) return null;
 
-  // 목업 데이터 (실제로는 API에서 가져와야 함)
-  const mock: {
-    industryType: StockSectorKey;
-    industryAverage: number;
-    stockRanking: number;
-    monthlyAverage: number;
-  } = {
-    industryType: 'IT_SERVICE',
-    industryAverage: 45,
-    stockRanking: 68,
-    monthlyAverage: 51,
-  };
-
-  const { industryType, industryAverage, stockRanking, monthlyAverage } = mock;
-  const industryName = STOCK_SECTOR_MAP[industryType].text;
+  const { industryName, industryAverage, stockRanking, monthlyAverage } = zipyoData;
   const monthlyAverageDiff = stockScore.score - monthlyAverage;
   const monthlyAverageDiffText = getDiffText({ valueDiff: monthlyAverageDiff });
   const sentiment = !monthlyAverageDiff ? '유지되고' : monthlyAverageDiff > 0 ? '개선되고' : '약화되고';
