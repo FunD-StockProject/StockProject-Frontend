@@ -3,7 +3,7 @@ import { STOCK_COUNTRY_MAP, StockCountryKey } from '@ts/StockCountry';
 import useRouter from '@router/useRouter';
 import { useStockTableInfoQuery } from '@controllers/stocks/query';
 import { StockTableInfo } from '@controllers/stocks/types';
-import LoadingWEBM from '@assets/Loading.webm';
+import LoadingGIF from '@assets/loading.gif';
 import ItemTitle from '../Common';
 import { HomeItemContainer } from '../Common.Style';
 import { RankingContent, RankingLoading, RankingTabContainer, RankingTabLabel, RankingTable } from './Ranking.Style';
@@ -69,7 +69,7 @@ const HomeRanking = ({ country }: { country: StockCountryKey }) => {
         </RankingTable>
         {isLoading && (
           <RankingLoading>
-            <video src={LoadingWEBM} autoPlay loop muted playsInline />
+            <img src={LoadingGIF} />
           </RankingLoading>
         )}
       </RankingContent>

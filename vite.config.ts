@@ -25,6 +25,7 @@ export default defineConfig({
       gzipSize: true,
     }),
     VitePWA({
+      devOptions: { enabled: false },
       registerType: 'autoUpdate',
       workbox: {
         cleanupOutdatedCaches: true, // 이전 캐시 삭제

@@ -1,10 +1,10 @@
-import LoadingSVG from '@assets/loading.svg?react';
+import LoadingGIF from '@assets/loading.gif';
 import { Container } from './Common';
 
 const LoadingComponent = () => {
   return (
     <Container>
-      <LoadingSVG />
+      <img src={LoadingGIF} />
     </Container>
   );
 };
