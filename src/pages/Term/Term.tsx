@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TermItem, TermKey, TermList } from '@ts/Term';
 import Button from '@components/Common/Button';
 import Header from '@components/Common/Header';
@@ -32,14 +32,16 @@ const RegisterTermList = ({ termItem }: { termItem: TermItem }) => {
 
 const RegisterTerm = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const termKey = location.state?.termKey as TermKey;
-
-  const { title, name, contents } = TermList[termKey];
+  const [searchParams] = useSearchParams();
+  const termKey = searchParams.get('term') as TermKey;
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  if (!termKey) return;
+
+  const { title, name, contents } = TermList[termKey];
 
   return (
     <TermContainer>
