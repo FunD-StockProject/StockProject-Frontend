@@ -86,7 +86,7 @@ const LabPurchaseGridItemContainer = styled.div({
 
       WebkitBoxOrient: 'vertical',
       display: '-webkit-box',
-      WebkitLineClamp: 3,
+      WebkitLineClamp: 1,
       overflow: 'hidden',
     },
 
