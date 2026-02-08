@@ -8,6 +8,7 @@ import { STOCK_FETCH_FUNCTIONS, queryOptions } from '../common/query';
 import {
   fetchAutoComplete,
   fetchKeywordRankings,
+  fetchMonthlyAverage,
   fetchPopularKeywords,
   fetchPopularStocks,
   fetchRelevant,
@@ -15,12 +16,15 @@ import {
   fetchSearchKeyword,
   fetchSearchSymbolName,
   fetchSearchWordCloud,
+  fetchSectorAverage,
+  fetchSectorPercentile,
   fetchStockChart,
   fetchStockInfo,
   fetchStockSummary,
   fetchStockTable,
 } from './api';
-import { AutoCompleteItem, PERIOD_CODE, PopularItems, StockDetailInfo, StockInfo, StockTableInfo } from './types';
+import type { AutoCompleteItem, PopularItems, StockDetailInfo, StockInfo, StockTableInfo } from './types';
+import { PERIOD_CODE } from './types';
 
 export const useSymbolNameSearchQuery = (name: string, country: StockCountryKey) => {
   return useQuery<StockDetailInfo>(['symbolNameSearch', name, country], () => fetchSearchSymbolName(name, country), {
@@ -290,4 +294,30 @@ export const useKeywordRankingsQuery = () => {
     ...queryOptions,
     placeholderData: [],
   });
+};
+
+export const useStockZipyoDataQuery = (stockId: number, country: StockCountryKey) => {
+  return useQuery(
+    ['stockZipyoData', stockId, country],
+    async () => {
+      const [sectorPercentile, monthlyAverage] = await Promise.all([
+        fetchSectorPercentile(stockId),
+        fetchMonthlyAverage(stockId),
+      ]);
+
+      const sectorAverage = await fetchSectorAverage(country, sectorPercentile.sector);
+
+      return {
+        industryType: sectorPercentile.sector,
+        industryName: sectorPercentile.sectorName,
+        industryAverage: sectorAverage.averageScore,
+        stockRanking: sectorPercentile.topPercent,
+        monthlyAverage: monthlyAverage.averageScore,
+      };
+    },
+    {
+      ...queryOptions,
+      enabled: !!stockId && !!country,
+    },
+  );
 };

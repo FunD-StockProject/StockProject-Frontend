@@ -11,7 +11,14 @@ import {
   fetchSearchSymbolNameMock,
   fetchSearchWordCloudMock,
 } from './mock';
-import { PERIOD_CODE, PopularStocks, StockDetailInfo } from './types';
+import {
+  MonthlyAverageResponse,
+  PERIOD_CODE,
+  PopularStocks,
+  SectorAverageResponse,
+  SectorPercentileResponse,
+  StockDetailInfo,
+} from './types';
 
 export const fetchScore = async (id: number, country: string) => {
   if (enableMock) return fetchScoreMock;
@@ -86,4 +93,17 @@ export const fetchKeywordRankings = (): Promise<string[]> => {
 export const fetchPopularKeywords = (country: string): Promise<string[]> => {
   if (enableMock) return Promise.resolve(fetchKeywordsMock);
   return fetchData(`/keyword/popular/${country}`);
+};
+
+export const fetchSectorAverage = (country: string, sector: string): Promise<SectorAverageResponse> => {
+  return fetchData(`/stock/sector/average/${country}/${sector}`);
+};
+
+export const fetchSectorPercentile = (stockId: number): Promise<SectorPercentileResponse> => {
+  return fetchData(`/stock/${stockId}/sector/percentile`);
+};
+
+export const fetchMonthlyAverage = (stockId: number, yearMonth?: string): Promise<MonthlyAverageResponse> => {
+  const queryParam = yearMonth ? `?yearMonth=${yearMonth}` : '';
+  return fetchData(`/stock/${stockId}/average/month${queryParam}`);
 };

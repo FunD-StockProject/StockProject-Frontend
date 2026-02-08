@@ -105,3 +105,29 @@ export interface StockPreferenceStatus {
   isBookmarked: boolean;
   isNotificationOn: boolean;
 }
+
+export interface SectorAverageResponse {
+  sector: string;
+  sectorName: string;
+  averageScore: number;
+  count: number;
+}
+
+export interface SectorPercentileResponse {
+  stockId: number;
+  sector: string;
+  sectorName: string;
+  score: number;
+  rank: number;
+  total: number;
+  topPercent: number;
+}
+
+export interface MonthlyAverageResponse {
+  stockId: number;
+  symbolName: string;
+  country: StockCountryKey;
+  yearMonth: string;
+  dataCount: number;
+  averageScore: number;
+}
