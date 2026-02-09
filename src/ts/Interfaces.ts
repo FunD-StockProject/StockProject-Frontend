@@ -1,3 +1,5 @@
+import { StockCountryKey } from './StockCountry';
+
 export interface Pos {
   x: number;
   y: number;
@@ -21,4 +23,18 @@ export interface WordCloudItem {
   size: Size;
   orientation: boolean;
   color: number;
+}
+
+export interface ExperimentItem {
+  experimentId: number;
+  symbolName: string;
+  buyPrice: number;
+  buyScore: number;
+  currentPrice: number;
+  currentScore: number;
+  autoSellIn: number;
+  buyAt: string;
+  country: StockCountryKey;
+  stockId: number;
+  status: string;
 }

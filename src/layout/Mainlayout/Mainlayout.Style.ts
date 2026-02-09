@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { theme } from '@styles/themes';
 
 // 추후에 반응형 수정
 
@@ -7,10 +6,23 @@ const StyledMainlayout = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'space-between',
   width: '100%',
-  height: '100vh',
-  backgroundColor: theme.colors.grayscale100,
+  minHeight: '100dvh',
+  background: '#101010',
+  maxWidth: '1280px',
 });
 
-export { StyledMainlayout };
+const MainContent = styled.div(
+  ({ isNavActive }: { isNavActive: boolean }) => ({
+    marginBottom: isNavActive ? '96px' : '0px',
+  }),
+  {
+    position: 'relative',
+    width: '100%',
+    flexGrow: '1',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+);
+
+export { StyledMainlayout, MainContent };

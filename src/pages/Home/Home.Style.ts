@@ -1,13 +1,54 @@
 import styled from '@emotion/styled';
-import { media, theme, themeColor } from '@styles/themes';
+import { media, theme } from '@styles/themes';
 
 const HomeContainer = styled.div({
-  position: 'relative',
-
   width: '100%',
   marginBottom: 'auto',
-
   background: theme.colors.primary100,
+});
+
+const HomeTabMenuContainer = styled.div({
+  position: 'relative',
+  display: 'flex',
+  gap: '4px',
+  padding: '20px 20px 0px',
+
+  ['>span.underline']: {
+    position: 'absolute',
+    bottom: '0',
+    width: '92px',
+    height: '2px',
+    background: theme.colors.sub_white,
+    transform: 'translateX(0)',
+    transition: 'transform 0.1s ease-in-out',
+  },
+
+  ['&:has(> label:last-of-type > input:checked) > span.underline']: {
+    transform: 'translateX(calc(100% + 4px))',
+  },
+});
+
+const HomeTabMenuLabel = styled.label({
+  width: '92px',
+  paddingBottom: '8px',
+
+  ['>input']: {
+    display: 'none',
+  },
+
+  ['>p']: {
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_gray7,
+    textAlign: 'center',
+    margin: '0px',
+    transition: 'color 0.1s ease-in-out',
+  },
+
+  ['>input[type="radio"]:checked']: {
+    ['~p']: {
+      color: theme.colors.sub_gray1,
+    },
+  },
 });
 
 const HomeContents = styled.div({
@@ -16,103 +57,14 @@ const HomeContents = styled.div({
   gap: '64px',
   boxSizing: 'border-box',
   width: '100%',
-  maxWidth: '1280px',
   height: '100%',
   margin: '0 auto',
   padding: '90px 60px',
 
   [media[0]]: {
-    gap: '48px',
-    padding: '40px 0px',
+    gap: '32px',
+    padding: '28px 0px 52px',
   },
 });
 
-const StyleTabMenuContainer = styled.div({
-  boxSizing: 'border-box',
-  width: '100%',
-  maxWidth: '1280px',
-  margin: '0 auto',
-  padding: '0 60px',
-
-  [media[0]]: {
-    padding: '0',
-  },
-});
-
-const StyleTabMenu = styled.ul({
-  position: 'absolute',
-  bottom: '100%',
-
-  display: 'flex',
-  overflow: 'hidden',
-  flexDirection: 'row',
-  alignItems: 'center',
-  maxWidth: '1280px',
-  margin: 0,
-
-  color: 'black',
-  fontSize: '21px',
-
-  listStyle: 'none',
-  borderRadius: '8px 8px 0 0',
-
-  paddingInlineStart: '0',
-
-  ['>li']: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    padding: '12px 24px',
-
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    backgroundColor: theme.colors.grayscale100,
-    color: theme.colors.grayscale50,
-  },
-
-  '.focused': { 
-    color: theme.colors.primary0,
-    backgroundColor: theme.colors.primary100,
-  },
-
-  [media[0]]: {
-    position: 'static',
-    top: '0px',
-    left: '0px',
-
-    width: '100%',
-
-    fontSize: '17px',
-
-    borderRadius: '0',
-
-    '.submenu': {
-      display: 'flex',
-      flex: 1,
-      padding: '8px 0',
-    },
-  },
-});
-
-const StyledSpan = styled.span((props: { color?: themeColor }) => ({
-  color: props.color ? theme.colors[props.color] : '#000000',
-}));
-
-const StyledText = styled.div({
-  margin: '0px 4px',
-
-  color: theme.colors.grayscale60,
-  fontWeight: '500',
-  fontSize: '15px',
-  fontFamily: 'Pretendard',
-  fontStyle: 'normal',
-  lineHeight: '1.5',
-
-  [media[0]]: {
-    margin: '-10px 4px',
-
-    fontSize: '11px',
-  },
-});
-
-export { HomeContainer, HomeContents, StyleTabMenuContainer, StyleTabMenu, StyledSpan, StyledText };
+export { HomeContainer, HomeTabMenuContainer, HomeTabMenuLabel, HomeContents };

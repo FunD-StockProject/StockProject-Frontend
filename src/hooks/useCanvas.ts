@@ -1,12 +1,12 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const useCanvas = (setCanvas: (canvas: HTMLCanvasElement) => void) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas && setCanvas(canvas);
-  }, []);
+    if (canvas) setCanvas(canvas);
+  }, [setCanvas]);
 
   return canvasRef;
 };

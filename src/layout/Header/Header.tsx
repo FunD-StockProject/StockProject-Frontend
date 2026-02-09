@@ -1,24 +1,78 @@
+import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import DisquietVote from '@components/Event/Disquiet';
-import SearchBar from '@components/SearchBar/SearchBar';
-import LogoSVG from '@assets/logo_white.svg?react';
-import { HeaderContainer, HeaderContents, HeaderLogo } from './Header.Style';
+import { webPath } from '@router/index';
+import { theme } from '@styles/themes';
+import ArrowLeftSVG from '@assets/arrowLeft.svg?react';
 
-const Header = () => {
+const HeaderContainer = styled.div({
+  paddingBottom: '8px',
+  borderBottom: `4px solid ${theme.colors.sub_gray11}`,
+});
+
+const HeaderContents = styled.div({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '8px 20px',
+  gap: '12px',
+
+  ['>svg']: {
+    width: '32px',
+    height: 'auto',
+    aspectRatio: '1 / 1',
+    cursor: 'pointer',
+    fill: theme.colors.sub_gray5,
+  },
+
+  ['>p']: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_white,
+    margin: '0',
+  },
+});
+
+const Header = ({ location, onBefore }: { location: string; onBefore?: () => void }) => {
   const navigate = useNavigate();
 
+  const headerTitle = {
+    [webPath.register]: '회원가입',
+    [webPath.registerDone]: '회원가입',
+    [webPath.editProfile]: '내 정보 수정',
+    [webPath.editProfileDone]: '내 정보 수정',
+    [webPath.about]: '인간지표란?',
+    [webPath.usage]: 'PWA 사용방법',
+    [webPath.notification]: '알림',
+    [webPath.labRecordSheet]: '매수 기록지',
+    ['searchBar']: '검색',
+    ['labTutorial']: '실험실 소개',
+    ['labPurchase']: '포트폴리오 생성하기',
+  };
+
+  const handleBefore = () => {
+    if (onBefore) {
+      onBefore();
+    } else {
+      navigate(-1);
+    }
+  };
+
+  // OAuth 콜백 경로는 동적 파라미터를 포함하므로 startsWith로 확인
+  const isOAuthCallback = location.startsWith('/login/oauth2/code/');
+  const title = isOAuthCallback ? '로그인' : headerTitle[location as keyof typeof headerTitle];
+  // const title = '로그인';
+
+  if (!title) return null;
+
   return (
-    <>
-      <HeaderContainer>
-        <HeaderContents>
-          <HeaderLogo onClick={() => navigate('/')}>
-            <LogoSVG />
-            {false && <DisquietVote />}
-          </HeaderLogo>
-          <SearchBar />
-        </HeaderContents>
-      </HeaderContainer>
-    </>
+    <HeaderContainer>
+      <HeaderContents>
+        <ArrowLeftSVG onClick={handleBefore} />
+        <p>{title}</p>
+      </HeaderContents>
+    </HeaderContainer>
   );
 };
 

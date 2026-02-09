@@ -1,55 +1,121 @@
-import { useNavigate } from 'react-router-dom';
-import { STOCK_COUNTRY } from '@ts/Types';
-import { deltaColor } from '@utils/Delta';
-import { scoreToImage } from '@utils/ScoreConvert';
-import { webPath } from '@router/index';
-import { StockInfo } from '@controllers/api.Type';
-import DownSVG from '@assets/icons/down.svg?react';
-import UpSVG from '@assets/icons/up.svg?react';
+import { StockCountryKey } from '@ts/StockCountry';
+import { diffToValue, scoreToImage, scoreToText } from '@utils/ScoreConvert';
+import useRouter from '@router/useRouter';
+import StockImage from '@components/Common/StockImage';
+import { StockInfo } from '@controllers/stocks/types';
 import {
+  LargeStockCardContainer,
+  LargeStockCardContent,
+  LargeStockCardContentTextContainer,
+  LargeStockCardHeader,
+  SmallStockCardContainer,
+  SmallStockCardContent,
+  SmallStockCardContentKeywords,
+  SmallStockCardContentScore,
+  SmallStockCardContentTitle,
   StockCardContainer,
-  StockCardImage,
-  StockCardKeywords,
-  StockCardTitle,
-  StockCardTitleContents,
-  StockCardTitleName,
-  StockCardTitleScore,
+  StockCardItem,
 } from './StockCard.Style';
 
-const signedNumber = (value: number) => {
-  const sign = value > 0 ? '+' : value < 0 ? '-' : '';
-  return sign + Math.abs(value);
-};
-
-const StockCard = ({ stockInfo, country }: { stockInfo: StockInfo; country: STOCK_COUNTRY }) => {
-  const navigate = useNavigate();
-  const { symbolName, score, diff, keywords } = stockInfo;
-  const deltaSVG = !diff ? ' -' : diff > 0 ? <UpSVG /> : <DownSVG />;
-  const scoreImage = scoreToImage(score);
+export const LargeStockCard = ({
+  stock: { stockId, symbolName, score },
+  country,
+}: {
+  stock: StockInfo;
+  country: StockCountryKey;
+}) => {
+  const { navToStock } = useRouter();
 
   const handleClick = () => {
-    navigate(webPath.search(), { state: { symbolName: symbolName, country: country } });
+    navToStock(symbolName, country);
   };
 
+  const scoreImage = scoreToImage(score);
+  const scoreText = scoreToText(score);
+
   return (
-    <StockCardContainer onClick={handleClick}>
-      <StockCardImage>
-        <img src={scoreImage} />
-      </StockCardImage>
-      <StockCardTitle>
-        <StockCardTitleContents>
-          <StockCardTitleName>{symbolName}</StockCardTitleName>
-          <StockCardTitleScore diffColor={deltaColor(diff)}>
-            {score}점
-            <span>
-              {signedNumber(diff)}점{deltaSVG}
-            </span>
-          </StockCardTitleScore>
-        </StockCardTitleContents>
-        <StockCardKeywords>
-          {keywords?.map((e, i) => <span key={`Relevant_Keywords_${symbolName}_${i}`}>{e}</span>)}
-        </StockCardKeywords>
-      </StockCardTitle>
+    <LargeStockCardContainer onClick={handleClick}>
+      <LargeStockCardHeader>
+        <StockImage stockId={stockId} alt={symbolName} />
+        <p>{symbolName}</p>
+      </LargeStockCardHeader>
+      <hr />
+      <LargeStockCardContent>
+        <img src={scoreImage} loading="lazy" />
+        <LargeStockCardContentTextContainer>
+          <div>
+            <p className="title">민심 키워드</p>
+            <p className="content">{scoreText}</p>
+          </div>
+          <div>
+            <p className="title">민심 점수</p>
+            <p className="content">{score}점</p>
+          </div>
+        </LargeStockCardContentTextContainer>
+      </LargeStockCardContent>
+    </LargeStockCardContainer>
+  );
+};
+
+export const SmallStockCard = ({
+  stock: { stockId, symbolName, score, diff, keywords },
+  country,
+}: {
+  stock: StockInfo;
+  country: StockCountryKey;
+}) => {
+  const { navToStock } = useRouter();
+
+  const handleClick = () => {
+    navToStock(symbolName, country);
+  };
+
+  const scoreImage = scoreToImage(score);
+
+  return (
+    <SmallStockCardContainer onClick={handleClick}>
+      <img src={scoreImage} loading="lazy" />
+      <SmallStockCardContent>
+        <SmallStockCardContentTitle>
+          <p className="name">{symbolName}</p>
+          <SmallStockCardContentScore delta={diff} isNew={score == diff}>
+            {score}점<span>{score != diff ? `${diffToValue(diff)}점` : 'NEW!'}</span>
+          </SmallStockCardContentScore>
+        </SmallStockCardContentTitle>
+        <SmallStockCardContentKeywords>
+          {keywords?.map((e) => <p key={`STOCK_${stockId}_KEYWORD_${e}`}>#{e}</p>)}
+        </SmallStockCardContentKeywords>
+      </SmallStockCardContent>
+    </SmallStockCardContainer>
+  );
+};
+
+const StockCard = ({
+  type,
+  stocks,
+  size,
+  country,
+}: {
+  type: string;
+  stocks: StockInfo[];
+  size: 'large' | 'small';
+  country: StockCountryKey;
+}) => {
+  if (!stocks) return null;
+
+  return (
+    <StockCardContainer>
+      <div>
+        {stocks.map((stock: StockInfo) => (
+          <StockCardItem key={`STOCK_CARD_${type}_${stock.stockId}`}>
+            {size === 'large' ? (
+              <LargeStockCard stock={stock} country={country} />
+            ) : (
+              <SmallStockCard stock={stock} country={country} />
+            )}
+          </StockCardItem>
+        ))}
+      </div>
     </StockCardContainer>
   );
 };

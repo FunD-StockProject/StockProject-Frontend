@@ -56,7 +56,7 @@ export type themeFontSizeLabel = 'Large' | 'Medium' | 'Small' | 'XSmall';
 export type themeFontSizeLinks = 'Large' | 'Medium' | 'Small';
 
 const colors = {
-  /* primary */
+  /* === PRIMARY COLORS === */
   /** #FFFFFF */ primary0: '#FFFFFF',
   /** #E8ECFF */ primary5: '#E8ECFF',
   /** #D3DBFF */ primary10: '#D3DBFF',
@@ -69,7 +69,8 @@ const colors = {
   /** #162672 */ primary80: '#162672',
   /** #0B1339 */ primary90: '#0B1339',
   /** #101010 */ primary100: '#101010',
-  /* grayscale */
+
+  /* === GRAYSCALE COLORS === */
   /** #FFFFFF */ grayscale0: '#FFFFFF',
   /** #F6F6F6 */ grayscale5: '#F6F6F6',
   /** #F0F0F1 */ grayscale10: '#F0F0F1',
@@ -82,18 +83,50 @@ const colors = {
   /** #3E3F40 */ grayscale80: '#3E3F40',
   /** #303033 */ grayscale90: '#303033',
   /** #1D1E1F */ grayscale100: '#1D1E1F',
-  /* function */
+
+  /* === FUNCTION COLORS === */
   /** #EB003B */ danger: '#EB003B',
   /** #FFB724 */ warning: '#FFB724',
   /** #008A1E */ success: '#008A1E',
   /** #2768FF */ information: '#2768FF',
-  /* key */
-  /** #FD4821 */ red: '#EB4553',
+
+  /* === KEY COLORS === */
+  /** #EB4553 */ red: '#EB4553',
   /** #2D92FF */ blue: '#2D92FF',
   /** #FFEA64 */ yellow: '#FFEA64',
   /** #64FFEA */ cyan: '#64FFEA',
   /** #6495ED */ cornflowerblue: '#6495ED',
   /** #DD000000 */ transparent: '#DD000000',
+
+  /* === SUB GRAYSCALE COLORS === */
+  /** #FFFFFF */ sub_white: '#FFFFFF',
+  /** #F6F6F6 */ sub_gray1: '#F6F6F6',
+  /** #F0F0F1 */ sub_gray2: '#F0F0F1',
+  /** #E3E4E5 */ sub_gray3: '#E3E4E5',
+  /** #D7D8D9 */ sub_gray4: '#D7D8D9',
+  /** #C6C7C8 */ sub_gray5: '#C6C7C8',
+  /** #9A9C9E */ sub_gray6: '#9A9C9E',
+  /** #707374 */ sub_gray7: '#707374',
+  /** #525658 */ sub_gray8: '#525658',
+  /** #3E3F40 */ sub_gray9: '#3E3F40',
+  /** #303033 */ sub_gray10: '#303033',
+  /** #1D1E1F */ sub_gray11: '#1D1E1F',
+  /** #101010 */ sub_black: '#101010',
+
+  /* === SUB PRIMARY COLORS === */
+  /** #E8ECFF */ sub_blue1: '#E8ECFF',
+  /** #D3DBFF */ sub_blue2: '#D3DBFF',
+  /** #ADBBFF */ sub_blue3: '#ADBBFF',
+  /** #8096FF */ sub_blue4: '#8096FF',
+  /** #5270FF */ sub_blue5: '#5270FF',
+  /** #3457FD */ sub_blue6: '#3457FD',
+  /** #2947D2 */ sub_blue7: '#2947D2',
+  /** #243CAE */ sub_blue8: '#243CAE',
+  /** #162672 */ sub_blue9: '#162672',
+  /** #0B1339 */ sub_blue10: '#0B1339',
+  /** #020202 */ sub_blue11: '#020202',
+
+  /** #EB003B */ sub_red: '#EB003B',
 };
 
 const Display = {
@@ -259,9 +292,128 @@ const fontSize = {
   Links: Links,
 };
 
+const font = {
+  heading24Semibold: {
+    fontSize: '24px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '1px',
+  },
+  heading24Bold: {
+    fontSize: '24px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '1px',
+  },
+  title20Semibold: {
+    fontSize: '20px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  title20Medium: {
+    fontSize: '20px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body18Medium: {
+    fontSize: '18px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+
+  body18Semibold: {
+    fontSize: '18px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body16Medium: {
+    fontSize: '16px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body16Semibold: {
+    fontSize: '16px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body16Regular: {
+    fontSize: '16px',
+    fontWeight: 400,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body14Medium: {
+    fontSize: '14px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body14Semibold: {
+    fontSize: '14px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body14Bold: {
+    fontSize: '14px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  body14Regular: {
+    fontSize: '14px',
+    fontWeight: 400,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail12Semibold: {
+    fontSize: '12px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail12Bold: {
+    fontSize: '12px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail12Medium: {
+    fontSize: '12px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail10Medium: {
+    fontSize: '10px',
+    fontWeight: 500,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail10Semibold: {
+    fontSize: '10px',
+    fontWeight: 600,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+  detail10Bold: {
+    fontSize: '10px',
+    fontWeight: 700,
+    lineHeight: '150%',
+    letterSpacing: '0',
+  },
+};
+
 const theme = {
   colors: colors,
   fontSize: fontSize,
+  font: font,
 };
 
 const breakpoints = [720, 480];

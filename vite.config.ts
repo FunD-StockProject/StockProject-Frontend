@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { VitePluginRadar } from 'vite-plugin-radar';
@@ -6,6 +7,9 @@ import svgr from 'vite-plugin-svgr';
 import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
+  esbuild: {
+    drop: ['console', 'debugger'], // production 빌드 시 console과 debugger 제거
+  },
   plugins: [
     react(),
     svgr(),
@@ -15,11 +19,18 @@ export default defineConfig({
         id: 'G-EZPQMV95QJ',
       },
     }),
+    visualizer({
+      filename: './dist/stats.html',
+      open: false,
+      gzipSize: true,
+    }),
     VitePWA({
+      devOptions: { enabled: false },
       registerType: 'autoUpdate',
       workbox: {
         cleanupOutdatedCaches: true, // 이전 캐시 삭제
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // 필요한 파일만 포함
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB로 상향 조정
         runtimeCaching: [
           {
             urlPattern: ({ request }) =>
@@ -61,22 +72,51 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React 관련 라이브러리를 별도 청크로 분리
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // React Query를 별도 청크로 분리
+          'query-vendor': ['react-query'],
+          // UI 라이브러리를 별도 청크로 분리
+          'ui-vendor': ['@emotion/react', '@emotion/styled', 'framer-motion'],
+        },
+        // 파일명 해시 추가로 브라우저 캐싱 최적화
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+    // 500KB 목표로 청크 사이즈 제한
+    chunkSizeWarningLimit: 500,
+    // 소스맵 비활성화로 빌드 크기 감소
+    sourcemap: false,
+    // 최소화 옵션
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+    },
+  },
   resolve: {
     alias: [
       { find: '@ts', replacement: '/src/ts' },
-      { find: '@base', replacement: '/src/base' },
       { find: '@utils', replacement: '/src/utils' },
       { find: '@hooks', replacement: '/src/hooks' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@router', replacement: '/src/router' },
       { find: '@layout', replacement: '/src/layout' },
-      { find: '@common', replacement: '/src/common' },
-      { find: '@recoils', replacement: '/src/recoils' },
       { find: '@constants', replacement: '/src/constants' },
       { find: '@controllers', replacement: '/src/controllers' },
       { find: '@components', replacement: '/src/components' },
       { find: '@styles', replacement: '/src/styles' },
       { find: '@assets', replacement: '/src/assets' },
+      { find: '@config', replacement: '/src/config' },
     ],
   },
 });

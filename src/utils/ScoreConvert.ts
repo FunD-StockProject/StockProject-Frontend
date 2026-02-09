@@ -1,4 +1,7 @@
+import { Fragment } from 'react/jsx-runtime';
 import { theme } from '@styles/themes';
+import DownCaretSVG from '@assets/icons/downCaret.svg?react';
+import UpCaretSVG from '@assets/icons/upCaret.svg?react';
 import { stockScoreImage, stockScoreTitle } from '../constants/stockScore';
 
 const scoreToImage = (score: number): string => {
@@ -55,14 +58,27 @@ const scoreToIndex = (score: number): number => {
   return result;
 };
 
-const deltaScoreToColor = (deltaScore: number): string => {
-  if (deltaScore > 0) {
-    return theme.colors.red;
-  } else if (deltaScore < 0) {
-    return theme.colors.blue;
-  } else {
-    return theme.colors.grayscale20;
-  }
+const deltaToColor = (delta: number): string | undefined => {
+  return delta ? theme.colors[delta > 0 ? 'sub_red' : 'sub_blue5'] : undefined;
 };
 
-export { scoreToImage, scoreToText, scoreToIndex, deltaScoreToColor };
+const deltaToCaret = (delta: number): React.FC => {
+  return delta ? (delta > 0 ? UpCaretSVG : DownCaretSVG) : Fragment;
+};
+
+const diffToValue = (diff: number): string => {
+  const diffSign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+  return diffSign + Math.abs(diff).toLocaleString();
+};
+
+const diffToPercent = (
+  value: number,
+  diff: number,
+  option: { fixed?: number; sign?: boolean } = { fixed: 2, sign: true },
+): string => {
+  const diffSign = option.sign ? (diff > 0 ? '+' : diff < 0 ? '-' : '') : '';
+
+  return diffSign + (Math.abs(value / (value - diff) - 1) * 100).toFixed(option.fixed) + '%';
+};
+
+export { scoreToImage, scoreToText, scoreToIndex, deltaToColor, deltaToCaret, diffToValue, diffToPercent };

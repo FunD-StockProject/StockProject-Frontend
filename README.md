@@ -7,9 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-3178C6.svg?style=flat-square&logo=typescript&logoColor=white)
 ![react](https://img.shields.io/badge/react-61DAFB.svg?style=flat-square&logo=react&logoColor=black)
 ![vite](https://img.shields.io/badge/vite-646CFF.svg?style=flat-square&logo=vite&logoColor=white)
-
 ![reactquery](https://img.shields.io/badge/reactquery-FF4154.svg?style=flat-square&logo=reactquery&logoColor=white)
-
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3.svg?style=flat-square&logo=ESLint&logoColor=white)
 ![prettier](https://img.shields.io/badge/prettier-F7B93E.svg?style=flat-square&logo=prettier&logoColor=black)
 

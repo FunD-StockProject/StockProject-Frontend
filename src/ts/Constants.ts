@@ -1,19 +1,10 @@
 import { themeColor } from '@styles/themes';
-import { PERIOD_CODE, RESULT_TYPE, SEARCH_CATEGORY, STOCK_COUNTRY } from './Types';
+import { StockCountryKey } from './StockCountry';
+import { PERIOD_CODE, RESULT_TYPE } from './Types';
 
-const STOCK_COUNTRY_TEXT: Record<STOCK_COUNTRY, string> = {
-  KOREA: '국내',
-  OVERSEA: '해외',
-};
-
-const SEARCH_CATEGORY_TEXT: Record<SEARCH_CATEGORY, string> = {
-  STOCK: '종목',
-  KEYWORD: '키워드',
-};
-
-const STOCK_UPDATE_TIME: Record<string, string> = {
-  KOREA: '17',
-  OVERSEA: '06',
+const STOCK_UPDATE_TIME: Record<StockCountryKey, string> = {
+  KOREA: '17:00',
+  OVERSEA: '06:00',
 };
 
 const MARKET_CODES: Record<string, string> = {
@@ -82,8 +73,6 @@ const ResultInfo: Record<
 export {
   STOCK_UPDATE_TIME,
   MARKET_CODES,
-  STOCK_COUNTRY_TEXT,
-  SEARCH_CATEGORY_TEXT,
   CHART_PRICE_FIELD,
   CHART_SCALE_RATIO,
   PERIOD_CODE_TEXT,

@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 
-export const SlideContainer = styled.div({
+const SlideContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
 });
 
-export const SlideItemContainer = styled.div({
+const SlideItemContainer = styled.div({
   overflowX: 'scroll',
   overflowY: 'hidden',
   boxSizing: 'border-box',
   width: '100%',
-  padding: '0px 24px',
+  // padding: '0px 24px',
 
   msOverflowStyle: 'none',
   scrollBehavior: 'auto',
@@ -23,11 +23,11 @@ export const SlideItemContainer = styled.div({
   },
 
   [media[0]]: {
-    padding: '0px 16px',
+    // padding: '0px 16px',
   },
 });
 
-export const SlideItemContents = styled.div(
+const SlideItemContents = styled.div(
   {
     position: 'relative',
 
@@ -49,7 +49,7 @@ export const SlideItemContents = styled.div(
   }),
 );
 
-export const SlideItem = styled.div(
+const SlideItem = styled.div(
   {
     position: 'absolute',
     top: 0,
@@ -73,7 +73,7 @@ export const SlideItem = styled.div(
   }),
 );
 
-export const SlideArrowContainer = styled.div(
+const SlideArrowContainer = styled.div(
   {
     position: 'relative',
 
@@ -85,7 +85,7 @@ export const SlideArrowContainer = styled.div(
   }),
 );
 
-export const SlideArrowContents = styled.div(
+const SlideArrowContents = styled.div(
   {
     position: 'absolute',
     top: '18px',
@@ -121,3 +121,5 @@ export const SlideArrowContents = styled.div(
     },
   }),
 );
+
+export { SlideContainer, SlideItemContainer, SlideItemContents, SlideItem, SlideArrowContainer, SlideArrowContents };

@@ -4,7 +4,14 @@ export type SelfPosition = 'center' | 'end' | 'flex-end' | 'flex-start' | 'self-
 export type AlignItems = Globals | SelfPosition | 'baseline' | 'normal' | 'stretch' | (string & {});
 export type ContentDistribution = 'space-around' | 'space-between' | 'space-evenly' | 'stretch';
 export type ContentPosition = 'center' | 'end' | 'flex-end' | 'flex-start' | 'start';
-export type JustifyContent = Globals | ContentDistribution | ContentPosition | 'left' | 'normal' | 'right' | (string & {});
+export type JustifyContent =
+  | Globals
+  | ContentDistribution
+  | ContentPosition
+  | 'left'
+  | 'normal'
+  | 'right'
+  | (string & {});
 export type FlexDirection = Globals | 'column' | 'column-reverse' | 'row' | 'row-reverse';
 export type Width<TLength = string | 0> =
   | Globals
@@ -33,5 +40,3 @@ export type Height<TLength = string | 0> =
   | 'min-content'
   | string;
 export type Padding<TLength = string | 0> = Globals | TLength | string;
-
-export type StockType = 'HOT' | 'RISING' | 'DESCENT';

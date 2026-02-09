@@ -1,51 +1,38 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useIsMobile } from '@hooks/useIsMobile';
-import { webPath } from '@router/index';
-import { ImgDiv } from '@components/Common/Common';
+import useLocalStorageState from '@hooks/useLocalStorageState';
+import useRouter from '@router/useRouter';
 import PWAPNG from '@assets/PWA/PWA.png';
+import CrossSVG from '@assets/icons/cross.svg?react';
 import {
   Backdrop,
-  ButtonContainer,
-  Close24HourButton,
-  CloseButton,
-  ConfirmButton,
-  DetailContainer,
-  HeaderText,
-  NormalText,
+  PWAInfoButtonContainer,
   PWAInfoContainer,
-  TextArea,
+  PWAInfoContents,
+  PWAInfoTextContainer,
 } from './PWAinfoPopUp.style';
 
-const PWAInfoPopUp = ({}: {}) => {
-  const [showPopUp, setShowPopUp] = useState(false);
+const PWAInfoPopUp = () => {
+  const { navToUsage } = useRouter();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const today = new Date();
-    const VISITED = localStorage.getItem('LAST_VISIT_POPUP'); // 마지막 방문 시간을 로컬 스토리지에서 가져옴
-
-    const handleMainPop = () => {
-      if (VISITED) {
-        const lastVisit = new Date(VISITED);
-        const diff = today.getTime() - lastVisit.getTime();
-        const diffHours = diff / (1000 * 60 * 60);
-
-        if (diffHours < 24) {
-          return;
-        }
+  const [lastVisit, setLastVisit] = useLocalStorageState<string>('last_visit_page');
+  const [showPopUp, setShowPopUp] = useState(
+    (() => {
+      if (!lastVisit) {
+        return true;
       }
 
-      setShowPopUp(true);
-    };
+      const diff = new Date().getTime() - new Date(lastVisit).getTime();
+      if (diff < 1000 * 60 * 60 * 24) {
+        return false;
+      }
 
-    handleMainPop();
-  }, []);
+      return true;
+    })(),
+  );
 
   const closePopUp24Hours = () => {
-    const today = new Date();
-    localStorage.setItem('LAST_VISIT_POPUP', today.toISOString());
+    setLastVisit(new Date(new Date().getTime() - (new Date().getTime() % (1000 * 60 * 60 * 24))).toDateString());
     setShowPopUp(false);
   };
 
@@ -55,7 +42,7 @@ const PWAInfoPopUp = ({}: {}) => {
 
   const confirmClick = () => {
     setShowPopUp(false);
-    navigate(webPath.usage());
+    navToUsage();
   };
 
   return (
@@ -64,25 +51,28 @@ const PWAInfoPopUp = ({}: {}) => {
       <>
         <Backdrop onClick={closePopUp} />
         <PWAInfoContainer>
-          <CloseButton onClick={closePopUp}>✕</CloseButton>
-          <DetailContainer>
-            <TextArea>
-              <HeaderText>
-                1초만에
-                <br /> 앱처럼 사용하기
-              </HeaderText>
-              <NormalText>
-                누구보다 편하게
-                <br />
+          <CrossSVG onClick={closePopUp} />
+          <PWAInfoContents>
+            <PWAInfoTextContainer>
+              <p className="title">
+                1초만에 <br />
+                앱처럼 사용하기
+              </p>
+              <p className="description">
+                누구보다 편하게 <br />
                 인간지표를 누려보세요.
-              </NormalText>
-            </TextArea>
-            <ImgDiv src={PWAPNG} width={'140px'} />
-          </DetailContainer>
-          <ButtonContainer>
-            <Close24HourButton onClick={closePopUp24Hours}>24시간 동안 안보기</Close24HourButton>
-            <ConfirmButton onClick={confirmClick}>사용법 보기</ConfirmButton>
-          </ButtonContainer>
+              </p>
+            </PWAInfoTextContainer>
+            <img src={PWAPNG} loading="lazy" width={'140px'} />
+          </PWAInfoContents>
+          <PWAInfoButtonContainer>
+            <button className="white" onClick={closePopUp24Hours}>
+              24시간 동안 안보기
+            </button>
+            <button className="blue" onClick={confirmClick}>
+              사용법 보기
+            </button>
+          </PWAInfoButtonContainer>
         </PWAInfoContainer>
       </>
     )

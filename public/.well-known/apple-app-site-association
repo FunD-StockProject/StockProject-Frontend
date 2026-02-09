@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "C9TY6BF2XS.com.durumi99.humanzipyoapp",
+        "paths": [
+          "NOT /login/oauth2/code/*",
+          "/*"
+        ]
+      }
+    ]
+  }
+}
+

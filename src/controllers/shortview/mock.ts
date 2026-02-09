@@ -1,0 +1,53 @@
+import { getStockImageUrl } from '@utils/stockImage';
+import { ShortViewItem } from './api';
+
+export const mockShortViewItems: ShortViewItem[] = [
+  {
+    stockId: 904,
+    stockName: '삼성전자',
+    price: 71500,
+    priceDiff: 1200,
+    priceDiffPerCent: 1.71,
+    score: 85,
+    diff: 79,
+    country: 'KOREA',
+    keywords: ['IT', '반도체'],
+    imageUrl: getStockImageUrl(904),
+  },
+  {
+    stockId: 89,
+    stockName: 'NAVER',
+    price: 205000,
+    priceDiff: -1500,
+    priceDiffPerCent: -0.73,
+    score: 51,
+    diff: -12,
+    country: 'KOREA',
+    keywords: ['플랫폼', '인터넷'],
+    imageUrl: getStockImageUrl(89),
+  },
+  {
+    stockId: 5990,
+    stockName: '인텔',
+    price: 61000,
+    priceDiff: 500,
+    priceDiffPerCent: 0.83,
+    score: 43,
+    diff: 5,
+    country: 'OVERSEA',
+    keywords: ['모빌리티', '광고'],
+    imageUrl: getStockImageUrl(5990),
+  },
+  {
+    stockId: 2716,
+    stockName: '한화',
+    price: 83800,
+    priceDiff: 200,
+    priceDiffPerCent: 0.24,
+    score: 89,
+    diff: 11,
+    country: 'KOREA',
+    keywords: ['모빌리티', '광고'],
+    imageUrl: getStockImageUrl(2716),
+  },
+];

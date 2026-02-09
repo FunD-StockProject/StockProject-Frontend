@@ -1,139 +1,217 @@
 import styled from '@emotion/styled';
-import { media, theme, themeColor } from '@styles/themes';
+import { deltaToColor } from '@utils/ScoreConvert';
+import { theme } from '@styles/themes';
 
-export const StockCardContainer = styled.div({
-  background: theme.colors.grayscale100,
-  borderRadius: '12px',
-  padding: '24px 32px',
+const StockCardContainer = styled.div({
   display: 'flex',
-  flexDirection: 'column-reverse',
-  gap: '32px',
-  cursor: 'pointer',
-  lineHeight: 1,
+  overflow: 'auto',
+  scrollSnapType: 'x mandatory',
 
-  [':hover']: {
-    background: theme.colors.grayscale90,
-  },
+  transition: 'background-color 0.1s ease-in-out',
+  backgroundColor: theme.colors.sub_black,
 
-  [media[0]]: {
-    padding: '12px',
-    flexDirection: 'row',
-    gap: '18px',
-  },
-});
-
-export const StockCardTitle = styled.div({
-  display: 'flex',
-  overflow: 'hidden',
-  width: '100%',
-  flexDirection: 'column',
-  color: theme.colors.primary0,
-  gap: '12px',
-
-  [media[0]]: {
-    gap: '12px',
-    justifyContent: 'space-between',
-  },
-});
-
-export const StockCardTitleContents = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '12px 0',
-  gap: '18px',
-
-  [media[0]]: {
-    padding: '8px 0',
-    gap: '12px',
-  },
-});
-
-export const StockCardTitleName = styled.span({
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  fontSize: '24px',
-  fontWeight: '700',
-
-  [media[0]]: {
-    fontSize: '15px',
-  },
-});
-
-export const StockCardTitleScore = styled.div(
-  {
+  ['>div']: {
     display: 'flex',
-    fontSize: '32px',
-    fontWeight: '700',
-    alignItems: 'center',
-    gap: '8px',
+    gap: '12px',
+    padding: '0px 20px 8px',
+    backgroundColor: theme.colors.sub_black,
+  },
 
-    ['span']: {
-      fontSize: '18px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '4px',
-      ['svg']: {
-        height: '0.5em',
-        width: '0.5em',
-      },
+  ['::-webkit-scrollbar']: {
+    height: '6px',
+  },
+  ['::-webkit-scrollbar-track']: {
+    background: theme.colors.sub_black,
+  },
+  ['::-webkit-scrollbar-thumb']: {
+    background: 'inherit',
+    borderRadius: '4px',
+  },
+
+  ['@media (max-width: 768px)']: {
+    ['>div']: {
+      padding: '0px 20px',
     },
 
-    [media[0]]: {
-      fontSize: '21px',
-      ['span']: {
-        fontSize: '15px',
-      },
+    msOverflowStyle: 'none',
+    ['::-webkit-scrollbar']: {
+      display: 'none',
     },
   },
-  ({ diffColor }: { diffColor: themeColor }) => ({
-    ['span']: {
-      color: theme.colors[diffColor],
-      ['svg']: {
-        fill: theme.colors[diffColor],
-      },
-    },
-  }),
-);
+});
 
-export const StockCardKeywords = styled.div({
+const StockCardItem = styled.div({
+  flexShrink: '0',
+  display: 'flex',
+  width: '300px',
+  scrollSnapAlign: 'center',
+  background: theme.colors.sub_gray11,
+  borderRadius: '8px',
+});
+
+//
+const LargeStockCardContainer = styled.div({
+  flexShrink: '0',
+  // display: 'block',
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  scrollSnapAlign: 'center',
+  background: theme.colors.sub_gray11,
+  borderRadius: '8px',
+
+  ['>hr']: {
+    border: `2px solid ${theme.colors.sub_black}`,
+    margin: '0px',
+  },
+});
+
+const LargeStockCardHeader = styled.div({
   display: 'flex',
   gap: '8px',
+  alignItems: 'center',
+  padding: '12px 12px 8px',
+  overflow: 'hidden',
 
-  fontSize: '15px',
-
-  ['span']: {
-    background: theme.colors.grayscale90,
-    padding: '4px 12px',
-    borderRadius: '32px',
-  },
-  '::after': {
-    content: '""',
-    display: 'inline-block',
-    height: '1em',
-    padding: '4px 0',
+  ['>p']: {
+    ...theme.font.title20Semibold,
+    color: theme.colors.sub_gray3,
+    margin: '0px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 
-  [media[0]]: {
-    fontSize: '13px',
-    ['span']: {
-      padding: '4px 8px',
+  ['>img']: {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    flexShrink: '0',
+  },
+});
+
+const LargeStockCardContent = styled.div({
+  display: 'flex',
+  padding: '16px 12px 12px',
+  gap: '12px',
+
+  ['>img']: {
+    width: '102px',
+    height: '92px',
+    borderRadius: '4px',
+  },
+});
+
+const LargeStockCardContentTextContainer = styled.div({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  width: '100%',
+
+  ['>div']: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '4px',
+
+    ['>p']: {
+      margin: '0px',
+
+      ['&.title']: {
+        ...theme.font.body14Medium,
+        color: theme.colors.sub_gray7,
+      },
+
+      ['&.content']: {
+        ...theme.font.title20Semibold,
+        color: theme.colors.sub_gray5,
+      },
     },
   },
 });
 
-export const StockCardImage = styled.div({
-  height: '160px',
+const SmallStockCardContainer = styled.div({
+  flexShrink: '0',
   display: 'flex',
-  justifyContent: 'end',
+  width: '100%',
+  scrollSnapAlign: 'center',
+  background: theme.colors.sub_gray11,
+  borderRadius: '8px',
+  padding: '12px',
+  gap: '16px',
+  boxSizing: 'border-box',
 
-  ['img']: {
-    height: '100%',
-    borderRadius: '12px',
-  },
-
-  [media[0]]: {
-    justifyContent: 'start',
-    height: '100px',
+  ['>img']: {
+    width: '102px',
+    height: '92px',
+    borderRadius: '4px',
   },
 });
+
+const SmallStockCardContent = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  minWidth: '0px',
+});
+
+const SmallStockCardContentTitle = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
+  width: '100%',
+
+  ['>p']: {
+    margin: '0px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    ...theme.font.body18Semibold,
+    color: theme.colors.primary0,
+  },
+});
+
+const SmallStockCardContentScore = styled.div(
+  ({ delta, isNew }: { delta: number; isNew: boolean }) => ({
+    ['>span']: {
+      color: isNew ? theme.colors.yellow : (deltaToColor(delta) ?? theme.colors.sub_gray7),
+    },
+  }),
+  {
+    ...theme.font.body18Semibold,
+    color: theme.colors.sub_gray4,
+
+    display: 'flex',
+    gap: '4px',
+    alignItems: 'center',
+
+    ['>span']: {
+      ...theme.font.body14Semibold,
+    },
+  },
+);
+
+const SmallStockCardContentKeywords = styled.div({
+  display: 'flex',
+  gap: '10px',
+
+  ['>p']: {
+    margin: '0px',
+    ...theme.font.body14Medium,
+    color: theme.colors.sub_gray6,
+  },
+});
+
+export {
+  StockCardContainer,
+  StockCardItem,
+  LargeStockCardContainer,
+  LargeStockCardHeader,
+  LargeStockCardContent,
+  LargeStockCardContentTextContainer,
+  SmallStockCardContainer,
+  SmallStockCardContent,
+  SmallStockCardContentTitle,
+  SmallStockCardContentScore,
+  SmallStockCardContentKeywords,
+};

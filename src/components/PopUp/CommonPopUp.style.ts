@@ -2,57 +2,30 @@ import styled from '@emotion/styled';
 import { media, theme } from '@styles/themes';
 
 const PopUpContainer = styled('div')({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '568px',
+  width: '100%',
   height: 'auto',
   background: theme.colors.grayscale30,
   color: theme.colors.primary100,
-  borderRadius: '12px',
+  borderRadius: '8px',
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-  zIndex: 1000,
   fontFamily: 'Pretendard',
+  overflow: 'hidden',
 
   [media[0]]: {
-    width: '90%',
     ['svg']: {
       width: '40%',
     },
   },
 });
 
-const PopUpTitle = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  fontSize: '36px',
-  fontWeight: '700',
-  padding: '48px 32px 0 32px',
-
-  ['svg']: {
-    height: '36px',
-    width: 'auto',
-  },
-
-  [media[0]]: {
-    fontSize: '20px', // 모바일에서는 작은 글자 크기
-    padding: '32px 32px 0 32px',
-    ['svg']: {
-      height: '18px',
-      width: 'auto',
-    },
-  },
-});
-
 const PopUpContent = styled('div')({
-  padding: '0 32px 32px 32px',
+  padding: '20px 16px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '10px',
   fontFamily: 'Pretendard',
   fontSize: '16px',
   fontStyle: 'normal',
@@ -62,26 +35,32 @@ const PopUpContent = styled('div')({
   color: theme.colors.grayscale100,
 });
 
-const StyledSpan = styled('span')({
-  color: theme.colors.primary50,
-  fontWeight: '700',
+const PopUpTitle = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+
+  ...theme.font.body18Semibold,
+  color: theme.colors.primary100,
+
+  ['>svg']: {
+    width: '72px',
+    height: 'auto',
+  },
 });
 
 const ConfirmButton = styled('div')({
   textAlign: 'center',
-  fontWeight: '700',
-  lineHeight: '1.5',
-  fontSize: '24px',
   cursor: 'pointer',
-  background: theme.colors.primary50,
+  background: theme.colors.sub_blue6,
   color: theme.colors.primary0,
-  borderRadius: '0 0 12px 12px',
-  padding: '27px 0',
+  padding: '12px 0',
+  ...theme.font.body18Semibold,
+});
 
-  [media[0]]: {
-    fontSize: '16px', // 모바일 글자 크기 축소
-    padding: '16px 0', // 모바일 패딩 축소
-  },
+const StyledSpan = styled('span')({
+  color: theme.colors.primary50,
+  fontWeight: '700',
 });
 
 const Backdrop = styled('div')({
@@ -105,8 +84,8 @@ const CloseButton = styled('button')({
   color: theme.colors.grayscale100,
 
   [media[0]]: {
-    top: '12px',
-    right: '0px',
+    top: '8px',
+    right: '8px',
   },
 });
 
