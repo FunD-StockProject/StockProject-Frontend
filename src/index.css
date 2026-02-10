@@ -45,13 +45,14 @@ body {
 html {
   zoom: 1; /* 기본 줌 설정 */
   margin: 0px;
+  background-color: #101010; /* 앱 메인 배경색과 통일 */
 }
 
 body {
   display: flex;
   justify-items: center;
   margin: 0px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #101010; /* 앱 메인 배경색 - Safe Area 영역도 검은색으로 */
   min-width: 320px;
   min-height: 100vh;
   min-height: 100dvh; /* 동적 viewport height - 모바일 브라우저 주소창 제외 */
