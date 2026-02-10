@@ -34,7 +34,7 @@ const useRouter = () => {
   const navToTerm = (termKey: TermKey) => navigate(`${webPath.term}?term=${termKey}`);
 
   const openBusinessProposal = () => {
-    openExternalLink('mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com');
+    window.location.href = 'mailto:humanzipyo2024@gmail.com?cc=anyany3151@naver.com';
   };
   const openServiceCenter = () => {
     openExternalLink('https://forms.gle/eus2xRNHGxbSBaAK9');
