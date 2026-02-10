@@ -133,6 +133,16 @@ export const useSocialAuth = () => {
             }),
           );
         }
+        
+        if (isWebView && (window as any).ReactNativeWebView) {
+          (window as any).ReactNativeWebView.postMessage(
+            JSON.stringify({
+              type: MESSAGE_TYPES.REQUEST_NOTIFICATION_PERMISSION,
+              token: res.access_token,
+            }),
+          );
+        }
+  
 
         // 저장된 return path로 이동
         const savedReturnPath = sessionStorage.getItem('login_return_path');

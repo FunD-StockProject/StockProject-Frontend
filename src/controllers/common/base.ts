@@ -1,4 +1,5 @@
 import { webPath } from '@router/index';
+import { MESSAGE_TYPES } from '../../config/webview';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 const Headers = { 'Content-Type': 'application/json' } as const;
@@ -72,11 +73,11 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
     window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key: 'access_token' } }));
     window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key: 'refresh_token' } }));
 
-    (window as any).ReactNativeWebView?.postMessage(JSON.stringify({ type: 'TOKEN', token: access_token }));
-    // const token = localStorage.getItem('access_token');
-    // if (token && window.ReactNativeWebView) {
-    //   window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'TOKEN', token }));
-    // }
+    // WebView에 새 토큰 전달
+    (window as any).ReactNativeWebView?.postMessage(
+      JSON.stringify({ type: MESSAGE_TYPES.TOKEN, token: access_token }),
+    );
+
     // 원래 요청 재시도
     res = await fetch(url, {
       method: 'GET',
@@ -103,11 +104,5 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
   const data = await res.json();
   return data;
 };
-
-// function getCookie(name: string) {
-//   const value = `; ${document.cookie}`;
-//   const parts = value.split(`; ${name}=`);
-//   if (parts.length === 2) return parts.pop()?.split(';').shift();
-// }
 
 export { baseURL, Headers, wait, enableMock, fetchData, fetchAuthData };
