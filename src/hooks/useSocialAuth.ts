@@ -202,8 +202,11 @@ export const useSocialAuth = () => {
 
       if (parsedState?.fromWebView) {
         // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
+        // Chrome Custom Tabs에서 자동 리다이렉트 차단을 우회하기 위해 약간 지연
         const errorParam = `error=${encodeURIComponent(error)}`;
-        window.location.href = `${URL_SCHEME}?${errorParam}`;
+        setTimeout(() => {
+          window.location.href = `${URL_SCHEME}?${errorParam}`;
+        }, 100);
       } else {
         setError('로그인에 실패했습니다. 다시 시도해주세요.');
         setIsLoading(false);
@@ -217,8 +220,11 @@ export const useSocialAuth = () => {
 
         if (parsedState?.fromWebView) {
           // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
+          // Chrome Custom Tabs에서 자동 리다이렉트 차단을 우회하기 위해 약간 지연
           const params = `code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}&state=${encodeURIComponent(stateParam || '')}`;
-          window.location.href = `${URL_SCHEME}?${params}`;
+          setTimeout(() => {
+            window.location.href = `${URL_SCHEME}?${params}`;
+          }, 100);
         } else {
           // 브라우저에서 온 경우: URL 파라미터 제거 후 처리하여 무한 루프 방지
           const provider = location.pathname.split('/').at(-1);
