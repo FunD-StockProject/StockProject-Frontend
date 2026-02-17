@@ -133,7 +133,7 @@ export const useSocialAuth = () => {
             }),
           );
         }
-        
+
         if (isWebView && (window as any).ReactNativeWebView) {
           (window as any).ReactNativeWebView.postMessage(
             JSON.stringify({
@@ -142,7 +142,6 @@ export const useSocialAuth = () => {
             }),
           );
         }
-  
 
         // 저장된 return path로 이동
         const savedReturnPath = sessionStorage.getItem('login_return_path');
@@ -206,8 +205,9 @@ export const useSocialAuth = () => {
         const errorParam = `error=${encodeURIComponent(error)}`;
 
         if (isAndroid) {
-          // Android Intent URL (Chrome 제약 우회)
-          window.location.href = `intent://?${errorParam}#Intent;scheme=humanzipyoapp;package=com.durumi99.humanzipyoapp;end`;
+          // Android HTTPS Deep Link (AndroidManifest.xml에 설정됨)
+          const provider = parsedState.provider || 'kakao';
+          window.location.href = `https://humanzipyo.com/login/oauth2/code/${provider}?${errorParam}`;
         } else {
           // iOS 커스텀 스킴
           window.location.href = `${URL_SCHEME}?${errorParam}`;
@@ -229,8 +229,9 @@ export const useSocialAuth = () => {
           const isAndroid = /Android/i.test(navigator.userAgent);
 
           if (isAndroid) {
-            // Android Intent URL (Chrome 제약 우회)
-            window.location.href = `intent://?${params}#Intent;scheme=humanzipyoapp;package=com.durumi99.humanzipyoapp;end`;
+            // Android HTTPS Deep Link (AndroidManifest.xml에 설정됨)
+            const provider = parsedState.provider || 'kakao';
+            window.location.href = `https://humanzipyo.com/login/oauth2/code/${provider}?${params}`;
           } else {
             // iOS 커스텀 스킴
             window.location.href = `${URL_SCHEME}?${params}`;
