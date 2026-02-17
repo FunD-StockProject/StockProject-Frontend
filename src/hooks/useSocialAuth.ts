@@ -201,17 +201,9 @@ export const useSocialAuth = () => {
       const parsedState: OAuthState = stateParam ? JSON.parse(atob(stateParam)) : {};
 
       if (parsedState?.fromWebView) {
-        const isAndroid = /Android/i.test(navigator.userAgent);
+        // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
         const errorParam = `error=${encodeURIComponent(error)}`;
-
-        if (isAndroid) {
-          // Android HTTPS Deep Link (AndroidManifest.xml에 설정됨)
-          const provider = parsedState.provider || 'kakao';
-          window.location.href = `https://humanzipyo.com/login/oauth2/code/${provider}?${errorParam}`;
-        } else {
-          // iOS 커스텀 스킴
-          window.location.href = `${URL_SCHEME}?${errorParam}`;
-        }
+        window.location.href = `${URL_SCHEME}?${errorParam}`;
       } else {
         setError('로그인에 실패했습니다. 다시 시도해주세요.');
         setIsLoading(false);
@@ -224,18 +216,9 @@ export const useSocialAuth = () => {
         const parsedState: OAuthState = JSON.parse(atob(stateParam));
 
         if (parsedState?.fromWebView) {
-          // WebView에서 온 경우 Deep Link로 복귀 (state도 함께 전달)
+          // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
           const params = `code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}&state=${encodeURIComponent(stateParam || '')}`;
-          const isAndroid = /Android/i.test(navigator.userAgent);
-
-          if (isAndroid) {
-            // Android HTTPS Deep Link (AndroidManifest.xml에 설정됨)
-            const provider = parsedState.provider || 'kakao';
-            window.location.href = `https://humanzipyo.com/login/oauth2/code/${provider}?${params}`;
-          } else {
-            // iOS 커스텀 스킴
-            window.location.href = `${URL_SCHEME}?${params}`;
-          }
+          window.location.href = `${URL_SCHEME}?${params}`;
         } else {
           // 브라우저에서 온 경우: URL 파라미터 제거 후 처리하여 무한 루프 방지
           const provider = location.pathname.split('/').at(-1);
