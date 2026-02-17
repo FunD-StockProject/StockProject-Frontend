@@ -202,11 +202,22 @@ export const useSocialAuth = () => {
 
       if (parsedState?.fromWebView) {
         // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
-        // Chrome Custom Tabs에서 자동 리다이렉트 차단을 우회하기 위해 약간 지연
         const errorParam = `error=${encodeURIComponent(error)}`;
+        const deepLinkUrl = `${URL_SCHEME}?${errorParam}`;
+
+        // Chrome Custom Tabs 차단 우회: 즉시 시도 + 클릭 가능한 링크 제공
+        window.location.href = deepLinkUrl;
+
+        // 500ms 후에도 페이지가 그대로 있으면 사용자에게 링크 제공
         setTimeout(() => {
-          window.location.href = `${URL_SCHEME}?${errorParam}`;
-        }, 100);
+          document.body.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;text-align:center;font-family:sans-serif;">
+              <h2 style="margin-bottom:20px;">로그인 실패</h2>
+              <p style="margin-bottom:30px;color:#666;">앱으로 돌아가려면 아래 버튼을 클릭하세요</p>
+              <a href="${deepLinkUrl}" style="display:inline-block;padding:15px 30px;background:#007AFF;color:white;text-decoration:none;border-radius:8px;font-size:16px;">앱으로 돌아가기</a>
+            </div>
+          `;
+        }, 500);
       } else {
         setError('로그인에 실패했습니다. 다시 시도해주세요.');
         setIsLoading(false);
@@ -220,11 +231,22 @@ export const useSocialAuth = () => {
 
         if (parsedState?.fromWebView) {
           // WebView에서 온 경우 커스텀 스킴으로 복귀 (Android/iOS 모두 동일)
-          // Chrome Custom Tabs에서 자동 리다이렉트 차단을 우회하기 위해 약간 지연
           const params = `code=${encodeURIComponent(code)}&provider=${parsedState.provider || ''}&state=${encodeURIComponent(stateParam || '')}`;
+          const deepLinkUrl = `${URL_SCHEME}?${params}`;
+
+          // Chrome Custom Tabs 차단 우회: 즉시 시도 + 클릭 가능한 링크 제공
+          window.location.href = deepLinkUrl;
+
+          // 500ms 후에도 페이지가 그대로 있으면 사용자에게 링크 제공
           setTimeout(() => {
-            window.location.href = `${URL_SCHEME}?${params}`;
-          }, 100);
+            document.body.innerHTML = `
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;text-align:center;font-family:sans-serif;">
+                <h2 style="margin-bottom:20px;">로그인 성공!</h2>
+                <p style="margin-bottom:30px;color:#666;">앱으로 돌아가려면 아래 버튼을 클릭하세요</p>
+                <a href="${deepLinkUrl}" style="display:inline-block;padding:15px 30px;background:#007AFF;color:white;text-decoration:none;border-radius:8px;font-size:16px;">앱으로 돌아가기</a>
+              </div>
+            `;
+          }, 500);
         } else {
           // 브라우저에서 온 경우: URL 파라미터 제거 후 처리하여 무한 루프 방지
           const provider = location.pathname.split('/').at(-1);
