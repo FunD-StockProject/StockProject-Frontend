@@ -94,16 +94,16 @@ export const useSocialAuth = () => {
 
         if (res.state === 'NEED_REGISTER') {
           // WebView에서는 네이티브에 메시지 전송
-          if (isWebView && (window as any).ReactNativeWebView) {
-            (window as any).ReactNativeWebView.postMessage(
-              JSON.stringify({
-                type: MESSAGE_TYPES.NEED_REGISTER,
-                email: res.email,
-                provider,
-              }),
-            );
-            return;
-          }
+          // if (isWebView && (window as any).ReactNativeWebView) {
+          //   (window as any).ReactNativeWebView.postMessage(
+          //     JSON.stringify({
+          //       type: MESSAGE_TYPES.NEED_REGISTER,
+          //       email: res.email,
+          //       provider,
+          //     }),
+          //   );
+          //   return;
+          // }
 
           // 브라우저에서는 회원가입 페이지로 이동
           navigate(webPath.register, {
