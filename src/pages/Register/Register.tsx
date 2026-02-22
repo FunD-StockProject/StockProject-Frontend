@@ -1,8 +1,9 @@
+import { MESSAGE_TYPES } from '@config/webview';
 import { ChangeEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
-import useRouter from '@router/useRouter';
 import useAuthInfo from '@hooks/useAuthInfo';
+import useRouter from '@router/useRouter';
 import Button from '@components/Common/Button';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
@@ -274,16 +275,24 @@ const Register = () => {
     sessionStorage.removeItem('register_email');
     sessionStorage.removeItem('register_provider');
 
-    // WebView 환경: 앱으로 토큰 전달
-    if (isWebView && res.access_token) {
-      (window as any).ReactNativeWebView?.postMessage(
+    // WebView인 경우 네이티브 앱에도 알림
+    if (isWebView && (window as any).ReactNativeWebView) {
+      (window as any).ReactNativeWebView.postMessage(
         JSON.stringify({
-          type: 'TOKEN',
+          type: MESSAGE_TYPES.TOKEN,
           token: res.access_token,
         }),
       );
     }
 
+    if (isWebView && (window as any).ReactNativeWebView) {
+      (window as any).ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: MESSAGE_TYPES.REQUEST_NOTIFICATION_PERMISSION,
+          token: res.access_token,
+        }),
+      );
+    }
     // Done 페이지로 이동
     navToRegisterDone();
   };
