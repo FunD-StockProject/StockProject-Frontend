@@ -1,8 +1,6 @@
-import { MESSAGE_TYPES } from '@config/webview';
 import { ChangeEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
-import useAuthInfo from '@hooks/useAuthInfo';
 import useRouter from '@router/useRouter';
 import Button from '@components/Common/Button';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
@@ -53,10 +51,6 @@ const termInputs: TermInputItem[] = [
 const Register = () => {
   const { navToRegisterDone, navToTerm } = useRouter();
   const location = useLocation();
-  const { setAuthInfo } = useAuthInfo();
-
-  // WebView 환경 감지
-  const isWebView = !!(window as any).ReactNativeWebView;
 
   const [values, setValues] = useState({
     name: '',
@@ -261,39 +255,11 @@ const Register = () => {
 
     if (!res) return;
 
-    // 토큰 및 사용자 정보 저장 (브라우저/WebView 모두)
-    if (res.access_token && res.refresh_token) {
-      setAuthInfo(res.access_token, res.refresh_token, {
-        email: values.email,
-        nickname: values.name,
-        profileImage: profileImage || undefined,
-        provider: provider.toUpperCase(),
-      });
-    }
-
     // sessionStorage 정리
     sessionStorage.removeItem('register_email');
     sessionStorage.removeItem('register_provider');
 
-    // WebView인 경우 네이티브 앱에도 알림
-    if (isWebView && (window as any).ReactNativeWebView) {
-      (window as any).ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: MESSAGE_TYPES.TOKEN,
-          token: res.access_token,
-        }),
-      );
-    }
-
-    if (isWebView && (window as any).ReactNativeWebView) {
-      (window as any).ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: MESSAGE_TYPES.REQUEST_NOTIFICATION_PERMISSION,
-          token: res.access_token,
-        }),
-      );
-    }
-    // Done 페이지로 이동
+    // 회원가입 완료 페이지로 이동 (로그인은 사용자가 직접 수행)
     navToRegisterDone();
   };
 
