@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TermKey } from '@ts/Term';
 import useRouter from '@router/useRouter';
+import useAuthInfo from '@hooks/useAuthInfo';
 import Button from '@components/Common/Button';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
@@ -51,6 +52,7 @@ const termInputs: TermInputItem[] = [
 const Register = () => {
   const { navToRegisterDone, navToTerm } = useRouter();
   const location = useLocation();
+  const { setAuthInfo } = useAuthInfo();
 
   // WebView 환경 감지
   const isWebView = !!(window as any).ReactNativeWebView;
@@ -258,6 +260,16 @@ const Register = () => {
 
     if (!res) return;
 
+    // 토큰 및 사용자 정보 저장 (브라우저/WebView 모두)
+    if (res.access_token && res.refresh_token) {
+      setAuthInfo(res.access_token, res.refresh_token, {
+        email: values.email,
+        nickname: values.name,
+        profileImage: profileImage || undefined,
+        provider: provider.toUpperCase(),
+      });
+    }
+
     // sessionStorage 정리
     sessionStorage.removeItem('register_email');
     sessionStorage.removeItem('register_provider');
@@ -270,10 +282,9 @@ const Register = () => {
           token: res.access_token,
         }),
       );
-      return;
     }
 
-    // 일반 브라우저: Done 페이지로 이동
+    // Done 페이지로 이동
     navToRegisterDone();
   };
 
