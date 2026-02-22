@@ -54,7 +54,7 @@ const useAuthInfo = () => {
     removeUserInfo();
   };
 
-  return { isLogin, userInfo, beforeLoginDepth, handleNavigateLogin, setUserInfo, setAuthInfo, clearAuthInfo };
+  return { isLogin, accessToken, userInfo, beforeLoginDepth, handleNavigateLogin, setUserInfo, setAuthInfo, clearAuthInfo };
 };
 
 export default useAuthInfo;

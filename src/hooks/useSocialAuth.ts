@@ -93,19 +93,6 @@ export const useSocialAuth = () => {
         const res = await fetchOAuth2Login(code, apiState, provider as ProviderKey);
 
         if (res.state === 'NEED_REGISTER') {
-          // WebView에서는 네이티브에 메시지 전송
-          // if (isWebView && (window as any).ReactNativeWebView) {
-          //   (window as any).ReactNativeWebView.postMessage(
-          //     JSON.stringify({
-          //       type: MESSAGE_TYPES.NEED_REGISTER,
-          //       email: res.email,
-          //       provider,
-          //     }),
-          //   );
-          //   return;
-          // }
-
-          // 브라우저에서는 회원가입 페이지로 이동
           navigate(webPath.register, {
             state: {
               provider,
@@ -123,16 +110,6 @@ export const useSocialAuth = () => {
           provider: res.provider,
         });
         setRecentProvider(provider);
-
-        // WebView인 경우 네이티브 앱에도 알림
-        if (isWebView && (window as any).ReactNativeWebView) {
-          (window as any).ReactNativeWebView.postMessage(
-            JSON.stringify({
-              type: MESSAGE_TYPES.TOKEN,
-              token: res.access_token,
-            }),
-          );
-        }
 
         if (isWebView && (window as any).ReactNativeWebView) {
           (window as any).ReactNativeWebView.postMessage(

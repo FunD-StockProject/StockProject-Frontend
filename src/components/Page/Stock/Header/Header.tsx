@@ -1,6 +1,5 @@
 import { MESSAGE_TYPES } from '@config/webview';
 import useAuthInfo from '@hooks/useAuthInfo';
-import useLocalStorageState from '@hooks/useLocalStorageState';
 import useToast from '@hooks/useToast';
 import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
@@ -22,7 +21,7 @@ import { HeaderContainer, HeaderIconButton } from './Header.Style';
 
 const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { navToBack } = useRouter();
-  const { isLogin, handleNavigateLogin } = useAuthInfo();
+  const { isLogin, accessToken, handleNavigateLogin } = useAuthInfo();
   const { toast, showToast, hideToast } = useToast();
 
   const { data: stockPreference } = useStockPreferenceQuery(stockInfo.stockId);
@@ -31,7 +30,6 @@ const StockHeader = ({ stockInfo }: { stockInfo: StockDetailInfo }) => {
   const { mutate: toggleNotification } = useToggleNotificationMutation();
   const isBookmark = stockPreference?.isBookmarked ?? false;
   const isNotification = stockPreference?.isNotificationEnabled ?? false;
-  const [accessToken] = useLocalStorageState<string>('access_token');
 
   const checkAndRequestNotificationPermission = async () => {
     const isWebView = !!(window as any).ReactNativeWebView;

@@ -1,3 +1,4 @@
+import { MESSAGE_TYPES } from '@config/webview';
 import useAuthInfo from '@hooks/useAuthInfo';
 import useRouter from '@router/useRouter';
 import ConfirmModal from '@components/Modal/Confirm/ConfirmModal';
@@ -22,7 +23,7 @@ import {
 import MyPageProfile from './Profile/Profile';
 
 const MyPage = () => {
-  const { isLogin, clearAuthInfo } = useAuthInfo();
+  const { isLogin, accessToken, clearAuthInfo } = useAuthInfo();
   const { data: favorites = [] } = useBookmarkListQuery();
   const { data: experimentStatus } = useExperimentStatusQuery();
 
@@ -43,9 +44,23 @@ const MyPage = () => {
   } = useRouter();
 
   const handleLogout = async () => {
-    await fetchAuthLogout();
-    clearAuthInfo();
+    const isWebView = !!(window as any).ReactNativeWebView;
 
+    if (isWebView) {
+      // WebView: 앱에 로그아웃 메시지 전송 (앱이 모든 로그아웃 처리)
+      (window as any).ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          type: MESSAGE_TYPES.LOGOUT,
+          token: accessToken,
+        }),
+      );
+      // 앱에서 처리 후 웹뷰를 새로고침하거나 홈으로 이동시킬 것
+    } else {
+      // 브라우저: 웹에서 직접 로그아웃 처리
+      await fetchAuthLogout();
+    }
+
+    clearAuthInfo();
     window.location.href = '/';
   };
 
