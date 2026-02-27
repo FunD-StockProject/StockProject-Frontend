@@ -26,6 +26,7 @@ const RecommendTable = styled.div({
   ['>div>p']: {
     display: 'table-cell',
     ...theme.font.detail12Medium,
+    color: theme.colors.sub_white,
     textAlign: 'center',
   },
 

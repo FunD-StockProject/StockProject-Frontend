@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { theme } from '@styles/themes';
 
 const WithdrawTitleContainer = styled.div({
   display: 'flex',
@@ -54,6 +55,8 @@ const WithdrawButtonContainer = styled.div({
     alignItems: 'center',
     gap: '8px',
     padding: '10px 20px',
+    ...theme.font.body16Semibold,
+    color: theme.colors.sub_gray3,
 
     ['>svg']: {
       width: '28px',
@@ -72,6 +75,7 @@ const WithdrawContent = styled.div({
   padding: '32px 0px',
   boxSizing: 'border-box',
   flexGrow: '1',
+  color: theme.colors.sub_gray5,
 
   ['>hr']: {
     background: '#1D1E1F',

@@ -195,9 +195,9 @@ const PatternHistoryItem = styled.div(
       },
 
       ['&.primary']: {
-        ['>p.name']: {
+        ['>p.stockName']: {
           ...theme.font.body16Medium,
-          color: theme.colors.sub_gray2,
+          color: theme.colors.sub_white,
         },
         ['>span.roi']: {
           display: 'flex',
