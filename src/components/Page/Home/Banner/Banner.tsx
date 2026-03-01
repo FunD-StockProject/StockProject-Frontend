@@ -1,55 +1,46 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useRouter from '@router/useRouter';
-import { theme } from '@styles/themes';
-import {
-  BannerContainer,
-  BannerItemButton,
-  BannerItemContainer,
-  BannerItemContent,
-  BannerItemDecoration,
-  BannerItemIndex,
-  BannerItemTextGroup,
-} from './Banner.Style';
+import FeedbackBanner from '@assets/appDownload/banners/FeedbackBanner.png';
+import InstallAppBanner from '@assets/appDownload/banners/installAppBanner.png';
+import ServiceGuideBanner from '@assets/appDownload/banners/serviceGuideBanner.png';
+import SnsBanner from '@assets/appDownload/banners/snsBanner.png';
+import { BannerContainer, BannerItemContainer, BannerItemImage, BannerItemIndex } from './Banner.Style';
 
 const HomeBanner = () => {
   const { navToAbout, openInstagram, openServiceCenter } = useRouter();
 
   const banners = [
     {
-      title: '인간지표 앱 출시',
-      sub: '보다 더 편리하게 사용해보세요',
-      button: {
-        text: '인간지표 SNS',
-        onClick: openInstagram,
-      },
-      background: theme.colors.sub_blue6,
+      image: InstallAppBanner,
+      alt: '앱 다운로드 배너',
+      onClick: openInstagram,
+      indexTone: 'light',
     },
     {
-      title: '인간지표, 더 좋아질 수\n있게 도와주세요',
-      sub: '',
-      button: {
-        text: '불편사항 접수',
-        onClick: openServiceCenter,
-      },
-      background: theme.colors.sub_blue5,
+      image: SnsBanner,
+      alt: 'SNS 배너',
+      onClick: openInstagram,
+      indexTone: 'light',
     },
     {
-      title: '인간지표는 어떻게\n활용할 수 있나요?',
-      sub: '',
-      button: {
-        text: '서비스 가이드',
-        onClick: navToAbout,
-      },
-      background: theme.colors.sub_gray9,
+      image: FeedbackBanner,
+      alt: '불편사항 접수 배너',
+      onClick: openServiceCenter,
+      indexTone: 'dark',
     },
-  ];
+    {
+      image: ServiceGuideBanner,
+      alt: '서비스 가이드 배너',
+      onClick: navToAbout,
+      indexTone: 'light',
+    },
+  ] as const;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isAutoScrolling = useRef(false); // 자동 스크롤 중인지 구분
-  const intervalRef = useRef<NodeJS.Timeout | null>(null); // 타이머 ref 추가
+  const isAutoScrolling = useRef(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 타이머 시작 함수
   const startTimer = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -58,7 +49,7 @@ const HomeBanner = () => {
       setCurrentIndex((prev) => (prev + 1) % banners.length);
     }, 3000);
   }, [banners.length]);
-  // 컴포넌트 마운트 시 타이머 시작
+
   useEffect(() => {
     startTimer();
     return () => {
@@ -68,7 +59,6 @@ const HomeBanner = () => {
     };
   }, [startTimer]);
 
-  // 인덱스 변경 시 스크롤 이동
   useEffect(() => {
     if (containerRef.current) {
       isAutoScrolling.current = true;
@@ -84,7 +74,6 @@ const HomeBanner = () => {
     }
   }, [currentIndex]);
 
-  // 사용자 수동 스크롤 시 인덱스 업데이트 및 타이머 리셋
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -102,37 +91,30 @@ const HomeBanner = () => {
 
         if (newIndex >= 0 && newIndex < banners.length) {
           setCurrentIndex(newIndex);
-          startTimer(); // 타이머 리셋!
+          startTimer();
         }
       }, 100);
     };
+
     container.addEventListener('scroll', handleScroll);
     return () => {
       container.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [banners.length, startTimer]); // startTimer 의존성 추가
+  }, [banners.length, startTimer]);
 
   return (
     <BannerContainer ref={containerRef}>
-      {banners.map((e, idx, arr) => (
-        <BannerItemContainer key={`BANNER_${idx}`} backgroundColor={e.background}>
-          <BannerItemContent>
-            <BannerItemTextGroup>
-              <p className="title">{e.title}</p>
-              <p className="sub">{e.sub}</p>
-            </BannerItemTextGroup>
-            <BannerItemButton onClick={e.button.onClick}>{e.button.text} →</BannerItemButton>
-          </BannerItemContent>
-          <BannerItemIndex>
+      {banners.map((banner, idx, arr) => (
+        <BannerItemContainer key={`BANNER_${idx}`} onClick={banner.onClick} aria-label={banner.alt}>
+          <BannerItemImage src={banner.image} alt={banner.alt} loading="lazy" />
+          <BannerItemIndex className={banner.indexTone === 'dark' ? 'dark' : ''}>
             <b>{idx + 1}</b> / {arr.length}
           </BannerItemIndex>
-          <BannerItemDecoration />
-          <BannerItemDecoration />
-          <BannerItemDecoration />
         </BannerItemContainer>
       ))}
     </BannerContainer>
   );
 };
+
 export default HomeBanner;
