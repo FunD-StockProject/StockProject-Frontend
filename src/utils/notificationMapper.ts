@@ -19,7 +19,7 @@ export interface NotificationItem {
 export const mapNotificationResponseToItem = (response: NotificationResponse): NotificationItem => {
   const title = response.notificationType === 'SCORE_SPIKE' ? '인간지표 변동 알림' : '';
   const scoreDiff = (response.newScore ?? 0) - (response.oldScore ?? 0);
-  const sign = !scoreDiff ? '' : scoreDiff > 0 ? '+' : '-';
+  const sign = !scoreDiff ? '' : scoreDiff > 0 ? '+' : '';
   const emoji = scoreDiff > 0 ? '🔥' : '💧';
   const content = `[${response.stockName}] 인간지표 ${sign}${scoreDiff}점${emoji}`;
   const description = `민심 ${sign === '+' ? '급등' : '급락'} 중! 지금 확인해보세요`;
