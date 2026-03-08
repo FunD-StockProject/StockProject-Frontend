@@ -149,9 +149,7 @@ const Register = () => {
       }
     }
 
-    if (!values.email) {
-      errors.email = '이메일을 입력해주세요';
-    } else if (!emailRegex.test(values.email)) {
+    if (values.email && !emailRegex.test(values.email)) {
       errors.email = '이메일 형식을 확인해주세요';
     }
     // else if (false) {
@@ -205,7 +203,7 @@ const Register = () => {
     },
     {
       name: 'email',
-      title: '이메일*',
+      title: '이메일(선택)',
       error: errors.email,
       inputs: [
         {
