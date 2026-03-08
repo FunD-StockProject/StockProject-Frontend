@@ -52,6 +52,8 @@ const Register = () => {
   const { navToRegisterDone, navToTerm } = useRouter();
   const location = useLocation();
 
+  const email = location.state?.email || '';
+
   const [values, setValues] = useState({
     name: '',
     birth: '',
@@ -189,6 +191,23 @@ const Register = () => {
         },
       ],
     },
+    ...(email
+      ? [
+          {
+            name: 'email',
+            title: '이메일',
+            inputs: [
+              {
+                key: 'email',
+                value: email,
+                placeholder: 'email@email.com',
+                disabled: true,
+                handleChange: handleChangeValue,
+              },
+            ],
+          } as MyPageInputProps,
+        ]
+      : []),
     {
       name: 'birth',
       title: '생년월일(선택)',
@@ -218,6 +237,7 @@ const Register = () => {
 
     const res = await fetchAuthRegister(
       profileImage as string,
+      email,
       values.name,
       values.birth,
       true,

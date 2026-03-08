@@ -31,6 +31,11 @@ const ProfileContents = styled.div({
     },
   },
 
+  ['>span']: {
+    ...theme.font.body16Medium,
+    color: theme.colors.sub_blue1,
+  },
+
   ['>button']: {
     display: 'flex',
     gap: '6px',

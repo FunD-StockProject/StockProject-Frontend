@@ -3,6 +3,7 @@ import { webPath } from '@router/index';
 import useLocalStorageState from './useLocalStorageState';
 
 interface UserInfo {
+  email?: string;
   nickname: string;
   profileImage?: string;
   provider: string;

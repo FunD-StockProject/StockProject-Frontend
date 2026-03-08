@@ -11,6 +11,7 @@ const MyPageProfile = () => {
   const { isLogin, userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
 
   const username = userInfo?.nickname ?? '아직 정보가 없어요!';
+  const useremail = userInfo?.email ?? '로그인을 진행해주세요';
 
   const handleClickProfile = () => {
     if (!isLogin) {
@@ -62,6 +63,7 @@ const MyPageProfile = () => {
       />
       <ProfileContents>
         <p>{username}<RightArrowThickSVG /></p>
+        <span>{useremail}</span>
       </ProfileContents>
     </ProfileContainer>
   );
