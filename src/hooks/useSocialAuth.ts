@@ -96,7 +96,6 @@ export const useSocialAuth = () => {
           navigate(webPath.register, {
             state: {
               provider,
-              email: res.email,
             },
           });
           return;
@@ -104,7 +103,6 @@ export const useSocialAuth = () => {
 
         // 로그인 성공 - WebView와 브라우저 모두 동일하게 처리
         setAuthInfo(res.access_token, res.refresh_token, {
-          email: res.email,
           nickname: res.nickname,
           profileImage: res.profileImageUrl,
           provider: res.provider,

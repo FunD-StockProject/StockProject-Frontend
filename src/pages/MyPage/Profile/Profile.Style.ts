@@ -18,8 +18,17 @@ const ProfileContents = styled.div({
 
   ['>p']: {
     margin: '0',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
     ...theme.font.title20Semibold,
     color: theme.colors.sub_white,
+
+    ['>svg']: {
+      width: '28px',
+      height: 'auto',
+      aspectRatio: '1 / 1',
+    },
   },
 
   ['>button']: {

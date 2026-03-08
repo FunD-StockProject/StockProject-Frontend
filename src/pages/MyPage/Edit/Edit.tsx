@@ -16,19 +16,16 @@ const EditProfile = () => {
   const oldValues = {
     profileImage: userInfo?.profileImage ?? '',
     name: userInfo?.nickname ?? '',
-    email: userInfo?.email ?? '',
     birth: '',
   };
 
   const [values, setValues] = useState({
     name: oldValues.name,
-    email: oldValues.email,
     birth: oldValues.birth,
   });
 
   const [errors, setErrors] = useState({
     name: '',
-    email: '',
     birth: '',
     system: '',
   });
@@ -36,13 +33,11 @@ const EditProfile = () => {
   const validate = async () => {
     const errors = {
       name: '',
-      email: '',
       birth: '',
       system: '',
     };
 
     const nameRefex = /^[가-힣]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const birthRegex = /^\d{4}-\d{2}-\d{2}$/;
 
     if (!values.name) {
@@ -59,15 +54,6 @@ const EditProfile = () => {
         errors.name = '이미 사용 중인 닉네임입니다';
       }
     }
-    if (!values.email) {
-      errors.email = '이메일을 입력해주세요';
-    } else if (!emailRegex.test(values.email)) {
-      errors.email = '이메일 형식을 확인해주세요';
-    }
-    // else if (false) {
-    //   // 이메일 중복 API
-    //   errors.email = '이미 가입된 이메일입니다';
-    // }
 
     if (values.birth) {
       if (!birthRegex.test(values.birth)) {
@@ -79,7 +65,6 @@ const EditProfile = () => {
 
     if (
       values.name === oldValues.name &&
-      values.email === oldValues.email &&
       values.birth === oldValues.birth &&
       !isProgileImageChanged
     ) {
@@ -135,20 +120,6 @@ const EditProfile = () => {
           key: 'name',
           value: values.name,
           placeholder: '닉네임을 입력해주세요',
-          handleChange: handleChangeValue,
-        },
-      ],
-    },
-    {
-      name: 'email',
-      title: '이메일*',
-      error: errors.email,
-      inputs: [
-        {
-          key: 'email',
-          value: values.email,
-          placeholder: 'email@email.com',
-          disabled: true,
           handleChange: handleChangeValue,
         },
       ],

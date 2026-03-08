@@ -54,7 +54,6 @@ const Register = () => {
 
   const [values, setValues] = useState({
     name: '',
-    email: location.state?.email || sessionStorage.getItem('register_email') || '',
     birth: '',
   });
 
@@ -67,7 +66,6 @@ const Register = () => {
 
   const [errors, setErrors] = useState({
     name: '',
-    email: '',
     birth: '',
     termsAgreed: '',
     system: '',
@@ -124,14 +122,12 @@ const Register = () => {
   const validate = async () => {
     const errors = {
       name: '',
-      email: '',
       birth: '',
       termsAgreed: '',
       system: '',
     };
 
     const nameRefex = /^[가-힣]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const birthRegex = /^\d{4}-\d{2}-\d{2}$/;
 
     if (!values.name) {
@@ -148,14 +144,6 @@ const Register = () => {
         errors.name = '이미 사용 중인 닉네임입니다';
       }
     }
-
-    if (values.email && !emailRegex.test(values.email)) {
-      errors.email = '이메일 형식을 확인해주세요';
-    }
-    // else if (false) {
-    //   // 이메일 중복 API
-    //   errors.email = '이미 가입된 이메일입니다';
-    // }
 
     if (values.birth) {
       if (!birthRegex.test(values.birth)) {
@@ -202,20 +190,6 @@ const Register = () => {
       ],
     },
     {
-      name: 'email',
-      title: '이메일(선택)',
-      error: errors.email,
-      inputs: [
-        {
-          key: 'email',
-          value: values.email,
-          placeholder: 'email@email.com',
-          disabled: true,
-          handleChange: handleChangeValue,
-        },
-      ],
-    },
-    {
       name: 'birth',
       title: '생년월일(선택)',
       error: errors.birth,
@@ -244,7 +218,6 @@ const Register = () => {
 
     const res = await fetchAuthRegister(
       profileImage as string,
-      values.email,
       values.name,
       values.birth,
       true,
@@ -254,7 +227,6 @@ const Register = () => {
     if (!res) return;
 
     // sessionStorage 정리
-    sessionStorage.removeItem('register_email');
     sessionStorage.removeItem('register_provider');
 
     // 회원가입 완료 페이지로 이동 (로그인은 사용자가 직접 수행)

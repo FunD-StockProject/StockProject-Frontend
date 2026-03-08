@@ -34,14 +34,12 @@ export const fetchOAuth2Login = async (_code: string, _state: string, provider: 
 
 export const fetchAuthRegister = async (
   imageBase64: string,
-  email: string,
   nickname: string,
   birth_date: string,
   marketingAgreement: boolean,
   provider: string,
 ) => {
   const formData = new FormData();
-  formData.append('email', email);
   formData.append('nickname', nickname);
   formData.append('birth_date', birth_date);
   formData.append('marketingAgreement', String(marketingAgreement));
