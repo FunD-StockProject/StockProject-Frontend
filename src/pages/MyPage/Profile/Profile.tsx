@@ -11,7 +11,8 @@ const MyPageProfile = () => {
   const { isLogin, userInfo, handleNavigateLogin, setUserInfo } = useAuthInfo();
 
   const username = userInfo?.nickname ?? '아직 정보가 없어요!';
-  const useremail = userInfo?.email ?? '로그인을 진행해주세요';
+  const rawEmail = userInfo?.email;
+  const useremail = rawEmail && !rawEmail.endsWith('@apple.local') ? rawEmail : null;
 
   const handleClickProfile = () => {
     if (!isLogin) {
@@ -62,8 +63,11 @@ const MyPageProfile = () => {
         handleClickCircle={handleClickProfileImage}
       />
       <ProfileContents>
-        <p>{username}<RightArrowThickSVG /></p>
-        <span>{useremail}</span>
+        <p>
+          {username}
+          <RightArrowThickSVG />
+        </p>
+        {(!isLogin || useremail) && <span>{isLogin ? useremail : '로그인을 진행해주세요'}</span>}
       </ProfileContents>
     </ProfileContainer>
   );
