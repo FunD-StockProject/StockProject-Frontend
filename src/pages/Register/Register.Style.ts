@@ -81,6 +81,8 @@ const RegisterTermCheckBox = styled.label({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
+  color: theme.colors.sub_gray3,
+  ...theme.font.body16Regular,
 
   ['>input[type="checkbox"]']: {
     display: 'none',
