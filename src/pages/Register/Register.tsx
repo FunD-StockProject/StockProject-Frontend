@@ -73,7 +73,9 @@ const Register = () => {
     system: '',
   });
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  // TODO: 회원가입 프로필 이미지 수정 기능 재오픈 시 아래 state를 복구한다.
+  // const [profileImage, setProfileImage] = useState<string | null>(null);
+  const profileImage: string | null = null;
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -236,7 +238,7 @@ const Register = () => {
     const provider = location.state?.provider || sessionStorage.getItem('register_provider') || '';
 
     const res = await fetchAuthRegister(
-      profileImage as string,
+      profileImage ?? '',
       email,
       values.name,
       values.birth,
@@ -257,22 +259,24 @@ const Register = () => {
     navToTerm(termKey);
   };
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setProfileImage(reader.result as string);
-    };
-  };
+  // TODO: 회원가입 프로필 이미지 수정 기능 재오픈 시 아래 핸들러와 ProfileCircle props를 복구한다.
+  // const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+  //
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //
+  //   reader.onloadend = () => {
+  //     setProfileImage(reader.result as string);
+  //   };
+  // };
 
   return (
     <RegisterContainer>
       <RegisterContent>
-        <ProfileCircle profileImage={profileImage ?? ProfilePNG} handleChangeFile={handleChangeFile} size="large" />
+        {/* 회원가입 프로필 이미지 수정은 임시 비활성화 상태 */}
+        <ProfileCircle profileImage={profileImage ?? ProfilePNG} size="large" canEdit={false} />
         <RegisterValueContainer>
           {valueInputs.map((e) => (
             <MyPageInput key={e.name} name={e.name} error={e.error} title={e.title} sub={e.sub} inputs={e.inputs} />

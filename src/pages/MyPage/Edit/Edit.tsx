@@ -3,7 +3,7 @@ import useAuthInfo from '@hooks/useAuthInfo';
 import useRouter from '@router/useRouter';
 import MyPageInput, { MyPageInputProps } from '@components/MyPage/MyPageInput/MyPageInput';
 import ProfileCircle from '@components/MyPage/ProfileCircle/ProfileCircle';
-import { fetchAuthNickname, fetchUpdateUserImage, fetchUpdateUserProfile } from '@controllers/auth/api';
+import { fetchAuthNickname, fetchUpdateUserProfile } from '@controllers/auth/api';
 import ProfilePNG from '@assets/profile.png';
 import { EditProfileButton, EditProfileValueContainer, RegisterContainer, RegisterContent } from './Edit.Style';
 
@@ -11,10 +11,8 @@ const EditProfile = () => {
   const { navToEditProfileDone } = useRouter();
 
   const { userInfo, setUserInfo } = useAuthInfo();
-  const [isProgileImageChanged, setIsProfileImageChanged] = useState(false);
 
   const oldValues = {
-    profileImage: userInfo?.profileImage ?? '',
     name: userInfo?.nickname ?? '',
     birth: '',
   };
@@ -63,11 +61,7 @@ const EditProfile = () => {
       }
     }
 
-    if (
-      values.name === oldValues.name &&
-      values.birth === oldValues.birth &&
-      !isProgileImageChanged
-    ) {
+    if (values.name === oldValues.name && values.birth === oldValues.birth) {
       errors.name = ' ';
       errors.birth = '수정된 내용이 없습니다.';
     }
@@ -158,32 +152,29 @@ const EditProfile = () => {
     navToEditProfileDone();
   };
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onloadend = async () => {
-      const data = await fetchUpdateUserImage(reader.result as string);
-      if (data) {
-        setUserInfo({ profileImage: reader.result as string });
-        setIsProfileImageChanged(true);
-      } else {
-        alert('프로필 이미지 업데이트 실패');
-      }
-    };
-  };
+  // TODO: 프로필 이미지 수정 기능 재오픈 시 아래 핸들러와 ProfileCircle props를 복구한다.
+  // const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+  //
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //
+  //   reader.onloadend = async () => {
+  //     const data = await fetchUpdateUserImage(reader.result as string);
+  //     if (data) {
+  //       setUserInfo({ profileImage: reader.result as string });
+  //     } else {
+  //       alert('프로필 이미지 업데이트 실패');
+  //     }
+  //   };
+  // };
 
   return (
     <RegisterContainer>
       <RegisterContent>
-        <ProfileCircle
-          profileImage={userInfo?.profileImage ?? ProfilePNG}
-          handleChangeFile={handleChangeFile}
-          size="large"
-        />
+        {/* 프로필 이미지 수정은 임시 비활성화 상태 */}
+        <ProfileCircle profileImage={userInfo?.profileImage ?? ProfilePNG} size="large" canEdit={false} />
         <EditProfileValueContainer>
           {valueInputs.map((e) => (
             <MyPageInput

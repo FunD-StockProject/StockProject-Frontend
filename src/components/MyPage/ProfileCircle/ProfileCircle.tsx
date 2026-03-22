@@ -1,4 +1,5 @@
-import EditCircleSVG from '@assets/edit_circle.svg?react';
+// TODO: 프로필 이미지 수정 기능 재오픈 시 아래 import와 편집 UI를 함께 복구한다.
+// import EditCircleSVG from '@assets/edit_circle.svg?react';
 import ProfilePNG from '@assets/profile.png';
 import { ProfileCircleContainer } from './ProfileCircle.Style';
 
@@ -10,7 +11,7 @@ const ProfileCircle = ({
   handleClickCircle,
 }: {
   profileImage: string;
-  handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   size: 'small' | 'medium' | 'large';
   canEdit?: boolean;
   handleClickCircle?: (e: React.MouseEvent<HTMLLabelElement>) => void;
@@ -18,9 +19,9 @@ const ProfileCircle = ({
   return (
     <ProfileCircleContainer size={size} onClick={handleClickCircle}>
       <img src={profileImage ?? ProfilePNG} />
-      {canEdit && (
+      {canEdit && handleChangeFile && (
         <>
-          <EditCircleSVG />
+          {/* <EditCircleSVG /> */}
           <input type="file" accept="image/*" onChange={handleChangeFile} />
         </>
       )}
