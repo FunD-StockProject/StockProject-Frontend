@@ -29,7 +29,7 @@ const Mainlayout = ({ children }: LayoutProps) => {
       </MainContent>
 
       {visiblePWAInfoPopUp && isRootPage && !detectPWA() && <PWAInfoPopUp />}
-      {visiblePWAInfoPopUp && isMobileDevice && isRootPage && !detectWebView() && <AppInstallPopUp />}
+      {isMobileDevice && isRootPage && !detectWebView() && <AppInstallPopUp />}
       {isBottomNavigationVisible && <BottomNavigation />}
     </StyledMainlayout>
   );

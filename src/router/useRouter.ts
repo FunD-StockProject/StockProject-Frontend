@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { StockCountryKey } from '@ts/StockCountry';
 import { TermKey } from '@ts/Term';
+import { detectPlatform } from '@utils/Detector';
 import { openExternalLink } from '@utils/openExternalLink';
 import { webPath } from '.';
 
@@ -42,6 +43,18 @@ const useRouter = () => {
   const openInstagram = () => {
     openExternalLink('https://www.instagram.com/humanzipyo/');
   };
+  const openAppDownload = () => {
+    const platform = detectPlatform();
+
+    if (platform === 'Android') {
+      openExternalLink('https://play.google.com/store/apps/details?id=com.durumi99.humanzipyoapp');
+      return;
+    }
+
+    if (platform === 'iOS') {
+      openExternalLink('https://apps.apple.com/kr/app/%EC%9D%B8%EA%B0%84%EC%A7%80%ED%91%9C/id6752467487');
+    }
+  };
   const openLinkedIn = () => {
     openExternalLink('https://www.linkedin.com/company/humanzipyo');
   };
@@ -70,6 +83,7 @@ const useRouter = () => {
     openBusinessProposal,
     openServiceCenter,
     openInstagram,
+    openAppDownload,
     openLinkedIn,
     openThreads,
     navToRegisterDone,

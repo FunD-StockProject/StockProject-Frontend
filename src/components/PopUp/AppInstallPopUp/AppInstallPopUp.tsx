@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useLocalStorageState from '@hooks/useLocalStorageState';
+import useRouter from '@router/useRouter';
 import AlarmIcon from '@assets/appDownload/appDownloadAlarm.svg?react';
 import LightningIcon from '@assets/appDownload/appDownloadLightning.svg?react';
 import PhoneIcon from '@assets/appDownload/appDownloadPhone.svg?react';
@@ -26,6 +27,7 @@ interface AppInstallPopUpProps {
 }
 
 const AppInstallPopUp = ({ onClose, onDownload }: AppInstallPopUpProps) => {
+  const { openAppDownload } = useRouter();
   const [lastShown, setLastShown] = useLocalStorageState<string>('app_install_popup_last_shown');
   const [showPopUp, setShowPopUp] = useState(
     (() => {
@@ -52,8 +54,7 @@ const AppInstallPopUp = ({ onClose, onDownload }: AppInstallPopUpProps) => {
   const handleDownload = () => {
     setShowPopUp(false);
     onDownload?.();
-    // TODO: 실제 앱 다운로드 링크로 이동
-    // 예: window.location.href = 'https://apps.apple.com/...' 또는 'https://play.google.com/...'
+    openAppDownload();
   };
 
   const handleBackdropClick = () => {

@@ -7,13 +7,13 @@ import SnsBanner from '@assets/appDownload/banners/snsBanner.png';
 import { BannerContainer, BannerItemContainer, BannerItemImage, BannerItemIndex } from './Banner.Style';
 
 const HomeBanner = () => {
-  const { navToAbout, openInstagram, openServiceCenter } = useRouter();
+  const { navToAbout, openAppDownload, openInstagram, openServiceCenter } = useRouter();
 
   const banners = [
     {
       image: InstallAppBanner,
       alt: '앱 다운로드 배너',
-      onClick: openInstagram,
+      onClick: openAppDownload,
       indexTone: 'light',
     },
     {
