@@ -1,3 +1,4 @@
+import { MESSAGE_TYPES } from '@config/webview';
 import { webPath } from '@router/index';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -6,6 +7,32 @@ const Headers = { 'Content-Type': 'application/json' } as const;
 const wait = (timeToDelay: number) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
 const enableMock = false;
+const AUTH_STORAGE_KEYS = ['access_token', 'refresh_token', 'user_info'] as const;
+const LOGIN_FORCE_HOME_ON_CLOSE_KEY = 'login_force_home_on_close';
+
+const sendWebViewLogoutMessage = (accessToken: string | null) => {
+  const reactNativeWebView = (
+    window as Window & typeof globalThis & { ReactNativeWebView?: { postMessage: (message: string) => void } }
+  ).ReactNativeWebView;
+
+  if (!reactNativeWebView || !accessToken) {
+    return;
+  }
+
+  reactNativeWebView.postMessage(
+    JSON.stringify({
+      type: MESSAGE_TYPES.LOGOUT,
+      token: accessToken,
+    }),
+  );
+};
+
+const clearStoredAuthInfo = () => {
+  AUTH_STORAGE_KEYS.forEach((key) => {
+    localStorage.removeItem(key);
+    window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key } }));
+  });
+};
 
 const fetchData = async (path: string, init: RequestInit = {}, isFormData: boolean = false) => {
   const url = `${baseURL}${path}`;
@@ -55,7 +82,11 @@ const fetchAuthData = async (path: string, init: RequestInit = {}, isFormData: b
     });
 
     if (!reissueRes.ok) {
-      // alert('토큰 재발급 실패. 재로그인 필요');
+      sendWebViewLogoutMessage(token);
+      clearStoredAuthInfo();
+      sessionStorage.setItem('login_return_path', window.location.pathname + window.location.search);
+      sessionStorage.removeItem('login_return_state');
+      sessionStorage.setItem(LOGIN_FORCE_HOME_ON_CLOSE_KEY, 'true');
 
       window.location.href = webPath.login;
 

@@ -45,6 +45,16 @@ const Login = () => {
   ];
 
   const handleCancelLogin = () => {
+    const shouldGoHome = sessionStorage.getItem('login_force_home_on_close') === 'true';
+
+    if (shouldGoHome) {
+      sessionStorage.removeItem('login_force_home_on_close');
+      sessionStorage.removeItem('login_return_path');
+      sessionStorage.removeItem('login_return_state');
+      navigate('/', { replace: true });
+      return;
+    }
+
     navigate(-1);
   };
 

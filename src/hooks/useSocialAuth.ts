@@ -125,6 +125,7 @@ export const useSocialAuth = () => {
         const returnStateStr = sessionStorage.getItem('login_return_state');
         const returnState = returnStateStr ? JSON.parse(returnStateStr) : undefined;
 
+        sessionStorage.removeItem('login_force_home_on_close');
         sessionStorage.removeItem('login_return_path');
         sessionStorage.removeItem('login_return_state');
 
